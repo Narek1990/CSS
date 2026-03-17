@@ -1,0 +1,143 @@
+/* =========================
+GLOBAL PAGE IMPROVEMENT
+========================= */
+
+[data-mj="page-content"] {
+  padding: 10px 12px;
+  background: linear-gradient(180deg, #0f0f0f, #1a1a1a);
+}
+
+/* =========================
+HEADER (Premium + Sticky Feel)
+========================= */
+
+[data-mj="custom-header"] {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(15, 15, 15, 0.85);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* subtle bottom glow */
+[data-mj="custom-header"]::after {
+  content: "";
+  display: block;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #d4af37, transparent);
+  opacity: 0.6;
+}
+
+/* =========================
+MULTI BANNER (Hero Focus)
+========================= */
+
+[data-mj="widget-multi-banner"] {
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  position: relative;
+}
+
+/* hover zoom effect */
+[data-mj="widget-multi-banner"] img {
+  transition: transform 0.5s ease;
+}
+
+[data-mj="widget-multi-banner"]:hover img {
+  transform: scale(1.04);
+}
+
+/* glow border effect */
+[data-mj="widget-multi-banner"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  pointer-events: none;
+}
+
+/* =========================
+GAME SLIDER (Cards Feel)
+========================= */
+
+[data-mj="widget-game-slider"] {
+  margin-bottom: 18px;
+}
+
+/* child cards */
+[data-mj="widget-game-slider"] * {
+  transition: all 0.25s ease;
+}
+
+/* hover lift effect */
+[data-mj="widget-game-slider"] img:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45);
+  border-radius: 12px;
+}
+
+/* =========================
+BOTTOM NAV (Mobile Critical)
+========================= */
+
+[data-mj="bottom-nav-item"] {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+/* hover */
+[data-mj="bottom-nav-item"]:hover {
+  transform: translateY(-2px);
+}
+
+/* active underline */
+[data-mj="bottom-nav-item"].active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  width: 60%;
+  height: 3px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #d4af37, #ffd700);
+}
+
+/* =========================
+SMOOTH FADE-IN
+========================= */
+
+[data-mj="page-content"] > * {
+  animation: fadeInUp 0.4s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+MOBILE POLISH
+========================= */
+
+@media (max-width: 768px) {
+
+  [data-mj="widget-multi-banner"] {
+    border-radius: 12px;
+  }
+
+  [data-mj="custom-header"] {
+    padding: 6px 10px;
+  }
+
+}
