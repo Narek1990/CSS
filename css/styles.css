@@ -1,4 +1,9 @@
-[data-mj="custom-header"] {
+[data-mj="custom-header"],
+[data-mj="custom-header"] > [data-mj="header-left"],
+[data-mj="custom-header"] > [data-mj="header-center"],
+[data-mj="custom-header"] > [data-mj="header-right"],
+[data-mj="custom-header"] [data-mj="header-nav-list"] {
+  background: yellow !important;
   background-color: yellow !important;
   position: absolute !important;
   width: 100% !important;
