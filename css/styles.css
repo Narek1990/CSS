@@ -26,7 +26,7 @@ body [data-mj="custom-header"] {
     0 16px 40px rgba(41, 6, 11, 0.42),
     inset 0 -1px 0 rgba(255, 255, 255, 0.03) !important;
   backdrop-filter: blur(14px) !important;
-  position: sticky !important;
+  position: absolute !important;
   top: 0 !important;
   width: 100% !important;
   z-index: 1000 !important;
@@ -329,7 +329,7 @@ body [data-mj="loading-overlay"] {
 
 @media (max-width: 1024px) {
   body [data-mj="custom-header"] {
-    position: fixed !important;
+    position: absolute !important;
   }
 
   body [data-mj="header-nav-list"] {
