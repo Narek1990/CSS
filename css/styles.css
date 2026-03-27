@@ -394,6 +394,59 @@ body [data-mj="account-menu-list"] {
   }
 }
 
+#kraldo-originals,
+#populer-saglayicilar {
+  scroll-margin-top: 96px;
+}
+
+body [data-mj="footer-bottom"] .kraldo-license-seals,
+body [data-mj="footer-content"] .kraldo-license-seals {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 14px !important;
+  margin-top: 18px !important;
+  padding-top: 14px !important;
+  border-top: 1px solid rgba(255, 100, 110, 0.12) !important;
+}
+
+body [data-mj="footer-bottom"] .kraldo-license-seals a,
+body [data-mj="footer-content"] .kraldo-license-seals a {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 72px !important;
+  min-height: 48px !important;
+  padding: 8px 12px !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 100, 110, 0.14) !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
+}
+
+body [data-mj="footer-bottom"] .kraldo-license-seals a:hover,
+body [data-mj="footer-content"] .kraldo-license-seals a:hover {
+  transform: translateY(-2px) !important;
+  border-color: rgba(255, 100, 110, 0.24) !important;
+  box-shadow:
+    0 14px 28px rgba(0, 0, 0, 0.22),
+    0 0 18px rgba(255, 100, 110, 0.12) !important;
+}
+
+body [data-mj="footer-bottom"] .kraldo-license-seals img,
+body [data-mj="footer-content"] .kraldo-license-seals img {
+  max-height: 34px !important;
+  width: auto !important;
+  display: block !important;
+}
+
+body [data-mj="footer-bottom"] .kraldo-license-seals .kraldo-web-award img,
+body [data-mj="footer-content"] .kraldo-license-seals .kraldo-web-award img {
+  max-height: 42px !important;
+}
+
 body [data-mj="page-content"] [data-mj="widget-phoenix-sport"] {
   background: linear-gradient(180deg, rgba(24, 34, 50, 0.96) 0%, rgba(13, 19, 29, 0.98) 100%) !important;
   border: 1px solid rgba(255, 100, 110, 0.18) !important;
