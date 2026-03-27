@@ -35,7 +35,7 @@ body [data-mj="custom-header"] {
 body [data-mj="custom-header"] > [data-mj="header-left"],
 body [data-mj="custom-header"] > [data-mj="header-center"],
 body [data-mj="custom-header"] > [data-mj="header-right"] {
-  min-height: 76px !important;
+  min-height: 68px !important;
   display: flex !important;
   align-items: center !important;
 }
@@ -48,7 +48,7 @@ body [data-mj="header-nav-list"] {
   background: transparent !important;
   gap: 10px !important;
   padding: 0 10px !important;
-  min-height: 56px !important;
+  min-height: 50px !important;
 }
 
 body [data-mj="header-nav-list"] > #ul {
@@ -280,6 +280,56 @@ body [data-mj="promotion-card"]:hover img {
   transform: scale(1.05) !important;
 }
 
+body [data-mj="widget-game-slider-container"],
+body [data-mj="widget-bet-win"] {
+  background: linear-gradient(180deg, rgba(24, 34, 50, 0.94) 0%, rgba(15, 22, 34, 0.94) 100%) !important;
+  border: 1px solid rgba(255, 100, 110, 0.16) !important;
+  border-radius: 22px !important;
+  box-shadow:
+    var(--dm-shadow),
+    0 0 0 1px rgba(255, 100, 110, 0.06) inset !important;
+  overflow: hidden !important;
+}
+
+body [data-mj="widget-game-slider-container"] img,
+body [data-mj="widget-bet-win"] img {
+  transition: transform 0.35s ease !important;
+}
+
+body [data-mj="widget-game-slider-container"]:hover img,
+body [data-mj="widget-bet-win"]:hover img {
+  transform: scale(1.04) !important;
+}
+
+body [data-mj="widget-pages-container"] {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin-top: 10px !important;
+}
+
+body [data-mj="widget-pages-container"] > *,
+body [data-mj="widget-pages-container"] [class*="card"],
+body [data-mj="widget-pages-container"] article,
+body [data-mj="widget-pages-container"] li,
+body [data-mj="widget-pages-container"] a {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+body [data-mj="widget-pages-container"] > *:hover,
+body [data-mj="widget-pages-container"] [class*="card"]:hover,
+body [data-mj="widget-pages-container"] article:hover,
+body [data-mj="widget-pages-container"] li:hover,
+body [data-mj="widget-pages-container"] a:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.24) !important;
+}
+
 body [data-mj="promotions-tabs"] [class*="active"],
 body [data-mj="promotions-tabs"] .active {
   background: linear-gradient(135deg, #ff7d85 0%, #ff4d5d 100%) !important;
@@ -445,104 +495,6 @@ body [data-mj="footer-content"] .kraldo-license-seals img {
 body [data-mj="footer-bottom"] .kraldo-license-seals .kraldo-web-award img,
 body [data-mj="footer-content"] .kraldo-license-seals .kraldo-web-award img {
   max-height: 42px !important;
-}
-
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport"] {
-  background: linear-gradient(180deg, rgba(24, 34, 50, 0.96) 0%, rgba(13, 19, 29, 0.98) 100%) !important;
-  border: 1px solid rgba(255, 100, 110, 0.18) !important;
-  border-radius: 20px !important;
-  box-shadow:
-    var(--dm-shadow),
-    0 0 0 1px rgba(255, 100, 110, 0.06) inset !important;
-  overflow: hidden !important;
-}
-
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] {
-  width: 100% !important;
-}
-
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] > * {
-  width: 100% !important;
-}
-
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="card"],
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="event"],
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="match"],
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="fixture"],
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] li,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] article,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] > div > div {
-  display: grid !important;
-  grid-template-columns: minmax(180px, 2fr) minmax(90px, 0.9fr) minmax(140px, 1.2fr) minmax(150px, 1.2fr) !important;
-  align-items: center !important;
-  gap: 12px !important;
-  width: 100% !important;
-  padding: 14px 18px !important;
-  margin: 0 !important;
-  border: 0 !important;
-  border-bottom: 1px solid rgba(255, 100, 110, 0.12) !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="card"]:hover,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="event"]:hover,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="match"]:hover,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="fixture"]:hover,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] li:hover,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] article:hover,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] > div > div:hover {
-  background: rgba(255, 100, 110, 0.05) !important;
-}
-
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="card"]:last-child,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="event"]:last-child,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="match"]:last-child,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="fixture"]:last-child,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] li:last-child,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] article:last-child,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] > div > div:last-child {
-  border-bottom: 0 !important;
-}
-
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="card"] > *,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="event"] > *,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="match"] > *,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="fixture"] > *,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] li > *,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] article > *,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] > div > div > * {
-  min-width: 0 !important;
-}
-
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="odds"],
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="market"],
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="price"],
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="coefficient"] {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  gap: 8px !important;
-  align-items: center !important;
-}
-
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] button,
-body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [role="button"] {
-  border-radius: 10px !important;
-}
-
-@media (max-width: 1024px) {
-  body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="card"],
-  body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="event"],
-  body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="match"],
-  body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] [class*="fixture"],
-  body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] li,
-  body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] article,
-  body [data-mj="page-content"] [data-mj="widget-phoenix-sport-container"] > div > div {
-    grid-template-columns: minmax(140px, 2fr) minmax(80px, 0.8fr) minmax(120px, 1fr) !important;
-    gap: 10px !important;
-    padding: 12px 14px !important;
-  }
 }
 
 body [data-mj="loading-overlay"] {
