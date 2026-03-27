@@ -316,35 +316,6 @@ body [data-mj="widget-bet-win"]:hover img {
   transform: scale(1.04) !important;
 }
 
-body [data-mj="widget-pages-container"] {
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  margin-top: 10px !important;
-}
-
-body [data-mj="widget-pages-container"] > *,
-body [data-mj="widget-pages-container"] [class*="card"],
-body [data-mj="widget-pages-container"] article,
-body [data-mj="widget-pages-container"] li,
-body [data-mj="widget-pages-container"] a {
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
-}
-
-body [data-mj="widget-pages-container"] > *:hover,
-body [data-mj="widget-pages-container"] [class*="card"]:hover,
-body [data-mj="widget-pages-container"] article:hover,
-body [data-mj="widget-pages-container"] li:hover,
-body [data-mj="widget-pages-container"] a:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.24) !important;
-}
-
 html {
   scrollbar-color: rgba(255, 100, 110, 0.35) rgba(12, 7, 10, 0.2);
 }
