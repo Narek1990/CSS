@@ -1,20 +1,20 @@
 body [data-mj="page-content"] {
   --dm-bg: #0b1018;
-  --dm-surface: #121a26;
-  --dm-surface-2: #182232;
-  --dm-border: rgba(109, 243, 193, 0.16);
+  --dm-surface: #22111a;
+  --dm-surface-2: #341520;
+  --dm-border: rgba(255, 100, 110, 0.18);
   --dm-text: #eef7ff;
-  --dm-text-soft: #a9b8c9;
-  --dm-green: #59f3ba;
-  --dm-green-2: #22c88a;
+  --dm-text-soft: #d3b2bb;
+  --dm-green: #ff7d85;
+  --dm-green-2: #ff4d5d;
   --dm-gold: #ffcc66;
   --dm-red: #ff646e;
   --dm-red-soft: rgba(255, 100, 110, 0.2);
   --dm-red-glow: rgba(255, 100, 110, 0.35);
   --dm-shadow: 0 18px 48px rgba(0, 0, 0, 0.34);
   background:
-    radial-gradient(circle at top center, rgba(46, 212, 156, 0.1) 0%, rgba(46, 212, 156, 0) 28%),
-    linear-gradient(180deg, #0d1320 0%, #090d14 100%) !important;
+    radial-gradient(circle at top center, rgba(255, 100, 110, 0.12) 0%, rgba(255, 100, 110, 0) 28%),
+    linear-gradient(180deg, #170b11 0%, #09060a 100%) !important;
   color: var(--dm-text) !important;
 }
 
@@ -41,7 +41,7 @@ body [data-mj="custom-header"] > [data-mj="header-right"] {
 }
 
 body [data-mj="logo"] {
-  filter: drop-shadow(0 0 18px rgba(89, 243, 186, 0.18));
+  filter: drop-shadow(0 0 18px rgba(255, 100, 110, 0.18));
 }
 
 body [data-mj="header-nav-list"] {
@@ -122,11 +122,11 @@ body [data-mj="header-nav-item"] > button:hover::after {
 }
 
 body [data-mj="header-nav-item"] > .active-link {
-  color: #05110d !important;
-  background: linear-gradient(135deg, var(--dm-green) 0%, #8ef3cc 100%) !important;
+  color: #fff7f8 !important;
+  background: linear-gradient(135deg, var(--dm-green) 0%, #ff98a1 100%) !important;
   border-color: transparent !important;
   box-shadow:
-    0 12px 30px rgba(89, 243, 186, 0.24),
+    0 12px 30px rgba(255, 100, 110, 0.24),
     inset 0 1px 0 rgba(255, 255, 255, 0.28) !important;
 }
 
@@ -242,7 +242,7 @@ body [data-mj="announcement"] {
 body [data-mj="auth-banner"] {
   background:
     radial-gradient(circle at top left, rgba(255, 204, 102, 0.18), transparent 38%),
-    linear-gradient(135deg, #182232 0%, #0f1724 100%) !important;
+    linear-gradient(135deg, #341520 0%, #140a11 100%) !important;
   border: 1px solid rgba(255, 100, 110, 0.18) !important;
   border-radius: 24px !important;
   box-shadow: var(--dm-shadow) !important;
@@ -250,7 +250,7 @@ body [data-mj="auth-banner"] {
 }
 
 body [data-mj="promotion-card"] {
-  background: linear-gradient(180deg, rgba(24, 34, 50, 0.94) 0%, rgba(15, 22, 34, 0.94) 100%) !important;
+  background: linear-gradient(180deg, rgba(52, 21, 32, 0.94) 0%, rgba(20, 10, 17, 0.96) 100%) !important;
   border: 1px solid rgba(255, 100, 110, 0.16) !important;
   border-radius: 22px !important;
   box-shadow: var(--dm-shadow) !important;
@@ -282,7 +282,7 @@ body [data-mj="promotion-card"]:hover img {
 
 body [data-mj="widget-game-slider-container"],
 body [data-mj="widget-bet-win"] {
-  background: linear-gradient(180deg, rgba(24, 34, 50, 0.94) 0%, rgba(15, 22, 34, 0.94) 100%) !important;
+  background: linear-gradient(180deg, rgba(52, 21, 32, 0.94) 0%, rgba(20, 10, 17, 0.96) 100%) !important;
   border: 1px solid rgba(255, 100, 110, 0.16) !important;
   border-radius: 22px !important;
   box-shadow:
@@ -349,7 +349,7 @@ body [data-mj="footer"],
 body [data-mj="footer-top"],
 body [data-mj="footer-content"],
 body [data-mj="footer-bottom"] {
-  background: linear-gradient(180deg, #0d131d 0%, #080c12 100%) !important;
+  background: linear-gradient(180deg, #1a0d14 0%, #09060a 100%) !important;
   color: var(--dm-text-soft) !important;
   border-top: 1px solid rgba(255, 100, 110, 0.14) !important;
 }
@@ -362,11 +362,11 @@ body [data-mj="social-links"] a {
 
 body [data-mj="social-links"] a:hover,
 body [data-mj="footer-nav-item"]:hover {
-  color: var(--dm-green) !important;
+  color: var(--dm-red) !important;
 }
 
 body [data-mj="bottom-nav"] {
-  background: rgba(10, 15, 22, 0.94) !important;
+  background: rgba(26, 13, 20, 0.94) !important;
   border-top: 1px solid rgba(255, 100, 110, 0.14) !important;
   backdrop-filter: blur(12px) !important;
 }
@@ -378,12 +378,12 @@ body [data-mj="bottom-nav-item"] {
 body [data-mj="bottom-nav-item"] [class*="active"],
 body [data-mj="bottom-nav-item"].active,
 body [data-mj="bottom-nav-item"]:hover {
-  color: var(--dm-green) !important;
+  color: var(--dm-red) !important;
 }
 
 body [data-mj="account-menu-list"],
 body [data-mj="account-menu"] {
-  background: #121a26 !important;
+  background: #1c0d15 !important;
   border: 1px solid rgba(255, 100, 110, 0.16) !important;
   border-radius: 18px !important;
   box-shadow: var(--dm-shadow) !important;
