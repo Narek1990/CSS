@@ -51,6 +51,7 @@ body [data-mj="header-nav-list"] {
   opacity: 1 !important;
   flex: 1 1 auto !important;
   gap: 10px !important;
+  margin-top: 30px !important;
   padding: 0 10px !important;
   min-height: 50px !important;
   overflow: visible !important;
