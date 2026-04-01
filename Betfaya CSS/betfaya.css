@@ -1,3 +1,7 @@
 [data-mj="header-nav"] {
   background-color: rgb(255, 0, 0) !important;
 }
+
+[data-mj="header-nav-item"] a {
+  color: #fff !important;
+}
