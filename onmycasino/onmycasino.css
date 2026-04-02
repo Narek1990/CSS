@@ -1,13 +1,3 @@
-[data-mj="header-nav"] {
-  background-color: rgb(255, 0, 0) !important;
-}
-
-[data-mj="header-nav-item"] a {
-  color: #fff !important;
-}
-
-[data-mj="header-nav-item"] .active-link,
-[data-mj="header-nav-item"] a.active-link,
-[data-mj="header-nav-item"] a[aria-current="page"] {
-  color: rgb(73, 73, 73) !important;
+.app-ltr-1u3sjyo {
+  display: none !important;
 }
