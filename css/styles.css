@@ -562,3 +562,168 @@ body [data-mj="loading-overlay"] {
     font-size: 12px !important;
   }
 }
+
+body [data-mj="lobby-catalog-category-list"] {
+  display: flex !important;
+  align-items: stretch !important;
+  gap: 18px !important;
+  overflow-x: auto !important;
+  padding: 12px 16px !important;
+  margin: 10px 0 18px !important;
+  border-radius: 22px !important;
+  background:
+    linear-gradient(180deg, rgba(41, 49, 69, 0.98) 0%, rgba(27, 34, 51, 0.98) 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  box-shadow:
+    0 18px 38px rgba(5, 9, 20, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+  scrollbar-width: none !important;
+}
+
+body [data-mj="lobby-catalog-category-list"]::-webkit-scrollbar {
+  display: none !important;
+}
+
+body [data-mj="lobby-catalog-category-list"] > * {
+  position: relative !important;
+  flex: 0 0 auto !important;
+  display: flex !important;
+  align-items: stretch !important;
+}
+
+body [data-mj="lobby-catalog-category-list"] > * > a,
+body [data-mj="lobby-catalog-category-list"] > * > button,
+body [data-mj="lobby-catalog-category-list"] > * > span,
+body [data-mj="lobby-catalog-category-list"] a,
+body [data-mj="lobby-catalog-category-list"] button {
+  position: relative !important;
+  min-height: 68px !important;
+  padding: 0 20px !important;
+  border-radius: 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 14px !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  color: rgba(244, 246, 255, 0.66) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  white-space: nowrap !important;
+  text-transform: none !important;
+  transition:
+    color 0.22s ease,
+    background 0.22s ease,
+    transform 0.22s ease,
+    box-shadow 0.22s ease !important;
+}
+
+body [data-mj="lobby-catalog-category-list"] > * > a::after,
+body [data-mj="lobby-catalog-category-list"] > * > button::after,
+body [data-mj="lobby-catalog-category-list"] > * > span::after,
+body [data-mj="lobby-catalog-category-list"] a::after,
+body [data-mj="lobby-catalog-category-list"] button::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 14px !important;
+  right: 14px !important;
+  bottom: 0 !important;
+  height: 3px !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.18) !important;
+  opacity: 0.42 !important;
+  transition: opacity 0.22s ease, background 0.22s ease, box-shadow 0.22s ease !important;
+}
+
+body [data-mj="lobby-catalog-category-list"] > * > a:hover,
+body [data-mj="lobby-catalog-category-list"] > * > button:hover,
+body [data-mj="lobby-catalog-category-list"] > * > span:hover,
+body [data-mj="lobby-catalog-category-list"] a:hover,
+body [data-mj="lobby-catalog-category-list"] button:hover {
+  color: #f8fbff !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  transform: translateY(-1px) !important;
+}
+
+body [data-mj="lobby-catalog-category-list"] > * > a:hover::after,
+body [data-mj="lobby-catalog-category-list"] > * > button:hover::after,
+body [data-mj="lobby-catalog-category-list"] > * > span:hover::after,
+body [data-mj="lobby-catalog-category-list"] a:hover::after,
+body [data-mj="lobby-catalog-category-list"] button:hover::after {
+  opacity: 0.8 !important;
+  background: rgba(255, 255, 255, 0.26) !important;
+}
+
+body [data-mj="lobby-catalog-category-list"] .active,
+body [data-mj="lobby-catalog-category-list"] .active-link,
+body [data-mj="lobby-catalog-category-list"] [aria-current="page"],
+body [data-mj="lobby-catalog-category-list"] [aria-selected="true"],
+body [data-mj="lobby-catalog-category-list"] > *.active > a,
+body [data-mj="lobby-catalog-category-list"] > *.active > button,
+body [data-mj="lobby-catalog-category-list"] > *.active > span {
+  color: #ffffff !important;
+  background:
+    radial-gradient(circle at left center, rgba(255, 78, 170, 0.28) 0%, rgba(255, 78, 170, 0) 55%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 12px 26px rgba(11, 16, 31, 0.22) !important;
+}
+
+body [data-mj="lobby-catalog-category-list"] .active::after,
+body [data-mj="lobby-catalog-category-list"] .active-link::after,
+body [data-mj="lobby-catalog-category-list"] [aria-current="page"]::after,
+body [data-mj="lobby-catalog-category-list"] [aria-selected="true"]::after,
+body [data-mj="lobby-catalog-category-list"] > *.active > a::after,
+body [data-mj="lobby-catalog-category-list"] > *.active > button::after,
+body [data-mj="lobby-catalog-category-list"] > *.active > span::after {
+  opacity: 1 !important;
+  background: linear-gradient(90deg, #ff4db8 0%, #ff5f8d 100%) !important;
+  box-shadow: 0 0 18px rgba(255, 87, 163, 0.48) !important;
+}
+
+body [data-mj="lobby-catalog-category-list"] svg,
+body [data-mj="lobby-catalog-category-list"] i,
+body [data-mj="lobby-catalog-category-list"] img,
+body [data-mj="lobby-catalog-category-list"] [style*="WebkitMaskImage"],
+body [data-mj="lobby-catalog-category-list"] [style*="mask-image"] {
+  width: 24px !important;
+  height: 24px !important;
+  flex: 0 0 auto !important;
+  color: inherit !important;
+  background-color: currentColor !important;
+  opacity: 0.98 !important;
+}
+
+body [data-mj="lobby-catalog-category-list"] p,
+body [data-mj="lobby-catalog-category-list"] span {
+  color: inherit !important;
+}
+
+@media (max-width: 1024px) {
+  body [data-mj="lobby-catalog-category-list"] {
+    gap: 10px !important;
+    padding: 10px 10px !important;
+    border-radius: 18px !important;
+  }
+
+  body [data-mj="lobby-catalog-category-list"] > * > a,
+  body [data-mj="lobby-catalog-category-list"] > * > button,
+  body [data-mj="lobby-catalog-category-list"] > * > span,
+  body [data-mj="lobby-catalog-category-list"] a,
+  body [data-mj="lobby-catalog-category-list"] button {
+    min-height: 58px !important;
+    padding: 0 16px !important;
+    gap: 10px !important;
+    font-size: 14px !important;
+  }
+
+  body [data-mj="lobby-catalog-category-list"] svg,
+  body [data-mj="lobby-catalog-category-list"] i,
+  body [data-mj="lobby-catalog-category-list"] img,
+  body [data-mj="lobby-catalog-category-list"] [style*="WebkitMaskImage"],
+  body [data-mj="lobby-catalog-category-list"] [style*="mask-image"] {
+    width: 20px !important;
+    height: 20px !important;
+  }
+}
