@@ -1,2 +1,13 @@
-/* YallaSpin custom CSS.
-   Add site-specific overrides below. */
+[data-mj="header-nav"] {
+  background-color: rgb(0, 170, 87) !important;
+}
+
+[data-mj="header-nav-item"] a {
+  color: #fff !important;
+}
+
+[data-mj="header-nav-item"] .active-link,
+[data-mj="header-nav-item"] a.active-link,
+[data-mj="header-nav-item"] a[aria-current="page"] {
+  background-color: rgb(0, 170, 87) !important;
+}
