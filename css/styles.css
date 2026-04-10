@@ -382,6 +382,35 @@ body [data-mj="widget-bet-win-container"] {
     inset 0 1px 0 rgba(255, 255, 255, 0.32) !important;
 }
 
+body [data-mj="widget-game-slider-container"],
+body [data-mj="widget-collection-slider-container"],
+body [data-mj="widget-promotions-slider-container"],
+body .app-ltr-1l44gyp {
+  position: relative !important;
+  isolation: isolate !important;
+  overflow: visible !important;
+  border-radius: 28px !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.16),
+      rgba(255, 255, 255, 0.04)
+    ) !important;
+  border: 1px solid rgba(255, 255, 255, 0.24) !important;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.36),
+    0 0 24px rgba(0, 255, 180, 0.25),
+    0 0 48px rgba(255, 80, 220, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32) !important;
+  transform-style: preserve-3d !important;
+  perspective: 900px !important;
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    border-color 0.28s ease !important;
+  padding: 22px !important;
+}
+
 body [data-mj="widget-game-slider-container"] img,
 body [data-mj="widget-bet-win"] img {
   transition: transform 0.35s ease !important;
