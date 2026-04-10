@@ -1,143 +1,111 @@
-/* =========================
-GLOBAL PAGE IMPROVEMENT
-========================= */
-
-[data-mj="page-content"] {
-  padding: 10px 12px;
-  background: linear-gradient(180deg, #0f0f0f, #1a1a1a);
-}
-
-/* =========================
-HEADER (Premium + Sticky Feel)
-========================= */
-
 [data-mj="custom-header"] {
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  background: rgba(15, 15, 15, 0.85);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  background-color: yellow !important;
+  position: absolute !important;
+  width: 100% !important;
 }
 
-/* subtle bottom glow */
-[data-mj="custom-header"]::after {
-  content: "";
-  display: block;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #d4af37, transparent);
-  opacity: 0.6;
+[data-mj="custom-header"] > [data-mj="header-left"],
+[data-mj="custom-header"] > [data-mj="header-center"],
+[data-mj="custom-header"] > [data-mj="header-right"] {
+  min-height: 78px !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
-/* =========================
-MULTI BANNER (Hero Focus)
-========================= */
-
-[data-mj="widget-multi-banner"] {
-  border-radius: 16px;
-  overflow: hidden;
-  margin-bottom: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  position: relative;
+[data-mj="custom-header"] [data-mj="header-nav-list"] {
+  background: #3a304d !important;
+  min-height: 48px !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  position: relative !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.04) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.28) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25) !important;
 }
 
-/* hover zoom effect */
-[data-mj="widget-multi-banner"] img {
-  transition: transform 0.5s ease;
+[data-mj="custom-header"] [data-mj="header-nav-list"] > #ul {
+  display: flex !important;
+  align-items: stretch !important;
+  gap: 0 !important;
 }
 
-[data-mj="widget-multi-banner"]:hover img {
-  transform: scale(1.04);
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] {
+  margin: 0 !important;
+  display: flex !important;
+  align-items: stretch !important;
 }
 
-/* glow border effect */
-[data-mj="widget-multi-banner"]::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 215, 0, 0.2);
-  pointer-events: none;
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > a,
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > span,
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > button {
+  min-height: 48px !important;
+  padding: 0 24px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  background: transparent !important;
+  color: #f4f1f8 !important;
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  border-radius: 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  position: relative !important;
+  transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease !important;
 }
 
-/* =========================
-GAME SLIDER (Cards Feel)
-========================= */
-
-[data-mj="widget-game-slider"] {
-  margin-bottom: 18px;
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > a:hover,
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > span:hover,
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > button:hover {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #ffffff !important;
 }
 
-/* child cards */
-[data-mj="widget-game-slider"] * {
-  transition: all 0.25s ease;
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > .active-link {
+  background: #4a405e !important;
+  color: #ffffff !important;
+  box-shadow:
+    0 0 24px rgba(236, 201, 82, 0.52),
+    0 0 48px rgba(236, 201, 82, 0.22),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04) !important;
 }
 
-/* hover lift effect */
-[data-mj="widget-game-slider"] img:hover {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45);
-  border-radius: 12px;
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > .active-link::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 14px !important;
+  right: 14px !important;
+  top: -2px !important;
+  height: 3px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, transparent 0%, #ecc952 18%, #ecc952 82%, transparent 100%) !important;
+  box-shadow: 0 0 18px rgba(236, 201, 82, 0.95) !important;
 }
 
-/* =========================
-BOTTOM NAV (Mobile Critical)
-========================= */
-
-[data-mj="bottom-nav-item"] {
-  position: relative;
-  transition: all 0.2s ease;
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > a > p,
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > a > span,
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > a > svg,
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > span > p,
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > span > span,
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > span > svg,
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > button > p,
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > button > span,
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > button > svg {
+  color: inherit !important;
 }
 
-/* hover */
-[data-mj="bottom-nav-item"]:hover {
-  transform: translateY(-2px);
-}
-
-/* active underline */
-[data-mj="bottom-nav-item"].active::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 20%;
-  width: 60%;
-  height: 3px;
-  border-radius: 10px;
-  background: linear-gradient(90deg, #d4af37, #ffd700);
-}
-
-/* =========================
-SMOOTH FADE-IN
-========================= */
-
-[data-mj="page-content"] > * {
-  animation: fadeInUp 0.4s ease;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* =========================
-MOBILE POLISH
-========================= */
-
-@media (max-width: 768px) {
-
-  [data-mj="widget-multi-banner"] {
-    border-radius: 12px;
-  }
-
-  [data-mj="custom-header"] {
-    padding: 6px 10px;
-  }
-
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > a > [style*="WebkitMaskImage"],
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > span > [style*="WebkitMaskImage"],
+[data-mj="custom-header"] [data-mj="header-nav-list"] [data-mj="header-nav-item"] > button > [style*="WebkitMaskImage"] {
+  width: 20px !important;
+  height: 20px !important;
+  display: inline-block !important;
+  background-color: currentColor !important;
+  color: inherit !important;
+  flex: 0 0 auto !important;
 }
