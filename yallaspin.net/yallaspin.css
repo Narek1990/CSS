@@ -1,0 +1,28 @@
+[data-mj="header-nav"] {
+  position: relative !important;
+  overflow: hidden !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  background: #081521 !important;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+.app-ltr-1l44gyp {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+
+.app-ltr-1jpm9pd {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
