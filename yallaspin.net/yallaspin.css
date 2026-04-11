@@ -32,3 +32,8 @@
   background: #082116 !important;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.25) !important;
 }
+
+[data-mj="header-nav-list"] ul {
+  justify-content: center !important;
+  width: 100% !important;
+}
