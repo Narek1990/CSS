@@ -45,23 +45,28 @@
 [data-mj="header-nav-item"] a {
   position: relative !important;
   overflow: hidden !important;
+  -webkit-tap-highlight-color: transparent !important;
   transition:
     color 0.22s ease,
     background 0.22s ease,
-    box-shadow 0.22s ease,
-    transform 0.22s ease !important;
+    box-shadow 0.22s ease !important;
 }
 
 [data-mj="header-nav-item"] a:hover,
+[data-mj="header-nav-item"] a:active,
+[data-mj="header-nav-item"] a:focus,
+[data-mj="header-nav-item"] a:focus-visible,
 [data-mj="header-nav-item"] a.active,
 [data-mj="header-nav-item"] a.active-link,
+[data-mj="header-nav-item"] a[class*="active"],
 [data-mj="header-nav-item"] a[aria-current="page"] {
   color: #00a858 !important;
   background: rgba(0, 170, 87, 0.18) !important;
   box-shadow:
     0 8px 24px rgba(0, 170, 87, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
-  transform: translateY(-1px) !important;
+  transform: none !important;
+  outline: none !important;
 }
 
 [data-mj="header-nav-item"] a::after {
@@ -78,8 +83,12 @@
 }
 
 [data-mj="header-nav-item"] a:hover::after,
+[data-mj="header-nav-item"] a:active::after,
+[data-mj="header-nav-item"] a:focus::after,
+[data-mj="header-nav-item"] a:focus-visible::after,
 [data-mj="header-nav-item"] a.active::after,
 [data-mj="header-nav-item"] a.active-link::after,
+[data-mj="header-nav-item"] a[class*="active"]::after,
 [data-mj="header-nav-item"] a[aria-current="page"]::after {
   width: 70% !important;
 }
