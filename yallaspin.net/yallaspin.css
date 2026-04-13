@@ -27,13 +27,53 @@
 [data-mj="header-nav"] {
   position: relative !important;
   overflow: hidden !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
-  background: #082116 !important;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.25) !important;
+  background: rgba(8, 33, 22, 0.58) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.18) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+  backdrop-filter: blur(14px) saturate(1.25) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.25) !important;
+  border-radius: 8px;
 }
 
 [data-mj="header-nav-list"] ul {
   justify-content: center !important;
   width: 100% !important;
+}
+
+[data-mj="header-nav-item"] a {
+  position: relative !important;
+  overflow: hidden !important;
+  transition:
+    color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.22s ease !important;
+}
+
+[data-mj="header-nav-item"] a:hover {
+  color: #ffffff !important;
+  background: rgba(0, 170, 87, 0.18) !important;
+  box-shadow:
+    0 8px 24px rgba(0, 170, 87, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+  transform: translateY(-1px) !important;
+}
+
+[data-mj="header-nav-item"] a::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 4px !important;
+  width: 0 !important;
+  height: 2px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, transparent, #00aa57, transparent) !important;
+  transform: translateX(-50%) !important;
+  transition: width 0.22s ease !important;
+}
+
+[data-mj="header-nav-item"] a:hover::after {
+  width: 70% !important;
 }
