@@ -52,8 +52,11 @@
     transform 0.22s ease !important;
 }
 
-[data-mj="header-nav-item"] a:hover {
-  color: #ffffff !important;
+[data-mj="header-nav-item"] a:hover,
+[data-mj="header-nav-item"] a.active,
+[data-mj="header-nav-item"] a.active-link,
+[data-mj="header-nav-item"] a[aria-current="page"] {
+  color: #00a858 !important;
   background: rgba(0, 170, 87, 0.18) !important;
   box-shadow:
     0 8px 24px rgba(0, 170, 87, 0.18),
@@ -74,6 +77,9 @@
   transition: width 0.22s ease !important;
 }
 
-[data-mj="header-nav-item"] a:hover::after {
+[data-mj="header-nav-item"] a:hover::after,
+[data-mj="header-nav-item"] a.active::after,
+[data-mj="header-nav-item"] a.active-link::after,
+[data-mj="header-nav-item"] a[aria-current="page"]::after {
   width: 70% !important;
 }
