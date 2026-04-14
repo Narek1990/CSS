@@ -8,17 +8,22 @@
 
   var href = baseUrl + "/gpseven.css?v=" + Date.now();
   var existing = document.querySelector('link[data-gpseven-css="true"]');
-  var selector = ".css-fkpkqq";
+  var maxWidthSelector = ".css-fkpkqq";
+  var spanColorSelector = ".css-l5xv05 .css-25j2b4 span";
 
-  function removeMaxWidth() {
-    document.querySelectorAll(selector).forEach(function (element) {
+  function applyOverrides() {
+    document.querySelectorAll(maxWidthSelector).forEach(function (element) {
       element.style.setProperty("max-width", "none", "important");
+    });
+
+    document.querySelectorAll(spanColorSelector).forEach(function (element) {
+      element.style.setProperty("color", "#c9c4c4", "important");
     });
   }
 
   if (existing) {
     existing.href = href;
-    removeMaxWidth();
+    applyOverrides();
     return;
   }
 
@@ -30,9 +35,9 @@
     })
   );
 
-  removeMaxWidth();
+  applyOverrides();
 
-  new MutationObserver(removeMaxWidth).observe(document.documentElement, {
+  new MutationObserver(applyOverrides).observe(document.documentElement, {
     childList: true,
     subtree: true
   });
