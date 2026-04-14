@@ -1,27 +1,45 @@
 [data-mj="register-button"] {
+  position: relative !important;
+  overflow: hidden !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  /* background: linear-gradient(135deg, #188b07 0%, #197903 33%, #b3c0af 66%, #0e6102 100%) !important; */
-  border: none !important;
-  border-radius: 6px !important;
+  border: 1px solid rgb(196 248 223 / 32%) !important;
+  border-radius: 18px !important;
+  background: radial-gradient(circle at 20% 10%, rgba(0, 255, 170, 0.20), transparent 34%), radial-gradient(circle at 85% 20%, rgba(70, 130, 255, 0.18), transparent 32%), radial-gradient(circle at 50% 100%, rgba(255, 0, 210, 0.14), transparent 42%), rgba(5, 14, 12, 0.72) !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.34), 0 0 28px rgba(0, 170, 87, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 0 26px rgba(0, 170, 87, 0.10) !important;
+  backdrop-filter: blur(16px) saturate(1.35) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.35);
+  color: white;
   padding: 9px 22px !important;
   cursor: pointer !important;
-  transition: background 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease !important;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease, background 0.22s ease !important;
   text-decoration: none !important;
 }
 
 [data-mj="login-button"] {
+  position: relative !important;
+  overflow: hidden !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   background: transparent !important;
-  border: 1px solid rgb(0, 170, 87) !important;
-  border-radius: 6px !important;
+  border: 1px solid rgba(0, 170, 87, 0.32) !important;
+  border-radius: 18px !important;
+  backdrop-filter: blur(16px) saturate(1.35) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.35) !important;
   padding: 9px 22px !important;
   cursor: pointer !important;
-  transition: all 0.22s ease !important;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease, background 0.22s ease !important;
   text-decoration: none !important;
+}
+
+[data-mj="register-button"]:hover,
+[data-mj="login-button"]:hover {
+  border-color: rgba(0, 255, 170, 0.58) !important;
+  background: radial-gradient(circle at 20% 10%, rgba(0, 255, 170, 0.28), transparent 34%), radial-gradient(circle at 85% 20%, rgba(70, 130, 255, 0.24), transparent 32%), radial-gradient(circle at 50% 100%, rgba(255, 0, 210, 0.18), transparent 42%), rgba(5, 14, 12, 0.82) !important;
+  box-shadow: 0 22px 54px rgba(0, 0, 0, 0.38), 0 0 36px rgba(0, 170, 87, 0.36), 0 0 58px rgba(70, 130, 255, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 0 32px rgba(0, 170, 87, 0.16) !important;
+  transform: translateY(-1px) !important;
 }
 
 [data-mj="header-nav"] {
