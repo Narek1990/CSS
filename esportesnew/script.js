@@ -13,7 +13,6 @@
   var wideContainerSelector = ".css-11xzi44 .css-1huuf1k";
   var narrowContainerSelector = ".css-11xzi44 .css-17u1px6";
   var wideContainerIconSelector = ".css-11xzi44 .css-1huuf1k .sl-icon.css-1nqq47m";
-  var shadowContainerSelector = ".css-fkpkqq .css-1pyebjd";
 
   function applyOverrides() {
     document.querySelectorAll(maxWidthSelector).forEach(function (element) {
@@ -43,9 +42,6 @@
       element.style.setProperty("height", "auto", "important");
     });
 
-    document.querySelectorAll(shadowContainerSelector).forEach(function (element) {
-      element.style.setProperty("box-shadow", "none", "important");
-    });
   }
 
   if (existing) {
