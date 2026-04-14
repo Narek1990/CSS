@@ -1,4 +1,12 @@
 [data-mj="login-button"] {
   background-color: #efe9e9 !important;
   color: black !important;
+  transition: background-color 0.22s ease, color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease !important;
+}
+
+[data-mj="login-button"]:hover {
+  background-color: #ffffff !important;
+  color: black !important;
+  box-shadow: 0 8px 24px rgba(239, 233, 233, 0.28) !important;
+  transform: translateY(-1px) !important;
 }
