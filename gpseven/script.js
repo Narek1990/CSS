@@ -12,7 +12,7 @@
   var spanColorSelector = ".css-l5xv05 .css-25j2b4 span";
   var wideContainerSelector = ".css-11xzi44 .css-1huuf1k";
   var narrowContainerSelector = ".css-11xzi44 .css-17u1px6";
-  var wideContainerButtonSelector = ".css-11xzi44 .css-1huuf1k button";
+  var wideContainerButtonSelector = ".css-11xzi44 .css-1huuf1k button.sl-icon.css-1mh9jgv";
 
   function applyOverrides() {
     document.querySelectorAll(maxWidthSelector).forEach(function (element) {
