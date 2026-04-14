@@ -8,9 +8,17 @@
 
   var href = baseUrl + "/gpseven.css?v=" + Date.now();
   var existing = document.querySelector('link[data-gpseven-css="true"]');
+  var selector = ".css-fkpkqq";
+
+  function removeMaxWidth() {
+    document.querySelectorAll(selector).forEach(function (element) {
+      element.style.setProperty("max-width", "none", "important");
+    });
+  }
 
   if (existing) {
     existing.href = href;
+    removeMaxWidth();
     return;
   }
 
@@ -21,4 +29,11 @@
       "data-gpseven-css": "true"
     })
   );
+
+  removeMaxWidth();
+
+  new MutationObserver(removeMaxWidth).observe(document.documentElement, {
+    childList: true,
+    subtree: true
+  });
 })();
