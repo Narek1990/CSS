@@ -236,3 +236,21 @@
 .app-ltr-1vzworh {
   font-size: 10px !important;
 }
+
+.app-ltr-5v1duf {
+  background: transparent !important;
+}
+
+[data-mj="widget-game-card"] {
+  position: relative !important;
+  transform: scale(1) !important;
+  transform-origin: center !important;
+  transition: transform 0.24s ease, box-shadow 0.24s ease, z-index 0.24s ease !important;
+  will-change: transform !important;
+}
+
+[data-mj="widget-game-card"]:hover {
+  z-index: 2 !important;
+  transform: scale(1.06) translateY(-4px) !important;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.34), 0 0 24px rgba(0, 170, 87, 0.22) !important;
+}
