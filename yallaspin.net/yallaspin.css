@@ -206,3 +206,33 @@
   transform: scale(1.06) translateY(-4px) !important;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.34), 0 0 24px rgba(0, 170, 87, 0.22) !important;
 }
+
+.app-ltr-zav1vi .modal.app-ltr-1er4w4i {
+  position: relative !important;
+  overflow: hidden !important;
+  display: inline-flex !important;
+  justify-content: center !important;
+  border: 1px solid rgb(196 248 223 / 32%) !important;
+  border-radius: 18px !important;
+  background: radial-gradient(circle at 20% 10%, rgba(0, 255, 170, 0.20), transparent 34%), radial-gradient(circle at 85% 20%, rgba(70, 130, 255, 0.18), transparent 32%), radial-gradient(circle at 50% 100%, rgba(255, 0, 210, 0.14), transparent 42%), rgba(5, 14, 12, 0.72) !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.34), 0 0 28px rgba(0, 170, 87, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 0 26px rgba(0, 170, 87, 0.10) !important;
+  backdrop-filter: blur(16px) saturate(1.35) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.35);
+  color: white;
+  padding: 9px 22px !important;
+  cursor: pointer !important;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease, background 0.22s ease !important;
+  text-decoration: none !important;
+}
+
+.app-ltr-zav1vi .modal.app-ltr-1er4w4i .app-ltr-1fg8vzl .app-ltr-1jp2anc {
+  padding: 0 !important;
+}
+
+.app-ltr-1ngat5n {
+  gap: 16px !important;
+}
+
+.app-ltr-1vzworh {
+  font-size: 10px !important;
+}
