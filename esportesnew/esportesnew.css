@@ -59,7 +59,12 @@ html body [class~="css-18zw6tz"] [class~="css-1l44gyp"] {
   max-width: 2000px !important;
 }
 
-html body .css-1l44gyp,
-html body [class~="css-1l44gyp"] {
-  max-width: 2000px !important;
+html body .css-0 .css-1huuf1k .sl-icon.css-lk14jz,
+html body [class~="css-0"] [class~="css-1huuf1k"] .sl-icon.css-lk14jz,
+html body [class~="css-0"] [class~="css-1huuf1k"] [class~="sl-icon"][class~="css-lk14jz"] {
+  position: absolute !important;
+  top: 13px !important;
+  left: 13px !important;
+  min-width: 43px !important;
+  min-height: 47px !important;
 }
