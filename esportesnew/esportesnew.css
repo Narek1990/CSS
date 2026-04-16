@@ -15,3 +15,7 @@ html body .css-27yrbd,
 html body [class~="css-27yrbd"] {
   border-radius: 10px !important;
 }
+
+html body [data-mj="widget-bet-win-container"] {
+  max-width: none !important;
+}
