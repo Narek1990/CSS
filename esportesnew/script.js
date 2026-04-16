@@ -4,10 +4,10 @@
   var currentScript = document.currentScript;
   var baseUrl = currentScript && currentScript.src
     ? currentScript.src.split("?")[0].replace(/\/[^/]+$/, "")
-    : "https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/gpseven";
+    : "https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/esportesnew";
 
-  var href = baseUrl + "/gpseven.css?v=" + Date.now();
-  var existing = document.querySelector('link[data-gpseven-css="true"]');
+  var href = baseUrl + "/esportesnew.css?v=" + Date.now();
+  var existing = document.querySelector('link[data-esportesnew-css="true"]');
   var maxWidthSelector = ".css-fkpkqq";
   var spanColorSelector = ".css-l5xv05 .css-25j2b4 span";
   var wideContainerSelector = ".css-11xzi44 .css-1huuf1k";
@@ -115,7 +115,7 @@
     Object.assign(document.createElement("link"), {
       rel: "stylesheet",
       href: href,
-      "data-gpseven-css": "true"
+      "data-esportesnew-css": "true"
     })
   );
 
