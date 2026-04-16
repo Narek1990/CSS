@@ -10,3 +10,8 @@ html body [class~="css-1qulnur"] {
   min-height: 0 !important;
   overflow: hidden !important;
 }
+
+html body .css-27yrbd,
+html body [class~="css-27yrbd"] {
+  border-radius: 10px !important;
+}
