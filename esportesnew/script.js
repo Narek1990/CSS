@@ -14,7 +14,6 @@
   var narrowContainerSelector = ".css-11xzi44 .css-17u1px6";
   var wideContainerIconSelector = ".css-11xzi44 .css-1huuf1k .sl-icon.css-1nqq47m";
   var shadowContainerSelector = ".css-fkpkqq .css-1pyebjd";
-  var topContainerSelector = ".css-0 .css-es55kh";
   var hiddenElementSelector = ".css-1qulnur, [class~='css-1qulnur']";
   var hiddenElementCss = 'html body .css-1qulnur, html body [class~="css-1qulnur"] { display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; width: 0 !important; min-width: 0 !important; height: 0 !important; min-height: 0 !important; overflow: hidden !important; }';
   var menuIconSelector = ".sl-icon.css-17sgcqa, .sl-icon.css-potlfm";
@@ -118,11 +117,6 @@
 
     document.querySelectorAll(shadowContainerSelector).forEach(function (element) {
       element.style.setProperty("box-shadow", "none", "important");
-    });
-
-    document.querySelectorAll(topContainerSelector).forEach(function (element) {
-      element.style.removeProperty("width");
-      element.style.removeProperty("margin-left");
     });
 
     document.querySelectorAll(hiddenElementSelector).forEach(function (element) {
