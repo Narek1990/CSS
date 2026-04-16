@@ -24,10 +24,13 @@ html body [data-mj="widget-game-slider-container"] {
   max-width: none !important;
 }
 
-html body [data-mj="widget-fixed-image-banner-container"],
+html body [data-mj="widget-fixed-image-banner-container"] {
+  max-width: none !important;
+}
+
 html body [data-mj="widget-fixed-image-banner-container"] .css-1l44gyp,
 html body [data-mj="widget-fixed-image-banner-container"] [class~="css-1l44gyp"] {
-  max-width: none !important;
+  max-width: 2000px !important;
 }
 
 html body .css-0 .css-10a4mqi,
@@ -45,10 +48,18 @@ html body [class~="css-1huuf1k"] [class~="sl-icon"][class~="css-lk14jz"] {
   min-height: 47px !important;
 }
 
+html body [data-mj="widget-fixed-image-banner"] [data-mj="widget-fixed-image-banner-container"] {
+  max-width: none !important;
+}
+
 html body [data-mj="widget-top-providers"] .css-1l44gyp,
 html body [data-mj="widget-top-providers"] [class~="css-1l44gyp"],
-html body [data-mj="widget-fixed-image-banner"] [data-mj="widget-fixed-image-banner-container"],
 html body .css-18zw6tz .css-1l44gyp,
 html body [class~="css-18zw6tz"] [class~="css-1l44gyp"] {
-  max-width: none !important;
+  max-width: 2000px !important;
+}
+
+html body .css-1l44gyp,
+html body [class~="css-1l44gyp"] {
+  max-width: 2000px !important;
 }
