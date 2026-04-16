@@ -23,3 +23,9 @@ html body [data-mj="widget-bet-win-container"] {
 html body [data-mj="widget-game-slider-container"] {
   max-width: none !important;
 }
+
+html body [data-mj="widget-fixed-image-banner-container"],
+html body [data-mj="widget-fixed-image-banner-container"] .css-1l44gyp,
+html body [data-mj="widget-fixed-image-banner-container"] [class~="css-1l44gyp"] {
+  max-width: none !important;
+}
