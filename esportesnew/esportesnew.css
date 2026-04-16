@@ -83,29 +83,3 @@ html body .css-17u1px6 .css-1yz6x92,
 html body [class~="css-17u1px6"] [class~="css-1yz6x92"] {
   padding-top: 76px !important;
 }
-
-html body [data-mj="widget-fixed-image-banner-container"].css-1l44gyp,
-html body [data-mj="widget-fixed-image-banner-container"][class~="css-1l44gyp"],
-html body [data-mj="widget-top-providers"].css-1l44gyp,
-html body [data-mj="widget-top-providers"][class~="css-1l44gyp"],
-html body .css-18zw6tz.css-1l44gyp,
-html body [class~="css-18zw6tz"][class~="css-1l44gyp"] {
-  max-width: 2000px !important;
-}
-
-html body .css-17u1px6 .sl-icon.css-lk14jz,
-html body [class~="css-17u1px6"] .sl-icon.css-lk14jz,
-html body [class~="css-17u1px6"] [class~="sl-icon"][class~="css-lk14jz"] {
-  left: auto !important;
-}
-
-html body .css-1huuf1k .sl-icon.css-lk14jz,
-html body [class~="css-1huuf1k"] .sl-icon.css-lk14jz,
-html body [class~="css-1huuf1k"] [class~="sl-icon"][class~="css-lk14jz"] {
-  position: absolute !important;
-  top: 13px !important;
-  left: 13px !important;
-  right: auto !important;
-  min-width: 43px !important;
-  min-height: 47px !important;
-}
