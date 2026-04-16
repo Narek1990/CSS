@@ -8,7 +8,7 @@
 
   var href = baseUrl + "/esportesnew.css?v=" + Date.now();
   var existing = document.querySelector('link[data-esportesnew-css="true"]');
-  var maxWidthSelector = ".css-fkpkqq, [data-mj='widget-banner-container'], [data-mj='widget-bet-win-container'], .css-i58pjb, .css-1l44gyp";
+  var maxWidthSelector = ".css-fkpkqq, [data-mj='widget-banner-container'], [data-mj='widget-bet-win-container'], .css-i58pjb";
   var spanColorSelector = ".css-l5xv05 .css-25j2b4 span";
   var wideContainerSelector = ".css-11xzi44 .css-1huuf1k";
   var narrowContainerSelector = ".css-11xzi44 .css-17u1px6";
