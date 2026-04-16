@@ -25,14 +25,23 @@
   }
 
   function setMenuIconPosition(element) {
+    element.style.setProperty("position", "absolute", "important");
     element.style.setProperty("right", "201px", "important");
     element.style.setProperty("top", "19px", "important");
+    element.style.setProperty("left", "auto", "important");
+    element.style.setProperty("bottom", "auto", "important");
+    element.style.setProperty("z-index", "10", "important");
   }
 
   function replaceMenuSvg(element) {
     var targetSvg = element.matches("svg") ? element : element.querySelector("svg");
 
-    if (!targetSvg || targetSvg.getAttribute("data-esportesnew-svg") === "true") {
+    if (!targetSvg) {
+      return;
+    }
+
+    if (targetSvg.getAttribute("data-esportesnew-svg") === "true") {
+      setMenuIconPosition(targetSvg);
       return;
     }
 
@@ -82,6 +91,10 @@
     document.querySelectorAll(menuIconSelector).forEach(function (element) {
       setMenuIconPosition(element);
       replaceMenuSvg(element);
+
+      if (!element.matches("svg")) {
+        element.querySelectorAll("svg").forEach(setMenuIconPosition);
+      }
     });
   }
 
