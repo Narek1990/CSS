@@ -19,3 +19,7 @@ html body [class~="css-27yrbd"] {
 html body [data-mj="widget-bet-win-container"] {
   max-width: none !important;
 }
+
+html body [data-mj="widget-game-slider-container"] {
+  max-width: none !important;
+}
