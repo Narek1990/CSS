@@ -68,3 +68,18 @@ html body [class~="css-0"] [class~="css-1huuf1k"] [class~="sl-icon"][class~="css
   min-width: 43px !important;
   min-height: 47px !important;
 }
+
+html body .css-17u1px6 .sl-icon.css-lk14jz,
+html body [class~="css-17u1px6"] .sl-icon.css-lk14jz,
+html body [class~="css-17u1px6"] [class~="sl-icon"][class~="css-lk14jz"] {
+  position: absolute !important;
+  right: 18px !important;
+  top: 12px !important;
+  min-width: 43px !important;
+  min-height: 47px !important;
+}
+
+html body .css-17u1px6 .css-1yz6x92,
+html body [class~="css-17u1px6"] [class~="css-1yz6x92"] {
+  padding-top: 76px !important;
+}
