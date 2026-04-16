@@ -1,0 +1,70 @@
+html body .css-1qulnur,
+html body [class~="css-1qulnur"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+html body .css-27yrbd,
+html body [class~="css-27yrbd"] {
+  border-radius: 10px !important;
+}
+
+html body [data-mj="widget-bet-win-container"] {
+  max-width: none !important;
+}
+
+html body [data-mj="widget-game-slider-container"] {
+  max-width: none !important;
+}
+
+html body [data-mj="widget-fixed-image-banner-container"] {
+  max-width: none !important;
+}
+
+html body [data-mj="widget-fixed-image-banner-container"] .css-1l44gyp,
+html body [data-mj="widget-fixed-image-banner-container"] [class~="css-1l44gyp"] {
+  max-width: 2000px !important;
+}
+
+html body .css-0 .css-10a4mqi,
+html body [class~="css-0"] [class~="css-10a4mqi"] {
+  width: 181px !important;
+  margin-left: 53px !important;
+}
+
+html body .css-1huuf1k .sl-icon.css-lk14jz,
+html body [class~="css-1huuf1k"] .sl-icon.css-lk14jz,
+html body [class~="css-1huuf1k"] [class~="sl-icon"][class~="css-lk14jz"] {
+  top: 13px !important;
+  left: 13px !important;
+  min-width: 43px !important;
+  min-height: 47px !important;
+}
+
+html body [data-mj="widget-fixed-image-banner"] [data-mj="widget-fixed-image-banner-container"] {
+  max-width: none !important;
+}
+
+html body [data-mj="widget-top-providers"] .css-1l44gyp,
+html body [data-mj="widget-top-providers"] [class~="css-1l44gyp"],
+html body .css-18zw6tz .css-1l44gyp,
+html body [class~="css-18zw6tz"] [class~="css-1l44gyp"] {
+  max-width: 2000px !important;
+}
+
+html body .css-0 .css-1huuf1k .sl-icon.css-lk14jz,
+html body [class~="css-0"] [class~="css-1huuf1k"] .sl-icon.css-lk14jz,
+html body [class~="css-0"] [class~="css-1huuf1k"] [class~="sl-icon"][class~="css-lk14jz"] {
+  position: absolute !important;
+  top: 13px !important;
+  left: 13px !important;
+  min-width: 43px !important;
+  min-height: 47px !important;
+}
