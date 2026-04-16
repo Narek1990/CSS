@@ -1,3 +1,12 @@
-.css-1qulnur {
+html body .css-1qulnur,
+html body [class~="css-1qulnur"] {
   display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
 }

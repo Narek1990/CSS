@@ -15,9 +15,11 @@
   var wideContainerIconSelector = ".css-11xzi44 .css-1huuf1k .sl-icon.css-1nqq47m";
   var shadowContainerSelector = ".css-fkpkqq .css-1pyebjd";
   var topContainerSelector = ".css-0 .css-es55kh";
-  var hiddenElementSelector = ".css-1qulnur";
+  var hiddenElementSelector = ".css-1qulnur, [class~='css-1qulnur']";
+  var hiddenElementCss = 'html body .css-1qulnur, html body [class~="css-1qulnur"] { display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; width: 0 !important; min-width: 0 !important; height: 0 !important; min-height: 0 !important; overflow: hidden !important; }';
   var menuIconSelector = ".sl-icon.css-17sgcqa, .sl-icon.css-potlfm";
   var menuSvg = '<svg data-esportesnew-svg="true" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" height="14" viewBox="0 0 19 14" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M1.26049 13.5939H8.30622C8.86214 13.5939 9.31284 13.1433 9.31284 12.5874C9.31284 12.0315 8.86214 11.5808 8.30622 11.5808H1.26049C0.70458 11.5808 0.253944 12.0315 0.253944 12.5874C0.253944 13.1433 0.70458 13.5939 1.26049 13.5939ZM1.26049 8.17949H17.365C17.9209 8.17949 18.3715 7.72887 18.3715 7.17296C18.3715 6.61704 17.9209 6.16642 17.365 6.16642H1.26045C0.704542 6.16642 0.253906 6.61704 0.253906 7.17296C0.253906 7.72887 0.70458 8.17949 1.26049 8.17949ZM1.26049 2.76505H17.365C17.9209 2.76505 18.3715 2.31441 18.3715 1.7585C18.3715 1.20259 17.9209 0.751953 17.365 0.751953H1.26045C0.704542 0.751953 0.253906 1.20259 0.253906 1.7585C0.253906 2.31441 0.70458 2.76505 1.26049 2.76505Z" fill="#E8E5FF"></path></svg>';
+  var applyScheduled = false;
 
   function createMenuSvg() {
     var template = document.createElement("template");
@@ -54,7 +56,39 @@
     setMenuIconPosition(replacement);
   }
 
+  function injectHiddenElementCss() {
+    var style = document.querySelector('style[data-esportesnew-inline-css="true"]');
+
+    if (style) {
+      if (style.textContent !== hiddenElementCss) {
+        style.textContent = hiddenElementCss;
+      }
+
+      return;
+    }
+
+    style = document.createElement("style");
+    style.setAttribute("data-esportesnew-inline-css", "true");
+    style.textContent = hiddenElementCss;
+    document.head.appendChild(style);
+  }
+
+  function hideElement(element) {
+    element.style.setProperty("display", "none", "important");
+    element.style.setProperty("visibility", "hidden", "important");
+    element.style.setProperty("opacity", "0", "important");
+    element.style.setProperty("pointer-events", "none", "important");
+    element.style.setProperty("width", "0", "important");
+    element.style.setProperty("min-width", "0", "important");
+    element.style.setProperty("height", "0", "important");
+    element.style.setProperty("min-height", "0", "important");
+    element.style.setProperty("overflow", "hidden", "important");
+  }
+
   function applyOverrides() {
+    applyScheduled = false;
+    injectHiddenElementCss();
+
     document.querySelectorAll(maxWidthSelector).forEach(function (element) {
       element.style.setProperty("max-width", "none", "important");
     });
@@ -92,7 +126,7 @@
     });
 
     document.querySelectorAll(hiddenElementSelector).forEach(function (element) {
-      element.style.setProperty("display", "none", "important");
+      hideElement(element);
     });
 
     document.querySelectorAll(menuIconSelector).forEach(function (element) {
@@ -105,23 +139,32 @@
     });
   }
 
+  function scheduleApplyOverrides() {
+    if (applyScheduled) {
+      return;
+    }
+
+    applyScheduled = true;
+    requestAnimationFrame(applyOverrides);
+  }
+
   if (existing) {
     existing.href = href;
     applyOverrides();
     return;
   }
 
-  document.head.appendChild(
-    Object.assign(document.createElement("link"), {
-      rel: "stylesheet",
-      href: href,
-      "data-esportesnew-css": "true"
-    })
-  );
+  var link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = href;
+  link.setAttribute("data-esportesnew-css", "true");
+  document.head.appendChild(link);
 
   applyOverrides();
 
-  new MutationObserver(applyOverrides).observe(document.documentElement, {
+  new MutationObserver(scheduleApplyOverrides).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class", "style"],
     childList: true,
     subtree: true
   });
