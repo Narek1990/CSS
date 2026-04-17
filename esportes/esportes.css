@@ -83,6 +83,6 @@ html body [data-mj="widget-top-providers-item"] {
 
 html body [data-mj="widget-game-card"],
 html body [data-mj="widget-game-slider-slide"] {
-  border-radius: 8px !important;
-  margin-left: 5px !important;
+  border-radius: 6px !important;
+  margin-left: 2px !important;
 }
