@@ -81,6 +81,13 @@ html body [data-mj="widget-top-providers-slider"] [class~="css-rlbnh9"] [class~=
   transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease !important;
 }
 
+html body [data-mj="widget-top-providers-slider"] .css-rlbnh9 .css-s4hrud,
+html body [data-mj="widget-top-providers-slider"] [class~="css-rlbnh9"] [class~="css-s4hrud"],
+html body [data-mj="widget-top-providers-slider"] .css-rlbnh9[class] .css-s4hrud[class],
+html body [data-mj="widget-top-providers-slider"] [class~="css-rlbnh9"][class] [class~="css-s4hrud"][class] {
+  position: static !important;
+}
+
 html body [data-mj="widget-game-card"],
 html body [data-mj="widget-game-slider-slide"] {
   border-radius: 6px !important;

@@ -113,6 +113,7 @@
   }
 
   function styleProviderCard(element) {
+    element.style.setProperty("position", "static", "important");
     element.style.setProperty("overflow", "hidden", "important");
     element.style.setProperty("border", "1px solid rgb(0 107 170 / 32%)", "important");
     element.style.setProperty("border-radius", "18px", "important");
