@@ -70,9 +70,7 @@ html body [class~="css-0"] [class~="css-1huuf1k"] [class~="sl-icon"][class~="css
 }
 
 html body .css-rlbnh9 .css-s4hrud,
-html body [class~="css-rlbnh9"] [class~="css-s4hrud"],
-html body .css-s4hrud,
-html body [class~="css-s4hrud"] {
+html body [class~="css-rlbnh9"] [class~="css-s4hrud"] {
   position: relative !important;
   overflow: hidden !important;
   border: 1px solid rgb(0 107 170 / 32%) !important;
