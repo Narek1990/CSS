@@ -69,8 +69,8 @@ html body [class~="css-0"] [class~="css-1huuf1k"] [class~="sl-icon"][class~="css
   min-height: 47px !important;
 }
 
-html body [data-mj="widget-top-providers-slider"] .css-rlbnh9 .css-s4hrud,
-html body [data-mj="widget-top-providers-slider"] [class~="css-rlbnh9"] [class~="css-s4hrud"] {
+html body [data-mj="widget-top-providers-item"] {
+  position: relative !important;
   overflow: hidden !important;
   border: 1px solid rgb(0 107 170 / 32%) !important;
   border-radius: 18px !important;
@@ -79,11 +79,6 @@ html body [data-mj="widget-top-providers-slider"] [class~="css-rlbnh9"] [class~=
   backdrop-filter: blur(16px) saturate(1.35) !important;
   -webkit-backdrop-filter: blur(16px) saturate(1.35) !important;
   transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease !important;
-}
-
-html body .css-s4hrud.css-s4hrud,
-html body [class~="css-s4hrud"][class] {
-  position: static !important;
 }
 
 html body [data-mj="widget-game-card"],

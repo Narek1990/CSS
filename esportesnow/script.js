@@ -14,7 +14,6 @@
   var narrowContainerSelector = ".css-11xzi44 .css-17u1px6";
   var wideContainerIconSelector = ".css-11xzi44 .css-1huuf1k .sl-icon.css-1nqq47m";
   var shadowContainerSelector = ".css-fkpkqq .css-1pyebjd";
-  var providerCardSelector = '[data-mj="widget-top-providers-slider"] .css-rlbnh9 .css-s4hrud, [data-mj="widget-top-providers-slider"] [class~="css-rlbnh9"] [class~="css-s4hrud"]';
   var hiddenElementSelector = ".css-1qulnur, [class~='css-1qulnur']";
   var hiddenElementCss = 'html body .css-1qulnur, html body [class~="css-1qulnur"] { display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; width: 0 !important; min-width: 0 !important; height: 0 !important; min-height: 0 !important; overflow: hidden !important; }';
   var menuIconSelector = ".sl-icon.css-17sgcqa, .sl-icon.css-potlfm";
@@ -112,17 +111,6 @@
     element.style.setProperty("overflow", "hidden", "important");
   }
 
-  function styleProviderCard(element) {
-    element.style.setProperty("overflow", "hidden", "important");
-    element.style.setProperty("border", "1px solid rgb(0 107 170 / 32%)", "important");
-    element.style.setProperty("border-radius", "18px", "important");
-    element.style.setProperty("background", "radial-gradient(circle at 20% 10%, rgb(0 143 255 / 20%), transparent 34%), radial-gradient(circle at 85% 20%, rgba(70, 130, 255, 0.18), transparent 32%), radial-gradient(circle at 50% 100%, rgb(0 90 255 / 14%), transparent 42%), rgb(5 10 14 / 72%)", "important");
-    element.style.setProperty("box-shadow", "0 18px 45px rgba(0, 0, 0, 0.34), 0 0 28px rgb(80 120 174 / 24%), inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 0 26px rgb(0 90 170 / 10%)", "important");
-    element.style.setProperty("backdrop-filter", "blur(16px) saturate(1.35)", "important");
-    element.style.setProperty("-webkit-backdrop-filter", "blur(16px) saturate(1.35)", "important");
-    element.style.setProperty("transition", "border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease", "important");
-  }
-
   function applyOverrides() {
     applyScheduled = false;
     injectHiddenElementCss();
@@ -157,8 +145,6 @@
     document.querySelectorAll(shadowContainerSelector).forEach(function (element) {
       element.style.setProperty("box-shadow", "none", "important");
     });
-
-    document.querySelectorAll(providerCardSelector).forEach(styleProviderCard);
 
     document.querySelectorAll(hiddenElementSelector).forEach(function (element) {
       hideElement(element);
