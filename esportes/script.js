@@ -18,11 +18,19 @@
   var hiddenElementCss = 'html body .css-1qulnur, html body [class~="css-1qulnur"] { display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; width: 0 !important; min-width: 0 !important; height: 0 !important; min-height: 0 !important; overflow: hidden !important; }';
   var menuIconSelector = ".sl-icon.css-17sgcqa, .sl-icon.css-potlfm";
   var menuSvg = '<svg data-esportes-svg="true" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" height="14" viewBox="0 0 19 14" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M1.26049 13.5939H8.30622C8.86214 13.5939 9.31284 13.1433 9.31284 12.5874C9.31284 12.0315 8.86214 11.5808 8.30622 11.5808H1.26049C0.70458 11.5808 0.253944 12.0315 0.253944 12.5874C0.253944 13.1433 0.70458 13.5939 1.26049 13.5939ZM1.26049 8.17949H17.365C17.9209 8.17949 18.3715 7.72887 18.3715 7.17296C18.3715 6.61704 17.9209 6.16642 17.365 6.16642H1.26045C0.704542 6.16642 0.253906 6.61704 0.253906 7.17296C0.253906 7.72887 0.70458 8.17949 1.26049 8.17949ZM1.26049 2.76505H17.365C17.9209 2.76505 18.3715 2.31441 18.3715 1.7585C18.3715 1.20259 17.9209 0.751953 17.365 0.751953H1.26045C0.704542 0.751953 0.253906 1.20259 0.253906 1.7585C0.253906 2.31441 0.70458 2.76505 1.26049 2.76505Z" fill="#E8E5FF"></path></svg>';
+  var buttonIconSelector = "button .sl-icon.css-lk14jz";
+  var buttonIconSvg = menuSvg.replace('data-esportes-svg="true" xmlns:xlink="http://www.w3.org/1999/xlink" ', 'data-esportes-button-svg="true" ');
   var applyScheduled = false;
 
   function createMenuSvg() {
     var template = document.createElement("template");
     template.innerHTML = menuSvg;
+    return template.content.firstElementChild;
+  }
+
+  function createButtonIconSvg() {
+    var template = document.createElement("template");
+    template.innerHTML = buttonIconSvg;
     return template.content.firstElementChild;
   }
 
@@ -53,6 +61,18 @@
     replacement.setAttribute("class", targetSvg.getAttribute("class") || element.getAttribute("class") || "sl-icon css-potlfm");
     targetSvg.replaceWith(replacement);
     setMenuIconPosition(replacement);
+  }
+
+  function replaceButtonIconSvg(element) {
+    var targetSvg = element.matches("svg") ? element : element.querySelector("svg");
+
+    if (!targetSvg || targetSvg.getAttribute("data-esportes-button-svg") === "true") {
+      return;
+    }
+
+    var replacement = createButtonIconSvg();
+    replacement.setAttribute("class", targetSvg.getAttribute("class") || "");
+    targetSvg.replaceWith(replacement);
   }
 
   function injectHiddenElementCss() {
@@ -131,6 +151,8 @@
         element.querySelectorAll("svg").forEach(setMenuIconPosition);
       }
     });
+
+    document.querySelectorAll(buttonIconSelector).forEach(replaceButtonIconSvg);
   }
 
   function scheduleApplyOverrides() {
