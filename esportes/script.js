@@ -14,7 +14,7 @@
   var narrowContainerSelector = ".css-11xzi44 .css-17u1px6";
   var wideContainerIconSelector = ".css-11xzi44 .css-1huuf1k .sl-icon.css-1nqq47m";
   var shadowContainerSelector = ".css-fkpkqq .css-1pyebjd";
-  var providerCardSelector = '.css-rlbnh9 .css-s4hrud, [class~="css-rlbnh9"] [class~="css-s4hrud"]';
+  var providerCardSelector = '[data-mj="widget-top-providers-slider"] .css-rlbnh9 .css-s4hrud, [data-mj="widget-top-providers-slider"] [class~="css-rlbnh9"] [class~="css-s4hrud"]';
   var hiddenElementSelector = ".css-1qulnur, [class~='css-1qulnur']";
   var hiddenElementCss = 'html body .css-1qulnur, html body [class~="css-1qulnur"] { display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; width: 0 !important; min-width: 0 !important; height: 0 !important; min-height: 0 !important; overflow: hidden !important; }';
   var menuIconSelector = ".sl-icon.css-17sgcqa, .sl-icon.css-potlfm";
