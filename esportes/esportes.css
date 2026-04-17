@@ -69,7 +69,8 @@ html body [class~="css-0"] [class~="css-1huuf1k"] [class~="sl-icon"][class~="css
   min-height: 47px !important;
 }
 
-html body [data-mj="widget-top-providers-item"] {
+html body .css-s4hrud,
+html body [class~="css-s4hrud"] {
   position: relative !important;
   overflow: hidden !important;
   border: 1px solid rgb(0 107 170 / 32%) !important;
