@@ -1,0 +1,44 @@
+html body .css-1qulnur,
+html body [class~="css-1qulnur"] {
+  display: none !important;
+}
+
+html body .css-1huuf1k,
+html body [class~="css-1huuf1k"] {
+  padding: 0 !important;
+}
+
+html body .css-10a4mqi,
+html body [class~="css-10a4mqi"] {
+  width: 200px !important;
+  margin-left: 66px !important;
+}
+
+html body .css-es55kh .css-10a4mqi,
+html body [class~="css-es55kh"] [class~="css-10a4mqi"] {
+  width: auto !important;
+  margin-left: 0 !important;
+}
+
+html body .sl-icon.css-1jd17qi,
+html body [class~="sl-icon"][class~="css-1jd17qi"] {
+  top: 12px !important;
+  width: 48px !important;
+  height: 50px !important;
+  margin-left: 12px !important;
+  min-width: 0 !important;
+}
+
+html body button[name="arrow_right"].sl-icon.css-1jd17qi,
+html body button[name="arrow_right"][class~="sl-icon"][class~="css-1jd17qi"] {
+  top: 23px !important;
+  width: 48px !important;
+  height: 50px !important;
+  margin-left: 12px !important;
+  min-width: 0 !important;
+}
+
+html body .css-tnx8um,
+html body [class~="css-tnx8um"] {
+  margin-top: 50px !important;
+}
