@@ -3,8 +3,8 @@ html body [class~="css-1qulnur"] {
   display: none !important;
 }
 
-html body button.sl-icon.css-1tev38v,
-html body button[class~="sl-icon"][class~="css-1tev38v"] {
+html body button.sl-icon.css-xbj7en,
+html body button[class~="sl-icon"][class~="css-xbj7en"] {
   position: relative !important;
   overflow: hidden !important;
   display: inline-flex !important;
@@ -20,24 +20,24 @@ html body button[class~="sl-icon"][class~="css-1tev38v"] {
   transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease, background 0.22s ease !important;
 }
 
-html body button.sl-icon.css-1tev38v:hover,
-html body button[class~="sl-icon"][class~="css-1tev38v"]:hover {
+html body button.sl-icon.css-xbj7en:hover,
+html body button[class~="sl-icon"][class~="css-xbj7en"]:hover {
   border-color: rgba(0, 255, 170, 0.58) !important;
   background: radial-gradient(circle at 20% 10%, rgba(0, 255, 170, 0.28), transparent 34%), radial-gradient(circle at 85% 20%, rgba(70, 130, 255, 0.24), transparent 32%), radial-gradient(circle at 50% 100%, rgba(255, 0, 210, 0.18), transparent 42%), rgba(5, 14, 12, 0.82) !important;
   box-shadow: 0 22px 54px rgba(0, 0, 0, 0.38), 0 0 36px rgba(0, 170, 87, 0.36), 0 0 58px rgba(70, 130, 255, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.22), inset 0 0 32px rgba(0, 170, 87, 0.16) !important;
   transform: translateY(-1px) !important;
 }
 
-html body button.sl-icon.css-1tev38v svg,
-html body button[class~="sl-icon"][class~="css-1tev38v"] svg {
+html body button.sl-icon.css-xbj7en svg,
+html body button[class~="sl-icon"][class~="css-xbj7en"] svg {
   width: 19px !important;
   height: 14px !important;
   color: #ffffff !important;
   fill: currentColor !important;
 }
 
-html body button.sl-icon.css-1tev38v svg path,
-html body button[class~="sl-icon"][class~="css-1tev38v"] svg path {
+html body button.sl-icon.css-xbj7en svg path,
+html body button[class~="sl-icon"][class~="css-xbj7en"] svg path {
   fill: currentColor !important;
 }
 
@@ -53,18 +53,18 @@ html body [class~="css-0"] [class~="css-10a4mqi"] {
   margin-left: 53px !important;
 }
 
-html body .css-1huuf1k .sl-icon.css-1tev38v,
-html body [class~="css-1huuf1k"] .sl-icon.css-1tev38v,
-html body [class~="css-1huuf1k"] [class~="sl-icon"][class~="css-1tev38v"] {
+html body .css-1huuf1k .sl-icon.css-xbj7en,
+html body [class~="css-1huuf1k"] .sl-icon.css-xbj7en,
+html body [class~="css-1huuf1k"] [class~="sl-icon"][class~="css-xbj7en"] {
   top: 13px !important;
   left: 13px !important;
   min-width: 43px !important;
   min-height: 47px !important;
 }
 
-html body .css-0 .css-1huuf1k .sl-icon.css-1tev38v,
-html body [class~="css-0"] [class~="css-1huuf1k"] .sl-icon.css-1tev38v,
-html body [class~="css-0"] [class~="css-1huuf1k"] [class~="sl-icon"][class~="css-1tev38v"] {
+html body .css-0 .css-1huuf1k .sl-icon.css-xbj7en,
+html body [class~="css-0"] [class~="css-1huuf1k"] .sl-icon.css-xbj7en,
+html body [class~="css-0"] [class~="css-1huuf1k"] [class~="sl-icon"][class~="css-xbj7en"] {
   position: absolute !important;
   top: 13px !important;
   left: 13px !important;
