@@ -40,3 +40,34 @@ html body button.sl-icon.css-1tev38v svg path,
 html body button[class~="sl-icon"][class~="css-1tev38v"] svg path {
   fill: currentColor !important;
 }
+
+
+html body .css-11xzi44 .css-1huuf1k,
+html body [class~="css-11xzi44"] [class~="css-1huuf1k"] {
+  padding: 0 !important;
+}
+
+html body .css-0 .css-10a4mqi,
+html body [class~="css-0"] [class~="css-10a4mqi"] {
+  width: 181px !important;
+  margin-left: 53px !important;
+}
+
+html body .css-1huuf1k .sl-icon.css-1tev38v,
+html body [class~="css-1huuf1k"] .sl-icon.css-1tev38v,
+html body [class~="css-1huuf1k"] [class~="sl-icon"][class~="css-1tev38v"] {
+  top: 13px !important;
+  left: 13px !important;
+  min-width: 43px !important;
+  min-height: 47px !important;
+}
+
+html body .css-0 .css-1huuf1k .sl-icon.css-1tev38v,
+html body [class~="css-0"] [class~="css-1huuf1k"] .sl-icon.css-1tev38v,
+html body [class~="css-0"] [class~="css-1huuf1k"] [class~="sl-icon"][class~="css-1tev38v"] {
+  position: absolute !important;
+  top: 13px !important;
+  left: 13px !important;
+  min-width: 43px !important;
+  min-height: 47px !important;
+}
