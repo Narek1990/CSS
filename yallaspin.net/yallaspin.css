@@ -207,6 +207,12 @@
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.34), 0 0 24px rgba(0, 170, 87, 0.22) !important;
 }
 
+[data-mj="widget-banner-container"],
+[data-mj="widget-pages-container"],
+[data-mj="widget-fixed-image-banner-container"] {
+  max-width: 2000px !important;
+}
+
 .app-ltr-zav1vi .modal.app-ltr-1er4w4i {
   position: relative !important;
   overflow: hidden !important;
