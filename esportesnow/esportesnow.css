@@ -4,8 +4,10 @@
 
 html,
 body,
-html *,
-body * {
+button,
+input,
+select,
+textarea {
   font-family: "__Montserrat_069ab3", "__Montserrat_Fallback_069ab3", sans-serif !important;
 }
 
@@ -101,41 +103,4 @@ html body [data-mj="widget-game-card"],
 html body [data-mj="widget-game-slider-slide"] {
   border-radius: 6px !important;
   margin-left: 2px !important;
-}
-
-html body .modal.css-7kchjl,
-html body .modal[class~="css-7kchjl"] {
-  position: relative !important;
-  overflow: hidden !important;
-  display: inline-flex !important;
-  justify-content: center !important;
-  border-radius: 18px !important;
-  background: radial-gradient(circle at 20% 10%, rgb(0 156 255 / 20%), transparent 34%), radial-gradient(circle at 85% 20%, rgba(70, 130, 255, 0.18), transparent 32%), radial-gradient(circle at 50% 100%, rgba(255, 0, 210, 0.14), transparent 42%), rgba(5, 14, 12, 0.72) !important;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.34), 0 0 28px rgb(0 128 170 / 24%), inset 0 1px 0 rgba(255, 255, 255, 0.16), inset 0 0 26px rgb(0 146 170 / 10%) !important;
-  backdrop-filter: blur(16px) saturate(1.35) !important;
-  -webkit-backdrop-filter: blur(16px) saturate(1.35) !important;
-  color: white !important;
-  padding: 8px 10px !important;
-  cursor: pointer !important;
-  transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease, background 0.22s ease !important;
-  text-decoration: none !important;
-}
-
-html body .modal.css-7kchjl,
-html body .modal[class~="css-7kchjl"],
-html body .modal.css-7kchjl *,
-html body .modal[class~="css-7kchjl"] * {
-  scrollbar-width: none !important;
-}
-
-html body .modal.css-7kchjl::-webkit-scrollbar,
-html body .modal[class~="css-7kchjl"]::-webkit-scrollbar,
-html body .modal.css-7kchjl *::-webkit-scrollbar,
-html body .modal[class~="css-7kchjl"] *::-webkit-scrollbar {
-  display: none !important;
-}
-
-html body .css-1fg8vzl .css-1jp2anc,
-html body [class~="css-1fg8vzl"] [class~="css-1jp2anc"] {
-  padding: 0 !important;
 }
