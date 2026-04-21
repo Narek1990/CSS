@@ -207,6 +207,34 @@ body * {
   display: none !important;
 }
 
+[data-mj="logo"] > img {
+  max-width: 120px !important;
+}
+
+[data-mj="bottom-nav"] .app-ltr-ja3k2i {
+  display: flex !important;
+}
+
+[data-mj="bottom-nav"] [data-mj="bottom-nav-item"]:nth-of-type(2) {
+  order: 2 !important;
+}
+
+[data-mj="bottom-nav"] [data-mj="bottom-nav-item"]:nth-of-type(1) {
+  order: 3 !important;
+}
+
+[data-mj="bottom-nav"] [data-mj="bottom-nav-item"]:nth-of-type(3) {
+  order: 1 !important;
+}
+
+[data-mj="bottom-nav"] [data-mj="bottom-nav-item"]:nth-of-type(4) {
+  order: 4 !important;
+}
+
+[data-mj="bottom-nav"] [data-mj="bottom-nav-item"]:nth-of-type(5) {
+  order: 5 !important;
+}
+
 [data-mj="lobby-catalog-search"] {
   border: none !important;
   background: rgb(40 211 158 / 7%) !important;
