@@ -202,6 +202,11 @@ body * {
   transform: translateY(-1px) !important;
 }
 
+[data-mj="lobby-catalog-category-item"].app-ltr-1jy0v9l,
+[data-mj="lobby-catalog-category-item"][class~="app-ltr-1jy0v9l"] {
+  display: none !important;
+}
+
 [data-mj="lobby-catalog-search"] {
   border: none !important;
   background: rgb(40 211 158 / 7%) !important;
