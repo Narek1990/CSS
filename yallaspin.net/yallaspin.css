@@ -202,8 +202,8 @@ body * {
   transform: translateY(-1px) !important;
 }
 
-[data-mj="lobby-catalog-category-item"].app-ltr-1jy0v9l,
-[data-mj="lobby-catalog-category-item"][class~="app-ltr-1jy0v9l"] {
+[data-mj="lobby-catalog-category-slider-list"] > li.keen-slider__slide.app-ltr-ntxaal:first-child .app-ltr-1jy0v9l,
+[data-mj="lobby-catalog-category-slider-list"] > li[class~="keen-slider__slide"][class~="app-ltr-ntxaal"]:first-child [class~="app-ltr-1jy0v9l"] {
   display: none !important;
 }
 
