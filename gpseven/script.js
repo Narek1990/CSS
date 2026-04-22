@@ -9,7 +9,7 @@
   var href = baseUrl + "/gpseven.css?v=" + Date.now();
   var existing = document.querySelector('link[data-gpseven-css="true"]');
   var maxWidthSelector = ".css-fkpkqq";
-  var spanColorSelector = ".css-l5xv05 .css-25j2b4 span.css-1aiujm0";
+  var spanColorSelector = "span.css-1aiujm0, .css-1aiujm0";
   var wideContainerSelector = ".css-11xzi44 .css-1huuf1k";
   var narrowContainerSelector = ".css-11xzi44 .css-17u1px6";
   var wideContainerButtonSelector = ".css-11xzi44 .css-1huuf1k button.sl-icon.css-1mh9jgv";
