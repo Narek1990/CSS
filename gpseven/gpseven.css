@@ -2,9 +2,6 @@
   max-width: none !important;
 }
 
-html body .css-l5xv05 > .css-25j2b4 > .css-1aiujm0,
-html body .css-l5xv05 .css-25j2b4 > .css-1aiujm0,
-html body .css-l5xv05 .css-25j2b4 .css-1aiujm0,
-html body [class~="css-l5xv05"] [class~="css-25j2b4"] [class~="css-1aiujm0"] {
-  color: rgb(200 207 215) !important;
+.css-l5xv05 > label.css-25j2b4 > span.css-1aiujm0 {
+  color: rgb(218 226 233) !important;
 }
