@@ -1,3 +1,5 @@
-.css-fkpkqq {
+html body div.css-fkpkqq,
+html body [class~="css-fkpkqq"],
+html body div[class~="css-fkpkqq"] {
   max-width: calc(100% - 127px) !important;
 }
