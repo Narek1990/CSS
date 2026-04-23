@@ -1,3 +1,9 @@
 [data-mj="widget-banner-link"] {
   height: 520px !important;
 }
+
+@media (max-width: 768px) {
+  [data-mj="widget-banner-link"] {
+    height: 322px !important;
+  }
+}
