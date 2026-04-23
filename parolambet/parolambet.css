@@ -1,0 +1,29 @@
+/* Banner slider height = 520px */
+[data-mj="widget-banner-container"] [data-mj="widget-banner"] {
+  height: 520px !important;
+}
+
+[data-mj="widget-banner-container"] [data-mj="widget-banner-slider"] {
+  height: 520px !important;
+}
+
+[data-mj="widget-banner-container"] [data-mj="widget-banner-item"] {
+  height: 520px !important;
+}
+
+[data-mj="widget-banner-container"] [data-mj="widget-banner-link"] {
+  display: block !important;
+  height: 520px !important;
+}
+
+[data-mj="widget-banner-container"] [data-mj="widget-banner-link"] img {
+  width: 100% !important;
+  height: 520px !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+[data-mj="widget-banner-container"] .keen-slider,
+[data-mj="widget-banner-container"] .keen-slider__slide {
+  height: 520px !important;
+}
