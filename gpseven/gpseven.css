@@ -1,5 +1,7 @@
-.css-fkpkqq {
+html body .css-fkpkqq,
+html body [class~="css-fkpkqq"] {
   max-width: none !important;
+  width: 100% !important;
 }
 
 .css-l5xv05 > label.css-25j2b4 > span.css-1aiujm0 {
