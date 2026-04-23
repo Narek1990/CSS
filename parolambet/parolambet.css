@@ -15,21 +15,22 @@
 
 [data-mj="widget-banner-item"] {
   height: 520px !important;
-  min-width: 100% !important;
-  max-width: 100% !important;
 }
 
 [data-mj="widget-banner-link"] {
-  display: block !important;
-  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   height: 520px !important;
 }
 
 [data-mj="widget-banner-link"] img {
-  width: 100% !important;
+  width: auto !important;
+  max-width: 100% !important;
   height: 520px !important;
+  max-height: 520px !important;
   display: block !important;
-  object-fit: cover !important;
+  object-fit: contain !important;
   object-position: center center !important;
 }
 
