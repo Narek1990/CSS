@@ -1,8 +1,3 @@
-/* Main banner area */
-[data-mj="widget-banner-container"] {
-  max-width: 100% !important;
-}
-
 [data-mj="widget-banner"] {
   height: 520px !important;
   position: relative !important;
@@ -26,8 +21,8 @@
 
 [data-mj="widget-banner-link"] img {
   width: auto !important;
+  height: auto !important;
   max-width: 100% !important;
-  height: 520px !important;
   max-height: 520px !important;
   display: block !important;
   object-fit: contain !important;
