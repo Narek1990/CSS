@@ -144,7 +144,7 @@ body * {
   backdrop-filter: blur(16px) saturate(1.35) !important;
   -webkit-backdrop-filter: blur(16px) saturate(1.35) !important;
   transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease !important;
-  padding: 26px;
+  padding: 11px;
 }
 
 [data-mj="widget-game-slider-header"] .app-ltr-1dzjkmt .app-ltr-r82wjp {
@@ -337,4 +337,8 @@ body * {
   z-index: 2 !important;
   transform: scale(1.06) translateY(-4px) !important;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.34), 0 0 24px rgba(0, 170, 87, 0.22) !important;
+}
+
+[data-mj="widget-game-slider-slide"] [data-mj="widget-game-card"] .app-ltr-3kzt60 {
+  display: none !important;
 }
