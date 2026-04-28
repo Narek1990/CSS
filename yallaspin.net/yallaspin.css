@@ -126,11 +126,13 @@ body * {
   color: #00aa57 !important;
 }
 
-.app-ltr-1l44gyp {
+.app-ltr-1l44gyp,
+.app-rtl-1l44gyp {
   max-width: 2000px !important;
 }
 
-.app-ltr-19zdw54 .app-ltr-15kov7 {
+.app-ltr-19zdw54 .app-ltr-15kov7,
+.app-rtl-19zdw54 .app-rtl-15kov7 {
   color: rgb(0 204 118) !important;
 }
 
