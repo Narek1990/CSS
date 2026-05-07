@@ -3,3 +3,10 @@ html body [class~="css-fkpkqq"],
 html body div[class~="css-fkpkqq"] {
   max-width: none !important;
 }
+
+html body div.css-i58pjb,
+html body [class~="css-i58pjb"],
+html body div[class~="css-i58pjb"] {
+  max-width: 2000px !important;
+  width: 100% !important;
+}
