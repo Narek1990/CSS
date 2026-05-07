@@ -352,3 +352,20 @@ html body [data-mj="lobby-catalog-mobile-categories"] > a[data-mj="lobby-catalog
 a.app-ltr-fmy2kh {
   display: none !important;
 }
+
+.app-ltr-9u7qat {
+  position: relative !important;
+  overflow: hidden !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+  border: 1px solid rgba(0, 170, 87, 0.32) !important;
+  border-radius: 18px !important;
+  backdrop-filter: blur(16px) saturate(1.35) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.35) !important;
+  padding: 9px 22px !important;
+  cursor: pointer !important;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease, background 0.22s ease !important;
+  text-decoration: none !important;
+}
