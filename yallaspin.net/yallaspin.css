@@ -348,3 +348,7 @@ html body [data-mj="lobby-catalog-mobile-categories"] > a[data-mj="lobby-catalog
 [data-mj="widget-game-slider-slide"] [data-mj="widget-game-card"] .app-rtl-3kzt60 {
   display: none !important;
 }
+
+a.app-ltr-fmy2kh {
+  display: none !important;
+}
