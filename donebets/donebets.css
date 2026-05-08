@@ -3,6 +3,7 @@ span.app-rtl-1phvdj0 {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  color: transparent !important;
   width: 24px !important;
   height: 24px !important;
   min-width: 24px !important;
@@ -11,10 +12,11 @@ span.app-rtl-1phvdj0 {
   overflow: visible !important;
 }
 
-span.app-ltr-1phvdj0 > svg,
-span.app-rtl-1phvdj0 > svg {
+span.app-ltr-1phvdj0 > img,
+span.app-rtl-1phvdj0 > img {
   display: block !important;
   width: 100% !important;
   height: 100% !important;
+  object-fit: contain !important;
   flex-shrink: 0 !important;
 }
