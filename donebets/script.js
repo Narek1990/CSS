@@ -27,11 +27,16 @@
   }
 
   function injectGif(element) {
-    if (!element || element.querySelector("img[data-donebets-giftbox='true']")) {
+    if (!element) {
       return;
     }
 
-    element.innerHTML = '<img alt="giftbox" src="' + gifSrc + '" data-donebets-giftbox="true">';
+    element.innerHTML = "";
+    element.style.setProperty("background-image", 'url("' + gifSrc + '")', "important");
+    element.style.setProperty("background-color", "transparent", "important");
+    element.style.setProperty("mask-image", "none", "important");
+    element.style.setProperty("-webkit-mask-image", "none", "important");
+    element.style.setProperty("color", "transparent", "important");
     element.setAttribute("data-donebets-applied", "true");
   }
 
