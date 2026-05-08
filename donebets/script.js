@@ -2,12 +2,13 @@
   "use strict";
 
   var currentScript = document.currentScript;
+  var assetBaseUrl = "https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/donebets";
   var baseUrl = currentScript && currentScript.src
     ? currentScript.src.split("?")[0].replace(/\/[^/]+$/, "")
-    : "https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/donebets";
+    : assetBaseUrl;
   var cssHref = baseUrl + "/donebets.css?v=" + Date.now();
   var targetSelector = "span.app-ltr-1phvdj0, span.app-rtl-1phvdj0";
-  var gifSrc = baseUrl + "/bonussuccessindicator.gif?v=" + Date.now();
+  var gifSrc = assetBaseUrl + "/bonussuccessindicator.gif?v=" + Date.now();
 
   function ensureCss() {
     var existing = document.querySelector('link[data-donebets-css="true"]');
