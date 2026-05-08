@@ -1,0 +1,8 @@
+[data-mj="bottom-nav"] .app-ltr-1mtqoxh .app-ltr-ja3k2i > a[data-mj="bottom-nav-item"]:nth-of-type(2),
+[data-mj="bottom-nav"] .app-ltr-1mtqoxh .app-ltr-ja3k2i > a[data-mj="bottom-nav-item"]:nth-of-type(3),
+[data-mj="bottom-nav"] .app-ltr-1mtqoxh .app-ltr-ja3k2i > a[data-mj="bottom-nav-item"]:nth-of-type(2).active-link,
+[data-mj="bottom-nav"] .app-ltr-1mtqoxh .app-ltr-ja3k2i > a[data-mj="bottom-nav-item"]:nth-of-type(3).active-link,
+[data-mj="bottom-nav"] .app-ltr-1mtqoxh .app-ltr-ja3k2i > a[data-mj="bottom-nav-item"]:nth-of-type(2)[aria-current="page"],
+[data-mj="bottom-nav"] .app-ltr-1mtqoxh .app-ltr-ja3k2i > a[data-mj="bottom-nav-item"]:nth-of-type(3)[aria-current="page"] {
+  color: #efbf3f !important;
+}
