@@ -1,0 +1,11 @@
+ul.app-ltr-17pv0q3[role="tablist"] {
+  display: flex !important;
+}
+
+ul.app-ltr-17pv0q3[role="tablist"] > li.app-ltr-1u3sjyo:has(> button.app-ltr-14q4m3l) {
+  order: 2 !important;
+}
+
+ul.app-ltr-17pv0q3[role="tablist"] > li.app-ltr-1u3sjyo:has(> button.app-ltr-hlnm8y) {
+  order: 1 !important;
+}
