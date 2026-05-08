@@ -32,11 +32,22 @@
     }
 
     element.innerHTML = "";
-    element.style.setProperty("background-image", 'url("' + embeddedGif + '")', "important");
     element.style.setProperty("background-color", "transparent", "important");
     element.style.setProperty("mask-image", "none", "important");
     element.style.setProperty("-webkit-mask-image", "none", "important");
     element.style.setProperty("color", "transparent", "important");
+    element.style.setProperty("font-size", "0", "important");
+
+    var image = document.createElement("img");
+    image.src = embeddedGif;
+    image.alt = "";
+    image.setAttribute("aria-hidden", "true");
+    image.style.setProperty("display", "block");
+    image.style.setProperty("width", "100%");
+    image.style.setProperty("height", "100%");
+    image.style.setProperty("object-fit", "contain");
+    image.style.setProperty("pointer-events", "none");
+    element.appendChild(image);
     element.setAttribute("data-donebets-applied", "true");
   }
 
