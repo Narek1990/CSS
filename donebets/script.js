@@ -2,10 +2,13 @@
   "use strict";
 
   var currentScript = document.currentScript;
-  var assetBaseUrl = "https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/donebets";
-  var baseUrl = currentScript && currentScript.src
-    ? currentScript.src.split("?")[0].replace(/\/[^/]+$/, "")
-    : assetBaseUrl;
+  var scriptUrl = currentScript ? currentScript.src.split("?")[0] : "";
+  var baseUrl = scriptUrl
+    ? scriptUrl.replace(/\/script\.js$/, "")
+    : "https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/donebets";
+  var assetBaseUrl = baseUrl
+    .replace("@refs/heads/main", "@main")
+    .replace("@heads/main", "@main");
   var cssHref = baseUrl + "/donebets.css?v=" + Date.now();
   var targetSelector = "span.app-ltr-1phvdj0, span.app-rtl-1phvdj0";
   var gifSrc = assetBaseUrl + "/bonussuccessindicator.gif?v=" + Date.now();
