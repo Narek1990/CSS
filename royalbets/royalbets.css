@@ -6,3 +6,11 @@
 [data-mj="bottom-nav"] .app-ltr-1mtqoxh .app-ltr-ja3k2i > a[data-mj="bottom-nav-item"]:nth-of-type(3)[aria-current="page"] {
   color: #efbf3f !important;
 }
+
+.sl-select__control.app-ltr-1btz7rq-control {
+  display: none !important;
+}
+
+[data-mj="footer-content"] .app-ltr-19zdw54 {
+  flex-direction: row-reverse !important;
+}
