@@ -2,10 +2,10 @@ ul.app-ltr-17pv0q3[role="tablist"] {
   display: flex !important;
 }
 
-ul.app-ltr-17pv0q3[role="tablist"] > li.app-ltr-1u3sjyo:has(> button.app-ltr-14q4m3l) {
+ul.app-ltr-17pv0q3[role="tablist"] > li.app-ltr-1u3sjyo:first-child {
   order: 2 !important;
 }
 
-ul.app-ltr-17pv0q3[role="tablist"] > li.app-ltr-1u3sjyo:has(> button.app-ltr-hlnm8y) {
+ul.app-ltr-17pv0q3[role="tablist"] > li.app-ltr-1u3sjyo:nth-child(2) {
   order: 1 !important;
 }
