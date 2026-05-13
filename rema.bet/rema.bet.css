@@ -1,14 +1,5 @@
 ul.app-ltr-17pv0q3[role="tablist"],
 ul.css-17pv0q3[role="tablist"] {
   display: flex !important;
-}
-
-ul.app-ltr-17pv0q3[role="tablist"] > li.app-ltr-1u3sjyo:first-child,
-ul.css-17pv0q3[role="tablist"] > li.css-1u3sjyo:first-child {
-  order: 2 !important;
-}
-
-ul.app-ltr-17pv0q3[role="tablist"] > li.app-ltr-1u3sjyo:nth-child(2),
-ul.css-17pv0q3[role="tablist"] > li.css-1u3sjyo:nth-child(2) {
-  order: 1 !important;
+  flex-direction: row-reverse !important;
 }
