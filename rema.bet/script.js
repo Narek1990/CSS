@@ -23,12 +23,22 @@
       return;
     }
 
+    var emailButton = buttons.find(function (button) {
+      return getButtonText(button) === "email";
+    });
     var phoneButton = buttons.find(function (button) {
       return getButtonText(button) === "phone";
     });
 
-    if (!phoneButton) {
+    if (!emailButton || !phoneButton) {
       return;
+    }
+
+    var emailItem = emailButton.closest('li[role="presentation"]');
+    var phoneItem = phoneButton.closest('li[role="presentation"]');
+
+    if (emailItem && phoneItem && emailItem !== phoneItem && emailItem.previousElementSibling !== phoneItem) {
+      tablist.insertBefore(phoneItem, emailItem);
     }
 
     if (phoneButton.getAttribute("aria-current") !== "page") {
