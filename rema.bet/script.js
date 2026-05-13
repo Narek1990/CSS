@@ -2,7 +2,9 @@
   "use strict";
 
   var observer;
-  var tablistSelector = 'ul.app-ltr-17pv0q3[role="tablist"]';
+  var tablistSelector = 'ul[role="tablist"].app-ltr-17pv0q3, ul[role="tablist"].css-17pv0q3';
+  var tabButtonSelector =
+    'li.app-ltr-1u3sjyo > button[role="tab"], li.css-1u3sjyo > button[role="tab"]';
 
   function getButtonText(button) {
     return (button && button.textContent ? button.textContent : "").trim().toLowerCase();
@@ -14,7 +16,7 @@
     }
 
     var buttons = Array.prototype.slice.call(
-      tablist.querySelectorAll('li.app-ltr-1u3sjyo > button[role="tab"]')
+      tablist.querySelectorAll(tabButtonSelector)
     );
 
     if (buttons.length < 2) {
