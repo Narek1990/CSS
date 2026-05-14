@@ -2,16 +2,21 @@
   "use strict";
 
   var observer;
-  var maxAttempts = 12;
+  var scheduled = false;
+  var delayedRun = 0;
+  var modalSelector = '.modal[role="alertdialog"], .css-1fg8vzl';
   var tablistSelector = 'ul[role="tablist"].app-ltr-17pv0q3, ul[role="tablist"].css-17pv0q3';
-  var tabButtonSelector =
-    'li[role="presentation"] > button[role="tab"]';
+  var tabButtonSelector = 'li[role="presentation"] > button[role="tab"]';
 
   function getButtonText(button) {
     return (button && button.textContent ? button.textContent : "").trim().toLowerCase();
   }
 
-  function getTabState(tablist) {
+  function enforceTabState(tablist) {
+    if (!tablist) {
+      return;
+    }
+
     var buttons = Array.prototype.slice.call(tablist.querySelectorAll(tabButtonSelector));
     var emailButton = buttons.find(function (button) {
       return getButtonText(button) === "email";
@@ -21,111 +26,72 @@
     });
 
     if (!emailButton || !phoneButton) {
-      return null;
+      return;
     }
 
     var emailItem = emailButton.closest('li[role="presentation"]');
     var phoneItem = phoneButton.closest('li[role="presentation"]');
 
     if (!emailItem || !phoneItem) {
-      return null;
-    }
-
-    return {
-      emailButton: emailButton,
-      phoneButton: phoneButton,
-      emailItem: emailItem,
-      phoneItem: phoneItem,
-      phoneFirst: tablist.firstElementChild === phoneItem,
-      phoneActive: phoneButton.getAttribute("aria-current") === "page"
-    };
-  }
-
-  function markDone(tablist) {
-    tablist.setAttribute("data-rema-phone-applied", "true");
-  }
-
-  function enforceTabState(tablist, attempt) {
-    if (!tablist) {
       return;
     }
 
-    if (tablist.getAttribute("data-rema-phone-applied") === "true") {
-      return;
+    if (tablist.firstElementChild !== phoneItem) {
+      tablist.insertBefore(phoneItem, emailItem);
     }
 
-    var state = getTabState(tablist);
-
-    if (!state) {
-      return;
-    }
-
-    if (!state.phoneFirst) {
-      tablist.insertBefore(state.phoneItem, state.emailItem);
-    }
-
-    if (!state.phoneActive) {
-      state.phoneButton.click();
-    }
-
-    state = getTabState(tablist);
-
-    if (state && state.phoneFirst && state.phoneActive) {
-      markDone(tablist);
-      return;
-    }
-
-    if (attempt < maxAttempts) {
-      window.setTimeout(function () {
-        enforceTabState(tablist, attempt + 1);
-      }, 80);
+    if (phoneButton.getAttribute("aria-current") !== "page") {
+      phoneButton.click();
     }
   }
 
-  function findTablistFromNode(node) {
-    if (!node || node.nodeType !== 1) {
-      return null;
-    }
+  function run() {
+    scheduled = false;
 
-    if (node.matches && node.matches(tablistSelector)) {
-      return node;
-    }
-
-    if (node.closest) {
-      var closestTablist = node.closest(tablistSelector);
-      if (closestTablist) {
-        return closestTablist;
+    var modals = Array.prototype.slice.call(document.querySelectorAll(modalSelector));
+    modals.forEach(function (modal) {
+      var tablist = modal.querySelector(tablistSelector);
+      if (tablist) {
+        enforceTabState(tablist);
       }
+    });
+
+    if (delayedRun) {
+      window.clearTimeout(delayedRun);
     }
 
-    if (node.querySelector) {
-      return node.querySelector(tablistSelector);
+    delayedRun = window.setTimeout(function () {
+      var activeModals = Array.prototype.slice.call(document.querySelectorAll(modalSelector));
+      activeModals.forEach(function (modal) {
+        var tablist = modal.querySelector(tablistSelector);
+        if (tablist) {
+          enforceTabState(tablist);
+        }
+      });
+    }, 120);
+  }
+
+  function scheduleRun() {
+    if (scheduled) {
+      return;
     }
 
-    return null;
+    scheduled = true;
+    window.requestAnimationFrame(run);
   }
 
   function init() {
-    var initialTablist = document.querySelector(tablistSelector);
-    if (initialTablist) {
-      enforceTabState(initialTablist, 0);
-    }
+    scheduleRun();
 
-    observer = new MutationObserver(function (mutations) {
-      for (var i = 0; i < mutations.length; i += 1) {
-        for (var j = 0; j < mutations[i].addedNodes.length; j += 1) {
-          var tablist = findTablistFromNode(mutations[i].addedNodes[j]);
-          if (tablist) {
-            enforceTabState(tablist, 0);
-            return;
-          }
-        }
-      }
+    observer = new MutationObserver(function () {
+      scheduleRun();
     });
 
     observer.observe(document.documentElement, {
       childList: true,
-      subtree: true
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["class", "aria-current"]
     });
   }
 
