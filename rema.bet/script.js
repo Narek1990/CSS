@@ -43,14 +43,14 @@
 
   function markDone(tablist) {
     tablist.setAttribute("data-rema-phone-applied", "true");
-    if (observer) {
-      observer.disconnect();
-      observer = null;
-    }
   }
 
   function enforceTabState(tablist, attempt) {
     if (!tablist) {
+      return;
+    }
+
+    if (tablist.getAttribute("data-rema-phone-applied") === "true") {
       return;
     }
 
