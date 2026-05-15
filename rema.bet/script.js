@@ -29,17 +29,6 @@
       return;
     }
 
-    var emailItem = emailButton.closest('li[role="presentation"]');
-    var phoneItem = phoneButton.closest('li[role="presentation"]');
-
-    if (!emailItem || !phoneItem) {
-      return;
-    }
-
-    if (tablist.firstElementChild !== phoneItem) {
-      tablist.insertBefore(phoneItem, emailItem);
-    }
-
     if (phoneButton.getAttribute("aria-current") !== "page") {
       phoneButton.click();
     }
