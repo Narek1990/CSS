@@ -1,16 +1,4 @@
-html body div.css-fkpkqq,
-html body [class~="css-fkpkqq"],
-html body div[class~="css-fkpkqq"] {
+[data-mj="root-layout"] [data-mj="content-wrapper"] {
   max-width: none !important;
-}
-
-html body div.css-i58pjb,
-html body [class~="css-i58pjb"],
-html body div[class~="css-i58pjb"] {
-  max-width: 2000px !important;
   width: 100% !important;
-}
-
-html body [data-mj="content-wrapper"] {
-  max-width: none !important;
 }
