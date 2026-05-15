@@ -1,0 +1,3 @@
+[data-mj="root-layout"]:has([data-mj="content-wrapper"] > [data-mj="header"].app-ltr-vxsg7l) [data-mj="bottom-nav"] {
+  display: none !important;
+}
