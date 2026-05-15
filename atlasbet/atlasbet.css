@@ -1,0 +1,4 @@
+[data-mj="root-layout"] [data-mj="content-wrapper"] {
+  max-width: none !important;
+  width: 100% !important;
+}
