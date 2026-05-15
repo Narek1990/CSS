@@ -10,3 +10,7 @@ html body div[class~="css-i58pjb"] {
   max-width: 2000px !important;
   width: 100% !important;
 }
+
+html body [data-mj="content-wrapper"] {
+  max-width: none !important;
+}
