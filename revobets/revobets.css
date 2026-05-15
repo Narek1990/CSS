@@ -1,0 +1,3 @@
+[data-mj="root-layout"]:has([data-mj="content-wrapper"] > [data-mj="header"].app-ltr-w4fr96) [data-mj="bottom-nav"] {
+  display: none !important;
+}
