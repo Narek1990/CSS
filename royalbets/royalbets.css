@@ -11,6 +11,12 @@
   display: none !important;
 }
 
+.app-ltr-1ngat5n > .app-ltr-1tvzmkd:first-child
+  .app-ltr-7pvc5m-container
+  .sl-select__control.app-ltr-1btz7rq-control {
+  display: flex !important;
+}
+
 [data-mj="footer-content"] .app-ltr-19zdw54 {
   flex-direction: row-reverse !important;
 }
