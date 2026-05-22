@@ -11,6 +11,8 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-of-ty
 [data-mj="widget-game-slider-container"],
 [data-mj="widget-pages-container"],
 [data-mj="widget-collection-slider-container"],
+[data-mj="widget-promotions-slider-container"],
+[data-mj="widget-phoenix-sport"],
 [data-mj="widget-top-providers"] .app-ltr-1l44gyp {
   max-width: none !important;
   width: 100% !important;
