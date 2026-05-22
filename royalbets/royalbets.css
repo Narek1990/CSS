@@ -17,6 +17,11 @@
   display: flex !important;
 }
 
+[data-mj="lobby-catalog-provider-select-wrapper"]
+  .sl-select__control.app-ltr-1btz7rq-control {
+  display: flex !important;
+}
+
 [data-mj="footer-content"] .app-ltr-19zdw54 {
   flex-direction: row-reverse !important;
 }
