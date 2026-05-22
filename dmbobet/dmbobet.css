@@ -6,3 +6,20 @@
   max-width: none !important;
   width: 100% !important;
 }
+
+[data-mj="header"].app-ltr-i58pjb,
+[data-mj="widget-game-slider-container"],
+[data-mj="widget-pages-container"],
+[data-mj="widget-collection-slider-container"],
+[data-mj="widget-top-providers"] .app-ltr-1l44gyp {
+  max-width: none !important;
+  width: 100% !important;
+}
+
+[data-mj="custom-header"] {
+  padding: 7px 0 !important;
+}
+
+[data-mj="header-nav"] {
+  background-color: transparent !important;
+}
