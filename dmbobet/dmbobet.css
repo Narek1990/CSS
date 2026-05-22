@@ -1,4 +1,4 @@
-[data-mj="widget-game-card"] .app-ltr-3kzt60 {
+main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-of-type [data-mj="widget-game-card"] .app-ltr-3kzt60 {
   display: none !important;
 }
 
