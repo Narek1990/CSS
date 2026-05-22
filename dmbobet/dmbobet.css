@@ -1,3 +1,8 @@
 [data-mj="widget-game-card"] .app-ltr-3kzt60 {
   display: none !important;
 }
+
+[data-mj="widget-bet-win-container"] {
+  max-width: none !important;
+  width: 100% !important;
+}
