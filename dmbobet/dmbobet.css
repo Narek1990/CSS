@@ -31,6 +31,7 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-of-ty
 [data-mj="widget-pages-container"],
 [data-mj="widget-collection-slider-container"],
 [data-mj="widget-banner-container"],
+[data-mj="widget-multi-banner"],
 [data-mj="widget-promotions-slider-container"],
 [data-mj="widget-phoenix-sport"],
 [data-mj="widget-top-providers"] .app-ltr-1l44gyp {
@@ -49,6 +50,7 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-of-ty
 
 [data-mj="header-nav"] {
   background-color: transparent !important;
+  margin-left: 10% !important;
 }
 
 [data-mj="header-right"] [data-mj="login-button"],
