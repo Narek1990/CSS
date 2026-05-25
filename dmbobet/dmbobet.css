@@ -145,9 +145,22 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-of-ty
   background-color: transparent !important;
 }
 
-[data-mj="lobby-catalog-category-item"] span.app-ltr-1ich4ew {
-  mask-repeat: no-repeat !important;
+[data-mj="lobby-catalog-category-item"] span {
   background-color: rgb(182 72 72) !important;
+  mask-size: 42px !important;
+  mask-repeat: no-repeat !important;
+  width: 40px;
+  height: 45px;
+}
+
+[data-mj="lobby-catalog-category-item"]:hover {
+  transform: translateY(-2px);
+  border-color: rgba(182, 72, 72, 0.9) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.18),
+    0 8px 18px rgba(40, 29, 24, 0.26),
+    0 2px 0 rgba(40, 29, 24, 0.95);
 }
 
 .sl-icon.app-ltr-1rb13tj {
