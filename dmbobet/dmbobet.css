@@ -127,11 +127,14 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-of-ty
 }
 
 [data-mj="lobby-catalog-category-item"] {
-  display: inline-flex !important;
-  align-items: center;
+  display: flex !important;
+  width: 129px;
+  height: 100px;
+  padding: 8px 16px !important;
+  flex-direction: column;
   justify-content: center;
-  min-height: 44px;
-  padding: 3px !important;
+  align-items: center;
+  gap: 17px;
   border-radius: 10px;
   border: 1px solid rgba(45, 33, 29, 0.95);
   box-shadow:
@@ -140,6 +143,11 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-of-ty
     0 2px 0 rgba(40, 29, 24, 0.95);
   text-decoration: none !important;
   background-color: transparent !important;
+}
+
+[data-mj="lobby-catalog-category-item"] span.app-ltr-1ich4ew {
+  mask-repeat: no-repeat !important;
+  background-color: rgb(182 72 72) !important;
 }
 
 .sl-icon.app-ltr-1rb13tj {
