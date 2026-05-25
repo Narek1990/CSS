@@ -37,6 +37,11 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-of-ty
   width: 100% !important;
 }
 
+.app-ltr-i58pjb {
+  max-width: none !important;
+  width: 100% !important;
+}
+
 [data-mj="custom-header"] {
   padding: 7px 0 !important;
 }
@@ -149,8 +154,9 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-of-ty
   background-color: rgb(182 72 72) !important;
   mask-size: 42px !important;
   mask-repeat: no-repeat !important;
-  width: 40px;
+  width: 42px !important;
   height: 45px;
+  margin-right: 0 !important;
 }
 
 [data-mj="lobby-catalog-category-item"]:hover {
