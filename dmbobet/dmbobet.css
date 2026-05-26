@@ -46,10 +46,6 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
   width: 100% !important;
 }
 
-[data-mj="custom-header"] {
-  padding: 14px 0 !important;
-}
-
 [data-mj="header-nav"] {
   background-color: transparent !important;
   margin-left: 10% !important;
