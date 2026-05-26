@@ -58,7 +58,7 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
 @media (min-width: 992px) {
   [data-mj="social-links"] {
     position: fixed !important;
-    top: 18px !important;
+    top: 20px !important;
     right: clamp(320px, 23vw, 311px) !important;
     z-index: 1200 !important;
     display: inline-flex !important;
