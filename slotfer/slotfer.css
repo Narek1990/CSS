@@ -1,0 +1,91 @@
+[data-mj="header-right"] {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  background: #050507;
+  padding: 14px;
+}
+
+[data-mj="header-right"] [data-mj="login-button"],
+[data-mj="header-right"] [data-mj="register-button"] {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-width: 126px;
+  height: 58px;
+  padding: 0 28px;
+  border: 0;
+  color: #fff !important;
+  font-family: "Rajdhani", "Arial Narrow", sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none !important;
+  clip-path: polygon(
+    16px 0,
+    100% 0,
+    100% calc(100% - 16px),
+    calc(100% - 16px) 100%,
+    0 100%,
+    0 16px
+  );
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+[data-mj="header-right"] [data-mj="login-button"]::before,
+[data-mj="header-right"] [data-mj="register-button"]::before {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  z-index: -2;
+  background: #13dff5;
+  clip-path: inherit;
+}
+
+[data-mj="header-right"] [data-mj="login-button"]::after,
+[data-mj="header-right"] [data-mj="register-button"]::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  z-index: -1;
+  clip-path: inherit;
+}
+
+[data-mj="header-right"] [data-mj="login-button"]::after {
+  background: #130d27;
+}
+
+[data-mj="header-right"] [data-mj="register-button"]::after {
+  background: linear-gradient(135deg, #25dfff 0%, #55bfff 44%, #f052e8 100%);
+}
+
+[data-mj="header-right"] [data-mj="login-button"]:hover,
+[data-mj="header-right"] [data-mj="register-button"]:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.15);
+}
+
+[data-mj="header-right"] [data-mj="login-button"]:active,
+[data-mj="header-right"] [data-mj="register-button"]:active {
+  transform: translateY(0);
+}
+
+[data-mj="header-right"] [data-mj="login-button"]:focus-visible,
+[data-mj="header-right"] [data-mj="register-button"]:focus-visible {
+  outline: 3px solid #13dff5;
+  outline-offset: 5px;
+}
+
+[data-mj="header-right"] [data-mj="login-button"] .app-ltr-gvln5a,
+[data-mj="header-right"] [data-mj="register-button"] .app-ltr-gvln5a {
+  color: #fff !important;
+  font-family: "Rajdhani", "Arial Narrow", sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+}
