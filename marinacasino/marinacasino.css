@@ -1,3 +1,40 @@
 [data-mj="logo"] .app-ltr-le4fez {
   max-width: none !important;
 }
+
+[data-mj="bottom-nav"] .app-ltr-idt7iu .app-ltr-ja3k2i {
+  position: relative !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(17, 105, 161, 1) !important;
+  border-radius: 3px !important;
+  background:
+    radial-gradient(circle at 20% 10%, rgb(65 125 154 / 20%), transparent 34%),
+    radial-gradient(circle at 85% 20%, rgba(70, 130, 255, 0.18), transparent 32%),
+    radial-gradient(circle at 50% 100%, rgba(255, 0, 210, 0.14), transparent 42%),
+    rgba(5, 14, 12, 0.72) !important;
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.34),
+    0 0 28px rgba(0, 170, 87, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 0 26px rgb(71 143 186 / 10%) !important;
+  backdrop-filter: blur(16px) saturate(1.35) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.35) !important;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease !important;
+  padding: 11px;
+}
+
+[data-mj="bottom-nav"] .app-ltr-idt7iu .app-ltr-ja3k2i > a:nth-of-type(3) {
+  color: #1169a1 !important;
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.36),
+    0 0 28px rgb(78 164 181 / 32%),
+    0 0 48px rgba(70, 130, 255, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+  border-color: rgb(75 120 165 / 62%) !important;
+  overflow: hidden !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 52px !important;
+  min-height: 52px !important;
+}
