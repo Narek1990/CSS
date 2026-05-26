@@ -51,6 +51,25 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
   margin-left: 10% !important;
 }
 
+@media (min-width: 992px) {
+  [data-mj="social-links"] {
+    position: fixed !important;
+    top: 18px !important;
+    right: clamp(320px, 23vw, 420px) !important;
+    z-index: 1200 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin: 0 !important;
+  }
+
+  [data-mj="social-links"] .app-ltr-4cj164 {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}
+
 [data-mj="page-content"] {
   padding-top: 18px;
 }
