@@ -59,6 +59,29 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
   padding-top: 18px;
 }
 
+[data-mj="widget-pages-grid"] {
+  padding-top: 25px;
+}
+
+[data-mj="widget-pages-item"] {
+  transition:
+    transform 0.22s ease,
+    filter 0.22s ease,
+    box-shadow 0.22s ease;
+  transform-origin: center center;
+}
+
+[data-mj="widget-pages-item"]:hover {
+  transform: translateY(-4px) scale(1.03);
+  filter: brightness(1.04);
+}
+
+[data-mj="widget-pages-item"]:hover .app-ltr-1f8yjb {
+  box-shadow:
+    0 10px 24px rgba(20, 14, 12, 0.26),
+    0 0 18px rgba(182, 72, 72, 0.16);
+}
+
 [data-mj="header-right"] [data-mj="login-button"],
 [data-mj="header-right"] [data-mj="register-button"] {
   display: inline-flex !important;
