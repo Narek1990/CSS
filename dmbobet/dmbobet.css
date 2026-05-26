@@ -47,12 +47,16 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
 }
 
 [data-mj="custom-header"] {
-  padding: 7px 0 !important;
+  padding: 14px 0 !important;
 }
 
 [data-mj="header-nav"] {
   background-color: transparent !important;
   margin-left: 10% !important;
+}
+
+[data-mj="page-content"] {
+  padding-top: 18px;
 }
 
 [data-mj="header-right"] [data-mj="login-button"],
