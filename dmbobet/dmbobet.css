@@ -144,6 +144,10 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
     0 0 18px rgba(182, 72, 72, 0.16);
 }
 
+[data-mj="lobby-catalog-category-slider-list"] > li:first-child {
+  display: none !important;
+}
+
 [data-mj="footer-content"] .app-ltr-19zdw54 .app-ltr-vztaa3 {
   color: inherit !important;
 }
