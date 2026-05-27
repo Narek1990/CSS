@@ -277,7 +277,7 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
 }
 
 [data-mj="lobby-catalog-category-item"] span {
-  background-color: rgb(182 72 72) !important;
+  background-color: rgb(255, 64, 106) !important;
   mask-size: 42px !important;
   mask-repeat: no-repeat !important;
   width: 42px !important;
