@@ -43,7 +43,7 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
 
 [data-mj="footer"] {
   z-index: 999999999 !important;
-  padding-bottom: 0 !important;
+  padding-bottom: 70px !important;
 }
 
 .app-ltr-i58pjb {
