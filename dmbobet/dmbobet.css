@@ -148,6 +148,10 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
   display: none !important;
 }
 
+[data-mj="lobby-catalog-category-next"] {
+  display: none !important;
+}
+
 [data-mj="footer-content"] .app-ltr-19zdw54 .app-ltr-vztaa3 {
   color: inherit !important;
 }
