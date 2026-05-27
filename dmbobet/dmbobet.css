@@ -426,12 +426,18 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
   border-radius: 19px !important;
 }
 
-.app-ltr-z7vkcd .app-ltr-19aa1rc > span {
+.app-ltr-5v1duf .app-ltr-1l4n363 .app-ltr-1edjz83 {
+  display: none !important;
+}
+
+.app-ltr-z7vkcd .app-ltr-19aa1rc > span,
+.app-ltr-z7vkcd .app-ltr-19aa1rc .app-ltr-gvln5a {
   font-size: 0 !important;
   line-height: 0 !important;
 }
 
-.app-ltr-z7vkcd .app-ltr-19aa1rc > span::before {
+.app-ltr-z7vkcd .app-ltr-19aa1rc > span::before,
+.app-ltr-z7vkcd .app-ltr-19aa1rc .app-ltr-gvln5a::before {
   content: "▶";
   display: inline-block;
   font-size: 18px;
