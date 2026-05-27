@@ -70,7 +70,12 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
 
 [data-mj="header-nav"] {
   background-color: transparent !important;
-  margin-left: 10% !important;
+  margin-left: 0 !important;
+}
+
+[data-mj="header-nav"] .app-ltr-1l44gyp {
+  max-width: none !important;
+  width: 100% !important;
 }
 
 @media (min-width: 992px) {
@@ -242,9 +247,25 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
   height: 30px !important;
 }
 
-[data-mj="header-nav-item"] > a:hover {
+[data-mj="header-nav-item"] > a {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  min-height: 44px !important;
+  padding: 4px 10px !important;
+  box-sizing: border-box !important;
   border-top: none !important;
   border-bottom: none !important;
+  border-left: 1px solid transparent !important;
+  border-right: 1px solid transparent !important;
+  transition:
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    background-color 0.22s ease !important;
+}
+
+[data-mj="header-nav-item"] > a:hover {
   border-left: 1px solid #e81a46 !important;
   border-right: 1px solid #e81a46 !important;
   box-shadow:
