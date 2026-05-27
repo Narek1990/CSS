@@ -235,11 +235,13 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
 }
 
 [data-mj="header-nav-item"] > a:hover {
-  border: 1px solid #e81a46 !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  border-left: 1px solid #e81a46 !important;
+  border-right: 1px solid #e81a46 !important;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    inset 0 0 14px rgba(232, 26, 70, 0.2),
-    0 0 12px rgba(232, 26, 70, 0.14) !important;
+    inset 0 0 12px rgba(232, 26, 70, 0.16),
+    0 0 10px rgba(232, 26, 70, 0.1) !important;
 }
 
 [data-mj="lobby-catalog-category-item"] {
