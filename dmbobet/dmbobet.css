@@ -418,3 +418,23 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
     0 1px 0 rgba(40, 29, 24, 0.95);
   text-decoration: none !important;
 }
+
+.app-ltr-5v1duf .app-ltr-1l4n363 .app-ltr-z7vkcd {
+  width: 40px !important;
+  height: 40px !important;
+  color: rgb(238 228 229) !important;
+  border-radius: 19px !important;
+}
+
+.app-ltr-z7vkcd .app-ltr-19aa1rc > span {
+  font-size: 0 !important;
+  line-height: 0 !important;
+}
+
+.app-ltr-z7vkcd .app-ltr-19aa1rc > span::before {
+  content: "▶";
+  display: inline-block;
+  font-size: 18px;
+  line-height: 1;
+  color: rgb(238 228 229);
+}
