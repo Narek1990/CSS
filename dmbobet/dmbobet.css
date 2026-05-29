@@ -255,22 +255,15 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
   min-height: 44px !important;
   padding: 4px 10px !important;
   box-sizing: border-box !important;
-  border-top: none !important;
-  border-bottom: none !important;
-  border-left: 1px solid transparent !important;
-  border-right: 1px solid transparent !important;
-  transition:
-    border-color 0.22s ease,
-    box-shadow 0.22s ease,
-    background-color 0.22s ease !important;
+  border: none !important;
+  box-shadow: none !important;
+  transition: color 0.22s ease, filter 0.22s ease !important;
 }
 
 [data-mj="header-nav-item"] > a:hover {
-  border-left: 1px solid #e81a46 !important;
-  border-right: 1px solid #e81a46 !important;
-  box-shadow:
-    inset 0 0 12px rgba(232, 26, 70, 0.16),
-    0 0 10px rgba(232, 26, 70, 0.1) !important;
+  border: none !important;
+  box-shadow: none !important;
+  filter: brightness(1.04);
 }
 
 [data-mj="lobby-catalog-category-item"] {
@@ -411,8 +404,8 @@ nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:fir
 
 nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:first-child > a[href*="/world-cup/"] {
   position: absolute;
-  top: 14px;
-  left: 185px;
+  top: -62px;
+  left: 171px;
   z-index: 9999999999;
   display: inline-flex !important;
   align-items: center;
