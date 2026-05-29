@@ -45,6 +45,19 @@ body * {
   text-decoration: none !important;
 }
 
+[data-mj="header-special-button"] {
+  padding: 11px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgb(92 255 167 / 42%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 0 18px rgba(255, 112, 145, 0.16),
+    0 0 24px rgb(80 194 116 / 24%),
+    0 12px 26px rgba(16, 10, 14, 0.36),
+    0 2px 0 rgb(85 89 51 / 92%) !important;
+  margin-left: 14px !important;
+}
+
 [data-mj="register-button"]:hover,
 [data-mj="login-button"]:hover {
   border-color: rgba(0, 255, 170, 0.58) !important;
