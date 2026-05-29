@@ -46,6 +46,12 @@ body * {
 }
 
 [data-mj="header-special-button"] {
+  position: relative !important;
+  overflow: hidden !important;
+  background:
+    radial-gradient(circle at 20% 16%, rgba(104, 255, 184, 0.22), transparent 30%),
+    radial-gradient(circle at 82% 24%, rgba(255, 112, 145, 0.12), transparent 34%),
+    linear-gradient(180deg, rgba(21, 50, 36, 0.92), rgba(10, 27, 19, 0.94)) !important;
   padding: 11px !important;
   border-radius: 14px !important;
   border: 1px solid rgb(92 255 167 / 42%) !important;
@@ -56,6 +62,29 @@ body * {
     0 12px 26px rgba(16, 10, 14, 0.36),
     0 2px 0 rgb(85 89 51 / 92%) !important;
   margin-left: 14px !important;
+  margin-top: -6px !important;
+  transition:
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.22s ease,
+    filter 0.22s ease,
+    background 0.22s ease !important;
+}
+
+[data-mj="header-special-button"]:hover {
+  border-color: rgb(136 255 193 / 62%) !important;
+  background:
+    radial-gradient(circle at 20% 16%, rgba(104, 255, 184, 0.3), transparent 30%),
+    radial-gradient(circle at 82% 24%, rgba(255, 112, 145, 0.18), transparent 34%),
+    linear-gradient(180deg, rgba(26, 58, 42, 0.96), rgba(11, 32, 23, 0.97)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.26),
+    inset 0 0 22px rgba(255, 112, 145, 0.18),
+    0 0 30px rgb(80 194 116 / 34%),
+    0 16px 30px rgba(16, 10, 14, 0.4),
+    0 2px 0 rgb(85 89 51 / 92%) !important;
+  transform: translateY(-1px) !important;
+  filter: brightness(1.04) !important;
 }
 
 [data-mj="register-button"]:hover,
