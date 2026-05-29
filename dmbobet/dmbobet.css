@@ -580,12 +580,6 @@ nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:fir
 
 [data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a:not([href*="/world-cup/"]).active-link,
 [data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a:not([href*="/world-cup/"])[aria-current="page"] {
-  border-color: rgba(255, 85, 126, 0.34) !important;
-  background:
-    linear-gradient(180deg, rgba(255, 67, 116, 0.14), rgba(255, 67, 116, 0.05)) !important;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 8px 18px rgba(255, 64, 106, 0.08) !important;
   color: #ff5b88 !important;
 }
 
