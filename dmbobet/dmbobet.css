@@ -78,6 +78,12 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
   width: 100% !important;
 }
 
+@media (max-width: 991px) {
+  .app-ltr-s3k5k8 {
+    max-height: none !important;
+  }
+}
+
 @media (min-width: 992px) {
   [data-mj="social-links"] {
     position: fixed !important;
@@ -167,7 +173,7 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
   align-items: center;
   justify-content: center;
   min-height: 44px;
-  padding: 4px !important;
+  padding: 0 !important;
   border-radius: 10px;
   border: 1px solid rgba(45, 33, 29, 0.95);
   box-shadow:
