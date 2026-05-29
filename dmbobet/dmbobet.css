@@ -384,7 +384,11 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
   box-shadow: none !important;
 }
 
-[data-mj="header-nav-list"].app-ltr-8zi5g1 {
+nav[data-mj="header-nav-list"] {
+  overflow: visible !important;
+}
+
+nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 {
   position: relative;
   display: inline-flex !important;
   align-items: center;
@@ -398,13 +402,14 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
     inset 0 -2px 0 rgba(0, 0, 0, 0.18),
     0 2px 0 rgba(40, 29, 24, 0.95);
   text-decoration: none !important;
+  overflow: visible !important;
 }
 
-[data-mj="header-nav-list"] > [data-mj="header-nav-item"]:first-child {
+nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:first-child {
   position: static !important;
 }
 
-[data-mj="header-nav-list"] > [data-mj="header-nav-item"]:first-child > a[href*="/world-cup/"] {
+nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:first-child > a[href*="/world-cup/"] {
   position: absolute;
   top: 14px;
   left: 185px;
@@ -437,7 +442,7 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
     filter 0.22s ease !important;
 }
 
-[data-mj="header-nav-list"] > [data-mj="header-nav-item"]:first-child > a[href*="/world-cup/"]::before {
+nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:first-child > a[href*="/world-cup/"]::before {
   content: "";
   position: absolute;
   inset: -12px;
@@ -448,23 +453,23 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
   pointer-events: none;
 }
 
-[data-mj="header-nav-list"] > [data-mj="header-nav-item"]:first-child > a[href*="/world-cup/"] > span {
+nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:first-child > a[href*="/world-cup/"] > span {
   width: 30px !important;
   height: 30px !important;
   color: #ffd86b !important;
   filter: drop-shadow(0 0 10px rgba(255, 199, 87, 0.36));
 }
 
-[data-mj="header-nav-list"] > [data-mj="header-nav-item"]:first-child > a[href*="/world-cup/"] > p {
+nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:first-child > a[href*="/world-cup/"] > p {
   color: inherit !important;
   font-weight: 700;
   letter-spacing: 0;
   text-shadow: 0 0 14px rgba(255, 92, 120, 0.24);
 }
 
-[data-mj="header-nav-list"] > [data-mj="header-nav-item"]:first-child > a[href*="/world-cup/"]:hover,
-[data-mj="header-nav-list"] > [data-mj="header-nav-item"]:first-child > a[href*="/world-cup/"].active-link,
-[data-mj="header-nav-list"] > [data-mj="header-nav-item"]:first-child > a[href*="/world-cup/"][aria-current="page"] {
+nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:first-child > a[href*="/world-cup/"]:hover,
+nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:first-child > a[href*="/world-cup/"].active-link,
+nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:first-child > a[href*="/world-cup/"][aria-current="page"] {
   border-color: rgba(255, 214, 102, 0.98) !important;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.26),
