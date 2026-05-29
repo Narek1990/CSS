@@ -578,8 +578,8 @@ nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:fir
   color: rgba(255, 255, 255, 0.9) !important;
 }
 
-[data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a:not(:nth-of-type(4)).active-link,
-[data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a:not(:nth-of-type(4))[aria-current="page"] {
+[data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a:not([href*="/world-cup/"]).active-link,
+[data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a:not([href*="/world-cup/"])[aria-current="page"] {
   border-color: rgba(255, 85, 126, 0.34) !important;
   background:
     linear-gradient(180deg, rgba(255, 67, 116, 0.14), rgba(255, 67, 116, 0.05)) !important;
@@ -589,12 +589,12 @@ nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:fir
   color: #ff5b88 !important;
 }
 
-[data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a:not(:nth-of-type(4)).active-link > span,
-[data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a:not(:nth-of-type(4))[aria-current="page"] > span {
+[data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a:not([href*="/world-cup/"]).active-link > span,
+[data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a:not([href*="/world-cup/"])[aria-current="page"] > span {
   color: #ff5b88 !important;
 }
 
-[data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a:nth-of-type(4) {
+[data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a[href*="/world-cup/"] {
   flex: 1.04 1 0 !important;
   color: #fff4f7 !important;
   border: none !important;
@@ -623,13 +623,13 @@ nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:fir
   z-index: 2 !important;
 }
 
-[data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a:nth-of-type(4) > span {
+[data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a[href*="/world-cup/"] > span {
   color: #ffd66b !important;
   filter: drop-shadow(0 0 8px rgba(255, 214, 102, 0.24));
 }
 
-[data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a:nth-of-type(4).active-link,
-[data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a:nth-of-type(4)[aria-current="page"] {
+[data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a[href*="/world-cup/"].active-link,
+[data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a[href*="/world-cup/"][aria-current="page"] {
   color: #fff7f2 !important;
   border-color: transparent !important;
   box-shadow:
