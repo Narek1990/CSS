@@ -523,7 +523,7 @@ nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:fir
   position: relative !important;
   overflow: visible !important;
   display: flex !important;
-  align-items: flex-end !important;
+  align-items: stretch !important;
   justify-content: space-between !important;
   gap: 4px !important;
   border: 1px solid rgba(255, 92, 120, 0.32) !important;
@@ -595,9 +595,9 @@ nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:fir
 }
 
 [data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a:nth-of-type(4) {
-  flex: 1.12 1 0 !important;
+  flex: 1.04 1 0 !important;
   color: #fff4f7 !important;
-  border: 1px solid rgba(255, 105, 140, 0.58) !important;
+  border: none !important;
   background:
     radial-gradient(circle at 50% 0%, rgba(255, 210, 104, 0.26), transparent 34%),
     radial-gradient(circle at 18% 22%, rgba(255, 126, 158, 0.16), transparent 28%),
@@ -607,8 +607,8 @@ nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:fir
     0 0 24px rgba(255, 64, 106, 0.16),
     inset 0 1px 0 rgba(255, 238, 208, 0.24) !important;
   overflow: hidden !important;
-  min-height: 68px !important;
-  border-radius: 16px 16px 14px 14px !important;
+  min-height: 62px !important;
+  border-radius: 14px !important;
   backdrop-filter: blur(14px) saturate(1.18) !important;
   -webkit-backdrop-filter: blur(14px) saturate(1.18) !important;
   transition:
@@ -617,8 +617,8 @@ nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:fir
     transform 0.22s ease,
     background 0.22s ease,
     color 0.22s ease !important;
-  transform: translateY(-12px) !important;
-  padding: 10px 6px 9px !important;
+  transform: translateY(-6px) !important;
+  padding: 8px 6px 7px !important;
   margin: 0 !important;
   z-index: 2 !important;
 }
@@ -631,9 +631,9 @@ nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:fir
 [data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a:nth-of-type(4).active-link,
 [data-mj="bottom-nav"] .app-ltr-1a8bo9o .app-ltr-ja3k2i > a:nth-of-type(4)[aria-current="page"] {
   color: #fff7f2 !important;
-  border-color: rgba(255, 214, 102, 0.72) !important;
+  border-color: transparent !important;
   box-shadow:
-    0 16px 30px rgba(0, 0, 0, 0.28),
+    0 14px 24px rgba(0, 0, 0, 0.24),
     0 0 28px rgba(255, 64, 106, 0.22),
     0 0 18px rgba(255, 214, 102, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.26) !important;
