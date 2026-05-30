@@ -12,6 +12,30 @@
     return (button && button.textContent ? button.textContent : "").trim().toLowerCase();
   }
 
+  function getRequestedTab() {
+    try {
+      var url = new URL(window.location.href);
+      var requested = (url.searchParams.get("t") || "").trim().toLowerCase();
+      return requested === "email" || requested === "phone" ? requested : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function setRequestedTab(tabName) {
+    if (tabName !== "email" && tabName !== "phone") {
+      return;
+    }
+
+    try {
+      var url = new URL(window.location.href);
+      url.searchParams.set("t", tabName);
+      window.history.replaceState({}, "", url.toString());
+    } catch (error) {
+      return;
+    }
+  }
+
   function enforceTabState(tablist) {
     if (!tablist) {
       return;
@@ -24,12 +48,18 @@
     var phoneButton = buttons.find(function (button) {
       return getButtonText(button) === "phone";
     });
+    var requestedTab = getRequestedTab();
 
     if (!emailButton || !phoneButton) {
       return;
     }
 
-    if (phoneButton.getAttribute("aria-current") !== "page") {
+    if (requestedTab === "email" && emailButton.getAttribute("aria-current") !== "page") {
+      emailButton.click();
+      return;
+    }
+
+    if (requestedTab === "phone" && phoneButton.getAttribute("aria-current") !== "page") {
       phoneButton.click();
     }
   }
@@ -70,6 +100,20 @@
   }
 
   function init() {
+    document.addEventListener("click", function (event) {
+      var tabButton = event.target.closest(tabButtonSelector);
+      if (!tabButton) {
+        return;
+      }
+
+      var tablist = tabButton.closest(tablistSelector);
+      if (!tablist) {
+        return;
+      }
+
+      setRequestedTab(getButtonText(tabButton));
+    }, true);
+
     scheduleRun();
 
     observer = new MutationObserver(function () {
