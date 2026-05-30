@@ -1,5 +1,4 @@
 ul.app-ltr-17pv0q3[role="tablist"],
 ul.css-17pv0q3[role="tablist"] {
-  display: none !important;
   flex-direction: row-reverse !important;
 }
