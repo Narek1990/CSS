@@ -670,17 +670,7 @@ nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:fir
 }
 
 [data-mj="lobby-catalog-filters"] .app-ltr-1d93vvc:has([data-mj="lobby-catalog-search"]) {
-  border-radius: 36px !important;
-  overflow: hidden !important;
-  background: #111c28 !important;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease !important;
-}
-
-[data-mj="lobby-catalog-search"] {
-  border: 0 !important;
-  box-shadow: none !important;
-  background: transparent !important;
-  outline: none !important;
 }
 
 [data-mj="lobby-catalog-filters"] .sl-select__control.app-ltr-1yv7fjq-control:hover,
