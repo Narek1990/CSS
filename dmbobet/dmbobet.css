@@ -648,3 +648,22 @@ nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:fir
   line-height: 1;
   color: rgb(238 228 229);
 }
+
+/* Dmbobet crash lobby filters */
+
+[data-mj="lobby-catalog-filters"] .sl-select__control.app-ltr-1yv7fjq-control {
+  border: 1px solid rgba(45, 33, 29, 0.95) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.18),
+    0 2px 0 rgba(40, 29, 24, 0.95) !important;
+}
+
+[data-mj="lobby-catalog-filters"] .app-ltr-1d93vvc:has([data-mj="lobby-catalog-search"]),
+[data-mj="lobby-catalog-search"] {
+  border: 1px solid rgba(45, 33, 29, 0.95) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.18),
+    0 2px 0 rgba(40, 29, 24, 0.95) !important;
+}
