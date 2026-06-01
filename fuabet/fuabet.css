@@ -1,0 +1,5 @@
+ul.app-ltr-17pv0q3[role="tablist"],
+ul.css-17pv0q3[role="tablist"] {
+  display: flex !important;
+  flex-direction: row !important;
+}
