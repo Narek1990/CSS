@@ -10,7 +10,7 @@ html body {
     url("https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/dmbobet/84b15c05-0717-40ec-bdd4-ee9cb7723e3a.png") !important;
   background-position: center top !important;
   background-repeat: no-repeat !important;
-  background-size: cover !important;
+  background-size: 100% 100% !important;
   background-attachment: fixed !important;
 }
 
