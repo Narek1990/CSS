@@ -184,11 +184,15 @@ html body [data-mj="login-button"] {
 
 html body [data-mj="sidebar-collapse"] {
   position: absolute !important;
-  top: -56px !important;
-  left: 10px !important;
+  top: 14px !important;
+  left: 14px !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 10px !important;
+  z-index: 70 !important;
   font-size: 0 !important;
   line-height: 0 !important;
 }
