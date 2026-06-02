@@ -91,6 +91,15 @@ html body [data-mj="widget-top-providers-item"] {
   -webkit-backdrop-filter: blur(16px) saturate(1.35) !important;
 }
 
+html body [data-mj="sidebar"] {
+  padding: 0 !important;
+  top: 80px !important;
+}
+
+html body [data-mj="sidebar-content"] {
+  border-radius: 6px !important;
+}
+
 html body .css-s4hrud,
 html body [class~="css-s4hrud"] {
   background-color: rgb(23 31 61 / 53%) !important;
@@ -143,6 +152,16 @@ html body .app-ltr-ja3k2i {
   background-color: rgb(255 255 255 / 6%) !important;
   backdrop-filter: blur(16px) !important;
   -webkit-backdrop-filter: blur(16px) !important;
+}
+
+html body [data-mj="header"] {
+  position: fixed !important;
+}
+
+html body [data-mj="header"] .app-ltr-i58pjb,
+html body [data-mj="header"].app-ltr-i58pjb,
+html body .app-ltr-i58pjb {
+  max-width: none !important;
 }
 
 html body [data-mj="lobby-catalog-mobile-category-chip"].app-ltr-13u1vz6 {
