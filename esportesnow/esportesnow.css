@@ -93,10 +93,16 @@ html body [data-mj="widget-top-providers-item"] {
 
 html body [data-mj="sidebar"] {
   padding: 0 !important;
-  top: 80px !important;
+  top: 70px !important;
+}
+
+html body [data-mj="sidebar"].app-ltr-17u1px6,
+html body [data-mj="sidebar"][class~="app-ltr-17u1px6"] {
+  width: 83px !important;
 }
 
 html body [data-mj="sidebar-content"] {
+  height: 91% !important;
   border-radius: 6px !important;
 }
 
@@ -162,6 +168,10 @@ html body [data-mj="header"] .app-ltr-i58pjb,
 html body [data-mj="header"].app-ltr-i58pjb,
 html body .app-ltr-i58pjb {
   max-width: none !important;
+}
+
+html body [data-mj="widget-banner"] {
+  margin-top: 70px !important;
 }
 
 html body [data-mj="lobby-catalog-mobile-category-chip"].app-ltr-13u1vz6 {
