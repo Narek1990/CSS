@@ -64,6 +64,11 @@
   filter: brightness(1.08) saturate(1.08) !important;
 }
 
+[data-mj="widget-banner-link"],
+[data-mj="widget-banner-link"] img {
+  border-radius: 0 !important;
+}
+
 [data-mj="widget-banner-link"] img {
   height: 98% !important;
 }
