@@ -46,15 +46,3 @@
 [data-mj="lobby-catalog-filters"] .app-ltr-1d93vvc:has([data-mj="lobby-catalog-search"]):hover {
   background: #152131 !important;
 }
-
-/* Dmbobet header nav icon colors */
-
-html body ul#ul > [data-mj="header-nav-item"] > .sl-navlink > span,
-html body ul#ul > [data-mj="header-nav-item"] > [class~="sl-navlink"] > span {
-  background-color: rgb(189 29 63) !important;
-}
-
-html body ul#ul > [data-mj="header-nav-item"]:first-of-type > .sl-navlink > span,
-html body ul#ul > [data-mj="header-nav-item"]:first-of-type > [class~="sl-navlink"] > span {
-  background-color: #ffd86b !important;
-}
