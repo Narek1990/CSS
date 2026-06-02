@@ -189,10 +189,16 @@ html body [data-mj="sidebar-collapse"] {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
 }
 
 html body [data-mj="sidebar-collapse"] > svg {
   display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 html body [data-mj="sidebar-collapse"]::before {
@@ -200,7 +206,7 @@ html body [data-mj="sidebar-collapse"]::before {
   display: block !important;
   width: 17px !important;
   height: 12px !important;
-  background: url("./sidebar-collapse.svg") center / contain no-repeat !important;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='12' viewBox='0 0 17 12' fill='none'%3E%3Cpath d='M0.938282 11.9705H7.50594C8.02413 11.9705 8.44419 11.5505 8.44419 11.0323C8.44419 10.5141 8.02413 10.0941 7.50594 10.0941H0.938282C0.420092 10.0941 0 10.5141 0 11.0323C0 11.5505 0.420092 11.9705 0.938282 11.9705ZM0.938282 6.92355H15.95C16.4682 6.92355 16.8883 6.50346 16.8883 5.98531C16.8883 5.46712 16.4682 5.04706 15.95 5.04706H0.938242C0.420062 5.04706 0 5.46712 0 5.98531C0 6.50346 0.420092 6.92355 0.938282 6.92355ZM0.938282 1.87649H15.95C16.4682 1.87649 16.8883 1.45643 16.8883 0.93825C16.8883 0.420059 16.4682 0 15.95 0H0.938242C0.420062 0 0 0.420059 0 0.93825C0 1.45643 0.420092 1.87649 0.938282 1.87649Z' fill='white'/%3E%3C/svg%3E") center / contain no-repeat !important;
 }
 
 html body [data-mj="lobby-catalog-mobile-category-chip"].app-ltr-13u1vz6 {
