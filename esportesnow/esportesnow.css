@@ -91,14 +91,205 @@ html body [data-mj="widget-top-providers-item"] {
   -webkit-backdrop-filter: blur(16px) saturate(1.35) !important;
 }
 
+html body [data-mj="sidebar"] {
+  padding: 0 !important;
+  top: 70px !important;
+}
+
+html body [data-mj="sidebar"].app-ltr-17u1px6,
+html body [data-mj="sidebar"][class~="app-ltr-17u1px6"] {
+  width: 83px !important;
+}
+
+html body [data-mj="sidebar-content"] {
+  height: 91% !important;
+  border-radius: 6px !important;
+}
+
 html body .css-s4hrud,
 html body [class~="css-s4hrud"] {
   background-color: rgb(23 31 61 / 53%) !important;
   border-radius: 22px !important;
 }
 
+html body .app-ltr-s4hrud {
+  margin: 20px !important;
+  width: calc(100% - 40px) !important;
+  box-sizing: border-box !important;
+  border-radius: 22px !important;
+  background-color: transparent !important;
+}
+
 html body [data-mj="widget-game-card"],
 html body [data-mj="widget-game-slider-slide"] {
   border-radius: 6px !important;
   margin-left: 2px !important;
+}
+
+html body .sl-select__control,
+html body .sl-select__control.app-ltr-18wxrhy-control,
+html body [class~="sl-select__control"] {
+  background-color: rgb(255 255 255 / 6%) !important;
+  border-color: #181f3d !important;
+}
+
+html body [data-mj="lobby-catalog-search"] {
+  background-color: rgb(255 255 255 / 6%) !important;
+  border-color: #0f1229 !important;
+}
+
+html body [data-mj="lobby-catalog-mobile-provider-input"] {
+  background-color: rgb(255 255 255 / 6%) !important;
+  border-color: #0f1229 !important;
+}
+
+html body [data-mj="lobby-catalog-mobile-search-toggle"] {
+  background-color: rgb(255 255 255 / 6%) !important;
+  border-color: #0d132d !important;
+  box-shadow: none !important;
+}
+
+html body [data-mj="lobby-catalog-provider-bottom-sheet-search"] {
+  background-color: rgb(255 255 255 / 6%) !important;
+  border-color: #0e132a !important;
+}
+
+html body .app-ltr-ja3k2i {
+  background-color: rgb(255 255 255 / 6%) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+html body [data-mj="header"] {
+  position: fixed !important;
+}
+
+html body [data-mj="custom-header"] {
+  padding-left: 56px !important;
+}
+
+html body [data-mj="header"] .app-ltr-i58pjb,
+html body [data-mj="header"].app-ltr-i58pjb,
+html body .app-ltr-i58pjb {
+  max-width: none !important;
+}
+
+html body [data-mj="widget-banner"] {
+  margin-top: 70px !important;
+}
+
+html body [data-mj="login-button"] {
+  min-height: 33px !important;
+}
+
+html body [data-mj="sidebar-collapse"] {
+  position: absolute !important;
+  top: -56px !important;
+  left: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+}
+
+html body [data-mj="sidebar-collapse"] > svg {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html body [data-mj="sidebar-collapse"]::before {
+  content: "" !important;
+  display: block !important;
+  width: 17px !important;
+  height: 12px !important;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='12' viewBox='0 0 17 12' fill='none'%3E%3Cpath d='M0.938282 11.9705H7.50594C8.02413 11.9705 8.44419 11.5505 8.44419 11.0323C8.44419 10.5141 8.02413 10.0941 7.50594 10.0941H0.938282C0.420092 10.0941 0 10.5141 0 11.0323C0 11.5505 0.420092 11.9705 0.938282 11.9705ZM0.938282 6.92355H15.95C16.4682 6.92355 16.8883 6.50346 16.8883 5.98531C16.8883 5.46712 16.4682 5.04706 15.95 5.04706H0.938242C0.420062 5.04706 0 5.46712 0 5.98531C0 6.50346 0.420092 6.92355 0.938282 6.92355ZM0.938282 1.87649H15.95C16.4682 1.87649 16.8883 1.45643 16.8883 0.93825C16.8883 0.420059 16.4682 0 15.95 0H0.938242C0.420062 0 0 0.420059 0 0.93825C0 1.45643 0.420092 1.87649 0.938282 1.87649Z' fill='white'/%3E%3C/svg%3E") center / contain no-repeat !important;
+}
+
+html body [data-mj="lobby-catalog-mobile-category-chip"].app-ltr-13u1vz6 {
+  background-image: linear-gradient(122deg, #252d50, #1b2037) !important;
+  border: 1px solid rgb(14 19 41) !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+}
+
+html body [data-mj="lobby-catalog-mobile-category-chip"].app-ltr-7v4hfh {
+  background-image: linear-gradient(98.66deg, #8424f8, #6126bc) !important;
+  box-shadow: 4px 4px 12px 0 rgba(255, 255, 255, 0.3) inset, 0 0 0 0 rgba(132, 36, 248, 1) !important;
+  border: 1px solid rgb(255 255 255 / 6%) !important;
+  border-radius: 16px !important;
+  color: #fff !important;
+}
+
+html body [data-mj="register-button"] {
+  padding: 12px 30px !important;
+  text-align: center !important;
+  transition: 0.5s !important;
+  background-size: 200% auto !important;
+  color: white !important;
+  border-radius: 6px !important;
+  display: block !important;
+  border: 0 !important;
+  font-weight: 500 !important;
+  box-shadow: 0 0 14px -7px #f09819 !important;
+  background-image: linear-gradient(45deg, #ff512f 0%, #f09819 51%, #ff512f 100%) !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  touch-action: manipulation !important;
+}
+
+html body [data-mj="register-button"]:hover {
+  background-position: right center !important;
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+html body [data-mj="register-button"]:active {
+  transform: scale(0.95) !important;
+}
+
+html body .app-ltr-10t84xr,
+html body [class~="app-ltr-10t84xr"] {
+  font-size: 14px !important;
+}
+
+@media (min-width: 993px) {
+  html body #root.vertical-nav [data-mj="root-layout"] {
+    display: block !important;
+  }
+
+  html body #root.vertical-nav [data-mj="sidebar"] {
+    position: fixed !important;
+    top: 70px !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    z-index: 40 !important;
+    width: 250px !important;
+  }
+
+  html body #root.vertical-nav [data-mj="sidebar-content"] {
+    height: calc(100vh - 86px) !important;
+  }
+
+  html body #root.vertical-nav [data-mj="content-wrapper"] {
+    margin-left: 250px !important;
+  }
+
+  html body #root.vertical-nav [data-mj="page-content"] {
+    min-height: calc(100vh - 70px) !important;
+  }
+
+  html body [data-mj="register-button"] {
+    height: 32px !important;
+    min-height: 32px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
 }
