@@ -186,6 +186,21 @@ html body [data-mj="sidebar-collapse"] {
   position: absolute !important;
   top: -56px !important;
   left: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+html body [data-mj="sidebar-collapse"] > svg {
+  display: none !important;
+}
+
+html body [data-mj="sidebar-collapse"]::before {
+  content: "" !important;
+  display: block !important;
+  width: 17px !important;
+  height: 12px !important;
+  background: url("./sidebar-collapse.svg") center / contain no-repeat !important;
 }
 
 html body [data-mj="lobby-catalog-mobile-category-chip"].app-ltr-13u1vz6 {
@@ -229,6 +244,11 @@ html body [data-mj="register-button"]:hover {
 
 html body [data-mj="register-button"]:active {
   transform: scale(0.95) !important;
+}
+
+html body .app-ltr-10t84xr,
+html body [class~="app-ltr-10t84xr"] {
+  font-size: 14px !important;
 }
 
 @media (min-width: 993px) {
