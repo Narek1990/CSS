@@ -11,7 +11,7 @@ html body ul#ul > [data-mj="header-nav-item"]:first-of-type > [class~="sl-navlin
   min-height: 48px !important;
   padding: 10px 16px !important;
   border-radius: 14px !important;
-  border: 1px solid rgba(255, 92, 120, 0.95) !important;
+  border: 1px solid rgb(233, 194, 0) !important;
   background:
     radial-gradient(circle at 20% 20%, rgba(255, 204, 84, 0.3), transparent 30%),
     radial-gradient(circle at 80% 25%, rgb(255 170 64 / 28%), transparent 36%),
@@ -35,7 +35,7 @@ html body ul#ul > [data-mj="header-nav-item"]:first-of-type > [class~="sl-navlin
 
 html body ul#ul > [data-mj="header-nav-item"]:first-of-type > .sl-navlink:hover,
 html body ul#ul > [data-mj="header-nav-item"]:first-of-type > [class~="sl-navlink"]:hover {
-  border-color: rgba(255, 214, 120, 0.98) !important;
+  border-color: rgb(233, 194, 0) !important;
   background:
     radial-gradient(circle at 20% 20%, rgba(255, 226, 138, 0.4), transparent 30%),
     radial-gradient(circle at 80% 25%, rgb(255 196 92 / 34%), transparent 36%),
@@ -48,6 +48,15 @@ html body ul#ul > [data-mj="header-nav-item"]:first-of-type > [class~="sl-navlin
     0 2px 0 rgb(110 110 70 / 92%) !important;
   filter: brightness(1.04) !important;
   transform: translateY(-1px) translateZ(0) !important;
+}
+
+html body ul#ul > [data-mj="header-nav-item"]:first-of-type > .sl-navlink:hover,
+html body ul#ul > [data-mj="header-nav-item"]:first-of-type > .sl-navlink:hover span,
+html body ul#ul > [data-mj="header-nav-item"]:first-of-type > .sl-navlink:hover p,
+html body ul#ul > [data-mj="header-nav-item"]:first-of-type > [class~="sl-navlink"]:hover,
+html body ul#ul > [data-mj="header-nav-item"]:first-of-type > [class~="sl-navlink"]:hover span,
+html body ul#ul > [data-mj="header-nav-item"]:first-of-type > [class~="sl-navlink"]:hover p {
+  color: #fff !important;
 }
 
 html body [data-mj="widget-banner-link"] {
