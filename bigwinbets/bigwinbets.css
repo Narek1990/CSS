@@ -4,10 +4,9 @@ html body [data-mj="content-wrapper"] {
 
 html body ul[data-mj="sidebar-nav-list"] > [data-mj="sidebar-special-button"] + [data-mj="sidebar-section"] {
   position: absolute !important;
-  left: 398px !important;
+  left: 1095px !important;
   top: -3px !important;
-  width: 149px !important;
-  padding: 10px !important;
+  width: 188px !important;
   box-sizing: border-box !important;
   border-radius: 14px !important;
   box-shadow:
