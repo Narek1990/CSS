@@ -8,7 +8,7 @@ html body ul#ul > [data-mj="header-nav-item"]:first-of-type > [class~="sl-navlin
   display: inline-flex !important;
   align-items: center !important;
   gap: 10px !important;
-  min-height: 48px !important;
+  min-height: 41px !important;
   padding: 10px 16px !important;
   border-radius: 14px !important;
   border: 1px solid rgb(233, 194, 0) !important;
