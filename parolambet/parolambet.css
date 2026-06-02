@@ -31,3 +31,13 @@ html body [data-mj="header-nav-item"] [class~="sl-navlink"][class~="app-ltr-3yj7
     border-color 0.22s ease,
     filter 0.22s ease !important;
 }
+
+html body [data-mj="widget-banner-link"] {
+  height: 520px !important;
+}
+
+@media (max-width: 768px) {
+  html body [data-mj="widget-banner-link"] {
+    height: 322px !important;
+  }
+}
