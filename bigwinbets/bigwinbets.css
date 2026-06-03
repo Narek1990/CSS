@@ -2,6 +2,10 @@ html body [data-mj="content-wrapper"] {
   max-width: none !important;
 }
 
+html body ul[data-mj="sidebar-nav-list"] {
+  position: relative !important;
+}
+
 html body ul[data-mj="sidebar-nav-list"] > [data-mj="sidebar-special-button"] + [data-mj="sidebar-section"] {
   position: absolute !important;
   left: 400px !important;
@@ -43,4 +47,19 @@ html body ul[data-mj="sidebar-nav-list"] > [data-mj="sidebar-special-button"] + 
     radial-gradient(circle at 50% 0%, rgb(239 250 255 / 20%), transparent 36%),
     radial-gradient(circle at 80% 25%, rgb(96 193 255 / 32%), #0000 36%),
     linear-gradient(180deg, rgb(31 40 80 / 96%), rgb(60 95 198 / 98%)) !important;
+}
+
+@media (max-width: 1500px) {
+  html body ul[data-mj="sidebar-nav-list"] > [data-mj="sidebar-special-button"] + [data-mj="sidebar-section"] {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    max-width: 188px !important;
+    margin: 12px 0 0 auto !important;
+  }
+
+  html body ul[data-mj="sidebar-nav-list"] > [data-mj="sidebar-special-button"] + [data-mj="sidebar-section"]:hover {
+    transform: translateY(-2px) !important;
+  }
 }
