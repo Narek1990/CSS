@@ -94,3 +94,9 @@
 [data-mj="widget-banner-link"] img {
   height: 98% !important;
 }
+
+@media (max-width: 768px) {
+  [data-mj="widget-banner-link"] img {
+    height: 100% !important;
+  }
+}
