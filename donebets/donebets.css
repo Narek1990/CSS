@@ -32,3 +32,11 @@
   transform: none !important;
   z-index: 5 !important;
 }
+
+@media (max-width: 767px) {
+  [data-mj="header-right"] span:has(> button[aria-label="user"]) > span,
+  [data-mj="header-right"] .app-ltr-rmz4vk > .app-ltr-1phvdj0 {
+    right: -6px !important;
+    top: -8px !important;
+  }
+}
