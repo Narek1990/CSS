@@ -1,6 +1,29 @@
 main[data-mj="page-content"] > section[data-mj="widget-multi-banner"] + section[data-mj="widget-game-slider"] [data-mj="widget-game-card"] .app-ltr-3kzt60,
-main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child [data-mj="widget-game-card"] .app-ltr-3kzt60 {
+main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child [data-mj="widget-game-card"] .app-ltr-3kzt60,
+main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj="widget-game-slider"] [data-mj="widget-game-card"] .app-ltr-3kzt60,
+main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj="widget-game-slider"] [data-mj="widget-game-card"] > div:has(> p.app-ltr-10sbmph + p.app-ltr-1xdhyk6) {
   display: none !important;
+}
+
+main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj="widget-game-slider"],
+main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj="widget-game-slider"] > [data-mj="widget-game-slider-container"] {
+  overflow: visible !important;
+}
+
+main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj="widget-game-slider"] [data-mj="widget-game-slider-list"] {
+  padding-block: 14px 18px !important;
+  margin-block: -14px -18px !important;
+}
+
+main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj="widget-game-slider"] [data-mj="widget-game-slider-slide"],
+main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj="widget-game-slider"] [data-mj="widget-game-slider-slide"] > div {
+  overflow: visible !important;
+}
+
+main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj="widget-game-slider"] [data-mj="widget-game-card"] {
+  overflow: hidden !important;
+  border-radius: 18px !important;
+  transform-origin: center center !important;
 }
 
 [data-mj="widget-bet-win-container"] {
