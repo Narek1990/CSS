@@ -21,9 +21,67 @@ main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj
 }
 
 main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj="widget-game-slider"] [data-mj="widget-game-card"] {
+  position: relative !important;
   overflow: hidden !important;
   border-radius: 18px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 10px 22px rgba(0, 0, 0, 0.22) !important;
   transform-origin: center center !important;
+  transform: none !important;
+  transition:
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    filter 0.22s ease !important;
+}
+
+main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj="widget-game-slider"] [data-mj="widget-game-slider-slide"] > div:hover,
+main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj="widget-game-slider"] [data-mj="widget-game-card"]:hover,
+main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj="widget-game-slider"] [data-mj="widget-game-card"]:hover img {
+  transform: none !important;
+  scale: 1 !important;
+}
+
+main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj="widget-game-slider"] [data-mj="widget-game-card"] img {
+  transition:
+    filter 0.22s ease,
+    opacity 0.22s ease !important;
+}
+
+main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj="widget-game-slider"] [data-mj="widget-game-card"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.18) 42%, transparent 62%),
+    radial-gradient(circle at 50% 0%, rgba(255, 64, 106, 0.18), transparent 38%);
+  opacity: 0;
+  transform: translateX(-35%) skewX(-10deg);
+  transition:
+    opacity 0.22s ease,
+    transform 0.32s ease !important;
+}
+
+main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj="widget-game-slider"] [data-mj="widget-game-card"]:hover {
+  border-color: rgba(255, 84, 124, 0.78) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.14),
+    inset 0 0 20px rgba(255, 64, 106, 0.14),
+    0 0 22px rgba(255, 64, 106, 0.22),
+    0 12px 24px rgba(0, 0, 0, 0.28) !important;
+  filter: brightness(1.04) saturate(1.04) !important;
+}
+
+main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj="widget-game-slider"] [data-mj="widget-game-card"]:hover img {
+  filter: brightness(1.07) contrast(1.03) !important;
+}
+
+main[data-mj="page-content"] > section[data-mj="widget-pages"] + section[data-mj="widget-game-slider"] [data-mj="widget-game-card"]:hover::after {
+  opacity: 1;
+  transform: translateX(35%) skewX(-10deg);
 }
 
 [data-mj="widget-bet-win-container"] {
