@@ -59,6 +59,11 @@ html body ul#ul > [data-mj="header-nav-item"]:first-of-type > [class~="sl-navlin
   color: #fff !important;
 }
 
+html body [data-mj="header"]:has([data-mj="custom-header"] button[aria-label="user"]) ul#ul > [data-mj="header-nav-item"]:first-of-type > .sl-navlink,
+html body [data-mj="header"]:has([data-mj="custom-header"] button[aria-label="user"]) ul#ul > [data-mj="header-nav-item"]:first-of-type > [class~="sl-navlink"] {
+  right: 578px !important;
+}
+
 html body [data-mj="widget-banner-link"] {
   height: 520px !important;
 }
