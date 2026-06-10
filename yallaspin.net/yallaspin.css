@@ -281,9 +281,15 @@ body * {
 }
 
 [data-mj="bottom-nav"] [data-mj="bottom-nav-item"]:nth-of-type(4) > span {
-  color: #ffd66b !important;
   width: 27px !important;
   height: 27px !important;
+  color: transparent !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+  background-image: url("https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/yallaspin.net/world-cup.png") !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
 }
 
 [data-mj="bottom-nav"] [data-mj="bottom-nav-item"]:nth-of-type(5) {
