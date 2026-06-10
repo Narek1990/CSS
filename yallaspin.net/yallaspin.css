@@ -271,6 +271,8 @@ body * {
 
 [data-mj="bottom-nav"] [data-mj="bottom-nav-item"]:nth-of-type(4) {
   order: 3 !important;
+  width: 60px !important;
+  height: 60px !important;
   box-shadow: 0 14px 28px rgb(30 93 45 / 26%), 0 0 24px rgb(55 162 105 / 16%), inset 0 1px 0 rgb(55 154 73 / 24%) !important;
   transform: translateY(-6px) !important;
   padding: 8px 6px 7px !important;
@@ -279,6 +281,8 @@ body * {
 
 [data-mj="bottom-nav"] [data-mj="bottom-nav-item"]:nth-of-type(4) > span {
   color: #ffd66b !important;
+  width: 25px !important;
+  height: 25px !important;
 }
 
 [data-mj="bottom-nav"] [data-mj="bottom-nav-item"]:nth-of-type(5) {
