@@ -267,6 +267,7 @@ body * {
 
 [data-mj="bottom-nav"] [data-mj="bottom-nav-item"]:nth-of-type(3) {
   order: 2 !important;
+  margin-left: 10px !important;
 }
 
 [data-mj="bottom-nav"] [data-mj="bottom-nav-item"]:nth-of-type(4) {
@@ -281,8 +282,8 @@ body * {
 
 [data-mj="bottom-nav"] [data-mj="bottom-nav-item"]:nth-of-type(4) > span {
   color: #ffd66b !important;
-  width: 25px !important;
-  height: 25px !important;
+  width: 27px !important;
+  height: 27px !important;
 }
 
 [data-mj="bottom-nav"] [data-mj="bottom-nav-item"]:nth-of-type(5) {
