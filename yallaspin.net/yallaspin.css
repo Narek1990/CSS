@@ -25,12 +25,22 @@
   display: none !important;
 }
 
-[data-mj="bottom-nav"] .app-ltr-ja3k2i > [data-mj="bottom-nav-item"]:nth-of-type(4) {
-  order: -1 !important;
-  background-color: rgb(0, 170, 87) !important;
-  color: #000 !important;
+[data-mj="bottom-nav"] .app-ltr-ja3k2i > [data-mj="bottom-nav-item"]:nth-of-type(2) {
+  order: 1 !important;
 }
 
-[data-mj="bottom-nav"] .app-ltr-ja3k2i > [data-mj="bottom-nav-item"]:nth-of-type(4) > span {
-  color: #000 !important;
+[data-mj="bottom-nav"] .app-ltr-ja3k2i > [data-mj="bottom-nav-item"]:nth-of-type(3) {
+  order: 2 !important;
+}
+
+[data-mj="bottom-nav"] .app-ltr-ja3k2i > [data-mj="bottom-nav-item"]:nth-of-type(4) {
+  order: 3 !important;
+}
+
+[data-mj="bottom-nav"] .app-ltr-ja3k2i > [data-mj="bottom-nav-item"]:nth-of-type(5) {
+  order: 4 !important;
+}
+
+[data-mj="bottom-nav"] .app-ltr-ja3k2i > [data-mj="bottom-nav-item"]:nth-of-type(6) {
+  order: 5 !important;
 }
