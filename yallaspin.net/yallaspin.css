@@ -289,18 +289,22 @@ body * {
   width: 60px !important;
   height: 60px !important;
   z-index: 999999999999999999 !important;
-  box-shadow: 0 14px 28px rgb(30 93 45 / 26%), 0 0 24px rgb(55 162 105 / 16%), inset 0 1px 0 rgb(55 154 73 / 24%) !important;
   transform: translateY(-6px) !important;
   padding: 8px 6px 7px !important;
   margin-left: 10px !important;
+  color: transparent !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  text-indent: -9999px !important;
+  overflow: visible !important;
 }
 
 [data-mj="bottom-nav"] [data-mj="bottom-nav-item"]:nth-of-type(4) > span {
   position: fixed !important;
-  top: -25px !important;
+  top: -14px !important;
   z-index: 999999999999999999 !important;
-  width: 27px !important;
-  height: 27px !important;
+  width: 70px !important;
+  height: 70px !important;
   color: transparent !important;
   mask-image: none !important;
   -webkit-mask-image: none !important;
