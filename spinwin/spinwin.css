@@ -54,30 +54,27 @@ html body [data-mj="sidebar"][class~="app-ltr-1huuf1k"] {
 
 html body [data-mj="sidebar-nav-list"] > li.app-ltr-es55kh,
 html body [data-mj="sidebar-nav-list"] > li[class~="app-ltr-es55kh"] {
-  width: 181px !important;
-  margin-left: 53px !important;
+  display: none !important;
 }
 
 html body [data-mj="sidebar-nav-list"] > li.app-ltr-es55kh > [data-mj="sidebar-group"],
 html body [data-mj="sidebar-nav-list"] > li[class~="app-ltr-es55kh"] > [data-mj="sidebar-group"] {
-  position: relative !important;
-  color: transparent !important;
+  display: none !important;
 }
 
 html body [data-mj="sidebar-nav-list"] > li.app-ltr-es55kh > [data-mj="sidebar-group"]::after,
 html body [data-mj="sidebar-nav-list"] > li[class~="app-ltr-es55kh"] > [data-mj="sidebar-group"]::after {
-  color: #fff !important;
-  font-weight: 600 !important;
+  content: none !important;
 }
 
 html body [data-mj="sidebar-nav-list"] > li.app-ltr-es55kh > [data-mj="sidebar-group"][href*="/g-sports/"]::after,
 html body [data-mj="sidebar-nav-list"] > li[class~="app-ltr-es55kh"] > [data-mj="sidebar-group"][href*="/g-sports/"]::after {
-  content: "Sport" !important;
+  content: none !important;
 }
 
 html body [data-mj="sidebar-nav-list"] > li.app-ltr-es55kh > [data-mj="sidebar-group"][href*="/g-casino-lobby/"]::after,
 html body [data-mj="sidebar-nav-list"] > li[class~="app-ltr-es55kh"] > [data-mj="sidebar-group"][href*="/g-casino-lobby/"]::after {
-  content: "Casino" !important;
+  content: none !important;
 }
 
 html body [data-mj="sidebar-collapse"] {
@@ -122,6 +119,10 @@ html body .app-ltr-i58pjb {
 }
 
 html body [data-mj="widget-banner"] {
+  margin-top: 70px !important;
+}
+
+html body [data-mj="page-content"]:has(#sportsbook-wrapper) {
   margin-top: 70px !important;
 }
 
