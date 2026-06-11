@@ -35,7 +35,6 @@ html body [class~="app-ltr-dxx3hd"] {
 html body [data-mj="sidebar"] {
   padding: 0 !important;
   top: 70px !important;
-  width: 83px !important;
 }
 
 html body [data-mj="sidebar-content"] {
@@ -43,27 +42,41 @@ html body [data-mj="sidebar-content"] {
   border-radius: 6px !important;
 }
 
+html body [data-mj="sidebar"].app-ltr-17u1px6,
+html body [data-mj="sidebar"][class~="app-ltr-17u1px6"] {
+  width: 83px !important;
+}
+
+html body [data-mj="sidebar"].app-ltr-1huuf1k,
+html body [data-mj="sidebar"][class~="app-ltr-1huuf1k"] {
+  width: 250px !important;
+}
+
 html body [data-mj="sidebar-nav-list"] > li.app-ltr-es55kh,
-html body [data-mj="sidebar-nav-list"] > li:has(> [data-mj="sidebar-group"]) {
+html body [data-mj="sidebar-nav-list"] > li[class~="app-ltr-es55kh"] {
   width: 181px !important;
   margin-left: 53px !important;
 }
 
-html body [data-mj="sidebar-nav-list"] > li > [data-mj="sidebar-group"] {
+html body [data-mj="sidebar-nav-list"] > li.app-ltr-es55kh > [data-mj="sidebar-group"],
+html body [data-mj="sidebar-nav-list"] > li[class~="app-ltr-es55kh"] > [data-mj="sidebar-group"] {
   position: relative !important;
   color: transparent !important;
 }
 
-html body [data-mj="sidebar-nav-list"] > li > [data-mj="sidebar-group"]::after {
+html body [data-mj="sidebar-nav-list"] > li.app-ltr-es55kh > [data-mj="sidebar-group"]::after,
+html body [data-mj="sidebar-nav-list"] > li[class~="app-ltr-es55kh"] > [data-mj="sidebar-group"]::after {
   color: #fff !important;
   font-weight: 600 !important;
 }
 
-html body [data-mj="sidebar-nav-list"] > li > [data-mj="sidebar-group"][href*="/g-sports/"]::after {
+html body [data-mj="sidebar-nav-list"] > li.app-ltr-es55kh > [data-mj="sidebar-group"][href*="/g-sports/"]::after,
+html body [data-mj="sidebar-nav-list"] > li[class~="app-ltr-es55kh"] > [data-mj="sidebar-group"][href*="/g-sports/"]::after {
   content: "Sport" !important;
 }
 
-html body [data-mj="sidebar-nav-list"] > li > [data-mj="sidebar-group"][href*="/g-casino-lobby/"]::after {
+html body [data-mj="sidebar-nav-list"] > li.app-ltr-es55kh > [data-mj="sidebar-group"][href*="/g-casino-lobby/"]::after,
+html body [data-mj="sidebar-nav-list"] > li[class~="app-ltr-es55kh"] > [data-mj="sidebar-group"][href*="/g-casino-lobby/"]::after {
   content: "Casino" !important;
 }
 
