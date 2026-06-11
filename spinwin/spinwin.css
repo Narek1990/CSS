@@ -126,20 +126,6 @@ html body [data-mj="page-content"]:has(#sportsbook-wrapper) {
   margin-top: 70px !important;
 }
 
-html body [data-mj="login-button"] {
-  min-height: 33px !important;
-}
-
-html body [data-mj="register-button"] {
-  padding: 12px 30px !important;
-  text-align: center !important;
-  transition: 0.5s !important;
-  background-size: 200% auto !important;
-  color: #fff !important;
-  border-radius: 6px !important;
-  display: block !important;
-}
-
 html body .sl-select__control,
 html body [class~="sl-select__control"] {
   background-color: rgb(255 255 255 / 6%) !important;
@@ -183,12 +169,6 @@ html body .app-ltr-ja3k2i {
     overflow: auto !important;
   }
 
-  html body [data-mj="register-button"] {
-    min-width: 126px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
 }
 
 @media (max-width: 992px) {
