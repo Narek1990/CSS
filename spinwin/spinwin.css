@@ -54,12 +54,13 @@ html body [data-mj="sidebar"][class~="app-ltr-1huuf1k"] {
 
 html body [data-mj="sidebar-nav-list"] > li.app-ltr-es55kh,
 html body [data-mj="sidebar-nav-list"] > li[class~="app-ltr-es55kh"] {
-  display: none !important;
+  margin-bottom: 12px !important;
+  gap: 8px !important;
 }
 
 html body [data-mj="sidebar-nav-list"] > li.app-ltr-es55kh > [data-mj="sidebar-group"],
 html body [data-mj="sidebar-nav-list"] > li[class~="app-ltr-es55kh"] > [data-mj="sidebar-group"] {
-  display: none !important;
+  color: transparent !important;
 }
 
 html body [data-mj="sidebar-nav-list"] > li.app-ltr-es55kh > [data-mj="sidebar-group"]::after,
@@ -108,10 +109,6 @@ html body [data-mj="header"] {
   position: fixed !important;
 }
 
-html body [data-mj="custom-header"] {
-  padding-left: 56px !important;
-}
-
 html body [data-mj="header"] .app-ltr-i58pjb,
 html body [data-mj="header"].app-ltr-i58pjb,
 html body .app-ltr-i58pjb {
@@ -156,6 +153,10 @@ html body .app-ltr-ja3k2i {
 }
 
 @media (min-width: 993px) {
+  html body [data-mj="custom-header"] {
+    padding-left: 56px !important;
+  }
+
   html body #root.vertical-nav [data-mj="sidebar"] {
     position: sticky !important;
     top: 70px !important;
