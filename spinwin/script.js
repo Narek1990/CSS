@@ -28,8 +28,35 @@
     document.body.setAttribute("data-spinwin-theme", "true");
   }
 
+  function enableSingleCurrencyToggle() {
+    var modalTitles = document.querySelectorAll(".modal .app-ltr-1vtec85");
+
+    modalTitles.forEach(function (title) {
+      if (!title || title.textContent.trim() !== "Wallet Settings") {
+        return;
+      }
+
+      var modal = title.closest(".modal");
+
+      if (!modal) {
+        return;
+      }
+
+      var toggle = modal.querySelector('input[type="checkbox"][aria-label="Show all in single currency"]');
+
+      if (!toggle || toggle.checked || toggle.disabled) {
+        return;
+      }
+
+      toggle.click();
+      toggle.dispatchEvent(new Event("input", { bubbles: true }));
+      toggle.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+  }
+
   function runEnhancements() {
     addBodyFlag();
+    enableSingleCurrencyToggle();
   }
 
   var observer = new MutationObserver(runEnhancements);
