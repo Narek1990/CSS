@@ -178,6 +178,10 @@ html body [data-mj="widget-banner"] {
   margin-top: 70px !important;
 }
 
+html body [data-mj="page-content"]:has(#sportsbook-wrapper) {
+  margin-top: 70px !important;
+}
+
 html body [data-mj="content-wrapper"] {
   max-width: none !important;
 }
