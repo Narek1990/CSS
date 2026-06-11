@@ -1,0 +1,184 @@
+[data-mj-app] {
+  --main-font: "__Montserrat_069ab3", "__Montserrat_Fallback_069ab3", sans-serif !important;
+}
+
+html,
+body,
+html *,
+body * {
+  font-family: "__Montserrat_069ab3", "__Montserrat_Fallback_069ab3", sans-serif !important;
+}
+
+html body [data-mj="widget-bet-win-container"],
+html body [data-mj="widget-game-slider-container"],
+html body [data-mj="widget-fixed-image-banner-container"],
+html body [data-mj="widget-collection-slider-container"],
+html body [data-mj="widget-phoenix-sport-header-container"],
+html body [data-mj="widget-phoenix-sport-container"] {
+  max-width: none !important;
+}
+
+html body [data-mj="widget-fixed-image-banner-container"] .app-ltr-1l44gyp,
+html body [data-mj="widget-fixed-image-banner-container"] [class~="app-ltr-1l44gyp"],
+html body [data-mj="widget-top-providers"] .app-ltr-1l44gyp,
+html body [data-mj="widget-top-providers"] [class~="app-ltr-1l44gyp"] {
+  max-width: 2000px !important;
+}
+
+html body .app-ltr-27yrbd,
+html body [class~="app-ltr-27yrbd"],
+html body .app-ltr-dxx3hd,
+html body [class~="app-ltr-dxx3hd"] {
+  border-radius: 10px !important;
+}
+
+html body [data-mj="sidebar"] {
+  padding: 0 !important;
+  top: 70px !important;
+  width: 83px !important;
+}
+
+html body [data-mj="sidebar-content"] {
+  height: 91% !important;
+  border-radius: 6px !important;
+}
+
+html body [data-mj="sidebar-nav-list"] > li.app-ltr-es55kh,
+html body [data-mj="sidebar-nav-list"] > li:has(> [data-mj="sidebar-group"]) {
+  width: 181px !important;
+  margin-left: 53px !important;
+}
+
+html body [data-mj="sidebar-nav-list"] > li > [data-mj="sidebar-group"] {
+  position: relative !important;
+  color: transparent !important;
+}
+
+html body [data-mj="sidebar-nav-list"] > li > [data-mj="sidebar-group"]::after {
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+html body [data-mj="sidebar-nav-list"] > li > [data-mj="sidebar-group"][href*="/g-sports/"]::after {
+  content: "Sport" !important;
+}
+
+html body [data-mj="sidebar-nav-list"] > li > [data-mj="sidebar-group"][href*="/g-casino-lobby/"]::after {
+  content: "Casino" !important;
+}
+
+html body [data-mj="sidebar-collapse"] {
+  position: absolute !important;
+  top: -56px !important;
+  left: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+}
+
+html body [data-mj="sidebar-collapse"] > svg {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html body [data-mj="sidebar-collapse"]::before {
+  content: "" !important;
+  display: block !important;
+  width: 17px !important;
+  height: 12px !important;
+  background: url("./sidebar-collapse.svg") center / contain no-repeat !important;
+}
+
+html body [data-mj="header"] {
+  position: fixed !important;
+}
+
+html body [data-mj="custom-header"] {
+  padding-left: 56px !important;
+}
+
+html body [data-mj="header"] .app-ltr-i58pjb,
+html body [data-mj="header"].app-ltr-i58pjb,
+html body .app-ltr-i58pjb {
+  max-width: none !important;
+}
+
+html body [data-mj="widget-banner"] {
+  margin-top: 70px !important;
+}
+
+html body [data-mj="login-button"] {
+  min-height: 33px !important;
+}
+
+html body [data-mj="register-button"] {
+  padding: 12px 30px !important;
+  text-align: center !important;
+  transition: 0.5s !important;
+  background-size: 200% auto !important;
+  color: #fff !important;
+  border-radius: 6px !important;
+  display: block !important;
+}
+
+html body .sl-select__control,
+html body [class~="sl-select__control"] {
+  background-color: rgb(255 255 255 / 6%) !important;
+  border-color: #181f3d !important;
+}
+
+html body [data-mj="widget-game-card"],
+html body [data-mj="widget-game-slider-slide"] {
+  border-radius: 6px !important;
+  margin-left: 2px !important;
+}
+
+html body [data-mj="widget-top-providers-item"] {
+  position: relative !important;
+  overflow: hidden !important;
+  border: 1px solid rgb(0 107 170 / 32%) !important;
+  border-radius: 18px !important;
+  background: radial-gradient(circle at 20% 10%, rgb(0 143 255 / 20%), transparent 34%), radial-gradient(circle at 85% 20%, rgb(70 130 255 / 18%), transparent 32%), radial-gradient(circle at 50% 100%, rgb(0 90 255 / 14%), transparent 42%), rgb(5 10 14 / 72%) !important;
+  box-shadow: 0 18px 45px rgb(0 0 0 / 34%), 0 0 28px rgb(80 120 174 / 24%), inset 0 1px 0 rgb(255 255 255 / 16%), inset 0 0 26px rgb(0 90 170 / 10%) !important;
+  backdrop-filter: blur(16px) saturate(1.35) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.35) !important;
+}
+
+html body .app-ltr-ja3k2i {
+  background-color: rgb(255 255 255 / 6%) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+@media (min-width: 993px) {
+  html body #root.vertical-nav [data-mj="sidebar"] {
+    position: sticky !important;
+    top: 70px !important;
+    align-self: flex-start !important;
+    z-index: 40 !important;
+    height: calc(100vh - 70px) !important;
+  }
+
+  html body #root.vertical-nav [data-mj="sidebar-content"] {
+    height: calc(100vh - 86px) !important;
+    overflow: auto !important;
+  }
+
+  html body [data-mj="register-button"] {
+    min-width: 126px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 992px) {
+  html body [data-mj="widget-banner"] {
+    margin-top: 56px !important;
+  }
+}
