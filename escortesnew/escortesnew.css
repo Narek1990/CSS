@@ -42,10 +42,10 @@
   inset: 0;
   z-index: 1;
   background:
-    radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.92), transparent 14%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.45), transparent 37%, rgba(0, 0, 0, 0.28) 100%),
-    linear-gradient(110deg, transparent 18%, rgba(255, 255, 255, 0.34) 42%, transparent 62%);
-  opacity: 0.72;
+    radial-gradient(circle at 18% 16%, rgba(255, 244, 185, 0.62), transparent 14%),
+    linear-gradient(180deg, rgba(255, 226, 132, 0.24), transparent 35%, rgba(0, 0, 0, 0.34) 100%),
+    linear-gradient(110deg, transparent 20%, rgba(255, 238, 164, 0.18) 43%, transparent 64%);
+  opacity: 0.58;
   pointer-events: none;
   mix-blend-mode: screen;
 }
@@ -86,25 +86,25 @@
 
 /* Gold Login button */
 [data-mj="login-button"] {
-  color: #261500 !important;
-  text-shadow: 0 1px 0 rgba(255, 230, 133, 0.55) !important;
+  color: #211000 !important;
+  text-shadow: 0 1px 0 rgba(238, 178, 55, 0.48) !important;
   background:
-    linear-gradient(180deg, #fff7bd 0%, #f4bd39 35%, #c97911 68%, #8a4607 100%) !important;
+    linear-gradient(180deg, #e7b548 0%, #c77a12 40%, #8b4607 70%, #4b2304 100%) !important;
   box-shadow:
-    0 0 0 1px #5d3205,
-    0 0 0 2px rgba(255, 225, 111, 0.84),
-    0 0 9px rgba(255, 188, 48, 0.8),
-    inset 0 1px 1px rgba(255, 255, 255, 0.95),
-    inset 0 -3px 4px rgba(76, 31, 0, 0.64) !important;
+    0 0 0 1px #492604,
+    0 0 0 2px rgba(218, 158, 49, 0.78),
+    0 0 8px rgba(190, 111, 17, 0.66),
+    inset 0 1px 1px rgba(255, 224, 126, 0.7),
+    inset 0 -3px 4px rgba(53, 22, 0, 0.76) !important;
 }
 
 [data-mj="login-button"]::before {
   background:
-    linear-gradient(180deg, #ffe47d 0%, #f0ad23 45%, #b96408 72%, #7a3903 100%);
-  border: 1px solid rgba(255, 247, 174, 0.95);
+    linear-gradient(180deg, #d89d30 0%, #b86a0d 45%, #783807 73%, #3e1c03 100%);
+  border: 1px solid rgba(238, 190, 78, 0.9);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.78),
-    inset 0 -1px 0 rgba(83, 35, 0, 0.75);
+    inset 0 1px 0 rgba(255, 227, 129, 0.52),
+    inset 0 -1px 0 rgba(50, 19, 0, 0.82);
 }
 
 [data-mj="login-button"] > span > span::after {
@@ -112,51 +112,51 @@
   height: 0;
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
-  border-left: 7px solid #251400;
-  filter: drop-shadow(0 1px 0 rgba(255, 226, 113, 0.38));
+  border-left: 7px solid #211000;
+  filter: drop-shadow(0 1px 0 rgba(211, 139, 27, 0.35));
 }
 
 /* Green Register button */
 [data-mj="register-button"] {
-  color: #ffd76a !important;
-  text-shadow: 0 0 5px rgba(255, 203, 88, 0.45) !important;
+  color: #d9b154 !important;
+  text-shadow: 0 0 4px rgba(204, 161, 69, 0.34) !important;
   background:
-    linear-gradient(180deg, #1f745c 0%, #005344 34%, #003a34 66%, #001d1b 100%) !important;
+    linear-gradient(180deg, #0f4e40 0%, #003d34 35%, #002d29 67%, #001817 100%) !important;
   box-shadow:
-    0 0 0 1px #042e27,
-    0 0 0 2px rgba(78, 255, 194, 0.76),
-    0 0 10px rgba(43, 255, 174, 0.72),
-    inset 0 1px 1px rgba(207, 255, 224, 0.65),
-    inset 0 -3px 4px rgba(0, 12, 12, 0.82) !important;
+    0 0 0 1px #03221f,
+    0 0 0 2px rgba(45, 186, 143, 0.7),
+    0 0 8px rgba(20, 159, 118, 0.62),
+    inset 0 1px 1px rgba(139, 235, 192, 0.45),
+    inset 0 -3px 4px rgba(0, 8, 8, 0.86) !important;
 }
 
 [data-mj="register-button"]::before {
   background:
-    linear-gradient(180deg, #0f6a53 0%, #004b3f 46%, #00352f 73%, #001a18 100%);
-  border: 1px solid rgba(124, 255, 211, 0.96);
+    linear-gradient(180deg, #084f3f 0%, #00382f 46%, #002a25 74%, #001514 100%);
+  border: 1px solid rgba(73, 217, 168, 0.88);
   box-shadow:
-    inset 0 1px 0 rgba(191, 255, 222, 0.42),
-    inset 0 -1px 0 rgba(0, 9, 9, 0.8);
+    inset 0 1px 0 rgba(130, 235, 193, 0.32),
+    inset 0 -1px 0 rgba(0, 7, 7, 0.86);
 }
 
 [data-mj="register-button"] > span > span::after {
   width: 8px;
   height: 8px;
-  border: 1px solid rgba(255, 236, 151, 0.9);
+  border: 1px solid rgba(226, 190, 83, 0.9);
   border-radius: 1px;
-  background: linear-gradient(135deg, #fff9ba 0%, #8fffe0 40%, #0f9f7b 100%);
-  box-shadow: 0 0 5px rgba(118, 255, 216, 0.9);
+  background: linear-gradient(135deg, #e8c963 0%, #5fc8ad 42%, #08745d 100%);
+  box-shadow: 0 0 4px rgba(78, 217, 176, 0.74);
   transform: rotate(45deg);
 }
 
 [data-mj="login-button"]:hover,
 [data-mj="register-button"]:hover {
   transform: translateY(-1px) !important;
-  filter: brightness(1.05) saturate(1.08) !important;
+  filter: brightness(1.04) saturate(1.06) !important;
 }
 
 [data-mj="login-button"]:active,
 [data-mj="register-button"]:active {
   transform: translateY(1px) scale(0.99) !important;
-  filter: brightness(0.96) !important;
+  filter: brightness(0.94) !important;
 }
