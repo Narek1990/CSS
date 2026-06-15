@@ -73,3 +73,9 @@ html body [data-mj="widget-banner-link"] {
     height: 322px !important;
   }
 }
+
+/* Keep the logged-in header nav in its original position. */
+html body [data-mj="header"]:has(button[aria-label="user"]) ul#ul > [data-mj="header-nav-item"]:first-of-type > .sl-navlink,
+html body [data-mj="header"]:has(button[aria-label="user"]) ul#ul > [data-mj="header-nav-item"]:first-of-type > [class~="sl-navlink"] {
+  right: 578px !important;
+}
