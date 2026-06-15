@@ -22,3 +22,10 @@
 html body [data-state][aria-haspopup="dialog"].app-ltr-1pc9g43 > .app-ltr-15c2koi {
   flex-direction: row-reverse !important;
 }
+
+@media (max-width: 768px) {
+  html body .app-ltr-15c2koi,
+  html body [class~="app-ltr-15c2koi"] {
+    flex-direction: row-reverse !important;
+  }
+}
