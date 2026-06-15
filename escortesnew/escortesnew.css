@@ -196,7 +196,7 @@ ul[data-mj="footer-nav"] > li[data-mj="footer-nav-item"] > a {
 ul[data-mj="footer-nav"] > li[data-mj="footer-nav-item"] > a:hover,
 ul[data-mj="footer-nav"] > li[data-mj="footer-nav-item"] > a.active-link,
 ul[data-mj="footer-nav"] > li[data-mj="footer-nav-item"] > a[aria-current="page"] {
-  color: #012E27 !important;
+  color: #E0AD56 !important;
 }
 
 ul[data-mj="footer-nav"] > li[data-mj="footer-nav-item"]:nth-child(7) {
@@ -210,6 +210,42 @@ ul[data-mj="footer-nav"] > li[data-mj="footer-nav-item"]:nth-child(8) {
 html body [data-mj="footer"] {
   margin-top: 30px !important;
   padding-top: 0 !important;
+}
+
+html body [data-mj="footer-content"] {
+  position: relative !important;
+}
+
+html body .escortesnew-footer-assets {
+  position: absolute !important;
+  top: 58px !important;
+  left: 47.5% !important;
+  transform: translateX(-10%) !important;
+  z-index: 3 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 18px !important;
+  min-width: 430px !important;
+  min-height: 92px !important;
+  pointer-events: auto !important;
+}
+
+html body .escortesnew-footer-assets img {
+  display: block !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+}
+
+html body .escortesnew-footer-assets img[data-escortesnew-footer-img="anjouan"] {
+  width: 112px !important;
+  max-height: 64px !important;
+}
+
+html body .escortesnew-footer-assets img[data-escortesnew-footer-img="ios"],
+html body .escortesnew-footer-assets img[data-escortesnew-footer-img="android"] {
+  width: 134px !important;
+  max-height: 42px !important;
 }
 
 html body [data-mj="footer-content"] .app-ltr-19zdw54 .app-ltr-e92i57,
@@ -233,5 +269,18 @@ html body [data-mj="footer-content"] [class~="app-ltr-19zdw54"] [class~="app-ltr
   ul[data-mj="footer-nav"] > li[data-mj="footer-nav-item"]:nth-child(7),
   ul[data-mj="footer-nav"] > li[data-mj="footer-nav-item"]:nth-child(8) {
     grid-column: auto !important;
+  }
+}
+
+@media (max-width: 1199px) {
+  html body .escortesnew-footer-assets {
+    position: static !important;
+    transform: none !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    margin: 24px 0 8px !important;
   }
 }
