@@ -35,9 +35,17 @@
     wrap.className = "escortesnew-footer-assets";
     wrap.setAttribute("data-escortesnew-footer-assets", "true");
 
-    wrap.appendChild(buildImage(ASSET_BASE + "/footer/anjouan-logo.png", "Anjouan license", "anjouan"));
-    wrap.appendChild(buildImage(ASSET_BASE + "/footer/ios-img.svg", "Download on iOS", "ios"));
-    wrap.appendChild(buildImage(ASSET_BASE + "/footer/android-img.svg", "Download on Android", "android"));
+    var apps = document.createElement("div");
+    apps.className = "escortesnew-footer-assets-apps";
+    apps.appendChild(buildImage(ASSET_BASE + "/footer/ios-img.svg", "Download on iOS", "ios"));
+    apps.appendChild(buildImage(ASSET_BASE + "/footer/android-img.svg", "Download on Android", "android"));
+
+    var license = document.createElement("div");
+    license.className = "escortesnew-footer-assets-license";
+    license.appendChild(buildImage(ASSET_BASE + "/footer/anjouan-logo.png", "Anjouan license", "anjouan"));
+
+    wrap.appendChild(apps);
+    wrap.appendChild(license);
 
     content.insertBefore(wrap, target || null);
   }
