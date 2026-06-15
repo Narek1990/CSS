@@ -1,35 +1,37 @@
-/* Escortesnew header buttons: gold login and green register */
+/* Escortesnew compact header buttons: gold login and green register */
 [data-mj="login-button"],
 [data-mj="register-button"] {
   position: relative !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 178px !important;
-  height: 58px !important;
+  width: 114px !important;
+  height: 28px !important;
+  min-width: 114px !important;
+  min-height: 28px !important;
   border: 0 !important;
-  border-radius: 13px !important;
+  border-radius: 9px !important;
   box-sizing: border-box !important;
   cursor: pointer !important;
   overflow: hidden !important;
   isolation: isolate !important;
   text-decoration: none !important;
   font-family: "Trebuchet MS", Arial, sans-serif !important;
-  font-size: 19px !important;
+  font-size: 12px !important;
   font-weight: 800 !important;
   line-height: 1 !important;
-  letter-spacing: 0.5px !important;
+  letter-spacing: 0.65px !important;
   text-transform: uppercase !important;
-  transition: transform 160ms ease, filter 160ms ease !important;
+  transition: transform 140ms ease, filter 140ms ease !important;
 }
 
 [data-mj="login-button"]::before,
 [data-mj="register-button"]::before {
   content: "";
   position: absolute;
-  inset: 4px;
-  border-radius: 10px;
+  inset: 2px;
   z-index: 0;
+  border-radius: 7px;
   pointer-events: none;
 }
 
@@ -40,10 +42,12 @@
   inset: 0;
   z-index: 1;
   background:
-    radial-gradient(circle at 25% 20%, rgba(255, 255, 255, 0.75), transparent 18%),
-    linear-gradient(120deg, transparent 25%, rgba(255, 255, 255, 0.35), transparent 55%);
-  opacity: 0.55;
+    radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.92), transparent 14%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.45), transparent 37%, rgba(0, 0, 0, 0.28) 100%),
+    linear-gradient(110deg, transparent 18%, rgba(255, 255, 255, 0.34) 42%, transparent 62%);
+  opacity: 0.72;
   pointer-events: none;
+  mix-blend-mode: screen;
 }
 
 [data-mj="login-button"] > span,
@@ -55,72 +59,104 @@
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 100% !important;
-  height: 100% !important;
   color: inherit !important;
   font: inherit !important;
   letter-spacing: inherit !important;
   text-transform: inherit !important;
-  text-shadow: none !important;
+  text-shadow: inherit !important;
 }
 
-/* Golden Login button */
+[data-mj="login-button"] > span,
+[data-mj="register-button"] > span {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+[data-mj="login-button"] > span > span,
+[data-mj="register-button"] > span > span {
+  gap: 7px !important;
+}
+
+[data-mj="login-button"] > span > span::after,
+[data-mj="register-button"] > span > span::after {
+  content: "";
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+/* Gold Login button */
 [data-mj="login-button"] {
-  color: #2b1700 !important;
-  background: linear-gradient(180deg, #fff6a7 0%, #f4b733 42%, #a7640d 100%) !important;
+  color: #261500 !important;
+  text-shadow: 0 1px 0 rgba(255, 230, 133, 0.55) !important;
+  background:
+    linear-gradient(180deg, #fff7bd 0%, #f4bd39 35%, #c97911 68%, #8a4607 100%) !important;
   box-shadow:
-    0 0 0 2px #6b3b08,
-    0 0 0 4px rgba(255, 207, 76, 0.55),
-    0 0 18px rgba(255, 187, 45, 0.8),
-    inset 0 2px 4px rgba(255, 255, 255, 0.85),
-    inset 0 -5px 8px rgba(82, 38, 0, 0.55) !important;
+    0 0 0 1px #5d3205,
+    0 0 0 2px rgba(255, 225, 111, 0.84),
+    0 0 9px rgba(255, 188, 48, 0.8),
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    inset 0 -3px 4px rgba(76, 31, 0, 0.64) !important;
 }
 
 [data-mj="login-button"]::before {
-  background: linear-gradient(180deg, #ffe983, #d99018 55%, #7d3d05);
-  border: 1px solid #fff0a0;
+  background:
+    linear-gradient(180deg, #ffe47d 0%, #f0ad23 45%, #b96408 72%, #7a3903 100%);
+  border: 1px solid rgba(255, 247, 174, 0.95);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    inset 0 -1px 0 rgba(83, 35, 0, 0.75);
+}
+
+[data-mj="login-button"] > span > span::after {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 7px solid #251400;
+  filter: drop-shadow(0 1px 0 rgba(255, 226, 113, 0.38));
 }
 
 /* Green Register button */
 [data-mj="register-button"] {
-  color: #ffd865 !important;
-  background: linear-gradient(180deg, #0e5d46 0%, #003d35 52%, #01241f 100%) !important;
+  color: #ffd76a !important;
+  text-shadow: 0 0 5px rgba(255, 203, 88, 0.45) !important;
+  background:
+    linear-gradient(180deg, #1f745c 0%, #005344 34%, #003a34 66%, #001d1b 100%) !important;
   box-shadow:
-    0 0 0 2px #053328,
-    0 0 0 4px rgba(67, 255, 187, 0.5),
-    0 0 18px rgba(43, 255, 169, 0.75),
-    inset 0 2px 4px rgba(190, 255, 220, 0.55),
-    inset 0 -5px 8px rgba(0, 15, 13, 0.75) !important;
+    0 0 0 1px #042e27,
+    0 0 0 2px rgba(78, 255, 194, 0.76),
+    0 0 10px rgba(43, 255, 174, 0.72),
+    inset 0 1px 1px rgba(207, 255, 224, 0.65),
+    inset 0 -3px 4px rgba(0, 12, 12, 0.82) !important;
 }
 
 [data-mj="register-button"]::before {
-  background: linear-gradient(180deg, #066b52, #003e36 55%, #001b18);
-  border: 1px solid #74ffd0;
+  background:
+    linear-gradient(180deg, #0f6a53 0%, #004b3f 46%, #00352f 73%, #001a18 100%);
+  border: 1px solid rgba(124, 255, 211, 0.96);
+  box-shadow:
+    inset 0 1px 0 rgba(191, 255, 222, 0.42),
+    inset 0 -1px 0 rgba(0, 9, 9, 0.8);
+}
+
+[data-mj="register-button"] > span > span::after {
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(255, 236, 151, 0.9);
+  border-radius: 1px;
+  background: linear-gradient(135deg, #fff9ba 0%, #8fffe0 40%, #0f9f7b 100%);
+  box-shadow: 0 0 5px rgba(118, 255, 216, 0.9);
+  transform: rotate(45deg);
 }
 
 [data-mj="login-button"]:hover,
 [data-mj="register-button"]:hover {
   transform: translateY(-1px) !important;
-  filter: brightness(1.04) !important;
+  filter: brightness(1.05) saturate(1.08) !important;
 }
 
 [data-mj="login-button"]:active,
 [data-mj="register-button"]:active {
   transform: translateY(1px) scale(0.99) !important;
-}
-
-@media (max-width: 480px) {
-  [data-mj="login-button"],
-  [data-mj="register-button"] {
-    width: 148px !important;
-    height: 48px !important;
-    border-radius: 11px !important;
-    font-size: 16px !important;
-  }
-
-  [data-mj="login-button"]::before,
-  [data-mj="register-button"]::before {
-    inset: 3px;
-    border-radius: 8px;
-  }
+  filter: brightness(0.96) !important;
 }
