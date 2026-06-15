@@ -1,3 +1,24 @@
+[data-mj="widget-phoenix-sport-container"] .ph-event-header,
+#ph-sport-widget .ph-event-header {
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  padding: 4px !important;
+}
+
+[data-mj="widget-phoenix-sport-container"] .ph-outcome,
+#ph-sport-widget .ph-outcome {
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+}
+
+[data-mj="widget-phoenix-sport-container"] .ph-participant,
+#ph-sport-widget .ph-participant {
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  border-radius: 4px !important;
+  padding: 2px !important;
+}
+
 html body [data-state][aria-haspopup="dialog"].app-ltr-1pc9g43 > .app-ltr-15c2koi {
   flex-direction: row-reverse !important;
 }
