@@ -19,6 +19,116 @@
   padding: 2px !important;
 }
 
+[data-mj="widget-phoenix-sport"] #ph-sport-widget,
+[data-mj="widget-phoenix-sport-container"] #ph-sport-widget {
+  position: relative !important;
+}
+
+[data-mj="widget-phoenix-sport"] .top-events,
+[data-mj="widget-phoenix-sport-container"] .top-events {
+  scroll-behavior: smooth !important;
+}
+
+[data-mj="widget-phoenix-sport"] .slider-nav,
+[data-mj="widget-phoenix-sport-container"] .slider-nav,
+#ph-sport-widget .slider-nav {
+  display: flex !important;
+  gap: 10px !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  margin: 0 0 12px auto !important;
+  width: max-content !important;
+}
+
+[data-mj="widget-phoenix-sport"] .nav-btn,
+[data-mj="widget-phoenix-sport-container"] .nav-btn,
+#ph-sport-widget .nav-btn {
+  width: 42px !important;
+  height: 42px !important;
+  border: none !important;
+  cursor: pointer !important;
+  border-radius: 12px !important;
+  background:
+    linear-gradient(
+      145deg,
+      #1a1a1a,
+      #0d0d0d
+    ) !important;
+  color: #8cff00 !important;
+  font-size: 24px !important;
+  font-weight: bold !important;
+  position: relative !important;
+  overflow: hidden !important;
+  box-shadow:
+    0 0 12px rgba(140, 255, 0, 0.15),
+    inset 0 0 8px rgba(140, 255, 0, 0.08) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease !important;
+}
+
+[data-mj="widget-phoenix-sport"] .nav-btn:hover,
+[data-mj="widget-phoenix-sport-container"] .nav-btn:hover,
+#ph-sport-widget .nav-btn:hover {
+  transform: scale(1.08) !important;
+  box-shadow:
+    0 0 20px rgba(140, 255, 0, 0.45),
+    0 0 40px rgba(140, 255, 0, 0.15) !important;
+}
+
+[data-mj="widget-phoenix-sport"] .nav-btn::before,
+[data-mj="widget-phoenix-sport-container"] .nav-btn::before,
+#ph-sport-widget .nav-btn::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -100% !important;
+  width: 60% !important;
+  height: 100% !important;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(140, 255, 0, 0.5),
+      transparent
+    ) !important;
+  transform: skewX(-25deg) !important;
+  animation: inancbet-shine 2.5s linear infinite !important;
+}
+
+[data-mj="widget-phoenix-sport"] .nav-btn::after,
+[data-mj="widget-phoenix-sport-container"] .nav-btn::after,
+#ph-sport-widget .nav-btn::after {
+  position: relative !important;
+  z-index: 1 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+}
+
+[data-mj="widget-phoenix-sport"] .nav-btn.prev::after,
+[data-mj="widget-phoenix-sport-container"] .nav-btn.prev::after,
+#ph-sport-widget .nav-btn.prev::after {
+  content: "\276E" !important;
+}
+
+[data-mj="widget-phoenix-sport"] .nav-btn.next::after,
+[data-mj="widget-phoenix-sport-container"] .nav-btn.next::after,
+#ph-sport-widget .nav-btn.next::after {
+  content: "\276F" !important;
+}
+
+@keyframes inancbet-shine {
+  100% {
+    left: 180%;
+  }
+}
+
+[data-mj="widget-phoenix-sport"] .nav-btn:active,
+[data-mj="widget-phoenix-sport-container"] .nav-btn:active,
+#ph-sport-widget .nav-btn:active {
+  transform: scale(0.95) !important;
+}
+
 html body [data-state][aria-haspopup="dialog"].app-ltr-1pc9g43 > .app-ltr-15c2koi {
   flex-direction: row-reverse !important;
 }
