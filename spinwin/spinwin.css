@@ -163,7 +163,7 @@ html body .app-ltr-m6gvz8 {
     top: 70px !important;
     align-self: flex-start !important;
     z-index: 40 !important;
-    height: calc(100vh - 70px) !important;
+    height: calc(100vh - 65px) !important;
   }
 
   html body #root.vertical-nav [data-mj="sidebar-content"] {
@@ -175,6 +175,10 @@ html body .app-ltr-m6gvz8 {
 
 html body [data-mj="promotions-page"] {
   margin-top: 66px !important;
+}
+
+html body [data-mj="promotion-details"] {
+  margin-top: 40px !important;
 }
 
 @media (max-width: 992px) {
