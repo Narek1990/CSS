@@ -486,29 +486,18 @@ html body .sl-select__menu[class~="app-ltr-zktdmf-menu"] {
   z-index: 999999999999 !important;
 }
 
-html body [data-mj="header-nav-item"] > a > span[style*="mask-image"],
-html body [data-mj="header-nav-item"] > a > span[class~="app-ltr-d34pj1"] {
-  display: inline-block !important;
+html body [data-mj="header-nav-item"] > a > span[data-escortesnew-bg-icon="true"] {
+  margin-right: 8px !important;
+  display: block !important;
   flex: 0 0 auto !important;
-  width: 24px !important;
-  height: 24px !important;
-  background-color: #D4AF37 !important;
-  color: #D4AF37 !important;
-  -webkit-mask-repeat: no-repeat !important;
-  mask-repeat: no-repeat !important;
-  -webkit-mask-position: center !important;
-  mask-position: center !important;
-  -webkit-mask-size: contain !important;
-  mask-size: contain !important;
-  transition: background-color 0.2s ease, filter 0.2s ease !important;
-}
-
-html body [data-mj="header-nav-item"] > a:hover > span[style*="mask-image"],
-html body [data-mj="header-nav-item"] > a:hover > span[class~="app-ltr-d34pj1"],
-html body [data-mj="header-nav-item"] > a.active-link > span[style*="mask-image"],
-html body [data-mj="header-nav-item"] > a.active-link > span[class~="app-ltr-d34pj1"],
-html body [data-mj="header-nav-item"] > a[aria-current="page"] > span[style*="mask-image"],
-html body [data-mj="header-nav-item"] > a[aria-current="page"] > span[class~="app-ltr-d34pj1"] {
-  background-color: #E0AD56 !important;
-  filter: drop-shadow(0 0 8px rgba(224, 173, 86, 0.45)) !important;
+  width: 20px !important;
+  height: 20px !important;
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-color: transparent !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  -webkit-mask: none !important;
+  mask: none !important;
 }

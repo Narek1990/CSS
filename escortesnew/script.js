@@ -60,9 +60,37 @@
     content.insertBefore(wrap, target || null);
   }
 
+  function extractMaskUrl(value) {
+    var match = value && value.match(/url\((['"]?)(.*?)\1\)/);
+    return match && match[2] ? match[2] : "";
+  }
+
+  function convertHeaderMaskIcons() {
+    document.querySelectorAll('[data-mj="header-nav-item"] > a > span').forEach(function (icon) {
+      if (icon.getAttribute("data-escortesnew-bg-icon") === "true") return;
+
+      var inlineMask = icon.style && (icon.style.maskImage || icon.style.webkitMaskImage);
+      var computed = window.getComputedStyle(icon);
+      var computedMask = computed.maskImage || computed.webkitMaskImage;
+      var iconUrl = extractMaskUrl(inlineMask) || extractMaskUrl(computedMask);
+
+      if (!iconUrl) return;
+
+      icon.style.backgroundImage = 'url("' + iconUrl + '")';
+      icon.style.backgroundSize = "contain";
+      icon.style.backgroundRepeat = "no-repeat";
+      icon.style.backgroundPosition = "center";
+      icon.style.backgroundColor = "transparent";
+      icon.style.maskImage = "none";
+      icon.style.webkitMaskImage = "none";
+      icon.setAttribute("data-escortesnew-bg-icon", "true");
+    });
+  }
+
   function boot() {
     ensureCss();
     ensureFooterAssets();
+    convertHeaderMaskIcons();
   }
 
   boot();
