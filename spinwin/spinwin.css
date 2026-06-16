@@ -23,8 +23,14 @@ html body [data-mj="widget-banner-container"].app-ltr-1l44gyp,
 html body [data-mj="widget-banner-container"][class~="app-ltr-1l44gyp"],
 html body [data-mj="widget-bet-win-container"].app-ltr-1l44gyp,
 html body [data-mj="widget-bet-win-container"][class~="app-ltr-1l44gyp"],
+html body [data-mj="widget-top-providers"].app-ltr-1l44gyp,
+html body [data-mj="widget-top-providers"][class~="app-ltr-1l44gyp"],
 html body [data-mj="widget-phoenix-sport-container"].app-ltr-1l44gyp,
-html body [data-mj="widget-phoenix-sport-container"][class~="app-ltr-1l44gyp"] {
+html body [data-mj="widget-phoenix-sport-container"][class~="app-ltr-1l44gyp"],
+html body [data-mj="widget-pages-container"].app-ltr-1l44gyp,
+html body [data-mj="widget-pages-container"][class~="app-ltr-1l44gyp"],
+html body [data-mj="footer"] > .app-ltr-1l44gyp,
+html body [data-mj="footer"] > [class~="app-ltr-1l44gyp"] {
   max-width: none !important;
   width: 100% !important;
 }
