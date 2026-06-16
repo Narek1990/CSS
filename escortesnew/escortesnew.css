@@ -486,6 +486,18 @@ html body .sl-select__menu[class~="app-ltr-zktdmf-menu"] {
   z-index: 999999999999 !important;
 }
 
+html body [data-mj="header"] > .app-ltr-i58pjb,
+html body [data-mj="header"] > [class~="app-ltr-i58pjb"] {
+  max-width: none !important;
+  padding-left: 6px !important;
+  padding-right: 6px !important;
+}
+
+html body .app-ltr-1jpm9pd,
+html body [class~="app-ltr-1jpm9pd"] {
+  padding-bottom: 0 !important;
+}
+
 html body [data-mj="header-nav-item"] > a > span[data-escortesnew-bg-icon="true"] {
   margin-right: 8px !important;
   display: block !important;
