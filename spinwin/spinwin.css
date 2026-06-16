@@ -19,6 +19,16 @@ html body [data-mj="widget-phoenix-sport-container"] {
   max-width: none !important;
 }
 
+html body [data-mj="widget-banner-container"].app-ltr-1l44gyp,
+html body [data-mj="widget-banner-container"][class~="app-ltr-1l44gyp"],
+html body [data-mj="widget-bet-win-container"].app-ltr-1l44gyp,
+html body [data-mj="widget-bet-win-container"][class~="app-ltr-1l44gyp"],
+html body [data-mj="widget-phoenix-sport-container"].app-ltr-1l44gyp,
+html body [data-mj="widget-phoenix-sport-container"][class~="app-ltr-1l44gyp"] {
+  max-width: none !important;
+  width: 100% !important;
+}
+
 html body [data-mj="content-wrapper"] {
   max-width: none !important;
 }
