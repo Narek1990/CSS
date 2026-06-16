@@ -161,6 +161,167 @@
   filter: brightness(0.94) !important;
 }
 
+/* Escortesnew auth modal actions: gold Login and green Confirm */
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > button.app-ltr-196db15,
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr > button.app-ltr-196db15 {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 114px !important;
+  height: 28px !important;
+  min-width: 114px !important;
+  min-height: 28px !important;
+  border: 1px solid transparent !important;
+  border-radius: 9px !important;
+  box-sizing: border-box !important;
+  cursor: pointer !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  text-decoration: none !important;
+  font-family: "Trebuchet MS", Arial, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.65px !important;
+  text-transform: uppercase !important;
+  transition: transform 140ms ease, filter 140ms ease, box-shadow 140ms ease !important;
+}
+
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > button.app-ltr-196db15::before,
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr > button.app-ltr-196db15::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  z-index: 0;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > button.app-ltr-196db15::after,
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr > button.app-ltr-196db15::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 18% 14%, rgba(255, 246, 190, 0.52), transparent 15%),
+    linear-gradient(180deg, rgba(255, 235, 160, 0.2), transparent 36%, rgba(0, 0, 0, 0.3) 100%),
+    linear-gradient(105deg, transparent 20%, rgba(255, 244, 188, 0.14) 43%, transparent 62%);
+  opacity: 0.54;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > button.app-ltr-196db15 > span,
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr > button.app-ltr-196db15 > span,
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > button.app-ltr-196db15 > span > span,
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr > button.app-ltr-196db15 > span > span {
+  position: relative !important;
+  z-index: 2 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: inherit !important;
+  font: inherit !important;
+  letter-spacing: inherit !important;
+  text-transform: inherit !important;
+  text-shadow: inherit !important;
+}
+
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > button.app-ltr-196db15 > span,
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr > button.app-ltr-196db15 > span {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > button.app-ltr-196db15 > span > span,
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr > button.app-ltr-196db15 > span > span {
+  gap: 7px !important;
+}
+
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > button.app-ltr-196db15 > span > span::after,
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr > button.app-ltr-196db15 > span > span::after {
+  content: "";
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > button.app-ltr-196db15 {
+  color: #241200 !important;
+  text-shadow: 0 1px 0 rgba(218, 145, 32, 0.46) !important;
+  background:
+    linear-gradient(180deg, #d99a2e 0%, #bd6e0d 43%, #743407 73%, #371704 100%) padding-box,
+    linear-gradient(180deg, #f2c86c 0%, #a66012 52%, #3b1803 100%) border-box !important;
+  box-shadow:
+    0 0 10px rgba(183, 105, 20, 0.42),
+    inset 0 1px 0 rgba(255, 218, 105, 0.52),
+    inset 0 -2px 3px rgba(42, 15, 0, 0.78) !important;
+}
+
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > button.app-ltr-196db15::before {
+  background:
+    linear-gradient(180deg, rgba(255, 219, 105, 0.42) 0%, transparent 20%),
+    linear-gradient(180deg, transparent 0%, rgba(64, 24, 0, 0.36) 100%),
+    radial-gradient(circle at 78% 35%, rgba(78, 27, 0, 0.16), transparent 20%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 235, 151, 0.4),
+    inset 0 -1px 0 rgba(35, 12, 0, 0.66);
+}
+
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > button.app-ltr-196db15 > span > span::after {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 7px solid #241200;
+  filter: drop-shadow(0 1px 0 rgba(198, 120, 18, 0.32));
+}
+
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr > button.app-ltr-196db15 {
+  color: #d2aa50 !important;
+  text-shadow: 0 0 4px rgba(191, 146, 54, 0.3) !important;
+  background:
+    linear-gradient(180deg, #0b4a3d 0%, #00392f 42%, #002822 72%, #001312 100%) padding-box,
+    linear-gradient(180deg, #54cba1 0%, #159470 50%, #06392f 100%) border-box !important;
+  box-shadow:
+    0 0 10px rgba(22, 157, 116, 0.38),
+    inset 0 1px 0 rgba(121, 227, 184, 0.36),
+    inset 0 -2px 3px rgba(0, 8, 8, 0.82) !important;
+}
+
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr > button.app-ltr-196db15::before {
+  background:
+    linear-gradient(180deg, rgba(116, 224, 178, 0.26) 0%, transparent 22%),
+    linear-gradient(180deg, transparent 0%, rgba(0, 10, 9, 0.42) 100%),
+    radial-gradient(circle at 22% 28%, rgba(121, 224, 184, 0.16), transparent 22%);
+  box-shadow:
+    inset 0 1px 0 rgba(142, 241, 196, 0.28),
+    inset 0 -1px 0 rgba(0, 8, 7, 0.72);
+}
+
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr > button.app-ltr-196db15 > span > span::after {
+  width: 7px;
+  height: 7px;
+  border: 1px solid rgba(215, 176, 73, 0.86);
+  border-radius: 1px;
+  background: linear-gradient(135deg, #dfc15d 0%, #57bfa2 43%, #07684f 100%);
+  box-shadow: 0 0 4px rgba(64, 197, 155, 0.62);
+  transform: rotate(45deg);
+}
+
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > button.app-ltr-196db15:hover,
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr > button.app-ltr-196db15:hover {
+  transform: translateY(-1px) !important;
+  filter: brightness(1.04) saturate(1.06) !important;
+}
+
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > button.app-ltr-196db15:active,
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr > button.app-ltr-196db15:active {
+  transform: translateY(1px) scale(0.99) !important;
+  filter: brightness(0.94) !important;
+}
+
 /* Footer navigation: 8 items ordered as 3 + 3 + 2 */
 ul[data-mj="footer-nav"] {
   display: grid !important;
