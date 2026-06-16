@@ -230,6 +230,7 @@ html body .escortesnew-footer-assets-apps {
   position: absolute !important;
   top: 0 !important;
   right: 252px !important;
+  margin-right: 120px !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: stretch !important;
@@ -241,7 +242,7 @@ html body .escortesnew-footer-assets-apps {
 html body .escortesnew-footer-assets-license {
   position: absolute !important;
   top: 56px !important;
-  right: 28px !important;
+  right: -110px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
