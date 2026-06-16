@@ -515,6 +515,23 @@ html body [data-mj="header-nav"] [data-mj="header-nav-list"] {
 html body [data-mj="header-nav"] {
   position: relative !important;
   margin-top: -8px !important;
+  width: 100vw !important;
+  max-width: none !important;
+  min-height: 72px !important;
+  margin-left: calc(50% - 50vw) !important;
+  margin-right: calc(50% - 50vw) !important;
+  padding: 10px 0 !important;
+  box-sizing: border-box !important;
+  background:
+    linear-gradient(180deg, rgba(19, 19, 29, 0.98) 0%, rgba(28, 28, 42, 0.98) 100%) !important;
+  overflow: hidden !important;
+}
+
+html body [data-mj="header-nav"] > div {
+  max-width: none !important;
+  min-height: 52px !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 html body [data-mj="header-nav"]::before {
@@ -536,6 +553,7 @@ html body [data-mj="header-nav"]::before {
 html body [data-mj="header-nav"] [data-mj="header-nav-list"] {
   position: relative !important;
   z-index: 1 !important;
+  min-height: 52px !important;
 }
 
 html body [data-mj="header-nav"] [data-mj="header-nav-list"] ul,
@@ -545,6 +563,7 @@ html body [data-mj="header-nav"] [data-mj="header-nav-list"] [id="ul"] {
   justify-content: center !important;
   gap: 8px !important;
   width: auto !important;
+  min-height: 52px !important;
   margin: 0 auto !important;
   padding: 0 !important;
 }
