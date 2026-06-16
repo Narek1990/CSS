@@ -162,28 +162,33 @@
 }
 
 /* Escortesnew auth modal actions: gold Login and green Confirm */
+html body [data-mj="auth-modal"] .app-ltr-hk64jw,
+html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr {
+  width: 100% !important;
+}
+
 html body [data-mj="auth-modal"] .app-ltr-hk64jw > button.app-ltr-196db15,
 html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr > button.app-ltr-196db15 {
   position: relative !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 114px !important;
-  height: 28px !important;
-  min-width: 114px !important;
-  min-height: 28px !important;
+  width: 100% !important;
+  height: 56px !important;
+  min-width: 0 !important;
+  min-height: 56px !important;
   border: 1px solid transparent !important;
-  border-radius: 9px !important;
+  border-radius: 12px !important;
   box-sizing: border-box !important;
   cursor: pointer !important;
   overflow: hidden !important;
   isolation: isolate !important;
   text-decoration: none !important;
   font-family: "Trebuchet MS", Arial, sans-serif !important;
-  font-size: 12px !important;
+  font-size: 16px !important;
   font-weight: 800 !important;
   line-height: 1 !important;
-  letter-spacing: 0.65px !important;
+  letter-spacing: 1px !important;
   text-transform: uppercase !important;
   transition: transform 140ms ease, filter 140ms ease, box-shadow 140ms ease !important;
 }
@@ -192,9 +197,9 @@ html body [data-mj="auth-modal"] .app-ltr-hk64jw > button.app-ltr-196db15::befor
 html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr > button.app-ltr-196db15::before {
   content: "";
   position: absolute;
-  inset: 2px;
+  inset: 3px;
   z-index: 0;
-  border-radius: 6px;
+  border-radius: 9px;
   pointer-events: none;
 }
 
@@ -254,9 +259,10 @@ html body [data-mj="auth-modal"] .app-ltr-hk64jw > button.app-ltr-196db15 {
     linear-gradient(180deg, #d99a2e 0%, #bd6e0d 43%, #743407 73%, #371704 100%) padding-box,
     linear-gradient(180deg, #f2c86c 0%, #a66012 52%, #3b1803 100%) border-box !important;
   box-shadow:
-    0 0 10px rgba(183, 105, 20, 0.42),
-    inset 0 1px 0 rgba(255, 218, 105, 0.52),
-    inset 0 -2px 3px rgba(42, 15, 0, 0.78) !important;
+    0 0 18px rgba(183, 105, 20, 0.5),
+    0 10px 24px rgba(40, 16, 0, 0.34),
+    inset 0 1px 0 rgba(255, 218, 105, 0.58),
+    inset 0 -3px 5px rgba(42, 15, 0, 0.78) !important;
 }
 
 html body [data-mj="auth-modal"] .app-ltr-hk64jw > button.app-ltr-196db15::before {
@@ -285,9 +291,10 @@ html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr > button.app-
     linear-gradient(180deg, #0b4a3d 0%, #00392f 42%, #002822 72%, #001312 100%) padding-box,
     linear-gradient(180deg, #54cba1 0%, #159470 50%, #06392f 100%) border-box !important;
   box-shadow:
-    0 0 10px rgba(22, 157, 116, 0.38),
-    inset 0 1px 0 rgba(121, 227, 184, 0.36),
-    inset 0 -2px 3px rgba(0, 8, 8, 0.82) !important;
+    0 0 18px rgba(22, 157, 116, 0.45),
+    0 10px 24px rgba(0, 12, 10, 0.34),
+    inset 0 1px 0 rgba(121, 227, 184, 0.42),
+    inset 0 -3px 5px rgba(0, 8, 8, 0.82) !important;
 }
 
 html body [data-mj="auth-modal"] .app-ltr-hk64jw > .app-ltr-x66tbr > button.app-ltr-196db15::before {

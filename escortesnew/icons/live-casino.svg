@@ -1,0 +1,13 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gold" x1="4" y1="4" x2="20" y2="20" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF1B8"/>
+      <stop offset="0.46" stop-color="#D4AF37"/>
+      <stop offset="1" stop-color="#8C5B16"/>
+    </linearGradient>
+  </defs>
+  <rect x="4.25" y="6.1" width="7.8" height="11.25" rx="1.55" transform="rotate(-8 4.25 6.1)" stroke="url(#gold)" stroke-width="1.45"/>
+  <rect x="11.25" y="5.85" width="8.2" height="11.65" rx="1.55" transform="rotate(8 11.25 5.85)" stroke="url(#gold)" stroke-width="1.45"/>
+  <path d="M8.4 9.65L9.18 11.17L10.85 11.42L9.64 12.58L9.93 14.22L8.4 13.43L6.87 14.22L7.16 12.58L5.95 11.42L7.62 11.17L8.4 9.65Z" stroke="url(#gold)" stroke-width="1.15" stroke-linejoin="round"/>
+  <path d="M15.9 9.5C15.25 10.55 13.7 11.3 13.18 12.6C12.58 14.08 13.67 15.45 15.05 15.45C15.43 15.45 15.75 15.34 15.96 15.11C15.93 15.62 15.7 16.04 15.22 16.75H16.58C16.1 16.04 15.87 15.62 15.84 15.11C16.05 15.34 16.37 15.45 16.75 15.45C18.13 15.45 19.22 14.08 18.62 12.6C18.1 11.3 16.55 10.55 15.9 9.5Z" stroke="url(#gold)" stroke-width="1.15" stroke-linejoin="round"/>
+</svg>
