@@ -167,10 +167,14 @@ html body .app-ltr-m6gvz8 {
   }
 
   html body #root.vertical-nav [data-mj="sidebar-content"] {
-    height: calc(100vh - 86px) !important;
+    height: calc(100vh - 65px) !important;
     overflow: auto !important;
   }
 
+}
+
+html body [data-mj="promotions-page"] {
+  margin-top: 66px !important;
 }
 
 @media (max-width: 992px) {
