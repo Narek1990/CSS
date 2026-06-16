@@ -125,3 +125,9 @@ aside a,
 .side-menu a {
   font-size: 13px !important;
 }
+
+/* Auth modal: hide reset method tabs */
+html body [data-mj="auth-modal"] ul[role="tablist"].app-ltr-17pv0q3,
+html body [data-mj="auth-modal"] ul[role="tablist"][class~="app-ltr-17pv0q3"] {
+  display: none !important;
+}
