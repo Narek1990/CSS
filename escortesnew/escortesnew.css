@@ -501,3 +501,56 @@ html body [data-mj="header-nav-item"] > a > span[data-escortesnew-bg-icon="true"
   -webkit-mask: none !important;
   mask: none !important;
 }
+
+html body [data-mj="header-nav"] [data-mj="header-nav-list"] ul,
+html body [data-mj="header-nav"] [data-mj="header-nav-list"] [id="ul"] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+html body [data-mj="header-nav-item"],
+html body [data-mj="header-nav-item"] > a {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+html body [data-mj="header-nav-item"] > a {
+  position: relative !important;
+  gap: 8px !important;
+  min-height: 40px !important;
+  padding: 8px 12px 8px 8px !important;
+  border: 1px solid transparent !important;
+  border-radius: 16px !important;
+  box-sizing: border-box !important;
+  opacity: 0.8 !important;
+  color: #F2F2F2 !important;
+  background:
+    linear-gradient(#070216, #070216) padding-box,
+    radial-gradient(closest-side, rgba(255, 255, 255, 0.5) 0%, rgba(233, 171, 80, 0.5) 100%) border-box !important;
+  text-decoration: none !important;
+  transition: opacity 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
+}
+
+html body [data-mj="header-nav-item"] > a > p,
+html body [data-mj="header-nav-item"] > a [class~="app-ltr-1g3kp0t"] {
+  margin: 0 !important;
+  color: inherit !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+}
+
+html body [data-mj="header-nav-item"] > a:hover,
+html body [data-mj="header-nav-item"] > a.active-link,
+html body [data-mj="header-nav-item"] > a[aria-current="page"] {
+  opacity: 1 !important;
+  filter: brightness(1.08) saturate(1.08) !important;
+  background:
+    radial-gradient(closest-side, rgba(141, 162, 209, 0.3) 0%, rgba(3, 8, 16, 0) 100%) padding-box,
+    linear-gradient(to left, #000108, #000108) padding-box,
+    radial-gradient(closest-side, rgba(255, 255, 255, 1) 0%, rgba(233, 171, 80, 1) 100%) border-box !important;
+  box-shadow:
+    0 0 14px rgba(233, 171, 80, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
