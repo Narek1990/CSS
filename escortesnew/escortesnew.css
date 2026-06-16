@@ -532,10 +532,15 @@ html body [data-mj="header-nav"] {
   min-height: 72px !important;
   margin-left: calc(50% - 50vw) !important;
   margin-right: calc(50% - 50vw) !important;
-  padding: 10px 0 !important;
   box-sizing: border-box !important;
   background:
-    linear-gradient(180deg, rgba(19, 19, 29, 0.98) 0%, rgba(28, 28, 42, 0.98) 100%) !important;
+    radial-gradient(
+      ellipse 45% 35% at 50% 0%,
+      rgba(131, 113, 255, 0.50) 0%,
+      rgba(90, 75, 210, 0.25) 35%,
+      rgba(0, 1, 6, 0.00) 70%
+    ),
+    #000106 !important;
   overflow: visible !important;
 }
 
