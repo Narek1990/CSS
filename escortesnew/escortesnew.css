@@ -524,7 +524,7 @@ html body [data-mj="header-nav"] {
   box-sizing: border-box !important;
   background:
     linear-gradient(180deg, rgba(19, 19, 29, 0.98) 0%, rgba(28, 28, 42, 0.98) 100%) !important;
-  overflow: hidden !important;
+  overflow: visible !important;
 }
 
 html body [data-mj="header-nav"] > div {
@@ -539,7 +539,7 @@ html body [data-mj="header-nav"]::before {
   position: absolute !important;
   left: 50% !important;
   top: 50% !important;
-  width: 180px !important;
+  width: min(820px, calc(100vw - 80px)) !important;
   height: 14px !important;
   flex-shrink: 0 !important;
   border-radius: 50% !important;
