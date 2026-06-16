@@ -9,6 +9,7 @@ body * {
   font-family: "__Montserrat_069ab3", "__Montserrat_Fallback_069ab3", sans-serif !important;
 }
 
+html body [data-mj="widget-banner-container"],
 html body [data-mj="widget-bet-win-container"],
 html body [data-mj="widget-game-slider-container"],
 html body [data-mj="widget-fixed-image-banner-container"],
