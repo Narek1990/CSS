@@ -219,30 +219,26 @@ html body [data-mj="footer-content"] {
 html body .escortesnew-footer-assets {
   position: absolute !important;
   top: 146px !important;
-  right: 0 !important;
+  right: -110px !important;
   z-index: 3 !important;
-  width: 410px !important;
-  min-height: 150px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 14px !important;
+  width: 520px !important;
+  min-height: 54px !important;
   pointer-events: auto !important;
 }
 
 html body .escortesnew-footer-assets-apps {
-  position: absolute !important;
-  top: 0 !important;
-  right: 252px !important;
-  margin-right: 120px !important;
   display: flex !important;
-  flex-direction: column !important;
-  align-items: stretch !important;
-  justify-content: flex-start !important;
-  gap: 10px !important;
-  width: 134px !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 14px !important;
 }
 
 html body .escortesnew-footer-assets-license {
-  position: absolute !important;
-  top: 56px !important;
-  right: -110px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -250,19 +246,20 @@ html body .escortesnew-footer-assets-license {
 
 html body .escortesnew-footer-assets img {
   display: block !important;
-  max-width: 100% !important;
+  width: 132px !important;
+  height: 44px !important;
   object-fit: contain !important;
 }
 
 html body .escortesnew-footer-assets img[data-escortesnew-footer-img="anjouan"] {
-  width: 112px !important;
-  max-height: 64px !important;
+  width: 132px !important;
+  height: 44px !important;
 }
 
 html body .escortesnew-footer-assets img[data-escortesnew-footer-img="ios"],
 html body .escortesnew-footer-assets img[data-escortesnew-footer-img="android"] {
-  width: 134px !important;
-  max-height: 42px !important;
+  width: 132px !important;
+  height: 44px !important;
 }
 
 html body [data-mj="footer-content"] .app-ltr-19zdw54 .app-ltr-e92i57,
