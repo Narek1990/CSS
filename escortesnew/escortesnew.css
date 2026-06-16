@@ -490,8 +490,8 @@ html body [data-mj="header-nav-item"] > a > span[data-escortesnew-bg-icon="true"
   margin-right: 8px !important;
   display: block !important;
   flex: 0 0 auto !important;
-  width: 20px !important;
-  height: 20px !important;
+  width: 28px !important;
+  height: 28px !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
@@ -510,6 +510,32 @@ html body [data-mj="header-nav"] [data-mj="header-nav-list"] {
   align-items: center !important;
   justify-content: center !important;
   width: 100% !important;
+}
+
+html body [data-mj="header-nav"] {
+  position: relative !important;
+  margin-top: -8px !important;
+}
+
+html body [data-mj="header-nav"]::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  width: 180px !important;
+  height: 14px !important;
+  flex-shrink: 0 !important;
+  border-radius: 50% !important;
+  background: #7A6EB9 !important;
+  filter: blur(20px) !important;
+  transform: translate(-50%, -50%) !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+html body [data-mj="header-nav"] [data-mj="header-nav-list"] {
+  position: relative !important;
+  z-index: 1 !important;
 }
 
 html body [data-mj="header-nav"] [data-mj="header-nav-list"] ul,
