@@ -25,6 +25,16 @@
     return img;
   }
 
+  function buildImageLink(href, src, alt, key) {
+    var link = document.createElement("a");
+    link.href = href;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.setAttribute("data-escortesnew-footer-link", key);
+    link.appendChild(buildImage(src, alt, key));
+    return link;
+  }
+
   function ensureFooterAssets() {
     var footer = document.querySelector('[data-mj="footer"]');
     var content = footer && footer.querySelector('[data-mj="footer-content"]');
@@ -37,8 +47,8 @@
 
     var apps = document.createElement("div");
     apps.className = "escortesnew-footer-assets-apps";
-    apps.appendChild(buildImage(ASSET_BASE + "/footer/ios-img.svg", "Download on iOS", "ios"));
-    apps.appendChild(buildImage(ASSET_BASE + "/footer/android-img.svg", "Download on Android", "android"));
+    apps.appendChild(buildImageLink("https://apps.apple.com/", ASSET_BASE + "/footer/ios-img.svg", "Download on iOS", "ios"));
+    apps.appendChild(buildImageLink("https://play.google.com/", ASSET_BASE + "/footer/android-img.svg", "Download on Android", "android"));
 
     var license = document.createElement("div");
     license.className = "escortesnew-footer-assets-license";

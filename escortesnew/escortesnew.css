@@ -218,8 +218,8 @@ html body [data-mj="footer-content"] {
 
 html body .escortesnew-footer-assets {
   position: absolute !important;
-  top: 146px !important;
-  right: -110px !important;
+  top: 180px !important;
+  right: -17px !important;
   z-index: 3 !important;
   display: flex !important;
   align-items: center !important;
@@ -242,6 +242,14 @@ html body .escortesnew-footer-assets-license {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+}
+
+html body .escortesnew-footer-assets a {
+  display: block !important;
+  width: 132px !important;
+  height: 44px !important;
+  line-height: 0 !important;
+  text-decoration: none !important;
 }
 
 html body .escortesnew-footer-assets img {
