@@ -27,6 +27,18 @@
 [data-mj="widget-phoenix-sport"] .top-events,
 [data-mj="widget-phoenix-sport-container"] .top-events {
   scroll-behavior: smooth !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  overflow-y: hidden !important;
+}
+
+[data-mj="widget-phoenix-sport"] .top-events::-webkit-scrollbar,
+[data-mj="widget-phoenix-sport-container"] .top-events::-webkit-scrollbar,
+#ph-sport-widget .top-events::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
 }
 
 [data-mj="widget-phoenix-sport"] .slider-nav,
@@ -38,6 +50,7 @@
   justify-content: flex-end !important;
   margin: 12px 0 0 auto !important;
   width: max-content !important;
+  flex-shrink: 0 !important;
 }
 
 [data-mj="widget-phoenix-sport"] .nav-btn,
