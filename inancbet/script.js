@@ -50,7 +50,7 @@
       next.setAttribute("aria-label", "Next events");
 
       nav.append(prev, next);
-      widget.insertBefore(nav, events);
+      events.insertAdjacentElement("afterend", nav);
 
       function scrollEvents(direction) {
         var card = events.querySelector(".ph-event-card");
