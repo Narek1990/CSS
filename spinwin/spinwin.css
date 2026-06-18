@@ -75,7 +75,7 @@ html body .spinwin-fixed-banner-deposit {
 html body .spinwin-fixed-banner-deposit::before {
   content: "" !important;
   position: absolute !important;
-  inset: 0 18px 0 -28px !important;
+  inset: 0 10px 0 -12px !important;
   border-radius: inherit !important;
   background: rgba(129, 255, 71, 0) !important;
   box-shadow: none !important;
@@ -269,6 +269,6 @@ html body [data-mj="promotion-details"] {
   }
 
   html body .spinwin-fixed-banner-deposit::before {
-    inset: 0 18px 0 -28px !important;
+    inset: 0 10px 0 -12px !important;
   }
 }
