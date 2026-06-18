@@ -1,0 +1,8 @@
+ul.app-ltr-17pv0q3[role="tablist"],
+ul.css-17pv0q3[role="tablist"],
+html body [data-mj="auth-modal"] ul[role="tablist"],
+html body [role="alertdialog"] ul[role="tablist"],
+html body [aria-modal="true"] ul[role="tablist"] {
+  display: flex !important;
+  flex-direction: row !important;
+}
