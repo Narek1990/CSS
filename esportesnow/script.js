@@ -20,6 +20,24 @@
   var menuSvg = '<svg data-esportesnow-svg="true" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" height="14" viewBox="0 0 19 14" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M1.26049 13.5939H8.30622C8.86214 13.5939 9.31284 13.1433 9.31284 12.5874C9.31284 12.0315 8.86214 11.5808 8.30622 11.5808H1.26049C0.70458 11.5808 0.253944 12.0315 0.253944 12.5874C0.253944 13.1433 0.70458 13.5939 1.26049 13.5939ZM1.26049 8.17949H17.365C17.9209 8.17949 18.3715 7.72887 18.3715 7.17296C18.3715 6.61704 17.9209 6.16642 17.365 6.16642H1.26045C0.704542 6.16642 0.253906 6.61704 0.253906 7.17296C0.253906 7.72887 0.70458 8.17949 1.26049 8.17949ZM1.26049 2.76505H17.365C17.9209 2.76505 18.3715 2.31441 18.3715 1.7585C18.3715 1.20259 17.9209 0.751953 17.365 0.751953H1.26045C0.704542 0.751953 0.253906 1.20259 0.253906 1.7585C0.253906 2.31441 0.70458 2.76505 1.26049 2.76505Z" fill="#E8E5FF"></path></svg>';
   var buttonIconSelector = "button.sl-icon.css-lk14jz, button .sl-icon.css-lk14jz, .sl-icon.css-lk14jz svg";
   var buttonIconSvg = menuSvg.replace('data-esportesnow-svg="true" xmlns:xlink="http://www.w3.org/1999/xlink" ', 'data-esportesnow-button-svg="true" ');
+  var heroBannerImageSelector = 'img[src*="9a71eac1-6e1c-4a81-a769-4f3044a33921"]';
+  var heroHotspots = [
+    {
+      className: "esportesnow-hero-hotspot-register",
+      href: "https://esportesnew.com/en/home?m=registration&t=email&returnUrl=/en/home",
+      label: "Register"
+    },
+    {
+      className: "esportesnow-hero-hotspot-casino",
+      href: "https://esportesnew.com/en/home/casinos",
+      label: "Casino"
+    },
+    {
+      className: "esportesnow-hero-hotspot-sportsbook",
+      href: "https://esportesnew.com/en/g-sports/sports",
+      label: "Sportsbook"
+    }
+  ];
   var applyScheduled = false;
 
   function createMenuSvg() {
@@ -111,9 +129,40 @@
     element.style.setProperty("overflow", "hidden", "important");
   }
 
+  function createHeroHotspot(config) {
+    var link = document.createElement("a");
+    link.className = "esportesnow-hero-hotspot " + config.className;
+    link.href = config.href;
+    link.setAttribute("aria-label", config.label);
+    link.setAttribute("title", config.label);
+    link.setAttribute("data-esportesnow-hero-hotspot", config.className);
+    return link;
+  }
+
+  function injectHeroHotspots() {
+    document.querySelectorAll(heroBannerImageSelector).forEach(function (image) {
+      var slide = image.closest('[data-mj="widget-banner-item"]');
+
+      if (!slide || slide.getAttribute("data-esportesnow-hero-hotspots") === "true") {
+        return;
+      }
+
+      slide.classList.add("esportesnow-hero-hotspots-ready");
+
+      heroHotspots.forEach(function (hotspot) {
+        if (!slide.querySelector('[data-esportesnow-hero-hotspot="' + hotspot.className + '"]')) {
+          slide.appendChild(createHeroHotspot(hotspot));
+        }
+      });
+
+      slide.setAttribute("data-esportesnow-hero-hotspots", "true");
+    });
+  }
+
   function applyOverrides() {
     applyScheduled = false;
     injectHiddenElementCss();
+    injectHeroHotspots();
 
     document.querySelectorAll(maxWidthSelector).forEach(function (element) {
       element.style.setProperty("max-width", "none", "important");
@@ -173,15 +222,13 @@
 
   if (existing) {
     existing.href = href;
-    applyOverrides();
-    return;
+  } else {
+    var link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = href;
+    link.setAttribute("data-esportesnow-css", "true");
+    document.head.appendChild(link);
   }
-
-  var link = document.createElement("link");
-  link.rel = "stylesheet";
-  link.href = href;
-  link.setAttribute("data-esportesnow-css", "true");
-  document.head.appendChild(link);
 
   applyOverrides();
 
