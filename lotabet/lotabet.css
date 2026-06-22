@@ -1,0 +1,10 @@
+[data-mj="root-layout"]:has([data-mj="content-wrapper"] > [data-mj="header"].app-ltr-w4fr96) [data-mj="bottom-nav"],
+[data-mj="root-layout"]:has([data-mj="content-wrapper"] > [data-mj="header"].app-ltr-1fkkfxl) [data-mj="bottom-nav"],
+[data-mj="root-layout"]:has(#sportsbook-wrapper) [data-mj="bottom-nav"] {
+  display: none !important;
+}
+
+[data-mj="root-layout"] [data-mj="content-wrapper"] {
+  max-width: none !important;
+  width: 100% !important;
+}
