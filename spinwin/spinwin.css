@@ -253,12 +253,17 @@ html body [data-mj="promotion-details"] {
 }
 
 html body #game-dialog-overlay.app-ltr-mhyosn .sl-container.app-ltr-15v05ez .app-ltr-1en4o1a,
-html body #game-dialog-overlay[class~="app-ltr-mhyosn"] [class~="sl-container"][class~="app-ltr-15v05ez"] [class~="app-ltr-1en4o1a"] {
+html body #game-dialog-overlay[class~="app-ltr-mhyosn"] [class~="sl-container"][class~="app-ltr-15v05ez"] [class~="app-ltr-1en4o1a"],
+html body [data-mj="page-content"] .app-ltr-mhyosn .sl-container.app-ltr-15v05ez .app-ltr-1en4o1a,
+html body [data-mj="page-content"] [class~="app-ltr-mhyosn"] [class~="sl-container"][class~="app-ltr-15v05ez"] [class~="app-ltr-1en4o1a"] {
   margin-top: 0 !important;
 }
 
 html body #game-dialog-overlay.app-ltr-mhyosn .sl-container.app-ltr-15v05ez .app-ltr-1en4o1a > .app-ltr-132m47a,
-html body #game-dialog-overlay[class~="app-ltr-mhyosn"] [class~="sl-container"][class~="app-ltr-15v05ez"] [class~="app-ltr-1en4o1a"] > [class~="app-ltr-132m47a"] {
+html body #game-dialog-overlay[class~="app-ltr-mhyosn"] [class~="sl-container"][class~="app-ltr-15v05ez"] [class~="app-ltr-1en4o1a"] > [class~="app-ltr-132m47a"],
+html body [data-mj="page-content"] .app-ltr-mhyosn .sl-container.app-ltr-15v05ez .app-ltr-1en4o1a > .app-ltr-132m47a,
+html body [data-mj="page-content"] [class~="app-ltr-mhyosn"] [class~="sl-container"][class~="app-ltr-15v05ez"] [class~="app-ltr-1en4o1a"] > [class~="app-ltr-132m47a"],
+html body [data-mj="page-content"] [class~="app-ltr-mhyosn"]:has(iframe#game) [class~="app-ltr-1en4o1a"] > [class~="app-ltr-132m47a"] {
   padding-top: 60px !important;
 }
 
