@@ -362,6 +362,11 @@ html body [class~="app-ltr-10t84xr"] {
   font-size: 14px !important;
 }
 
+html body .wheelWrapper_wrapper__GqDdh,
+html body [class~="wheelWrapper_wrapper__GqDdh"] {
+  padding-top: 65px !important;
+}
+
 @media (min-width: 993px) {
   html body #root.vertical-nav [data-mj="sidebar"] {
     position: sticky !important;
