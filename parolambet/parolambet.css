@@ -61,7 +61,7 @@ html body ul#ul > [data-mj="header-nav-item"]:first-of-type > [class~="sl-navlin
 
 html body [data-mj="header"]:has([data-mj="custom-header"] button[aria-label="user"]) ul#ul > [data-mj="header-nav-item"]:first-of-type > .sl-navlink,
 html body [data-mj="header"]:has([data-mj="custom-header"] button[aria-label="user"]) ul#ul > [data-mj="header-nav-item"]:first-of-type > [class~="sl-navlink"] {
-  right: 578px !important;
+  right: 65% !important;
 }
 
 html body [data-mj="widget-banner-link"] {
@@ -77,5 +77,5 @@ html body [data-mj="widget-banner-link"] {
 /* Keep the logged-in header nav in its original position. */
 html body [data-mj="header"]:has(button[aria-label="user"]) ul#ul > [data-mj="header-nav-item"]:first-of-type > .sl-navlink,
 html body [data-mj="header"]:has(button[aria-label="user"]) ul#ul > [data-mj="header-nav-item"]:first-of-type > [class~="sl-navlink"] {
-  right: 578px !important;
+  right: 65% !important;
 }
