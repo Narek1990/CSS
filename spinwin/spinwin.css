@@ -196,10 +196,6 @@ html body [data-mj="widget-banner"] {
   margin-top: 70px !important;
 }
 
-html body [data-mj="page-content"]:has(#sportsbook-wrapper) {
-  margin-top: 70px !important;
-}
-
 html body .sl-select__control,
 html body [class~="sl-select__control"] {
   background-color: rgb(255 255 255 / 6%) !important;
@@ -240,6 +236,10 @@ html body .app-ltr-m6gvz8 {
   html body #root.vertical-nav [data-mj="sidebar-content"] {
     height: calc(100vh - 65px) !important;
     overflow: auto !important;
+  }
+
+  html body [data-mj="page-content"]:has(#sportsbook-wrapper) {
+    margin-top: 70px !important;
   }
 
 }
