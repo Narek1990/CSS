@@ -1,24 +1,24 @@
-html body .app-ltr-1tvzmkd:has(.sl-select__control.app-ltr-1nfuhvk-control),
-html body .app-ltr-1tvzmkd:has([class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"]),
-html body [class~="app-ltr-1tvzmkd"]:has(.sl-select__control:has(img[src*="/flags/TR.svg"])),
-html body [class*="-container"]:has(> .sl-select__control.app-ltr-1nfuhvk-control),
-html body [class*="-container"]:has(> [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"]),
-html body [class*="-container"]:has(> .sl-select__control:has(img[src*="/flags/TR.svg"])) {
-  width: 260px !important;
-  min-width: 260px !important;
-  max-width: 260px !important;
+html body [data-mj="sidebar-footer"] .app-ltr-1tvzmkd:has(.sl-select__control.app-ltr-1nfuhvk-control),
+html body [data-mj="sidebar-footer"] .app-ltr-1tvzmkd:has([class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"]),
+html body [data-mj="sidebar-footer"] [class~="app-ltr-1tvzmkd"]:has(.sl-select__control:has(img[src*="/flags/TR.svg"])),
+html body [data-mj="sidebar-footer"] [class*="-container"]:has(> .sl-select__control.app-ltr-1nfuhvk-control),
+html body [data-mj="sidebar-footer"] [class*="-container"]:has(> [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"]),
+html body [data-mj="sidebar-footer"] [class*="-container"]:has(> .sl-select__control:has(img[src*="/flags/TR.svg"])) {
+  width: 230px !important;
+  min-width: 230px !important;
+  max-width: 230px !important;
   height: 180px !important;
   min-height: 180px !important;
   max-height: 180px !important;
   overflow: visible !important;
 }
 
-html body .sl-select__control.app-ltr-1nfuhvk-control,
-html body [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"],
-html body .sl-select__control:has(img[src*="/flags/TR.svg"]) {
-  width: 260px !important;
-  min-width: 260px !important;
-  max-width: 260px !important;
+html body [data-mj="sidebar-footer"] .sl-select__control.app-ltr-1nfuhvk-control,
+html body [data-mj="sidebar-footer"] [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"],
+html body [data-mj="sidebar-footer"] .sl-select__control:has(img[src*="/flags/TR.svg"]) {
+  width: 230px !important;
+  min-width: 230px !important;
+  max-width: 230px !important;
   height: 180px !important;
   min-height: 180px !important;
   max-height: 180px !important;
@@ -37,9 +37,9 @@ html body .sl-select__control:has(img[src*="/flags/TR.svg"]) {
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease !important;
 }
 
-html body .sl-select__control.app-ltr-1nfuhvk-control:hover,
-html body [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"]:hover,
-html body .sl-select__control:has(img[src*="/flags/TR.svg"]):hover {
+html body [data-mj="sidebar-footer"] .sl-select__control.app-ltr-1nfuhvk-control:hover,
+html body [data-mj="sidebar-footer"] [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"]:hover,
+html body [data-mj="sidebar-footer"] .sl-select__control:has(img[src*="/flags/TR.svg"]):hover {
   transform: translateY(-1px) !important;
   border-color: rgba(63, 255, 112, 0.58) !important;
   box-shadow:
@@ -47,12 +47,12 @@ html body .sl-select__control:has(img[src*="/flags/TR.svg"]):hover {
     inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
 }
 
-html body .sl-select__control.app-ltr-1nfuhvk-control .sl-select__value-container,
-html body [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"] [class~="sl-select__value-container"],
-html body .sl-select__control:has(img[src*="/flags/TR.svg"]) .sl-select__value-container,
-html body .sl-select__control.app-ltr-1nfuhvk-control .sl-select__indicators,
-html body [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"] [class~="sl-select__indicators"],
-html body .sl-select__control:has(img[src*="/flags/TR.svg"]) .sl-select__indicators {
+html body [data-mj="sidebar-footer"] .sl-select__control.app-ltr-1nfuhvk-control .sl-select__value-container,
+html body [data-mj="sidebar-footer"] [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"] [class~="sl-select__value-container"],
+html body [data-mj="sidebar-footer"] .sl-select__control:has(img[src*="/flags/TR.svg"]) .sl-select__value-container,
+html body [data-mj="sidebar-footer"] .sl-select__control.app-ltr-1nfuhvk-control .sl-select__indicators,
+html body [data-mj="sidebar-footer"] [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"] [class~="sl-select__indicators"],
+html body [data-mj="sidebar-footer"] .sl-select__control:has(img[src*="/flags/TR.svg"]) .sl-select__indicators {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
