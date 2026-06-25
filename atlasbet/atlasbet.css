@@ -287,7 +287,8 @@ html body .sl-select__option:has(img[alt="Belarus"]),
 html body [role="option"]:has(img[src*="/flags/RU.svg"]),
 html body [role="option"]:has(img[src*="/flags/BY.svg"]),
 html body [role="option"]:has(img[alt="Russia"]),
-html body [role="option"]:has(img[alt="Belarus"]) {
+html body [role="option"]:has(img[alt="Belarus"]),
+html body [data-atlasbet-restricted-country="true"] {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;

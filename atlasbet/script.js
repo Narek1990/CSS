@@ -37,19 +37,28 @@
       alt === "belarus";
   }
 
-  function removeRestrictedCountries() {
+  function hideRestrictedCountries() {
     document.querySelectorAll(".sl-select__option, [role='option']").forEach(function (option) {
       if (isRestrictedCountry(option)) {
-        option.remove();
+        option.setAttribute("data-atlasbet-restricted-country", "true");
+        option.setAttribute("aria-disabled", "true");
+        option.style.setProperty("display", "none", "important");
+        option.style.setProperty("visibility", "hidden", "important");
+        option.style.setProperty("height", "0", "important");
+        option.style.setProperty("min-height", "0", "important");
+        option.style.setProperty("padding", "0", "important");
+        option.style.setProperty("margin", "0", "important");
+        option.style.setProperty("overflow", "hidden", "important");
+        option.style.setProperty("pointer-events", "none", "important");
       }
     });
   }
 
   function init() {
     ensureStylesheet();
-    removeRestrictedCountries();
+    hideRestrictedCountries();
 
-    new MutationObserver(removeRestrictedCountries).observe(document.body, {
+    new MutationObserver(hideRestrictedCountries).observe(document.body, {
       childList: true,
       subtree: true
     });
