@@ -43,6 +43,85 @@
     return Math.floor(Math.random() * max);
   }
 
+  function getPickerAudioContext() {
+    var AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+
+    if (!AudioContextConstructor) {
+      return null;
+    }
+
+    if (!window.__esportesnowRandomPickerAudioContext) {
+      window.__esportesnowRandomPickerAudioContext = new AudioContextConstructor();
+    }
+
+    return window.__esportesnowRandomPickerAudioContext;
+  }
+
+  function playPickerTone(frequency, duration, type, gainValue, delay) {
+    var context = getPickerAudioContext();
+    var oscillator;
+    var gain;
+    var startAt;
+
+    if (!context) {
+      return;
+    }
+
+    startAt = context.currentTime + (delay || 0);
+    oscillator = context.createOscillator();
+    gain = context.createGain();
+    oscillator.type = type || "sine";
+    oscillator.frequency.setValueAtTime(frequency, startAt);
+    gain.gain.setValueAtTime(0.0001, startAt);
+    gain.gain.exponentialRampToValueAtTime(gainValue || 0.04, startAt + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+    oscillator.start(startAt);
+    oscillator.stop(startAt + duration + 0.02);
+  }
+
+  function playRandomPickerSound(type) {
+    var context = getPickerAudioContext();
+
+    if (!context) {
+      return;
+    }
+
+    if (context.state === "suspended") {
+      context.resume();
+    }
+
+    if (type === "shuffle") {
+      playPickerTone(420 + getRandomIndex(260), 0.055, "square", 0.026, 0);
+      return;
+    }
+
+    if (type === "start") {
+      playPickerTone(360, 0.08, "triangle", 0.032, 0);
+      playPickerTone(520, 0.1, "sine", 0.028, 0.06);
+      return;
+    }
+
+    if (type === "reveal") {
+      playPickerTone(520, 0.12, "triangle", 0.04, 0);
+      playPickerTone(780, 0.16, "triangle", 0.035, 0.08);
+      return;
+    }
+
+    if (type === "selected") {
+      playPickerTone(660, 0.12, "sine", 0.045, 0);
+      playPickerTone(990, 0.18, "sine", 0.04, 0.1);
+      playPickerTone(1320, 0.22, "triangle", 0.028, 0.21);
+      return;
+    }
+
+    if (type === "play") {
+      playPickerTone(740, 0.09, "triangle", 0.04, 0);
+      playPickerTone(420, 0.11, "sine", 0.03, 0.06);
+    }
+  }
+
   function getPickerSections() {
     return Array.prototype.slice.call(document.querySelectorAll('[data-mj="widget-game-slider"]')).filter(function (section) {
       var title = section.querySelector('[data-mj="widget-game-slider-header"] p');
@@ -124,6 +203,7 @@
       return;
     }
 
+    playRandomPickerSound("play");
     href = getGameHref(selected);
 
     if (href) {
@@ -160,6 +240,7 @@
     }
 
     picker.__esportesnowGames = games;
+    playRandomPickerSound("start");
     picker.removeAttribute("data-selected-game-index");
     picker.setAttribute("data-state", "ready");
     void picker.offsetWidth;
@@ -178,6 +259,9 @@
     var interval = window.setInterval(function () {
       var previewIndex = getRandomIndex(games.length);
       updateRandomPickerCard(picker, games[previewIndex]);
+      if (cycle % 3 === 0) {
+        playRandomPickerSound("shuffle");
+      }
       cycle += 1;
 
       if (cycle < cycles) {
@@ -196,8 +280,11 @@
         status.textContent = "The portal has chosen...";
       }
 
+      playRandomPickerSound("reveal");
+
       window.setTimeout(function () {
         picker.setAttribute("data-state", "selected");
+        playRandomPickerSound("selected");
 
         if (button) {
           button.disabled = false;

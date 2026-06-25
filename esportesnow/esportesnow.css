@@ -1668,8 +1668,16 @@ html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-
   animation: esportesnowRandomPickerGlowBreath 1.45s ease-in-out infinite !important;
 }
 
+html body .esportesnow-random-picker {
+  margin-bottom: 50px !important;
+}
+
 @media (max-width: 768px) {
   html body .esportesnow-mini-game {
+    margin-bottom: 50px !important;
+  }
+
+  html body .esportesnow-random-picker {
     margin-bottom: 50px !important;
   }
 
