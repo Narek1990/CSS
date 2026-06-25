@@ -2,7 +2,7 @@ html body ul#ul > [data-mj="header-nav-item"]:first-of-type > .sl-navlink,
 html body ul#ul > [data-mj="header-nav-item"]:first-of-type > [class~="sl-navlink"] {
   position: absolute !important;
   top: 9px !important;
-  right: 450px !important;
+  right: 65% !important;
   left: auto !important;
   z-index: 9999999999 !important;
   display: inline-flex !important;
