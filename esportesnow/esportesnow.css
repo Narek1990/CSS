@@ -845,14 +845,33 @@ html body .esportesnow-random-picker[data-state="loading"] .esportesnow-random-p
 }
 
 html body .esportesnow-random-picker[data-state="loading"] .esportesnow-random-picker-card-img,
+html body .esportesnow-random-picker[data-state="revealing"] .esportesnow-random-picker-card-img,
 html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-picker-card-img {
   opacity: 1 !important;
   transform: scale(1) !important;
 }
 
 html body .esportesnow-random-picker[data-state="loading"] .esportesnow-random-picker-card::before,
+html body .esportesnow-random-picker[data-state="revealing"] .esportesnow-random-picker-card::before,
 html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-picker-card::before {
   opacity: 0 !important;
+}
+
+html body .esportesnow-random-picker[data-state="revealing"] .esportesnow-random-picker-stage::before {
+  animation: esportesnowRandomPickerPortal 0.7s linear infinite, esportesnowRandomPickerFlash 0.7s ease both !important;
+}
+
+html body .esportesnow-random-picker[data-state="revealing"] .esportesnow-random-picker-card {
+  width: 128px !important;
+  animation: esportesnowRandomPickerReveal 0.68s cubic-bezier(.17,.84,.44,1) both !important;
+  box-shadow:
+    0 0 42px rgba(255, 215, 92, 0.48),
+    0 0 80px rgba(80, 220, 255, 0.2),
+    0 24px 42px rgba(0, 0, 0, 0.42) !important;
+}
+
+html body .esportesnow-random-picker[data-state="revealing"] .esportesnow-random-picker-card-img {
+  filter: brightness(1.16) saturate(1.28) !important;
 }
 
 html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-picker-stage {
@@ -871,6 +890,10 @@ html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-
 html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-picker-card-title,
 html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-picker-play {
   display: inline-flex !important;
+}
+
+html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-picker-play {
+  animation: esportesnowRandomPickerPlayPulse 1.05s ease-in-out infinite !important;
 }
 
 html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-picker-card-img {
@@ -899,6 +922,32 @@ html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-
   }
 }
 
+@keyframes esportesnowRandomPickerFlash {
+  0%, 100% {
+    filter: drop-shadow(0 0 18px rgba(255, 210, 78, 0.3));
+    opacity: 0.8;
+  }
+  50% {
+    filter: drop-shadow(0 0 42px rgba(255, 235, 126, 0.72));
+    opacity: 1;
+  }
+}
+
+@keyframes esportesnowRandomPickerReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.45) rotateY(110deg);
+  }
+  52% {
+    opacity: 1;
+    transform: scale(1.18) rotateY(-10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotateY(0deg);
+  }
+}
+
 @keyframes esportesnowRandomPickerSelected {
   0% {
     transform: scale(0.78) rotateY(60deg);
@@ -908,6 +957,17 @@ html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-
   }
   100% {
     transform: scale(1) rotateY(0deg);
+  }
+}
+
+@keyframes esportesnowRandomPickerPlayPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 22px rgba(255, 215, 92, 0.46);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.09);
+    box-shadow: 0 0 34px rgba(255, 231, 118, 0.7), 0 0 62px rgba(95, 220, 255, 0.22);
   }
 }
 
