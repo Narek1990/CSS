@@ -159,172 +159,226 @@
     });
   }
 
-  function getRandomDigit() {
+  function getRandomIndex(max) {
     var buffer;
+
+    if (!max) {
+      return 0;
+    }
 
     if (window.crypto && window.crypto.getRandomValues) {
       buffer = new Uint32Array(1);
       window.crypto.getRandomValues(buffer);
-      return buffer[0] % 10;
+      return buffer[0] % max;
     }
 
-    return Math.floor(Math.random() * 10);
+    return Math.floor(Math.random() * max);
   }
 
-  function createMiniGameButton(number, game) {
-    var button = document.createElement("button");
-    button.type = "button";
-    button.className = "esportesnow-mini-game-number";
-    button.textContent = String(number);
-    button.setAttribute("aria-label", "Guess number " + number);
+  function getPickerSections() {
+    var sections = Array.prototype.slice.call(document.querySelectorAll('[data-mj="widget-game-slider"]'));
+    var pickerSections = sections.filter(function (section) {
+      var title = section.querySelector('[data-mj="widget-game-slider-header"] p');
+      return title && /game\s*picker/i.test(title.textContent || "");
+    });
 
-    button.addEventListener("click", function () {
-      var hiddenNumber = Number(game.getAttribute("data-hidden-number"));
-      var isWinner = hiddenNumber === number;
-      var numbers = game.querySelectorAll(".esportesnow-mini-game-number");
-      var result = game.querySelector(".esportesnow-mini-game-result");
-      var hidden = game.querySelector(".esportesnow-mini-game-hidden-value");
+    return pickerSections.length ? pickerSections : sections;
+  }
 
-      numbers.forEach(function (item) {
-        item.disabled = true;
-        item.setAttribute("data-disabled", "true");
+  function collectPickerGames() {
+    var games = [];
+    var seen = {};
+
+    getPickerSections().forEach(function (section) {
+      section.querySelectorAll('[data-mj="widget-game-card"]').forEach(function (card) {
+        var img = card.querySelector("img[src]");
+        var link = card.closest("a[href]");
+        var src = img && img.getAttribute("src");
+        var title = img && (img.getAttribute("alt") || "").trim();
+
+        if (!img || !src || !title || seen[src + "|" + title]) {
+          return;
+        }
+
+        seen[src + "|" + title] = true;
+        games.push({
+          card: card,
+          href: link && link.href,
+          image: src,
+          title: title
+        });
       });
-
-      button.setAttribute(isWinner ? "data-win" : "data-lose", "true");
-      game.setAttribute("data-revealed", "true");
-      game.setAttribute(isWinner ? "data-state" : "data-state", isWinner ? "win" : "lose");
-
-      if (hidden) {
-        hidden.textContent = String(hiddenNumber);
-      }
-
-      if (result) {
-        result.textContent = isWinner
-          ? "JACKPOT! You matched the hidden number. iPhone prize unlocked."
-          : "So close. Hidden number was " + hiddenNumber + ". Try again and catch the iPhone prize.";
-      }
     });
 
-    return button;
+    return games;
   }
 
-  function resetMiniGame(game) {
-    var hiddenNumber = getRandomDigit();
-    var hidden = game.querySelector(".esportesnow-mini-game-hidden-value");
-    var result = game.querySelector(".esportesnow-mini-game-result");
+  function updateRandomPickerCard(picker, game) {
+    var image = picker.querySelector(".esportesnow-random-picker-card-img");
+    var title = picker.querySelector(".esportesnow-random-picker-card-title");
 
-    game.setAttribute("data-hidden-number", String(hiddenNumber));
-    game.setAttribute("data-revealed", "false");
-    game.setAttribute("data-state", "ready");
-
-    if (hidden) {
-      hidden.textContent = "?";
+    if (image) {
+      image.src = game.image;
+      image.alt = game.title;
     }
 
-    if (result) {
-      result.textContent = "Pick one number. Match the hidden digit and win the iPhone prize.";
+    if (title) {
+      title.textContent = game.title;
     }
-
-    game.querySelectorAll(".esportesnow-mini-game-number").forEach(function (button) {
-      button.disabled = false;
-      button.removeAttribute("data-disabled");
-      button.removeAttribute("data-win");
-      button.removeAttribute("data-lose");
-    });
   }
 
-  function createMiniGame() {
-    var game = document.createElement("div");
+  function playSelectedRandomGame(picker) {
+    var selectedIndex = Number(picker.getAttribute("data-selected-game-index"));
+    var games = picker.__esportesnowGames || [];
+    var selected = games[selectedIndex];
+
+    if (!selected) {
+      return;
+    }
+
+    if (selected.href) {
+      window.location.href = selected.href;
+      return;
+    }
+
+    selected.card.dispatchEvent(new MouseEvent("click", {
+      bubbles: true,
+      cancelable: true,
+      view: window
+    }));
+  }
+
+  function runRandomPicker(picker) {
+    var games = collectPickerGames();
+    var button = picker.querySelector(".esportesnow-random-picker-button");
+    var status = picker.querySelector(".esportesnow-random-picker-status");
+    var cycles = 18;
+    var cycle = 0;
+    var finalIndex;
+
+    if (!games.length) {
+      if (status) {
+        status.textContent = "Game list is still loading. Try again in a moment.";
+      }
+      return;
+    }
+
+    picker.__esportesnowGames = games;
+    picker.setAttribute("data-state", "loading");
+
+    if (button) {
+      button.disabled = true;
+      button.textContent = "Loading...";
+    }
+
+    if (status) {
+      status.textContent = "Opening the portal and shuffling games...";
+    }
+
+    var interval = window.setInterval(function () {
+      var previewIndex = getRandomIndex(games.length);
+      updateRandomPickerCard(picker, games[previewIndex]);
+      cycle += 1;
+
+      if (cycle < cycles) {
+        return;
+      }
+
+      window.clearInterval(interval);
+      finalIndex = getRandomIndex(games.length);
+      picker.setAttribute("data-selected-game-index", String(finalIndex));
+      updateRandomPickerCard(picker, games[finalIndex]);
+      picker.setAttribute("data-state", "selected");
+
+      if (button) {
+        button.disabled = false;
+        button.textContent = "Shuffle";
+      }
+
+      if (status) {
+        status.textContent = games[finalIndex].title + " is ready. Tap the card to play.";
+      }
+    }, 74);
+  }
+
+  function createRandomGamePicker() {
+    var picker = document.createElement("div");
     var intro = document.createElement("div");
     var badge = document.createElement("span");
     var title = document.createElement("strong");
     var subtitle = document.createElement("p");
-    var display = document.createElement("div");
-    var displayLabel = document.createElement("span");
-    var hiddenValue = document.createElement("b");
-    var numbers = document.createElement("div");
-    var result = document.createElement("p");
-    var reset = document.createElement("button");
-    var prize = document.createElement("div");
-    var phone = document.createElement("div");
-    var phoneScreen = document.createElement("div");
-    var prizeText = document.createElement("span");
-    var coin;
+    var stage = document.createElement("button");
+    var card = document.createElement("span");
+    var image = document.createElement("img");
+    var cardTitle = document.createElement("span");
+    var play = document.createElement("span");
+    var button = document.createElement("button");
+    var status = document.createElement("p");
 
-    game.className = "esportesnow-mini-game";
-    game.setAttribute("data-esportesnow-mini-game", "true");
+    picker.className = "esportesnow-random-picker";
+    picker.setAttribute("data-esportesnow-random-picker", "true");
+    picker.setAttribute("data-state", "ready");
 
-    intro.className = "esportesnow-mini-game-intro";
-    badge.className = "esportesnow-mini-game-badge";
-    badge.textContent = "Lucky Number";
-    title.textContent = "Guess the hidden number";
-    subtitle.textContent = "The system hides one digit from 0 to 9. Choose wisely.";
+    intro.className = "esportesnow-random-picker-intro";
+    badge.className = "esportesnow-random-picker-badge";
+    badge.textContent = "Random Game Picker";
+    title.textContent = "Not sure what to play?";
+    subtitle.textContent = "Try your luck on a random game from this list.";
 
-    display.className = "esportesnow-mini-game-display";
-    displayLabel.textContent = "Hidden number";
-    hiddenValue.className = "esportesnow-mini-game-hidden-value";
-    hiddenValue.textContent = "?";
-    display.appendChild(displayLabel);
-    display.appendChild(hiddenValue);
+    stage.type = "button";
+    stage.className = "esportesnow-random-picker-stage";
+    stage.setAttribute("aria-label", "Play selected random game");
+    stage.addEventListener("click", function () {
+      if (picker.getAttribute("data-state") === "selected") {
+        playSelectedRandomGame(picker);
+      }
+    });
+
+    card.className = "esportesnow-random-picker-card";
+    image.className = "esportesnow-random-picker-card-img";
+    image.alt = "";
+    image.loading = "lazy";
+    image.decoding = "async";
+    cardTitle.className = "esportesnow-random-picker-card-title";
+    cardTitle.textContent = "Mystery Game";
+    play.className = "esportesnow-random-picker-play";
+    play.textContent = "▶";
+
+    card.appendChild(image);
+    card.appendChild(cardTitle);
+    card.appendChild(play);
+    stage.appendChild(card);
 
     intro.appendChild(badge);
     intro.appendChild(title);
     intro.appendChild(subtitle);
-    intro.appendChild(display);
 
-    numbers.className = "esportesnow-mini-game-numbers";
-    for (var number = 0; number <= 9; number += 1) {
-      numbers.appendChild(createMiniGameButton(number, game));
-    }
-
-    result.className = "esportesnow-mini-game-result";
-    result.setAttribute("aria-live", "polite");
-
-    prize.className = "esportesnow-mini-game-prize";
-    prize.setAttribute("aria-hidden", "true");
-
-    phone.className = "esportesnow-mini-game-phone";
-    phoneScreen.className = "esportesnow-mini-game-phone-screen";
-    phoneScreen.textContent = "iPhone";
-    phone.appendChild(phoneScreen);
-
-    prizeText.className = "esportesnow-mini-game-prize-text";
-    prizeText.textContent = "Prize unlocked";
-
-    prize.appendChild(phone);
-    prize.appendChild(prizeText);
-
-    for (var coinIndex = 0; coinIndex < 10; coinIndex += 1) {
-      coin = document.createElement("i");
-      coin.className = "esportesnow-mini-game-coin";
-      coin.style.setProperty("--coin-index", String(coinIndex));
-      prize.appendChild(coin);
-    }
-
-    reset.type = "button";
-    reset.className = "esportesnow-mini-game-reset";
-    reset.textContent = "Play again";
-    reset.addEventListener("click", function () {
-      resetMiniGame(game);
+    button.type = "button";
+    button.className = "esportesnow-random-picker-button";
+    button.textContent = "Find a game";
+    button.addEventListener("click", function () {
+      runRandomPicker(picker);
     });
 
-    game.appendChild(intro);
-    game.appendChild(numbers);
-    game.appendChild(result);
-    game.appendChild(prize);
-    game.appendChild(reset);
+    status.className = "esportesnow-random-picker-status";
+    status.setAttribute("aria-live", "polite");
+    status.textContent = "The portal is waiting. Press the button to shuffle.";
 
-    resetMiniGame(game);
-    return game;
+    picker.appendChild(intro);
+    picker.appendChild(stage);
+    picker.appendChild(button);
+    picker.appendChild(status);
+
+    return picker;
   }
 
   function injectMiniGame() {
     document.querySelectorAll('[data-mj="widget-info-panel-container"]').forEach(function (container) {
-      if (container.querySelector('[data-esportesnow-mini-game="true"]')) {
+      if (container.querySelector('[data-esportesnow-random-picker="true"]')) {
         return;
       }
 
-      container.insertBefore(createMiniGame(), container.firstChild);
+      container.insertBefore(createRandomGamePicker(), container.firstChild);
     });
   }
 
