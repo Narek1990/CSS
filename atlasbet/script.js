@@ -33,8 +33,10 @@
 
     return src.indexOf("/flags/RU.svg") !== -1 ||
       src.indexOf("/flags/BY.svg") !== -1 ||
+      src.indexOf("/flags/UA.svg") !== -1 ||
       alt === "russia" ||
-      alt === "belarus";
+      alt === "belarus" ||
+      alt === "ukraine";
   }
 
   function hideRestrictedCountries() {
