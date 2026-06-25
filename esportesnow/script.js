@@ -159,10 +159,152 @@
     });
   }
 
+  function getRandomDigit() {
+    var buffer;
+
+    if (window.crypto && window.crypto.getRandomValues) {
+      buffer = new Uint32Array(1);
+      window.crypto.getRandomValues(buffer);
+      return buffer[0] % 10;
+    }
+
+    return Math.floor(Math.random() * 10);
+  }
+
+  function createMiniGameButton(number, game) {
+    var button = document.createElement("button");
+    button.type = "button";
+    button.className = "esportesnow-mini-game-number";
+    button.textContent = String(number);
+    button.setAttribute("aria-label", "Guess number " + number);
+
+    button.addEventListener("click", function () {
+      var hiddenNumber = Number(game.getAttribute("data-hidden-number"));
+      var isWinner = hiddenNumber === number;
+      var numbers = game.querySelectorAll(".esportesnow-mini-game-number");
+      var result = game.querySelector(".esportesnow-mini-game-result");
+      var hidden = game.querySelector(".esportesnow-mini-game-hidden-value");
+
+      numbers.forEach(function (item) {
+        item.disabled = true;
+        item.setAttribute("data-disabled", "true");
+      });
+
+      button.setAttribute(isWinner ? "data-win" : "data-lose", "true");
+      game.setAttribute("data-revealed", "true");
+      game.setAttribute(isWinner ? "data-state" : "data-state", isWinner ? "win" : "lose");
+
+      if (hidden) {
+        hidden.textContent = String(hiddenNumber);
+      }
+
+      if (result) {
+        result.textContent = isWinner
+          ? "Amazing! You found the hidden number. iPhone prize unlocked."
+          : "Hidden number was " + hiddenNumber + ". Try again and catch the iPhone prize.";
+      }
+    });
+
+    return button;
+  }
+
+  function resetMiniGame(game) {
+    var hiddenNumber = getRandomDigit();
+    var hidden = game.querySelector(".esportesnow-mini-game-hidden-value");
+    var result = game.querySelector(".esportesnow-mini-game-result");
+
+    game.setAttribute("data-hidden-number", String(hiddenNumber));
+    game.setAttribute("data-revealed", "false");
+    game.setAttribute("data-state", "ready");
+
+    if (hidden) {
+      hidden.textContent = "?";
+    }
+
+    if (result) {
+      result.textContent = "Pick one number. Match the hidden digit and win the iPhone prize.";
+    }
+
+    game.querySelectorAll(".esportesnow-mini-game-number").forEach(function (button) {
+      button.disabled = false;
+      button.removeAttribute("data-disabled");
+      button.removeAttribute("data-win");
+      button.removeAttribute("data-lose");
+    });
+  }
+
+  function createMiniGame() {
+    var game = document.createElement("div");
+    var intro = document.createElement("div");
+    var badge = document.createElement("span");
+    var title = document.createElement("strong");
+    var subtitle = document.createElement("p");
+    var display = document.createElement("div");
+    var displayLabel = document.createElement("span");
+    var hiddenValue = document.createElement("b");
+    var numbers = document.createElement("div");
+    var result = document.createElement("p");
+    var reset = document.createElement("button");
+
+    game.className = "esportesnow-mini-game";
+    game.setAttribute("data-esportesnow-mini-game", "true");
+
+    intro.className = "esportesnow-mini-game-intro";
+    badge.className = "esportesnow-mini-game-badge";
+    badge.textContent = "Lucky Number";
+    title.textContent = "Guess the hidden number";
+    subtitle.textContent = "The system hides one digit from 0 to 9. Choose wisely.";
+
+    display.className = "esportesnow-mini-game-display";
+    displayLabel.textContent = "Hidden number";
+    hiddenValue.className = "esportesnow-mini-game-hidden-value";
+    hiddenValue.textContent = "?";
+    display.appendChild(displayLabel);
+    display.appendChild(hiddenValue);
+
+    intro.appendChild(badge);
+    intro.appendChild(title);
+    intro.appendChild(subtitle);
+    intro.appendChild(display);
+
+    numbers.className = "esportesnow-mini-game-numbers";
+    for (var number = 0; number <= 9; number += 1) {
+      numbers.appendChild(createMiniGameButton(number, game));
+    }
+
+    result.className = "esportesnow-mini-game-result";
+
+    reset.type = "button";
+    reset.className = "esportesnow-mini-game-reset";
+    reset.textContent = "Play again";
+    reset.addEventListener("click", function () {
+      resetMiniGame(game);
+    });
+
+    game.appendChild(intro);
+    game.appendChild(numbers);
+    game.appendChild(result);
+    game.appendChild(reset);
+
+    resetMiniGame(game);
+    return game;
+  }
+
+  function injectMiniGame() {
+    document.querySelectorAll('[data-mj="widget-info-panel-container"]').forEach(function (container) {
+      if (container.querySelector('[data-esportesnow-mini-game="true"]')) {
+        return;
+      }
+
+      container.insertBefore(createMiniGame(), container.firstChild);
+    });
+  }
+
   function applyOverrides() {
     applyScheduled = false;
     injectHiddenElementCss();
     injectHeroHotspots();
+    injectMiniGame();
 
     document.querySelectorAll(maxWidthSelector).forEach(function (element) {
       element.style.setProperty("max-width", "none", "important");
