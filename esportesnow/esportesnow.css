@@ -571,6 +571,267 @@ html body .esportesnow-mini-game-reset:hover {
   transform: translateY(-1px) !important;
 }
 
+html body .esportesnow-mini-game-display {
+  position: relative !important;
+  width: min(100%, 430px) !important;
+  min-height: 138px !important;
+  margin-top: 4px !important;
+  padding: 18px 20px !important;
+  border-color: rgba(102, 226, 255, 0.28) !important;
+  border-radius: 22px !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  background:
+    radial-gradient(circle at 74% 50%, rgba(92, 205, 255, 0.34), transparent 28%),
+    radial-gradient(circle at 74% 50%, rgba(255, 190, 74, 0.3), transparent 45%),
+    linear-gradient(135deg, rgba(12, 14, 33, 0.92), rgba(25, 20, 46, 0.88)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 18px 36px rgba(0, 0, 0, 0.28),
+    0 0 38px rgba(67, 189, 255, 0.12) !important;
+}
+
+html body .esportesnow-mini-game-display::before {
+  content: "" !important;
+  position: absolute !important;
+  right: 17px !important;
+  top: 50% !important;
+  width: 112px !important;
+  height: 112px !important;
+  border-radius: 50% !important;
+  background:
+    conic-gradient(from 0deg, rgba(255, 204, 94, 0), rgba(255, 204, 94, 0.92), rgba(88, 220, 255, 0.72), rgba(255, 204, 94, 0)) !important;
+  filter: blur(0.2px) drop-shadow(0 0 18px rgba(95, 214, 255, 0.28)) !important;
+  transform: translateY(-50%) !important;
+  animation: esportesnowMiniGameOrbit 4.5s linear infinite !important;
+  opacity: 0.82 !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+html body .esportesnow-mini-game-display::after {
+  content: "" !important;
+  position: absolute !important;
+  right: 46px !important;
+  bottom: 14px !important;
+  width: 58px !important;
+  height: 8px !important;
+  border-radius: 999px !important;
+  background: radial-gradient(closest-side, rgba(255, 212, 86, 0.86), rgba(255, 212, 86, 0)) !important;
+  filter: blur(3px) !important;
+  opacity: 0.9 !important;
+  pointer-events: none !important;
+}
+
+html body .esportesnow-mini-game-display span {
+  position: relative !important;
+  z-index: 2 !important;
+  max-width: 160px !important;
+  color: rgba(255, 255, 255, 0.78) !important;
+  font-size: 13px !important;
+  line-height: 1.25 !important;
+}
+
+html body .esportesnow-mini-game-hidden-value {
+  position: absolute !important;
+  right: 39px !important;
+  top: 50% !important;
+  z-index: 2 !important;
+  width: 68px !important;
+  height: 82px !important;
+  border: 1px solid rgba(255, 220, 120, 0.72) !important;
+  border-radius: 18px !important;
+  color: #fff3c7 !important;
+  background:
+    radial-gradient(circle at 32% 20%, rgba(255, 226, 126, 0.2), transparent 32%),
+    linear-gradient(180deg, #171036, #070817 72%) !important;
+  box-shadow:
+    0 0 28px rgba(255, 202, 80, 0.26),
+    0 14px 28px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
+  font-size: 42px !important;
+  text-shadow: 0 0 18px rgba(255, 204, 88, 0.44) !important;
+  transform: translateY(-50%) rotateY(0deg) !important;
+  animation: esportesnowMiniGameMystery 2.3s ease-in-out infinite !important;
+}
+
+html body .esportesnow-mini-game[data-revealed="true"] .esportesnow-mini-game-hidden-value {
+  animation: esportesnowMiniGameReveal 0.58s ease both !important;
+}
+
+html body .esportesnow-mini-game[data-state="win"] .esportesnow-mini-game-display {
+  border-color: rgba(116, 255, 159, 0.68) !important;
+  background:
+    radial-gradient(circle at 74% 50%, rgba(94, 255, 146, 0.34), transparent 28%),
+    radial-gradient(circle at 74% 50%, rgba(255, 215, 92, 0.34), transparent 45%),
+    linear-gradient(135deg, rgba(9, 32, 24, 0.94), rgba(24, 23, 44, 0.9)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 18px 38px rgba(0, 0, 0, 0.3),
+    0 0 42px rgba(103, 255, 156, 0.24) !important;
+}
+
+html body .esportesnow-mini-game[data-state="lose"] .esportesnow-mini-game-display {
+  border-color: rgba(255, 117, 88, 0.62) !important;
+  background:
+    radial-gradient(circle at 74% 50%, rgba(255, 108, 82, 0.25), transparent 31%),
+    linear-gradient(135deg, rgba(40, 14, 20, 0.94), rgba(20, 18, 38, 0.9)) !important;
+}
+
+html body .esportesnow-mini-game-prize {
+  grid-column: 2 !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  min-height: 74px !important;
+  margin-top: -4px !important;
+  padding: 12px 16px !important;
+  border: 1px solid rgba(255, 213, 92, 0.52) !important;
+  border-radius: 16px !important;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 235, 144, 0.26), transparent 34%),
+    linear-gradient(135deg, rgba(42, 32, 8, 0.86), rgba(10, 14, 26, 0.78)) !important;
+  box-shadow:
+    0 0 24px rgba(255, 206, 75, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(12px) scale(0.96) !important;
+  transition: opacity 0.28s ease, transform 0.28s ease !important;
+}
+
+html body .esportesnow-mini-game[data-state="win"] .esportesnow-mini-game-prize {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+  animation: esportesnowMiniGamePrizePop 0.78s ease both !important;
+}
+
+html body .esportesnow-mini-game-phone {
+  position: relative !important;
+  width: 38px !important;
+  height: 62px !important;
+  border: 2px solid #161b25 !important;
+  border-radius: 10px !important;
+  background: linear-gradient(160deg, #f4f8ff, #aeb7c9) !important;
+  box-shadow:
+    0 0 22px rgba(255, 220, 104, 0.32),
+    inset 0 0 0 3px rgba(0, 0, 0, 0.76) !important;
+}
+
+html body .esportesnow-mini-game-phone::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 5px !important;
+  left: 50% !important;
+  width: 14px !important;
+  height: 3px !important;
+  border-radius: 999px !important;
+  background: rgba(0, 0, 0, 0.74) !important;
+  transform: translateX(-50%) !important;
+}
+
+html body .esportesnow-mini-game-phone-screen {
+  position: absolute !important;
+  inset: 9px 5px 6px !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  padding-bottom: 5px !important;
+  border-radius: 6px !important;
+  color: #fff !important;
+  background: linear-gradient(180deg, #38d7ff, #563cff 65%, #0b1022) !important;
+  font-size: 7px !important;
+  font-weight: 900 !important;
+}
+
+html body .esportesnow-mini-game-prize-text {
+  color: #ffe18a !important;
+  font-size: 17px !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.4px !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 0 18px rgba(255, 213, 92, 0.26) !important;
+}
+
+html body .esportesnow-mini-game-coin {
+  --coin-angle: calc(var(--coin-index) * 36deg);
+  position: absolute !important;
+  left: 28px !important;
+  top: 35px !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle at 32% 25%, #fff7b8, #ffc84e 45%, #a86b09 100%) !important;
+  opacity: 0 !important;
+  transform: rotate(var(--coin-angle)) translateX(0) scale(0.3) !important;
+  pointer-events: none !important;
+}
+
+html body .esportesnow-mini-game[data-state="win"] .esportesnow-mini-game-coin {
+  animation: esportesnowMiniGameCoinBurst 1.15s ease-out both !important;
+  animation-delay: calc(var(--coin-index) * 38ms) !important;
+}
+
+html body .esportesnow-mini-game[data-state="lose"] .esportesnow-mini-game-result {
+  color: #ffb09c !important;
+  font-weight: 800 !important;
+}
+
+@keyframes esportesnowMiniGameOrbit {
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+@keyframes esportesnowMiniGameMystery {
+  0%, 100% {
+    transform: translateY(-50%) translateY(0) rotateY(0deg);
+  }
+  50% {
+    transform: translateY(-50%) translateY(-4px) rotateY(10deg);
+  }
+}
+
+@keyframes esportesnowMiniGameReveal {
+  0% {
+    transform: translateY(-50%) rotateY(0deg) scale(1);
+  }
+  50% {
+    transform: translateY(-50%) rotateY(88deg) scale(0.92);
+  }
+  100% {
+    transform: translateY(-50%) rotateY(0deg) scale(1.06);
+  }
+}
+
+@keyframes esportesnowMiniGamePrizePop {
+  0% {
+    transform: translateY(12px) scale(0.84);
+  }
+  62% {
+    transform: translateY(-3px) scale(1.04);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes esportesnowMiniGameCoinBurst {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--coin-angle)) translateX(0) scale(0.3);
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--coin-angle)) translateX(72px) scale(1);
+  }
+}
+
 @media (min-width: 993px) {
   html body #root.vertical-nav [data-mj="sidebar"] {
     position: sticky !important;
@@ -621,7 +882,46 @@ html body .esportesnow-mini-game-reset:hover {
   }
 
   html body .esportesnow-mini-game-result,
+  html body .esportesnow-mini-game-prize,
   html body .esportesnow-mini-game-reset {
     grid-column: auto !important;
+  }
+
+  html body .esportesnow-mini-game-display {
+    width: 100% !important;
+    min-height: 122px !important;
+    padding: 16px !important;
+  }
+
+  html body .esportesnow-mini-game-display span {
+    max-width: 130px !important;
+    font-size: 12px !important;
+  }
+
+  html body .esportesnow-mini-game-display::before {
+    right: 12px !important;
+    width: 98px !important;
+    height: 98px !important;
+  }
+
+  html body .esportesnow-mini-game-display::after {
+    right: 36px !important;
+    bottom: 12px !important;
+  }
+
+  html body .esportesnow-mini-game-hidden-value {
+    right: 27px !important;
+    width: 62px !important;
+    height: 74px !important;
+    font-size: 36px !important;
+  }
+
+  html body .esportesnow-mini-game-prize {
+    min-height: 66px !important;
+    padding: 10px 12px !important;
+  }
+
+  html body .esportesnow-mini-game-prize-text {
+    font-size: 14px !important;
   }
 }

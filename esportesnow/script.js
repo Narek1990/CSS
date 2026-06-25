@@ -200,8 +200,8 @@
 
       if (result) {
         result.textContent = isWinner
-          ? "Amazing! You found the hidden number. iPhone prize unlocked."
-          : "Hidden number was " + hiddenNumber + ". Try again and catch the iPhone prize.";
+          ? "JACKPOT! You matched the hidden number. iPhone prize unlocked."
+          : "So close. Hidden number was " + hiddenNumber + ". Try again and catch the iPhone prize.";
       }
     });
 
@@ -245,6 +245,11 @@
     var numbers = document.createElement("div");
     var result = document.createElement("p");
     var reset = document.createElement("button");
+    var prize = document.createElement("div");
+    var phone = document.createElement("div");
+    var phoneScreen = document.createElement("div");
+    var prizeText = document.createElement("span");
+    var coin;
 
     game.className = "esportesnow-mini-game";
     game.setAttribute("data-esportesnow-mini-game", "true");
@@ -273,6 +278,28 @@
     }
 
     result.className = "esportesnow-mini-game-result";
+    result.setAttribute("aria-live", "polite");
+
+    prize.className = "esportesnow-mini-game-prize";
+    prize.setAttribute("aria-hidden", "true");
+
+    phone.className = "esportesnow-mini-game-phone";
+    phoneScreen.className = "esportesnow-mini-game-phone-screen";
+    phoneScreen.textContent = "iPhone";
+    phone.appendChild(phoneScreen);
+
+    prizeText.className = "esportesnow-mini-game-prize-text";
+    prizeText.textContent = "Prize unlocked";
+
+    prize.appendChild(phone);
+    prize.appendChild(prizeText);
+
+    for (var coinIndex = 0; coinIndex < 10; coinIndex += 1) {
+      coin = document.createElement("i");
+      coin.className = "esportesnow-mini-game-coin";
+      coin.style.setProperty("--coin-index", String(coinIndex));
+      prize.appendChild(coin);
+    }
 
     reset.type = "button";
     reset.className = "esportesnow-mini-game-reset";
@@ -284,6 +311,7 @@
     game.appendChild(intro);
     game.appendChild(numbers);
     game.appendChild(result);
+    game.appendChild(prize);
     game.appendChild(reset);
 
     resetMiniGame(game);
