@@ -1347,3 +1347,146 @@ html body .esportesnow-mini-game[data-state="lose"] .esportesnow-mini-game-resul
     font-size: 14px !important;
   }
 }
+
+/* Lucky Number compact layout update */
+html body .esportesnow-mini-game {
+  grid-template-columns: minmax(250px, 0.76fr) minmax(290px, 1fr) !important;
+  gap: 14px 18px !important;
+  min-height: 132px !important;
+  padding: 16px 18px !important;
+}
+
+html body .esportesnow-mini-game-intro {
+  gap: 7px !important;
+}
+
+html body .esportesnow-mini-game-badge {
+  margin-bottom: 1px !important;
+  padding: 5px 9px !important;
+  font-size: 10px !important;
+}
+
+html body .esportesnow-mini-game-intro strong {
+  font-size: clamp(22px, 2.2vw, 34px) !important;
+}
+
+html body .esportesnow-mini-game-intro p {
+  margin: 4px 0 2px !important;
+  font-size: 13px !important;
+  line-height: 1.32 !important;
+}
+
+html body .esportesnow-mini-game-intro > .esportesnow-mini-game-reset {
+  grid-column: auto !important;
+  justify-self: auto !important;
+  align-self: flex-start !important;
+  min-height: 34px !important;
+  margin: 1px 0 4px !important;
+  padding: 8px 16px !important;
+  border-radius: 999px !important;
+  font-size: 12px !important;
+}
+
+html body .esportesnow-mini-game-display {
+  width: min(100%, 330px) !important;
+  min-height: 76px !important;
+  margin-top: 0 !important;
+  padding: 11px 14px !important;
+  border-radius: 17px !important;
+}
+
+html body .esportesnow-mini-game-display::before {
+  right: 12px !important;
+  width: 72px !important;
+  height: 72px !important;
+}
+
+html body .esportesnow-mini-game-display::after {
+  right: 33px !important;
+  bottom: 9px !important;
+  width: 42px !important;
+}
+
+html body .esportesnow-mini-game-display span {
+  max-width: 122px !important;
+  font-size: 11px !important;
+}
+
+html body .esportesnow-mini-game-hidden-value {
+  right: 24px !important;
+  width: 50px !important;
+  height: 58px !important;
+  border-radius: 14px !important;
+  font-size: 31px !important;
+}
+
+html body .esportesnow-mini-game-numbers {
+  gap: 8px !important;
+}
+
+html body .esportesnow-mini-game-number {
+  min-height: 40px !important;
+  border-radius: 10px !important;
+  font-size: 18px !important;
+}
+
+html body .esportesnow-mini-game-result {
+  min-height: 18px !important;
+  margin: -2px 0 0 !important;
+  font-size: 13px !important;
+}
+
+html body .esportesnow-mini-game-prize {
+  min-height: 54px !important;
+  margin-top: -2px !important;
+  padding: 9px 12px !important;
+}
+
+html body .esportesnow-mini-game-phone {
+  width: 31px !important;
+  height: 50px !important;
+  border-radius: 8px !important;
+}
+
+html body .esportesnow-mini-game-prize-text {
+  font-size: 14px !important;
+}
+
+@media (max-width: 768px) {
+  html body .esportesnow-mini-game {
+    gap: 12px !important;
+    min-height: 0 !important;
+    padding: 16px 12px !important;
+  }
+
+  html body .esportesnow-mini-game-intro {
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  html body .esportesnow-mini-game-intro p {
+    max-width: 320px !important;
+  }
+
+  html body .esportesnow-mini-game-intro > .esportesnow-mini-game-reset {
+    align-self: center !important;
+    margin-bottom: 2px !important;
+  }
+
+  html body .esportesnow-mini-game-display {
+    width: min(100%, 300px) !important;
+    min-height: 72px !important;
+  }
+
+  html body .esportesnow-mini-game-hidden-value {
+    right: 22px !important;
+    width: 48px !important;
+    height: 54px !important;
+    font-size: 28px !important;
+  }
+
+  html body .esportesnow-mini-game-number {
+    min-height: 38px !important;
+    font-size: 16px !important;
+  }
+}
