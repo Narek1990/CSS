@@ -102,6 +102,7 @@
     button.type = "button";
     button.className = "esportesnow-mini-game-number";
     button.textContent = String(number);
+    button.style.setProperty("--mini-game-index", String(number));
     button.setAttribute("aria-label", "Guess number " + number);
 
     button.addEventListener("click", function () {

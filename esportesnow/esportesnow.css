@@ -1550,3 +1550,318 @@ html body .esportesnow-mini-game-prize-text {
     font-size: 16px !important;
   }
 }
+
+/* Lucky Number interaction polish */
+html body .esportesnow-mini-game {
+  position: relative !important;
+  margin-bottom: 50px !important;
+  overflow: hidden !important;
+}
+
+html body .esportesnow-mini-game-intro {
+  padding-right: 132px !important;
+}
+
+html body .esportesnow-mini-game-intro > .esportesnow-mini-game-reset {
+  position: absolute !important;
+  top: 16px !important;
+  right: 18px !important;
+  z-index: 8 !important;
+  align-self: auto !important;
+  justify-self: auto !important;
+  min-height: 34px !important;
+  margin: 0 !important;
+  padding: 8px 16px !important;
+  color: #11131b !important;
+  border: 1px solid rgba(255, 230, 150, 0.74) !important;
+  background:
+    radial-gradient(circle at 24% 18%, rgba(255, 255, 255, 0.86), transparent 32%),
+    linear-gradient(135deg, #fff4b0, #d49b20 62%, #7d4d0a) !important;
+  box-shadow:
+    0 0 18px rgba(255, 214, 92, 0.34),
+    0 8px 18px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.68) !important;
+  animation: esportesnowMiniGameResetGlow 2.15s ease-in-out infinite !important;
+}
+
+html body .esportesnow-mini-game-number {
+  animation: esportesnowMiniGameNumberIn 0.42s cubic-bezier(.18,.89,.32,1.28) both !important;
+  animation-delay: calc(var(--mini-game-index, 0) * 34ms) !important;
+}
+
+html body .esportesnow-mini-game-number::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 1px !important;
+  border-radius: inherit !important;
+  opacity: 0 !important;
+  background: linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.48) 44%, transparent 70%) !important;
+  transform: translateX(-115%) skewX(-18deg) !important;
+  pointer-events: none !important;
+}
+
+html body .esportesnow-mini-game-number:hover::after {
+  animation: esportesnowMiniGameButtonShine 0.7s ease both !important;
+}
+
+html body .esportesnow-mini-game[data-state="ready"] .esportesnow-mini-game-hidden-value {
+  animation: esportesnowMiniGameMysteryPulse 1.55s ease-in-out infinite !important;
+}
+
+html body .esportesnow-mini-game[data-state="win"] {
+  animation: esportesnowMiniGameWinAura 0.9s ease both !important;
+}
+
+html body .esportesnow-mini-game[data-state="win"] .esportesnow-mini-game-hidden-value {
+  animation: esportesnowMiniGameNumberWin 0.72s cubic-bezier(.17,.84,.44,1) both !important;
+}
+
+html body .esportesnow-mini-game[data-state="lose"] .esportesnow-mini-game-display {
+  animation: esportesnowMiniGameLoseShake 0.48s ease both !important;
+}
+
+html body .esportesnow-mini-game[data-state="lose"] .esportesnow-mini-game-hidden-value {
+  animation: esportesnowMiniGameNumberLose 0.58s ease both !important;
+}
+
+html body .esportesnow-mini-game[data-state="win"] .esportesnow-mini-game-prize {
+  animation: esportesnowMiniGamePrizePop 0.7s cubic-bezier(.18,.89,.32,1.28) both !important;
+}
+
+/* Random Game Picker stronger shuffle/reveal motion */
+html body .esportesnow-random-picker[data-state="loading"] .esportesnow-random-picker-stage {
+  animation: esportesnowRandomPickerStagePulse 0.5s ease-in-out infinite !important;
+}
+
+html body .esportesnow-random-picker[data-state="loading"] .esportesnow-random-picker-card {
+  animation:
+    esportesnowRandomPickerShuffle 0.2s ease-in-out infinite,
+    esportesnowRandomPickerCardFlip 0.42s ease-in-out infinite !important;
+}
+
+html body .esportesnow-random-picker[data-state="loading"] .esportesnow-random-picker-card-img {
+  animation: esportesnowRandomPickerImageFlicker 0.18s steps(2, end) infinite !important;
+}
+
+html body .esportesnow-random-picker[data-state="revealing"] .esportesnow-random-picker-stage {
+  animation: esportesnowRandomPickerStageReveal 0.72s ease both !important;
+}
+
+html body .esportesnow-random-picker[data-state="revealing"] .esportesnow-random-picker-card {
+  animation: esportesnowRandomPickerReveal 0.68s cubic-bezier(.17,.84,.44,1) both !important;
+}
+
+html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-picker-card {
+  animation:
+    esportesnowRandomPickerSelected 0.72s ease both,
+    esportesnowRandomPickerSelectedGlow 1.5s ease-in-out infinite 0.72s !important;
+}
+
+html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-picker-card::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: -18px !important;
+  z-index: -1 !important;
+  border-radius: 28px !important;
+  background: radial-gradient(circle, rgba(255, 218, 92, 0.34), rgba(80, 220, 255, 0.12) 44%, transparent 72%) !important;
+  filter: blur(10px) !important;
+  animation: esportesnowRandomPickerGlowBreath 1.45s ease-in-out infinite !important;
+}
+
+@media (max-width: 768px) {
+  html body .esportesnow-mini-game {
+    margin-bottom: 50px !important;
+  }
+
+  html body .esportesnow-mini-game-intro {
+    padding: 42px 0 0 !important;
+  }
+
+  html body .esportesnow-mini-game-intro > .esportesnow-mini-game-reset {
+    top: 12px !important;
+    right: 12px !important;
+    min-height: 30px !important;
+    padding: 7px 12px !important;
+    font-size: 11px !important;
+  }
+}
+
+@keyframes esportesnowMiniGameResetGlow {
+  0%, 100% {
+    filter: brightness(1);
+    box-shadow:
+      0 0 16px rgba(255, 214, 92, 0.28),
+      0 8px 18px rgba(0, 0, 0, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.68);
+  }
+  50% {
+    filter: brightness(1.08);
+    box-shadow:
+      0 0 26px rgba(255, 214, 92, 0.52),
+      0 10px 24px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  }
+}
+
+@keyframes esportesnowMiniGameNumberIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.84);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes esportesnowMiniGameButtonShine {
+  0% {
+    opacity: 0;
+    transform: translateX(-115%) skewX(-18deg);
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(115%) skewX(-18deg);
+  }
+}
+
+@keyframes esportesnowMiniGameMysteryPulse {
+  0%, 100% {
+    transform: translateY(-50%) scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: translateY(-50%) scale(1.06);
+    filter: brightness(1.15);
+  }
+}
+
+@keyframes esportesnowMiniGameWinAura {
+  0%, 100% {
+    box-shadow: 0 22px 70px rgba(0, 0, 0, 0.34), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+  45% {
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34), 0 0 44px rgba(255, 216, 92, 0.34), inset 0 0 0 1px rgba(255, 216, 92, 0.28);
+  }
+}
+
+@keyframes esportesnowMiniGameNumberWin {
+  0% {
+    transform: translateY(-50%) rotateY(0deg) scale(0.82);
+  }
+  60% {
+    transform: translateY(-50%) rotateY(360deg) scale(1.16);
+  }
+  100% {
+    transform: translateY(-50%) rotateY(360deg) scale(1);
+  }
+}
+
+@keyframes esportesnowMiniGameLoseShake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-8px);
+  }
+  40% {
+    transform: translateX(7px);
+  }
+  60% {
+    transform: translateX(-5px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes esportesnowMiniGameNumberLose {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  45% {
+    filter: brightness(1.12) saturate(0.75);
+  }
+}
+
+@keyframes esportesnowMiniGamePrizePop {
+  0% {
+    opacity: 0;
+    transform: translateY(14px) scale(0.84);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes esportesnowRandomPickerStagePulse {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.14) saturate(1.14);
+  }
+}
+
+@keyframes esportesnowRandomPickerCardFlip {
+  0%, 100% {
+    filter: brightness(0.95) saturate(1);
+  }
+  50% {
+    filter: brightness(1.18) saturate(1.24);
+  }
+}
+
+@keyframes esportesnowRandomPickerImageFlicker {
+  0%, 100% {
+    transform: scale(0.98);
+    opacity: 0.78;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+@keyframes esportesnowRandomPickerStageReveal {
+  0% {
+    transform: scale(0.985);
+  }
+  55% {
+    transform: scale(1.018);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes esportesnowRandomPickerSelectedGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 30px rgba(255, 215, 92, 0.42),
+      0 24px 42px rgba(0, 0, 0, 0.42),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  }
+  50% {
+    box-shadow:
+      0 0 46px rgba(255, 215, 92, 0.62),
+      0 0 70px rgba(80, 220, 255, 0.18),
+      0 24px 42px rgba(0, 0, 0, 0.42),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  }
+}
+
+@keyframes esportesnowRandomPickerGlowBreath {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}

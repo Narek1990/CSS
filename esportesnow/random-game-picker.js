@@ -161,6 +161,8 @@
 
     picker.__esportesnowGames = games;
     picker.removeAttribute("data-selected-game-index");
+    picker.setAttribute("data-state", "ready");
+    void picker.offsetWidth;
     picker.setAttribute("data-state", "loading");
 
     if (button) {
@@ -186,6 +188,8 @@
       finalIndex = getRandomIndex(games.length);
       picker.setAttribute("data-selected-game-index", String(finalIndex));
       updateRandomPickerCard(picker, games[finalIndex]);
+      picker.setAttribute("data-state", "settling");
+      void picker.offsetWidth;
       picker.setAttribute("data-state", "revealing");
 
       if (status) {
