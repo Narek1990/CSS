@@ -35,6 +35,87 @@
     return link;
   }
 
+  function buildStoryLink(href, icon, title) {
+    var link = document.createElement("a");
+    var image = document.createElement("img");
+    var label = document.createElement("span");
+
+    link.href = href;
+    link.className = "escortesnew-story-link";
+    link.setAttribute("data-escortesnew-story-link", title.toLowerCase().replace(/\s+/g, "-"));
+
+    image.src = ASSET_BASE + "/icons/" + icon + ".svg";
+    image.alt = "";
+    image.loading = "lazy";
+    image.decoding = "async";
+
+    label.textContent = title;
+
+    link.appendChild(image);
+    link.appendChild(label);
+    return link;
+  }
+
+  function ensureInfoPanelWidgets() {
+    var container = document.querySelector('[data-mj="widget-info-panel-container"]');
+    if (!container) return;
+
+    if (!container.querySelector('scroll-welcome-banner[data-escortesnew-info-banner="true"]')) {
+      var banner = document.createElement("scroll-welcome-banner");
+      banner.setAttribute("data-escortesnew-info-banner", "true");
+
+      var copy = document.createElement("div");
+      copy.className = "escortesnew-welcome-copy";
+
+      var eyebrow = document.createElement("span");
+      eyebrow.textContent = "New World of Casino";
+
+      var title = document.createElement("strong");
+      title.textContent = "Welcome to Escortes";
+
+      var text = document.createElement("p");
+      text.textContent = "Choose your next table, spin, match, or prize drop.";
+
+      var button = document.createElement("a");
+      button.href = "/en/casino";
+      button.className = "escortesnew-welcome-button";
+      button.textContent = "Play now";
+
+      copy.appendChild(eyebrow);
+      copy.appendChild(title);
+      copy.appendChild(text);
+      copy.appendChild(button);
+
+      var art = document.createElement("div");
+      art.className = "escortesnew-welcome-art";
+
+      var artImage = document.createElement("img");
+      artImage.src = ASSET_BASE + "/icons/casino.svg";
+      artImage.alt = "";
+      artImage.loading = "lazy";
+      artImage.decoding = "async";
+
+      art.appendChild(artImage);
+      banner.appendChild(copy);
+      banner.appendChild(art);
+      container.insertBefore(banner, container.firstChild);
+    }
+
+    if (!container.querySelector('stories-widget[data-escortesnew-stories="true"]')) {
+      var stories = document.createElement("stories-widget");
+      stories.setAttribute("data-escortesnew-stories", "true");
+      stories.appendChild(buildStoryLink("/en/sport/demo", "sport", "Sport"));
+      stories.appendChild(buildStoryLink("/en/casino", "casino", "Casino"));
+      stories.appendChild(buildStoryLink("/en/live-casino", "live-casino", "Live Casino"));
+      stories.appendChild(buildStoryLink("/en/crash-games", "crash-games", "Crash Games"));
+      stories.appendChild(buildStoryLink("/en/virtuals", "virtual-games", "Virtuals"));
+      stories.appendChild(buildStoryLink("/en/promotions", "promotions", "Promotions"));
+
+      var content = container.querySelector('[data-mj="widget-info-panel-content"]');
+      container.insertBefore(stories, content || null);
+    }
+  }
+
   function ensureFooterAssets() {
     var footer = document.querySelector('[data-mj="footer"]');
     var content = footer && footer.querySelector('[data-mj="footer-content"]');
@@ -87,10 +168,125 @@
     });
   }
 
+  function bootTiltCards() {
+    if (window.__escortesnewTiltCardsStarted) return;
+    window.__escortesnewTiltCardsStarted = true;
+
+    var selector = '[data-mj="game-catalog-card"]';
+    var angle = 20;
+    var lerpAmount = 0.08;
+    var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var canHover = window.matchMedia("(hover: hover) and (pointer: fine)");
+    var cards = new Set();
+    var animationFrame = 0;
+
+    function lerp(start, end, amount) {
+      return ((1 - amount) * start) + (amount * end);
+    }
+
+    function remap(value, oldMax, newMax) {
+      var newValue = ((value + oldMax) * (newMax * 2)) / (oldMax * 2) - newMax;
+      return Math.min(Math.max(newValue, -newMax), newMax);
+    }
+
+    function shouldRun() {
+      return !reducedMotion.matches && canHover.matches;
+    }
+
+    function resetCard(card) {
+      card.dataset.rotateX = "0";
+      card.dataset.rotateY = "0";
+      card.style.setProperty("--rotateX", "0deg");
+      card.style.setProperty("--rotateY", "0deg");
+      card.style.setProperty("--escortesnew-tilt-transform", "perspective(900px) rotateX(0deg) rotateY(0deg)");
+    }
+
+    function onMouseMove(event) {
+      if (!shouldRun()) return;
+      var card = event.currentTarget;
+      var rect = card.getBoundingClientRect();
+      var centerX = rect.left + (rect.width / 2);
+      var centerY = rect.top + (rect.height / 2);
+      var posX = event.clientX - centerX;
+      var posY = event.clientY - centerY;
+      var x = remap(posX, rect.width / 2, angle);
+      var y = remap(posY, rect.height / 2, angle);
+      card.dataset.rotateY = String(x);
+      card.dataset.rotateX = String(-y);
+    }
+
+    function onMouseLeave(event) {
+      event.currentTarget.dataset.rotateX = "0";
+      event.currentTarget.dataset.rotateY = "0";
+    }
+
+    function enhanceCard(card) {
+      if (card.dataset.escortesnewTilt === "1") return;
+      card.dataset.escortesnewTilt = "1";
+      resetCard(card);
+      card.addEventListener("mousemove", onMouseMove);
+      card.addEventListener("mouseleave", onMouseLeave);
+      cards.add(card);
+    }
+
+    function enhanceCards(root) {
+      (root || document).querySelectorAll?.(selector).forEach(enhanceCard);
+    }
+
+    function update() {
+      cards.forEach(function (card) {
+        if (!card.isConnected) {
+          cards.delete(card);
+          return;
+        }
+
+        if (!shouldRun()) {
+          resetCard(card);
+          return;
+        }
+
+        var currentX = parseFloat(card.style.getPropertyValue("--rotateX")) || 0;
+        var currentY = parseFloat(card.style.getPropertyValue("--rotateY")) || 0;
+        var targetX = parseFloat(card.dataset.rotateX) || 0;
+        var targetY = parseFloat(card.dataset.rotateY) || 0;
+        var nextX = Math.abs(targetX - currentX) < 0.01 ? targetX : lerp(currentX, targetX, lerpAmount);
+        var nextY = Math.abs(targetY - currentY) < 0.01 ? targetY : lerp(currentY, targetY, lerpAmount);
+
+        card.style.setProperty("--rotateX", nextX + "deg");
+        card.style.setProperty("--rotateY", nextY + "deg");
+        card.style.setProperty("--escortesnew-tilt-transform", "perspective(900px) rotateX(" + nextX + "deg) rotateY(" + nextY + "deg)");
+      });
+
+      animationFrame = requestAnimationFrame(update);
+    }
+
+    function onCapabilityChange() {
+      cards.forEach(resetCard);
+    }
+
+    reducedMotion.addEventListener?.("change", onCapabilityChange);
+    canHover.addEventListener?.("change", onCapabilityChange);
+
+    enhanceCards(document);
+    new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
+        mutation.addedNodes.forEach(function (node) {
+          if (node.nodeType !== Node.ELEMENT_NODE) return;
+          if (node.matches?.(selector)) enhanceCard(node);
+          enhanceCards(node);
+        });
+      });
+    }).observe(document.documentElement, { childList: true, subtree: true });
+
+    if (!animationFrame) animationFrame = requestAnimationFrame(update);
+  }
+
   function boot() {
     ensureCss();
+    ensureInfoPanelWidgets();
     ensureFooterAssets();
     convertHeaderMaskIcons();
+    bootTiltCards();
   }
 
   boot();
