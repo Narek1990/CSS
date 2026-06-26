@@ -876,7 +876,6 @@ html body .esportesnow-random-picker[data-state="revealing"] .esportesnow-random
 }
 
 html body .esportesnow-random-picker[data-state="revealing"] .esportesnow-random-picker-card {
-  width: 128px !important;
   animation: esportesnowRandomPickerReveal 0.68s cubic-bezier(.17,.84,.44,1) both !important;
   box-shadow:
     0 0 42px rgba(255, 215, 92, 0.48),
@@ -893,7 +892,6 @@ html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-
 }
 
 html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-picker-card {
-  width: 138px !important;
   box-shadow:
     0 0 30px rgba(255, 215, 92, 0.42),
     0 24px 42px rgba(0, 0, 0, 0.42),
@@ -1344,7 +1342,7 @@ html body .esportesnow-mini-game[data-state="lose"] .esportesnow-mini-game-resul
   }
 
   html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-picker-card {
-    width: 132px !important;
+    width: 112px !important;
   }
 
   html body .esportesnow-random-picker-button {
@@ -2249,5 +2247,170 @@ html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-
   }
   50% {
     transform: translateY(-7px) rotateX(3deg) rotateY(-3deg);
+  }
+}
+
+/* Random Game Picker stable premium pass: all FX stay inside a fixed footprint */
+html body .esportesnow-random-picker {
+  overflow: hidden !important;
+  contain: paint !important;
+}
+
+html body .esportesnow-random-picker-stage {
+  overflow: visible !important;
+  transform: translateZ(0) !important;
+  will-change: filter !important;
+}
+
+html body .esportesnow-random-picker-card,
+html body .esportesnow-random-picker[data-state="loading"] .esportesnow-random-picker-card,
+html body .esportesnow-random-picker[data-state="revealing"] .esportesnow-random-picker-card,
+html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-picker-card {
+  width: 118px !important;
+  min-width: 118px !important;
+  max-width: 118px !important;
+  transform-origin: center center !important;
+}
+
+html body .esportesnow-random-picker[data-state="loading"] .esportesnow-random-picker-stage,
+html body .esportesnow-random-picker[data-state="revealing"] .esportesnow-random-picker-stage {
+  animation: esportesnowRandomPickerStagePulse 0.58s ease-in-out infinite !important;
+}
+
+html body .esportesnow-random-picker[data-state="loading"] .esportesnow-random-picker-card {
+  animation:
+    esportesnowRandomPickerCardRoulette 0.38s cubic-bezier(.45,0,.55,1) infinite,
+    esportesnowRandomPickerCardHolo 0.76s ease-in-out infinite !important;
+}
+
+html body .esportesnow-random-picker[data-state="revealing"] .esportesnow-random-picker-card {
+  animation: esportesnowRandomPickerCardReveal3d 0.84s cubic-bezier(.17,.84,.44,1) both !important;
+}
+
+html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-picker-card {
+  animation:
+    esportesnowRandomPickerSelected 0.7s ease both,
+    esportesnowRandomPickerSelectedFloat 2.7s ease-in-out infinite 0.72s,
+    esportesnowRandomPickerSelectedGlow 1.5s ease-in-out infinite 0.72s !important;
+}
+
+html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-picker-stage:hover .esportesnow-random-picker-card {
+  transform: translateY(-6px) rotateX(3deg) rotateY(-4deg) !important;
+}
+
+@media (max-width: 768px) {
+  html body .esportesnow-random-picker-card,
+  html body .esportesnow-random-picker[data-state="loading"] .esportesnow-random-picker-card,
+  html body .esportesnow-random-picker[data-state="revealing"] .esportesnow-random-picker-card,
+  html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-picker-card {
+    width: 112px !important;
+    min-width: 112px !important;
+    max-width: 112px !important;
+  }
+}
+
+@keyframes esportesnowRandomPickerAmbientSweep {
+  0%, 100% {
+    filter: hue-rotate(0deg) brightness(1);
+  }
+  50% {
+    filter: hue-rotate(14deg) brightness(1.08);
+  }
+}
+
+@keyframes esportesnowRandomPickerFloorGlow {
+  0%, 100% {
+    opacity: 0.62;
+    filter: blur(16px) brightness(1);
+  }
+  50% {
+    opacity: 0.98;
+    filter: blur(18px) brightness(1.18);
+  }
+}
+
+@keyframes esportesnowRandomPickerStageReveal {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.24) saturate(1.22);
+  }
+}
+
+@keyframes esportesnowRandomPickerImageFlicker {
+  0%, 100% {
+    opacity: 0.78;
+    filter: brightness(0.92) saturate(1.05);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.18) saturate(1.24);
+  }
+}
+
+@keyframes esportesnowRandomPickerRingCharge {
+  0%, 100% {
+    filter: brightness(1) drop-shadow(0 0 12px rgba(255, 215, 92, 0.22));
+  }
+  50% {
+    filter: brightness(1.32) drop-shadow(0 0 28px rgba(76, 226, 255, 0.42));
+  }
+}
+
+@keyframes esportesnowRandomPickerCardRoulette {
+  0% {
+    transform: rotateY(-16deg) rotateZ(-1deg);
+    filter: brightness(0.92) saturate(1.02);
+  }
+  50% {
+    transform: rotateY(16deg) rotateZ(1deg);
+    filter: brightness(1.22) saturate(1.28);
+  }
+  100% {
+    transform: rotateY(-16deg) rotateZ(-1deg);
+    filter: brightness(0.92) saturate(1.02);
+  }
+}
+
+@keyframes esportesnowRandomPickerCardReveal3d {
+  0% {
+    opacity: 0.42;
+    transform: rotateY(82deg) translateY(8px);
+    filter: brightness(0.86) saturate(1);
+  }
+  58% {
+    opacity: 1;
+    transform: rotateY(-12deg) translateY(-8px);
+    filter: brightness(1.28) saturate(1.24);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg) translateY(0);
+    filter: brightness(1) saturate(1.08);
+  }
+}
+
+@keyframes esportesnowRandomPickerSelected {
+  0% {
+    transform: rotateY(54deg);
+    filter: brightness(0.92) saturate(1);
+  }
+  62% {
+    transform: rotateY(-8deg) translateY(-5px);
+    filter: brightness(1.2) saturate(1.22);
+  }
+  100% {
+    transform: rotateY(0deg) translateY(0);
+    filter: brightness(1.04) saturate(1.12);
+  }
+}
+
+@keyframes esportesnowRandomPickerSelectedFloat {
+  0%, 100% {
+    transform: translateY(0) rotateX(0deg) rotateY(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotateX(3deg) rotateY(-3deg);
   }
 }
