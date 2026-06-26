@@ -57,7 +57,7 @@
     return window.__esportesnowRandomPickerAudioContext;
   }
 
-  function playPickerTone(frequency, duration, type, gainValue, delay) {
+  function playPickerTone(frequency, duration, type, gainValue, delay, endFrequency) {
     var context = getPickerAudioContext();
     var oscillator;
     var gain;
@@ -72,6 +72,9 @@
     gain = context.createGain();
     oscillator.type = type || "sine";
     oscillator.frequency.setValueAtTime(frequency, startAt);
+    if (endFrequency) {
+      oscillator.frequency.exponentialRampToValueAtTime(endFrequency, startAt + duration);
+    }
     gain.gain.setValueAtTime(0.0001, startAt);
     gain.gain.exponentialRampToValueAtTime(gainValue || 0.04, startAt + 0.015);
     gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
@@ -79,6 +82,47 @@
     gain.connect(context.destination);
     oscillator.start(startAt);
     oscillator.stop(startAt + duration + 0.02);
+  }
+
+  function playPickerNoise(duration, gainValue, delay) {
+    var context = getPickerAudioContext();
+    var buffer;
+    var data;
+    var source;
+    var filter;
+    var gain;
+    var startAt;
+    var sampleCount;
+    var index;
+
+    if (!context) {
+      return;
+    }
+
+    sampleCount = Math.max(1, Math.floor(context.sampleRate * duration));
+    buffer = context.createBuffer(1, sampleCount, context.sampleRate);
+    data = buffer.getChannelData(0);
+
+    for (index = 0; index < sampleCount; index += 1) {
+      data[index] = (Math.random() * 2 - 1) * (1 - index / sampleCount);
+    }
+
+    startAt = context.currentTime + (delay || 0);
+    source = context.createBufferSource();
+    filter = context.createBiquadFilter();
+    gain = context.createGain();
+    source.buffer = buffer;
+    filter.type = "bandpass";
+    filter.frequency.setValueAtTime(2200, startAt);
+    filter.Q.setValueAtTime(3.8, startAt);
+    gain.gain.setValueAtTime(0.0001, startAt);
+    gain.gain.exponentialRampToValueAtTime(gainValue || 0.02, startAt + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
+    source.connect(filter);
+    filter.connect(gain);
+    gain.connect(context.destination);
+    source.start(startAt);
+    source.stop(startAt + duration + 0.02);
   }
 
   function playRandomPickerSound(type) {
@@ -93,32 +137,39 @@
     }
 
     if (type === "shuffle") {
-      playPickerTone(420 + getRandomIndex(260), 0.055, "square", 0.026, 0);
+      playPickerTone(380 + getRandomIndex(360), 0.052, "triangle", 0.026, 0, 620 + getRandomIndex(480));
+      playPickerNoise(0.045, 0.012, 0.005);
       return;
     }
 
     if (type === "start") {
-      playPickerTone(360, 0.08, "triangle", 0.032, 0);
-      playPickerTone(520, 0.1, "sine", 0.028, 0.06);
+      playPickerTone(96, 0.18, "sine", 0.045, 0, 64);
+      playPickerTone(330, 0.11, "triangle", 0.035, 0.02, 620);
+      playPickerTone(520, 0.13, "sine", 0.028, 0.11, 860);
+      playPickerNoise(0.12, 0.016, 0.03);
       return;
     }
 
     if (type === "reveal") {
-      playPickerTone(520, 0.12, "triangle", 0.04, 0);
-      playPickerTone(780, 0.16, "triangle", 0.035, 0.08);
+      playPickerTone(240, 0.34, "sawtooth", 0.026, 0, 880);
+      playPickerTone(720, 0.15, "triangle", 0.036, 0.08, 1220);
+      playPickerTone(1080, 0.12, "sine", 0.026, 0.2, 1680);
+      playPickerNoise(0.22, 0.018, 0.02);
       return;
     }
 
     if (type === "selected") {
-      playPickerTone(660, 0.12, "sine", 0.045, 0);
-      playPickerTone(990, 0.18, "sine", 0.04, 0.1);
-      playPickerTone(1320, 0.22, "triangle", 0.028, 0.21);
+      [523.25, 659.25, 783.99, 1046.5].forEach(function (frequency, index) {
+        playPickerTone(frequency, 0.34 + index * 0.035, index % 2 ? "triangle" : "sine", 0.034, index * 0.055);
+      });
+      playPickerTone(1567.98, 0.24, "sine", 0.024, 0.24);
+      playPickerNoise(0.18, 0.012, 0.05);
       return;
     }
 
     if (type === "play") {
-      playPickerTone(740, 0.09, "triangle", 0.04, 0);
-      playPickerTone(420, 0.11, "sine", 0.03, 0.06);
+      playPickerTone(880, 0.08, "triangle", 0.036, 0, 1320);
+      playPickerTone(440, 0.1, "sine", 0.026, 0.05, 330);
     }
   }
 
@@ -306,6 +357,8 @@
     var title = document.createElement("strong");
     var subtitle = document.createElement("p");
     var stage = document.createElement("button");
+    var ring;
+    var spark;
     var card = document.createElement("span");
     var image = document.createElement("img");
     var cardTitle = document.createElement("span");
@@ -331,6 +384,23 @@
         playSelectedRandomGame(picker);
       }
     });
+
+    ring = document.createElement("span");
+    ring.className = "esportesnow-random-picker-fx-ring";
+    ring.setAttribute("aria-hidden", "true");
+    stage.appendChild(ring);
+
+    for (var sparkIndex = 0; sparkIndex < 10; sparkIndex += 1) {
+      spark = document.createElement("span");
+      spark.className = "esportesnow-random-picker-spark";
+      spark.setAttribute("aria-hidden", "true");
+      spark.style.setProperty("--spark-index", String(sparkIndex));
+      spark.style.setProperty("--spark-x", String(50 + Math.cos((sparkIndex / 10) * Math.PI * 2) * 42) + "%");
+      spark.style.setProperty("--spark-y", String(52 + Math.sin((sparkIndex / 10) * Math.PI * 2) * 34) + "%");
+      spark.style.setProperty("--spark-delay", String(sparkIndex * 0.065) + "s");
+      spark.style.setProperty("--spark-size", String(4 + (sparkIndex % 3) * 2) + "px");
+      stage.appendChild(spark);
+    }
 
     card.className = "esportesnow-random-picker-card";
     image.className = "esportesnow-random-picker-card-img";
