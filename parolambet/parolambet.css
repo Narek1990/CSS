@@ -65,16 +65,16 @@ html body [data-mj="header"]:has([data-mj="custom-header"] button[aria-label="us
 }
 
 html body [data-mj="widget-banner-link"] {
-  height: 610px !important;
+  height: 500px !important;
+}
+
+html body [data-mj="widget-banner-link"] img {
+  object-fit: fill !important;
 }
 
 @media (max-width: 768px) {
   html body [data-mj="widget-banner-link"] {
     height: 230px !important;
-  }
-
-  html body [data-mj="widget-banner-link"] img {
-    object-fit: fill !important;
   }
 }
 
