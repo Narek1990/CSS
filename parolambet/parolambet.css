@@ -70,7 +70,11 @@ html body [data-mj="widget-banner-link"] {
 
 @media (max-width: 768px) {
   html body [data-mj="widget-banner-link"] {
-    height: 322px !important;
+    height: 230px !important;
+  }
+
+  html body [data-mj="widget-banner-link"] img {
+    object-fit: fill !important;
   }
 }
 
