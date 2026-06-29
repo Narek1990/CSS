@@ -199,13 +199,67 @@ class SlotCollections extends HTMLElement {
         }
 
         .game {
+          position: relative;
+          isolation: isolate;
           width: 74px;
           height: 100px;
           border-radius: 8px;
           overflow: hidden;
+          cursor: pointer;
           background: rgba(255,255,255,.08);
           border: 1px solid rgba(255,255,255,.14);
           box-shadow: 0 10px 24px rgba(0,0,0,.28);
+          transform: translateZ(0);
+          transition:
+            transform .22s ease,
+            border-color .22s ease,
+            box-shadow .22s ease,
+            filter .22s ease;
+        }
+
+        .game::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          opacity: 0;
+          pointer-events: none;
+          border-radius: inherit;
+          background:
+            radial-gradient(circle at 24% 16%, rgba(255,255,255,.26), transparent 32%),
+            radial-gradient(circle at 82% 18%, rgba(253,34,78,.30), transparent 34%),
+            linear-gradient(180deg, rgba(16,18,32,.10), rgba(8,10,18,.66));
+          backdrop-filter: blur(10px) saturate(1.18);
+          -webkit-backdrop-filter: blur(10px) saturate(1.18);
+          transition: opacity .22s ease;
+        }
+
+        .game::after {
+          content: "▶";
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          z-index: 3;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 38px;
+          height: 38px;
+          opacity: 0;
+          color: #fff;
+          font-size: 13px;
+          text-indent: 2px;
+          border-radius: 14px;
+          background:
+            linear-gradient(180deg, rgba(255,90,120,.34), rgba(20,9,18,.74));
+          border: 1px solid rgba(255,255,255,.18);
+          box-shadow:
+            0 0 20px rgba(253,34,78,.30),
+            0 10px 22px rgba(0,0,0,.34),
+            inset 0 1px 0 rgba(255,255,255,.18);
+          pointer-events: none;
+          transform: translate(-50%, -50%) scale(.82);
+          transition: opacity .22s ease, transform .22s ease;
         }
 
         .game img {
@@ -213,6 +267,31 @@ class SlotCollections extends HTMLElement {
           height: 100%;
           object-fit: cover;
           display: block;
+          transition: transform .28s ease, filter .28s ease;
+        }
+
+        .game:hover {
+          transform: translateY(-4px);
+          filter: brightness(1.04) saturate(1.06);
+          border-color: rgba(253,34,78,.55);
+          box-shadow:
+            0 18px 34px rgba(0,0,0,.34),
+            0 0 28px rgba(253,34,78,.28),
+            inset 0 1px 0 rgba(255,255,255,.18);
+        }
+
+        .game:hover img {
+          transform: scale(1.045);
+          filter: brightness(.82) saturate(1.12);
+        }
+
+        .game:hover::before,
+        .game:hover::after {
+          opacity: 1;
+        }
+
+        .game:hover::after {
+          transform: translate(-50%, -50%) scale(1);
         }
 
         .tags {
@@ -914,45 +993,58 @@ class SeaBonusWidget extends HTMLElement {
         <div class="dust"></div>
 
         <div class="chase-sprite chase-sprite--mascot" aria-hidden="true">
-          <svg viewBox="0 0 220 210" role="img">
+          <svg viewBox="0 0 260 220" role="img">
             <defs>
-              <linearGradient id="dmboBody" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0" stop-color="#ff6b86"/>
-                <stop offset=".58" stop-color="#FD224E"/>
-                <stop offset="1" stop-color="#8f0927"/>
+              <linearGradient id="dmboSuit" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#ff6f88"/>
+                <stop offset=".44" stop-color="#FD224E"/>
+                <stop offset="1" stop-color="#7b071f"/>
               </linearGradient>
               <linearGradient id="dmboGold" x1="0" x2="1">
                 <stop offset="0" stop-color="#ffe3a5"/>
                 <stop offset="1" stop-color="#d79a25"/>
               </linearGradient>
+              <linearGradient id="dmboDark" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#241020"/>
+                <stop offset="1" stop-color="#07050b"/>
+              </linearGradient>
+              <filter id="dmboInnerGlow">
+                <feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#FD224E" flood-opacity=".45"/>
+              </filter>
             </defs>
-            <ellipse cx="92" cy="188" rx="78" ry="12" fill="rgba(0,0,0,.28)"/>
+            <ellipse cx="116" cy="199" rx="90" ry="13" fill="rgba(0,0,0,.30)"/>
             <g class="runner-leg runner-leg--back">
-              <path d="M92 133 C76 151 64 166 45 181" stroke="#1c1220" stroke-width="17" stroke-linecap="round"/>
-              <path d="M45 181 L22 181" stroke="#FD224E" stroke-width="15" stroke-linecap="round"/>
+              <path d="M111 139 C91 157 77 175 55 190" stroke="#160b14" stroke-width="18" stroke-linecap="round"/>
+              <path d="M55 190 L27 190" stroke="#FD224E" stroke-width="16" stroke-linecap="round"/>
+              <path d="M36 183 L20 196" stroke="url(#dmboGold)" stroke-width="8" stroke-linecap="round"/>
             </g>
             <g class="runner-leg">
-              <path d="M114 132 C126 154 139 169 159 184" stroke="#271525" stroke-width="18" stroke-linecap="round"/>
-              <path d="M159 184 L187 184" stroke="#ff5a78" stroke-width="15" stroke-linecap="round"/>
+              <path d="M137 138 C153 160 168 177 192 194" stroke="#20101d" stroke-width="19" stroke-linecap="round"/>
+              <path d="M192 194 L224 194" stroke="#ff5a78" stroke-width="16" stroke-linecap="round"/>
+              <path d="M209 187 L235 197" stroke="url(#dmboGold)" stroke-width="8" stroke-linecap="round"/>
             </g>
-            <path d="M68 69 C88 37 137 37 158 70 C177 99 160 145 121 151 C78 158 45 106 68 69Z" fill="url(#dmboBody)" stroke="url(#dmboGold)" stroke-width="5"/>
-            <path d="M89 83 C105 66 132 66 146 86 C154 98 150 124 128 132 C101 142 77 112 89 83Z" fill="#120813" opacity=".82"/>
-            <text x="103" y="118" font-size="42" font-weight="900" font-family="Arial, sans-serif" fill="#fff">D</text>
-            <path d="M83 48 L67 16 L108 39" fill="#FD224E" stroke="url(#dmboGold)" stroke-width="4"/>
-            <path d="M139 48 L167 18 L156 61" fill="#FD224E" stroke="url(#dmboGold)" stroke-width="4"/>
-            <circle cx="101" cy="70" r="7" fill="#fff"/>
-            <circle cx="132" cy="71" r="7" fill="#fff"/>
-            <circle cx="104" cy="72" r="3" fill="#111"/>
-            <circle cx="135" cy="73" r="3" fill="#111"/>
-            <path d="M111 88 C121 96 132 96 143 88" fill="none" stroke="#ffe3a5" stroke-width="5" stroke-linecap="round"/>
+            <path d="M88 95 C88 62 111 41 145 43 C176 45 196 67 196 98 C196 134 171 158 132 158 C99 158 88 130 88 95Z" fill="url(#dmboSuit)" stroke="url(#dmboGold)" stroke-width="5" filter="url(#dmboInnerGlow)"/>
+            <path d="M103 94 C111 72 132 62 157 69 C177 75 183 98 171 116 C154 143 111 131 103 94Z" fill="url(#dmboDark)" opacity=".94"/>
+            <path d="M98 57 C112 31 155 25 184 50 C166 45 140 43 113 54Z" fill="#111018" stroke="url(#dmboGold)" stroke-width="4"/>
+            <path d="M181 50 L220 60 L179 72Z" fill="#FD224E" stroke="url(#dmboGold)" stroke-width="4"/>
+            <path d="M117 82 L154 78" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+            <path d="M119 84 L154 80" stroke="#FD224E" stroke-width="3" stroke-linecap="round"/>
+            <path d="M123 106 C136 115 151 114 163 101" fill="none" stroke="#ffe3a5" stroke-width="5" stroke-linecap="round"/>
+            <path d="M84 121 C113 108 159 112 186 132 L172 158 C144 147 110 147 90 159Z" fill="#100a12" opacity=".62"/>
+            <path d="M96 127 C121 113 158 116 180 133 L166 154 C139 145 114 146 94 158Z" fill="url(#dmboSuit)" stroke="url(#dmboGold)" stroke-width="4"/>
+            <text x="112" y="148" font-size="21" font-weight="950" font-family="Arial Black, Arial, sans-serif" fill="#fff" letter-spacing="-1">DMBO</text>
+            <circle cx="194" cy="98" r="20" fill="url(#dmboGold)" stroke="#fff4c8" stroke-width="3"/>
+            <text x="186" y="106" font-size="22" font-weight="900" font-family="Arial, sans-serif" fill="#4a160f">D</text>
             <g class="runner-arm runner-arm--back">
-              <path d="M75 100 C48 98 35 83 24 68" fill="none" stroke="#271525" stroke-width="15" stroke-linecap="round"/>
-              <circle cx="22" cy="66" r="9" fill="#FD224E"/>
+              <path d="M94 112 C64 110 45 91 31 74" fill="none" stroke="#160b14" stroke-width="16" stroke-linecap="round"/>
+              <circle cx="28" cy="71" r="11" fill="#FD224E" stroke="url(#dmboGold)" stroke-width="3"/>
             </g>
             <g class="runner-arm">
-              <path d="M150 100 C176 93 188 75 199 58" fill="none" stroke="#271525" stroke-width="15" stroke-linecap="round"/>
-              <circle cx="201" cy="56" r="9" fill="#ff5a78"/>
+              <path d="M176 118 C206 108 221 85 235 64" fill="none" stroke="#1b0e18" stroke-width="16" stroke-linecap="round"/>
+              <circle cx="237" cy="61" r="11" fill="#ff5a78" stroke="url(#dmboGold)" stroke-width="3"/>
             </g>
+            <path d="M71 77 C57 83 45 90 35 101" stroke="#FD224E" stroke-width="5" stroke-linecap="round" opacity=".85"/>
+            <path d="M62 104 C49 111 37 122 28 136" stroke="#ff9caf" stroke-width="4" stroke-linecap="round" opacity=".65"/>
           </svg>
         </div>
 
