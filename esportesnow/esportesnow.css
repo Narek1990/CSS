@@ -2471,12 +2471,10 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-121fhed"] {
 html body [data-mj="widget-bet-win"] [class~="app-ltr-121fhed"] img,
 html body [data-mj="widget-bet-win"] [class~="app-ltr-1lhm9a5"] {
   display: block !important;
-  width: 81% !important;
   height: 100% !important;
   max-height: 101px !important;
   min-height: 100% !important;
   margin: 0 auto !important;
-  object-fit: contain !important;
   object-position: center center !important;
   border-radius: 14px !important;
   transition:
