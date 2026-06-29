@@ -208,10 +208,18 @@
       var image = card.querySelector('img[src*="/gameimage/"]');
       var info = card.querySelector('[class~="app-ltr-yawtgd"]');
       var userRow = info && info.querySelector('[class~="app-ltr-1dx9dwl"]');
+      var amountRow = info && info.querySelector('[class~="app-ltr-1blkpw5"]');
       var id = image && getGameImageId(image.getAttribute("src"));
       var defaults = id ? betWinGameDetails[id] : null;
       var title = (id && pageTitles[id]) || (defaults && defaults.title) || "Casino Game";
       var provider = (defaults && defaults.provider) || "Provider";
+      var signature = [
+        id || "",
+        title,
+        provider,
+        userRow ? userRow.textContent.trim() : "",
+        amountRow ? amountRow.textContent.trim() : ""
+      ].join("|");
       var meta;
 
       if (!info || !userRow) {
@@ -228,6 +236,19 @@
 
       meta.querySelector(".esportesnow-bet-win-title").textContent = title;
       meta.querySelector(".esportesnow-bet-win-provider").textContent = provider;
+
+      if (card.dataset.esportesnowBetWinSignature && card.dataset.esportesnowBetWinSignature !== signature) {
+        card.classList.remove("esportesnow-bet-win-refreshing");
+        void card.offsetWidth;
+        card.classList.add("esportesnow-bet-win-refreshing");
+        window.setTimeout(function () {
+          if (card.isConnected) {
+            card.classList.remove("esportesnow-bet-win-refreshing");
+          }
+        }, 380);
+      }
+
+      card.dataset.esportesnowBetWinSignature = signature;
     });
   }
 
