@@ -1,10 +1,3 @@
-
-const DMBOWIDGET_ASSET_BASE = (() => {
-  const scriptSrc = document.currentScript && document.currentScript.src;
-  if (scriptSrc) return scriptSrc.replace(/\/script\.js(?:\?.*)?$/, "/assets/");
-  return "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/dmbobet/assets/";
-})();
-
 class SlotCollections extends HTMLElement {
   constructor() {
     super();
@@ -582,10 +575,6 @@ class SeaBonusWidget extends HTMLElement {
     window.removeEventListener("resize", this.requestUpdate);
   }
 
-  get shipSrc() {
-    return this.getAttribute("ship-src") || `${DMBOWIDGET_ASSET_BASE}dmbo-rabbit-chase.png`;
-  }
-
   get backWaveSrc() {
     return this.getAttribute("back-wave-src") || "./img/wave-back.png";
   }
@@ -618,16 +607,50 @@ class SeaBonusWidget extends HTMLElement {
           position: relative;
           width: 100%;
           max-width: none;
-          height: clamp(300px, 24vw, 380px);
-          margin: 60px 0;
+          height: clamp(340px, 28vw, 460px);
+          margin: 64px 0;
           overflow: hidden;
-          border-radius: 18px;
+          border-radius: 22px;
           background:
-            radial-gradient(circle at 76% 44%, rgba(253, 34, 78, .34), transparent 34%),
-            linear-gradient(135deg, #070711 0%, #150712 48%, #2c0613 100%);
+            radial-gradient(circle at 78% 42%, rgba(253, 34, 78, .30), transparent 30%),
+            radial-gradient(circle at 25% 20%, rgba(255, 98, 126, .12), transparent 28%),
+            linear-gradient(120deg, #06070f 0%, #120711 44%, #280813 100%);
           box-shadow:
-            0 18px 50px rgba(253, 34, 78, 0.20),
+            0 22px 60px rgba(253, 34, 78, 0.20),
+            0 12px 36px rgba(0,0,0,.38),
             inset 0 1px 0 rgba(255,255,255,.12);
+        }
+
+        .sea-widget::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 0;
+          pointer-events: none;
+          background:
+            linear-gradient(90deg, rgba(253,34,78,.08) 1px, transparent 1px),
+            linear-gradient(0deg, rgba(255,255,255,.045) 1px, transparent 1px);
+          background-size: 84px 100%, 100% 54px;
+          mask-image: linear-gradient(180deg, transparent 0%, #000 12%, #000 82%, transparent 100%);
+          opacity: .58;
+        }
+
+        .sea-widget::after {
+          content: "";
+          position: absolute;
+          left: -12%;
+          right: -12%;
+          bottom: -38%;
+          height: 70%;
+          z-index: 1;
+          pointer-events: none;
+          background:
+            radial-gradient(ellipse at 50% 0%, rgba(255, 106, 134, .18), transparent 40%),
+            linear-gradient(90deg, transparent 0 47%, rgba(255,255,255,.18) 49% 51%, transparent 53% 100%),
+            linear-gradient(180deg, rgba(253,34,78,.12), rgba(4,5,12,.74));
+          transform: perspective(760px) rotateX(62deg);
+          transform-origin: 50% 0%;
+          filter: blur(.2px);
         }
 
     
@@ -641,56 +664,131 @@ class SeaBonusWidget extends HTMLElement {
 
         .wave-layer--back {
           background:
-            radial-gradient(circle at 34% 62%, rgba(253,34,78,.42), transparent 24%),
-            linear-gradient(100deg, transparent 0%, rgba(253,34,78,.16) 42%, transparent 76%);
+            radial-gradient(circle at 36% 64%, rgba(253,34,78,.36), transparent 22%),
+            radial-gradient(circle at 78% 54%, rgba(255,196,206,.12), transparent 26%),
+            linear-gradient(100deg, transparent 0%, rgba(253,34,78,.15) 42%, transparent 76%);
           z-index: 2;
           opacity: 0.85;
           mix-blend-mode: screen;
         }
 
-        .ship-layer {
+        .speed-burst {
           position: absolute;
           inset: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          object-position: center;
-          z-index: 1;
+          z-index: 3;
           pointer-events: none;
-          will-change: transform;
-          filter: saturate(1.08) contrast(1.03);
-          opacity: .82;
-          transform-origin: center center;
+          background:
+            repeating-linear-gradient(
+              102deg,
+              transparent 0 64px,
+              rgba(255,255,255,.12) 66px 68px,
+              transparent 72px 148px
+            );
+          opacity: .2;
+          mix-blend-mode: screen;
+          will-change: transform, opacity;
         }
 
-        .chase-character {
+        .chase-sprite {
           position: absolute;
-          inset: 0;
-          z-index: 4;
+          z-index: 5;
           pointer-events: none;
-          background-image: url("${this.shipSrc}");
-          background-repeat: no-repeat;
-          background-size: contain;
-          background-position: center;
-          will-change: transform;
+          transform-origin: 50% 90%;
+          will-change: transform, filter;
           filter:
             saturate(1.15)
             contrast(1.06)
-            drop-shadow(0 18px 24px rgba(0,0,0,.38))
-            drop-shadow(0 0 18px rgba(253,34,78,.18));
+            drop-shadow(0 22px 18px rgba(0,0,0,.42))
+            drop-shadow(0 0 22px rgba(253,34,78,.24));
         }
 
-        .chase-character--mascot {
-          clip-path: polygon(5% 3%, 52% 2%, 54% 95%, 4% 98%);
+        .chase-sprite svg {
+          display: block;
+          width: 100%;
+          height: 100%;
+          overflow: visible;
         }
 
-        .chase-character--rabbit {
-          clip-path: polygon(55% 18%, 86% 16%, 88% 88%, 54% 90%);
+        .chase-sprite--mascot {
+          left: 6%;
+          bottom: 6%;
+          width: clamp(210px, 22vw, 360px);
+          aspect-ratio: 1.12;
+        }
+
+        .chase-sprite--rabbit {
+          left: 64%;
+          bottom: 13%;
+          width: clamp(118px, 12vw, 190px);
+          aspect-ratio: 1;
+        }
+
+        .runner-leg,
+        .rabbit-leg {
+          transform-box: fill-box;
+          transform-origin: 50% 0%;
+          animation: dmbo-run-leg .32s linear infinite alternate;
+        }
+
+        .runner-leg--back,
+        .rabbit-leg--back {
+          animation-delay: -.16s;
+        }
+
+        .runner-arm {
+          transform-box: fill-box;
+          transform-origin: 50% 8%;
+          animation: dmbo-run-arm .34s ease-in-out infinite alternate;
+        }
+
+        .runner-arm--back {
+          animation-delay: -.17s;
+        }
+
+        .rabbit-ear {
+          transform-box: fill-box;
+          transform-origin: 50% 90%;
+          animation: dmbo-ear-flop .42s ease-in-out infinite alternate;
+        }
+
+        .dust {
+          position: absolute;
+          z-index: 4;
+          left: 12%;
+          bottom: 13%;
+          width: clamp(170px, 18vw, 270px);
+          height: 34px;
+          pointer-events: none;
+          background:
+            radial-gradient(circle, rgba(253,34,78,.32) 0 8px, transparent 9px),
+            radial-gradient(circle, rgba(255,255,255,.18) 0 5px, transparent 6px),
+            radial-gradient(circle, rgba(253,34,78,.22) 0 7px, transparent 8px);
+          background-size: 70px 28px, 46px 22px, 58px 26px;
+          background-position: 0 8px, 48px 3px, 116px 10px;
+          background-repeat: no-repeat;
+          filter: blur(1px);
+          opacity: .72;
+          will-change: transform, opacity;
+        }
+
+        @keyframes dmbo-run-leg {
+          from { transform: rotate(18deg); }
+          to { transform: rotate(-20deg); }
+        }
+
+        @keyframes dmbo-run-arm {
+          from { transform: rotate(-18deg); }
+          to { transform: rotate(20deg); }
+        }
+
+        @keyframes dmbo-ear-flop {
+          from { transform: rotate(-8deg); }
+          to { transform: rotate(12deg); }
         }
 
         .wave-layer--front {
           z-index: 6;
-          opacity: 0.75;
+          opacity: 0.5;
           background:
             repeating-linear-gradient(
               108deg,
@@ -764,24 +862,27 @@ class SeaBonusWidget extends HTMLElement {
         .wave-layer--front {
     z-index: 6;}
           .sea-widget {
-            height: 260px;
+            height: 320px;
             width: 100%;
             margin: 42px 0;
             border-radius: 16px;
           }
 
-          .ship-layer {
-            width: 100%;
-            object-fit: contain;
-            object-position: center;
+          .chase-sprite--mascot {
+            left: -8%;
+            bottom: 4%;
+            width: 260px;
           }
 
-          .chase-character--mascot {
-            clip-path: polygon(1% 5%, 57% 5%, 58% 96%, 0 98%);
+          .chase-sprite--rabbit {
+            left: 58%;
+            bottom: 15%;
+            width: 130px;
           }
 
-          .chase-character--rabbit {
-            clip-path: polygon(50% 18%, 93% 16%, 94% 91%, 49% 93%);
+          .dust {
+            left: 2%;
+            bottom: 10%;
           }
 
           .sea-cta {
@@ -809,10 +910,80 @@ class SeaBonusWidget extends HTMLElement {
 
       <section class="sea-widget">
         <div class="wave-layer wave-layer--back"></div>
+        <div class="speed-burst"></div>
+        <div class="dust"></div>
 
-        <img class="ship-layer" src="${this.shipSrc}" alt="DMBObet rabbit chase" />
-        <div class="chase-character chase-character--mascot"></div>
-        <div class="chase-character chase-character--rabbit"></div>
+        <div class="chase-sprite chase-sprite--mascot" aria-hidden="true">
+          <svg viewBox="0 0 220 210" role="img">
+            <defs>
+              <linearGradient id="dmboBody" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#ff6b86"/>
+                <stop offset=".58" stop-color="#FD224E"/>
+                <stop offset="1" stop-color="#8f0927"/>
+              </linearGradient>
+              <linearGradient id="dmboGold" x1="0" x2="1">
+                <stop offset="0" stop-color="#ffe3a5"/>
+                <stop offset="1" stop-color="#d79a25"/>
+              </linearGradient>
+            </defs>
+            <ellipse cx="92" cy="188" rx="78" ry="12" fill="rgba(0,0,0,.28)"/>
+            <g class="runner-leg runner-leg--back">
+              <path d="M92 133 C76 151 64 166 45 181" stroke="#1c1220" stroke-width="17" stroke-linecap="round"/>
+              <path d="M45 181 L22 181" stroke="#FD224E" stroke-width="15" stroke-linecap="round"/>
+            </g>
+            <g class="runner-leg">
+              <path d="M114 132 C126 154 139 169 159 184" stroke="#271525" stroke-width="18" stroke-linecap="round"/>
+              <path d="M159 184 L187 184" stroke="#ff5a78" stroke-width="15" stroke-linecap="round"/>
+            </g>
+            <path d="M68 69 C88 37 137 37 158 70 C177 99 160 145 121 151 C78 158 45 106 68 69Z" fill="url(#dmboBody)" stroke="url(#dmboGold)" stroke-width="5"/>
+            <path d="M89 83 C105 66 132 66 146 86 C154 98 150 124 128 132 C101 142 77 112 89 83Z" fill="#120813" opacity=".82"/>
+            <text x="103" y="118" font-size="42" font-weight="900" font-family="Arial, sans-serif" fill="#fff">D</text>
+            <path d="M83 48 L67 16 L108 39" fill="#FD224E" stroke="url(#dmboGold)" stroke-width="4"/>
+            <path d="M139 48 L167 18 L156 61" fill="#FD224E" stroke="url(#dmboGold)" stroke-width="4"/>
+            <circle cx="101" cy="70" r="7" fill="#fff"/>
+            <circle cx="132" cy="71" r="7" fill="#fff"/>
+            <circle cx="104" cy="72" r="3" fill="#111"/>
+            <circle cx="135" cy="73" r="3" fill="#111"/>
+            <path d="M111 88 C121 96 132 96 143 88" fill="none" stroke="#ffe3a5" stroke-width="5" stroke-linecap="round"/>
+            <g class="runner-arm runner-arm--back">
+              <path d="M75 100 C48 98 35 83 24 68" fill="none" stroke="#271525" stroke-width="15" stroke-linecap="round"/>
+              <circle cx="22" cy="66" r="9" fill="#FD224E"/>
+            </g>
+            <g class="runner-arm">
+              <path d="M150 100 C176 93 188 75 199 58" fill="none" stroke="#271525" stroke-width="15" stroke-linecap="round"/>
+              <circle cx="201" cy="56" r="9" fill="#ff5a78"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="chase-sprite chase-sprite--rabbit" aria-hidden="true">
+          <svg viewBox="0 0 160 150" role="img">
+            <defs>
+              <linearGradient id="rabbitFur" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#fff7f8"/>
+                <stop offset="1" stop-color="#f3b8c4"/>
+              </linearGradient>
+            </defs>
+            <ellipse cx="74" cy="135" rx="56" ry="8" fill="rgba(0,0,0,.28)"/>
+            <g class="rabbit-ear">
+              <path d="M63 38 C51 0 62 -9 82 31" fill="url(#rabbitFur)" stroke="#FD224E" stroke-width="4"/>
+            </g>
+            <g class="rabbit-ear" style="animation-delay:-.18s">
+              <path d="M89 40 C93 2 111 -5 110 42" fill="url(#rabbitFur)" stroke="#FD224E" stroke-width="4"/>
+            </g>
+            <path d="M34 91 C39 57 79 39 114 59 C142 75 132 119 93 127 C57 134 29 119 34 91Z" fill="url(#rabbitFur)" stroke="#FD224E" stroke-width="4"/>
+            <circle cx="105" cy="80" r="6" fill="#17111c"/>
+            <circle cx="119" cy="92" r="5" fill="#FD224E"/>
+            <path d="M117 96 C132 99 144 105 154 116" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+            <g class="rabbit-leg rabbit-leg--back">
+              <path d="M66 118 C47 127 34 129 17 126" stroke="#f7ced5" stroke-width="13" stroke-linecap="round"/>
+            </g>
+            <g class="rabbit-leg">
+              <path d="M93 119 C113 128 127 130 145 126" stroke="#f7ced5" stroke-width="13" stroke-linecap="round"/>
+            </g>
+            <circle cx="37" cy="83" r="16" fill="#fff4f6"/>
+          </svg>
+        </div>
 
         <div class="wave-layer wave-layer--front"></div>
 
@@ -833,9 +1004,10 @@ class SeaBonusWidget extends HTMLElement {
     this.widget = this.shadowRoot.querySelector(".sea-widget");
     this.backWave = this.shadowRoot.querySelector(".wave-layer--back");
     this.frontWave = this.shadowRoot.querySelector(".wave-layer--front");
-    this.ship = this.shadowRoot.querySelector(".ship-layer");
-    this.mascot = this.shadowRoot.querySelector(".chase-character--mascot");
-    this.rabbit = this.shadowRoot.querySelector(".chase-character--rabbit");
+    this.speedBurst = this.shadowRoot.querySelector(".speed-burst");
+    this.dust = this.shadowRoot.querySelector(".dust");
+    this.mascot = this.shadowRoot.querySelector(".chase-sprite--mascot");
+    this.rabbit = this.shadowRoot.querySelector(".chase-sprite--rabbit");
   }
 
   bindEvents() {
@@ -851,7 +1023,7 @@ class SeaBonusWidget extends HTMLElement {
   }
 
   update() {
-    if (!this.widget || !this.ship) return;
+    if (!this.widget) return;
 
     const rect = this.widget.getBoundingClientRect();
     const windowH = window.innerHeight;
@@ -866,11 +1038,15 @@ class SeaBonusWidget extends HTMLElement {
     );
 
     const widgetW = this.widget.offsetWidth;
-    const shipX = Math.max(14, widgetW * 0.025) * progress;
-    const mascotX = widgetW * 0.145 * progress;
-    const rabbitX = widgetW * 0.205 * progress;
-    const bobMascot = Math.sin(progress * Math.PI * 7) * 5;
-    const bobRabbit = Math.sin(progress * Math.PI * 9) * 6;
+    const mascotStart = -widgetW * 0.04;
+    const mascotEnd = widgetW * 0.34;
+    const rabbitStart = widgetW * 0.72;
+    const rabbitEnd = widgetW * 0.52;
+    const mascotX = mascotStart + (mascotEnd - mascotStart) * progress;
+    const rabbitX = rabbitStart + (rabbitEnd - rabbitStart) * progress;
+    const bobMascot = Math.sin(progress * Math.PI * 12) * 7;
+    const bobRabbit = Math.sin(progress * Math.PI * 13) * 9;
+    const chaseTension = Math.sin(progress * Math.PI);
 
     this.backWave.style.transform = `
       translateX(${progress * 34}px)
@@ -878,28 +1054,36 @@ class SeaBonusWidget extends HTMLElement {
     `;
 
     this.frontWave.style.transform = `
-      translateX(${-progress * 120}px)
+      translateX(${-progress * 180}px)
       translateY(${progress * 6}px)
     `;
 
-    this.ship.style.transform = `
-      translateX(${-shipX}px)
-      scale(${1.01 + progress * 0.02})
-    `;
+    if (this.speedBurst) {
+      this.speedBurst.style.transform = `translateX(${-progress * 240}px)`;
+      this.speedBurst.style.opacity = String(0.16 + chaseTension * 0.18);
+    }
+
+    if (this.dust) {
+      this.dust.style.transform = `
+        translate3d(${mascotX * 0.92}px, ${Math.sin(progress * Math.PI * 8) * 4}px, 0)
+        scaleX(${1 + chaseTension * 0.38})
+      `;
+      this.dust.style.opacity = String(0.46 + chaseTension * 0.34);
+    }
 
     if (this.mascot) {
       this.mascot.style.transform = `
         translate3d(${mascotX}px, ${bobMascot}px, 0)
-        rotate(${Math.sin(progress * Math.PI * 4) * 1.2}deg)
-        scale(${1 + progress * 0.018})
+        rotate(${Math.sin(progress * Math.PI * 8) * 2.3}deg)
+        scale(${1 + chaseTension * 0.055})
       `;
     }
 
     if (this.rabbit) {
       this.rabbit.style.transform = `
         translate3d(${rabbitX}px, ${bobRabbit}px, 0)
-        rotate(${Math.sin(progress * Math.PI * 5) * -1.4}deg)
-        scale(${1 + progress * 0.028})
+        rotate(${Math.sin(progress * Math.PI * 9) * -3.4}deg)
+        scale(${1 + chaseTension * 0.08})
       `;
     }
 
@@ -929,7 +1113,6 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
       instanceId: "custom-sea-bonus-widget",
       position: "before",
       attributes: {
-        "ship-src": `${DMBOWIDGET_ASSET_BASE}dmbo-rabbit-chase.png`,
         "promo-link": "/en/promotions/welcome-bonus"
       }
     }
