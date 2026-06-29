@@ -119,6 +119,10 @@ html body [data-mj="sidebar-content"] {
   border-radius: 6px !important;
 }
 
+html body [data-mj="sidebar-special-button"] {
+  display: none !important;
+}
+
 html body [data-mj="sidebar"].app-ltr-17u1px6,
 html body [data-mj="sidebar"][class~="app-ltr-17u1px6"] {
   width: 83px !important;
