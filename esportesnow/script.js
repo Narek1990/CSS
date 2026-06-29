@@ -21,6 +21,12 @@
   var buttonIconSelector = "button.sl-icon.css-lk14jz, button .sl-icon.css-lk14jz, .sl-icon.css-lk14jz svg";
   var buttonIconSvg = menuSvg.replace('data-esportesnow-svg="true" xmlns:xlink="http://www.w3.org/1999/xlink" ', 'data-esportesnow-button-svg="true" ');
   var heroBannerImageSelector = 'img[src*="9a71eac1-6e1c-4a81-a769-4f3044a33921"]';
+  var betWinGameDetails = {
+    "61412": { title: "Ghost Father", provider: "Peter&Sons" },
+    "73693": { title: "Gunpowder", provider: "Peter&Sons" },
+    "81965": { title: "Steamworks", provider: "Peter&Sons" },
+    "82640": { title: "Muddy Waters", provider: "Peter&Sons" }
+  };
   var heroHotspots = [
     {
       className: "esportesnow-hero-hotspot-register",
@@ -159,10 +165,77 @@
     });
   }
 
+  function getGameImageId(src) {
+    var match = (src || "").match(/gameimage\/([^/?#]+?)(?:\.(?:webp|png|jpe?g))?(?:[?#]|$)/i);
+    return match ? match[1] : "";
+  }
+
+  function collectGameTitles() {
+    var titles = {};
+
+    document.querySelectorAll('img[src*="/gameimage/"][alt]').forEach(function (image) {
+      var id = getGameImageId(image.getAttribute("src"));
+      var title = (image.getAttribute("alt") || "").trim();
+
+      if (id && title) {
+        titles[id] = title;
+      }
+    });
+
+    return titles;
+  }
+
+  function createBetWinMeta(title, provider) {
+    var meta = document.createElement("div");
+    var titleElement = document.createElement("span");
+    var providerElement = document.createElement("span");
+
+    meta.className = "esportesnow-bet-win-meta";
+    titleElement.className = "esportesnow-bet-win-title";
+    providerElement.className = "esportesnow-bet-win-provider";
+    titleElement.textContent = title;
+    providerElement.textContent = provider;
+    meta.appendChild(titleElement);
+    meta.appendChild(providerElement);
+
+    return meta;
+  }
+
+  function injectBetWinGameDetails() {
+    var pageTitles = collectGameTitles();
+
+    document.querySelectorAll('[data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"]').forEach(function (card) {
+      var image = card.querySelector('img[src*="/gameimage/"]');
+      var info = card.querySelector('[class~="app-ltr-yawtgd"]');
+      var userRow = info && info.querySelector('[class~="app-ltr-1dx9dwl"]');
+      var id = image && getGameImageId(image.getAttribute("src"));
+      var defaults = id ? betWinGameDetails[id] : null;
+      var title = (id && pageTitles[id]) || (defaults && defaults.title) || "Casino Game";
+      var provider = (defaults && defaults.provider) || "Provider";
+      var meta;
+
+      if (!info || !userRow) {
+        return;
+      }
+
+      meta = info.querySelector(".esportesnow-bet-win-meta");
+
+      if (!meta) {
+        meta = createBetWinMeta(title, provider);
+        info.insertBefore(meta, userRow);
+        return;
+      }
+
+      meta.querySelector(".esportesnow-bet-win-title").textContent = title;
+      meta.querySelector(".esportesnow-bet-win-provider").textContent = provider;
+    });
+  }
+
   function applyOverrides() {
     applyScheduled = false;
     injectHiddenElementCss();
     injectHeroHotspots();
+    injectBetWinGameDetails();
 
     document.querySelectorAll(maxWidthSelector).forEach(function (element) {
       element.style.setProperty("max-width", "none", "important");
