@@ -2414,3 +2414,158 @@ html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-
     transform: translateY(-6px) rotateX(3deg) rotateY(-3deg);
   }
 }
+
+/* Top Winners: convert vertical cards to compact horizontal cards */
+html body [data-mj="widget-bet-win"] [class~="app-ltr-1td32qb"] {
+  gap: 14px !important;
+  align-items: stretch !important;
+}
+
+html body [data-mj="widget-bet-win"] [class~="app-ltr-5kgs62"] {
+  flex: 0 0 clamp(320px, 26vw, 470px) !important;
+  width: clamp(320px, 26vw, 470px) !important;
+  min-width: clamp(320px, 26vw, 470px) !important;
+  max-width: clamp(320px, 26vw, 470px) !important;
+}
+
+html body [data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"] {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 14px !important;
+  width: 100% !important;
+  height: 136px !important;
+  min-height: 136px !important;
+  padding: 10px 14px 10px 10px !important;
+  border: 1px solid rgb(98 132 184 / 18%) !important;
+  border-radius: 22px !important;
+  background:
+    radial-gradient(circle at 16% 20%, rgb(107 66 230 / 24%), transparent 34%),
+    radial-gradient(circle at 88% 12%, rgb(56 174 255 / 12%), transparent 34%),
+    linear-gradient(135deg, rgb(30 42 64), rgb(29 41 61) 58%, rgb(23 32 50)) !important;
+  box-shadow:
+    0 18px 34px rgb(0 0 0 / 26%),
+    inset 0 1px 0 rgb(255 255 255 / 8%) !important;
+  overflow: hidden !important;
+}
+
+html body [data-mj="widget-bet-win"] [class~="app-ltr-121fhed"] {
+  flex: 0 0 112px !important;
+  width: 112px !important;
+  min-width: 112px !important;
+  max-width: 112px !important;
+  height: 112px !important;
+  min-height: 112px !important;
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  background:
+    radial-gradient(circle at 48% 38%, rgb(255 255 255 / 20%), transparent 38%),
+    linear-gradient(145deg, rgb(126 34 206), rgb(47 39 113)) !important;
+  box-shadow: 0 12px 24px rgb(0 0 0 / 22%) !important;
+}
+
+html body [data-mj="widget-bet-win"] [class~="app-ltr-121fhed"] img,
+html body [data-mj="widget-bet-win"] [class~="app-ltr-1lhm9a5"] {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  object-fit: cover !important;
+  border-radius: inherit !important;
+}
+
+html body [data-mj="widget-bet-win"] [class~="app-ltr-yawtgd"] {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  flex: 1 1 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  gap: 10px !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html body [data-mj="widget-bet-win"] [class~="app-ltr-1dx9dwl"] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  color: rgb(231 235 246 / 84%) !important;
+  font-size: 15px !important;
+  line-height: 1.2 !important;
+}
+
+html body [data-mj="widget-bet-win"] [class~="app-ltr-1dx9dwl"] svg {
+  width: 18px !important;
+  height: 18px !important;
+  opacity: 0.82 !important;
+}
+
+html body [data-mj="widget-bet-win"] [class~="app-ltr-1blkpw5"] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin-top: 2px !important;
+  padding-top: 12px !important;
+  border-top: 1px solid rgb(255 255 255 / 12%) !important;
+}
+
+html body [data-mj="widget-bet-win"] [class~="app-ltr-tkjwno"] {
+  margin: 0 !important;
+  color: #25d94f !important;
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+}
+
+html body [data-mj="widget-bet-win"] [class~="app-ltr-odpn1z"] {
+  flex: 0 0 22px !important;
+  width: 22px !important;
+  height: 22px !important;
+}
+
+@media (max-width: 768px) {
+  html body [data-mj="widget-bet-win"] [class~="app-ltr-5kgs62"] {
+    flex-basis: 285px !important;
+    width: 285px !important;
+    min-width: 285px !important;
+    max-width: 285px !important;
+  }
+
+  html body [data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"] {
+    height: 112px !important;
+    min-height: 112px !important;
+    gap: 10px !important;
+    padding: 8px 10px 8px 8px !important;
+    border-radius: 18px !important;
+  }
+
+  html body [data-mj="widget-bet-win"] [class~="app-ltr-121fhed"] {
+    flex-basis: 92px !important;
+    width: 92px !important;
+    min-width: 92px !important;
+    max-width: 92px !important;
+    height: 92px !important;
+    min-height: 92px !important;
+    border-radius: 16px !important;
+  }
+
+  html body [data-mj="widget-bet-win"] [class~="app-ltr-1dx9dwl"] {
+    font-size: 13px !important;
+  }
+
+  html body [data-mj="widget-bet-win"] [class~="app-ltr-tkjwno"] {
+    font-size: 17px !important;
+  }
+}
