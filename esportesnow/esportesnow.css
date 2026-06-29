@@ -2432,7 +2432,7 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"] {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
-  gap: 10px !important;
+  gap: 0 !important;
   width: 100% !important;
   height: 115px !important;
   min-height: 115px !important;
@@ -2454,33 +2454,31 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"] {
 }
 
 html body [data-mj="widget-bet-win"] [class~="app-ltr-121fhed"] {
-  flex: 0 0 101px !important;
+  flex: 0 0 92px !important;
   align-self: center !important;
-  width: 101px !important;
-  min-width: 101px !important;
-  max-width: 101px !important;
+  width: 92px !important;
+  min-width: 92px !important;
+  max-width: 92px !important;
   height: 101px !important;
   min-height: 101px !important;
   max-height: 101px !important;
-  aspect-ratio: 1 / 1 !important;
   border-radius: 16px !important;
   overflow: hidden !important;
-  background:
-    radial-gradient(circle at 48% 38%, rgb(255 255 255 / 20%), transparent 38%),
-    linear-gradient(145deg, rgb(126 34 206), rgb(47 39 113)) !important;
+  background: rgb(30 42 64) !important;
   box-shadow: 0 12px 24px rgb(0 0 0 / 22%) !important;
 }
 
 html body [data-mj="widget-bet-win"] [class~="app-ltr-121fhed"] img,
 html body [data-mj="widget-bet-win"] [class~="app-ltr-1lhm9a5"] {
   display: block !important;
-  width: 100% !important;
+  width: 81% !important;
   height: 100% !important;
   max-height: 101px !important;
   min-height: 100% !important;
-  object-fit: cover !important;
+  margin: 0 auto !important;
+  object-fit: contain !important;
   object-position: center center !important;
-  border-radius: inherit !important;
+  border-radius: 14px !important;
   transition:
     transform 0.28s ease,
     filter 0.28s ease,
@@ -2519,8 +2517,11 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-yawtgd"] {
   min-width: 0 !important;
   height: auto !important;
   min-height: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
+  align-self: stretch !important;
+  padding: 10px 0 8px 10px !important;
+  background:
+    radial-gradient(circle at 88% 12%, rgb(56 174 255 / 12%), transparent 34%),
+    linear-gradient(135deg, rgb(30 42 64), rgb(29 41 61) 58%, rgb(23 32 50)) !important;
   box-shadow: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -2610,16 +2611,16 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-odpn1z"] {
   html body [data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"] {
     height: 115px !important;
     min-height: 115px !important;
-    gap: 10px !important;
+    gap: 0 !important;
     padding: 7px 10px 7px 7px !important;
     border-radius: 18px !important;
   }
 
   html body [data-mj="widget-bet-win"] [class~="app-ltr-121fhed"] {
-    flex-basis: 101px !important;
-    width: 101px !important;
-    min-width: 101px !important;
-    max-width: 101px !important;
+    flex-basis: 92px !important;
+    width: 92px !important;
+    min-width: 92px !important;
+    max-width: 92px !important;
     height: 101px !important;
     min-height: 101px !important;
     max-height: 101px !important;
