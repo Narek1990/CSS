@@ -1157,19 +1157,7 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     return true;
   }
 
-  function markDmboSportsWidgets(root = document) {
-    root.querySelectorAll?.('[data-mj="widget-game-slider"]').forEach(section => {
-      const headerText = section.querySelector('[data-mj="widget-game-slider-header"]')?.textContent || "";
-
-      if (/dmbo\s*sports/i.test(headerText)) {
-        section.setAttribute("data-dmbo-sports-widget", "true");
-      }
-    });
-  }
-
   function syncWidgets() {
-    markDmboSportsWidgets();
-
     if (!isHomePage()) {
       WIDGETS.forEach(removeWidget);
       return;
