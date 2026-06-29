@@ -1,4 +1,10 @@
 
+const DMBOWIDGET_ASSET_BASE = (() => {
+  const scriptSrc = document.currentScript && document.currentScript.src;
+  if (scriptSrc) return scriptSrc.replace(/\/script\.js(?:\?.*)?$/, "/assets/");
+  return "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/dmbobet/assets/";
+})();
+
 class SlotCollections extends HTMLElement {
   constructor() {
     super();
@@ -14,14 +20,14 @@ class SlotCollections extends HTMLElement {
         subtitle: "Mystic reels, icy beasts and legendary wins.",
         url: "/en/casino/all?search=dragon",
         hero: "https://raw.githubusercontent.com/SyuzannaMartirosyan/codePublic/refs/heads/main/images/dragon_11zon.webp",
-        glow: "#00aaff",
+        glow: "#FD224E",
         games: [
-          "https://nordabet.ee/api/cmsgateway/api/v1/AssetsSite/gameimage/178328.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
-          "https://nordabet.ee/api/cmsgateway/api/v1/AssetsSite/gameimage/194473.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
-          "https://nordabet.ee/api/cmsgateway/api/v1/AssetsSite/gameimage/183017.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
-          "https://nordabet.ee/api/cmsgateway/api/v1/AssetsSite/gameimage/194505.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
-          "https://nordabet.ee/api/cmsgateway/api/v1/AssetsSite/gameimage/175878.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
-          "https://nordabet.ee/api/cmsgateway/api/v1/AssetsSite/gameimage/176598.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp"
+          "https://dmbobet.com/api/cmsgateway/api/v1/AssetsSite/gameimage/178328.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
+          "https://dmbobet.com/api/cmsgateway/api/v1/AssetsSite/gameimage/194473.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
+          "https://dmbobet.com/api/cmsgateway/api/v1/AssetsSite/gameimage/183017.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
+          "https://dmbobet.com/api/cmsgateway/api/v1/AssetsSite/gameimage/194505.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
+          "https://dmbobet.com/api/cmsgateway/api/v1/AssetsSite/gameimage/175878.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
+          "https://dmbobet.com/api/cmsgateway/api/v1/AssetsSite/gameimage/176598.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp"
         ]
       },
       {
@@ -30,13 +36,13 @@ class SlotCollections extends HTMLElement {
         subtitle: "Gods, lightning and powerful bonus features.",
         url: "/en/casino/all?search=olympus ",
         hero: "https://raw.githubusercontent.com/SyuzannaMartirosyan/codePublic/refs/heads/main/images/olymp_11zon.webp",
-        glow: "#ffb52e",
+        glow: "#ff5a78",
         games: [
-          "https://nordabet.ee/api/cmsgateway/api/v1/AssetsSite/gameimage/36071.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
-          "https://nordabet.ee/api/cmsgateway/api/v1/AssetsSite/gameimage/171080.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
-          "https://nordabet.ee/api/cmsgateway/api/v1/AssetsSite/gameimage/193801.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
-          "https://nordabet.ee/api/cmsgateway/api/v1/AssetsSite/gameimage/194648.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
-          "https://nordabet.ee/api/cmsgateway/api/v1/AssetsSite/gameimage/180626.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp"
+          "https://dmbobet.com/api/cmsgateway/api/v1/AssetsSite/gameimage/36071.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
+          "https://dmbobet.com/api/cmsgateway/api/v1/AssetsSite/gameimage/171080.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
+          "https://dmbobet.com/api/cmsgateway/api/v1/AssetsSite/gameimage/193801.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
+          "https://dmbobet.com/api/cmsgateway/api/v1/AssetsSite/gameimage/194648.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
+          "https://dmbobet.com/api/cmsgateway/api/v1/AssetsSite/gameimage/180626.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp"
         ]
       },
       { 
@@ -45,14 +51,14 @@ class SlotCollections extends HTMLElement {
         subtitle: "Ancient treasures, pharaohs and golden spins.",
         url: "/en/casino/all?search=egypt",
         hero: "https://raw.githubusercontent.com/SyuzannaMartirosyan/codePublic/refs/heads/main/images/egypt_11zon.webp",
-        glow: "#d99027",
+        glow: "#c9163f",
         games: [
-          "https://nordabet.ee/api/cmsgateway/api/v1/AssetsSite/gameimage/60420.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
-          "https://nordabet.ee/api/cmsgateway/api/v1/AssetsSite/gameimage/193502.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
-          "https://nordabet.ee/api/cmsgateway/api/v1/AssetsSite/gameimage/193602.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
-          "https://nordabet.ee/api/cmsgateway/api/v1/AssetsSite/gameimage/195433.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
-          "https://nordabet.ee/api/cmsgateway/api/v1/AssetsSite/gameimage/194563.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
-          "https://nordabet.ee/api/cmsgateway/api/v1/AssetsSite/gameimage/194562.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp"
+          "https://dmbobet.com/api/cmsgateway/api/v1/AssetsSite/gameimage/60420.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
+          "https://dmbobet.com/api/cmsgateway/api/v1/AssetsSite/gameimage/193502.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
+          "https://dmbobet.com/api/cmsgateway/api/v1/AssetsSite/gameimage/193602.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
+          "https://dmbobet.com/api/cmsgateway/api/v1/AssetsSite/gameimage/195433.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
+          "https://dmbobet.com/api/cmsgateway/api/v1/AssetsSite/gameimage/194563.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp",
+          "https://dmbobet.com/api/cmsgateway/api/v1/AssetsSite/gameimage/194562.webp?folder=VerticalGameImages&width=427&height=576&Quality=90&format=webp"
         ]
       }
     ];
@@ -277,7 +283,7 @@ class SlotCollections extends HTMLElement {
         }
 
         .arrow {
-          background: none rgb(2 189 255);
+          background: none #FD224E;
           backface-visibility: hidden;
           font-weight: normal;
           font-style: normal;
@@ -539,7 +545,7 @@ class SeaBonusWidget extends HTMLElement {
   }
 
   get shipSrc() {
-    return this.getAttribute("ship-src") || "./img/ship.png";
+    return this.getAttribute("ship-src") || `${DMBOWIDGET_ASSET_BASE}dmbo-rabbit-chase.png`;
   }
 
   get backWaveSrc() {
@@ -577,53 +583,57 @@ class SeaBonusWidget extends HTMLElement {
           margin: 60px auto;
           overflow: hidden;
           border-radius: 16px;
-          background: linear-gradient(180deg, #1b2745 0%, #2d3561 20%, #4e4171 45%, #8b4f6c 70%, #ff8a5b 100%);
-          box-shadow: 0 18px 50px rgba(40, 120, 180, 0.22);
+          background:
+            radial-gradient(circle at 76% 44%, rgba(253, 34, 78, .34), transparent 34%),
+            linear-gradient(135deg, #070711 0%, #150712 48%, #2c0613 100%);
+          box-shadow:
+            0 18px 50px rgba(253, 34, 78, 0.20),
+            inset 0 1px 0 rgba(255,255,255,.12);
         }
 
     
         .wave-layer {
           position: absolute;
-          left: -40%;
-          width: 200%;
-          background-repeat: repeat-x;
-          background-size: contain;
-        
-          background-position: bottom left;
+          inset: 0;
           will-change: transform;
           pointer-events: none;
         }
 
 
         .wave-layer--back {
-          bottom: 16px;
-          height: 160px;
-    
+          background:
+            radial-gradient(circle at 34% 62%, rgba(253,34,78,.42), transparent 24%),
+            linear-gradient(100deg, transparent 0%, rgba(253,34,78,.16) 42%, transparent 76%);
           z-index: 2;
-          scale: 1.2;
-          opacity: 0.75;
-      filter: drop-shadow(2px 4px 6px black) brightness(0.5) contrast(1.1);
-          background-image: url("${this.backWaveSrc}");
+          opacity: 0.85;
+          mix-blend-mode: screen;
         }
 
         .ship-layer {
           position: absolute;
-          left: 6%;
-          bottom: 38px;
-          width: 240px;
-          max-width: 34vw;
-          z-index: 4;
+          inset: 0;
+          width: 106%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          z-index: 1;
           pointer-events: none;
           will-change: transform;
+          filter: saturate(1.08) contrast(1.03);
         }
 
         .wave-layer--front {
-         bottom: -26px;
-    height: 156px;
-    z-index: 6;
-    scale: 0.8;
-    filter:  brightness(1.1);
-          background-image: url("${this.frontWaveSrc}");
+          z-index: 6;
+          opacity: 0.75;
+          background:
+            repeating-linear-gradient(
+              108deg,
+              transparent 0 72px,
+              rgba(253,34,78,.18) 74px 78px,
+              transparent 82px 160px
+            ),
+            linear-gradient(90deg, rgba(5,2,8,.26), transparent 36%, rgba(5,2,8,.38));
+          mix-blend-mode: screen;
         }
 
         .sea-cta {
@@ -640,6 +650,8 @@ class SeaBonusWidget extends HTMLElement {
           transition: 0.7s ease;
           background:rgb(3 22 45 / 50%);
             backdrop-filter: blur(8px);
+          border: 1px solid rgba(253, 34, 78, .34);
+          box-shadow: 0 18px 44px rgba(0,0,0,.34), 0 0 28px rgba(253,34,78,.18);
         }
 
         .sea-widget.is-finished .sea-cta {
@@ -669,10 +681,11 @@ class SeaBonusWidget extends HTMLElement {
           padding: 0 22px;
           border-radius: 16px;
           color: #fff;
-          background: #02bdff;
+          background: linear-gradient(180deg, #ff5a78, #FD224E);
           text-decoration: none;
           font-weight: 700;
           transition: 0.25s ease;
+          box-shadow: 0 10px 24px rgba(253,34,78,.30);
         }
 
         .sea-cta__btn:hover {
@@ -683,20 +696,15 @@ class SeaBonusWidget extends HTMLElement {
         @media (max-width: 700px) {
 
         .wave-layer--front {
-    bottom: -30px;
-    height: 156px;
-    z-index: 6;
-    scale: 1;}
+    z-index: 6;}
           .sea-widget {
             height: 200px;
             border-radius: 16px;
           }
 
           .ship-layer {
-            width: 170px;
-            max-width: 48vw;
-            bottom: 18px;
-            filter: brightness(1.2);
+            width: 132%;
+            object-position: 54% center;
           }
 
           .sea-cta {
@@ -725,17 +733,17 @@ class SeaBonusWidget extends HTMLElement {
       <section class="sea-widget">
         <div class="wave-layer wave-layer--back"></div>
 
-        <img class="ship-layer" src="${this.shipSrc}" alt="ship" />
+        <img class="ship-layer" src="${this.shipSrc}" alt="DMBObet rabbit chase" />
 
         <div class="wave-layer wave-layer--front"></div>
 
         <div class="sea-cta">
-          <h2 class="sea-cta__title">Welcome aboard!</h2>
+          <h2 class="sea-cta__title">Catch the bonus!</h2>
           <p class="sea-cta__text">
-            Climb aboard and claim your welcome bonus before the tide goes out.
+            Follow the lucky rabbit and grab the DMBObet welcome reward.
           </p>
           <a href="${this.promoLink}" class="sea-cta__btn">
-            Get welcome bonus
+            Claim bonus
           </a>
         </div>
       </section>
@@ -779,24 +787,23 @@ class SeaBonusWidget extends HTMLElement {
     const widgetW = this.widget.offsetWidth;
     const shipW = this.ship.offsetWidth;
 
-    const shipStart = widgetW * 0.06;
-    const shipEnd = widgetW - shipW - widgetW * 0.08;
+    const shipStart = 0;
+    const shipEnd = Math.max(18, widgetW * 0.045);
     const shipX = shipStart + (shipEnd - shipStart) * progress;
 
     this.backWave.style.transform = `
-      translateX(${-progress * 110}px)
-      translateY(${progress * 8}px)
+      translateX(${progress * 34}px)
+      translateY(${Math.sin(progress * Math.PI * 2) * 4}px)
     `;
 
     this.frontWave.style.transform = `
-      translateX(${-progress * 260}px)
-      translateY(${progress * 14}px)
+      translateX(${-progress * 120}px)
+      translateY(${progress * 6}px)
     `;
 
     this.ship.style.transform = `
-      translateX(${shipX - shipStart}px)
-      translateY(${Math.sin(progress * Math.PI * 6) * 7}px)
-      rotate(${Math.sin(progress * Math.PI * 5) * 3}deg)
+      translateX(${-shipX}px)
+      scale(${1.015 + progress * 0.035})
     `;
 
     if (progress > 0.40) {
@@ -825,9 +832,7 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
       instanceId: "custom-sea-bonus-widget",
       position: "before",
       attributes: {
-        "ship-src": "https://raw.githubusercontent.com/SyuzannaMartirosyan/codePublic/refs/heads/main/images/xxx_11zon.webp",
-        "back-wave-src": "https://raw.githubusercontent.com/SyuzannaMartirosyan/codePublic/refs/heads/main/images/waveee_11zon.webp",
-        "front-wave-src": "https://raw.githubusercontent.com/SyuzannaMartirosyan/codePublic/refs/heads/main/images/waveee_11zon.webp",
+        "ship-src": `${DMBOWIDGET_ASSET_BASE}dmbo-rabbit-chase.png`,
         "promo-link": "/en/promotions/welcome-bonus"
       }
     }
