@@ -1,3 +1,9 @@
+const DMBOWIDGET_ASSET_BASE = (() => {
+  const scriptSrc = document.currentScript && document.currentScript.src;
+  if (scriptSrc) return scriptSrc.replace(/\/script\.js(?:\?.*)?$/, "/assets/");
+  return "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/dmbobet/assets/";
+})();
+
 class SlotCollections extends HTMLElement {
   constructor() {
     super();
@@ -587,6 +593,10 @@ class SeaBonusWidget extends HTMLElement {
     return this.getAttribute("promo-link") || "/promotions";
   }
 
+  get mascotSrc() {
+    return this.getAttribute("mascot-src") || `${DMBOWIDGET_ASSET_BASE}dmbo-character.png`;
+  }
+
   clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
   }
@@ -702,18 +712,18 @@ class SeaBonusWidget extends HTMLElement {
             drop-shadow(0 0 22px rgba(253,34,78,.24));
         }
 
-        .chase-sprite svg {
+        .chase-sprite svg,
+        .chase-sprite__image {
           display: block;
           width: 100%;
-          height: 100%;
+          height: auto;
           overflow: visible;
         }
 
         .chase-sprite--mascot {
-          left: 6%;
-          bottom: 6%;
-          width: clamp(210px, 22vw, 360px);
-          aspect-ratio: 1.12;
+          left: -2%;
+          bottom: -3%;
+          width: clamp(330px, 34vw, 560px);
         }
 
         .chase-sprite--rabbit {
@@ -869,9 +879,9 @@ class SeaBonusWidget extends HTMLElement {
           }
 
           .chase-sprite--mascot {
-            left: -8%;
-            bottom: 4%;
-            width: 260px;
+            left: -26%;
+            bottom: 2%;
+            width: 360px;
           }
 
           .chase-sprite--rabbit {
@@ -914,46 +924,7 @@ class SeaBonusWidget extends HTMLElement {
         <div class="dust"></div>
 
         <div class="chase-sprite chase-sprite--mascot" aria-hidden="true">
-          <svg viewBox="0 0 220 210" role="img">
-            <defs>
-              <linearGradient id="dmboBody" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0" stop-color="#ff6b86"/>
-                <stop offset=".58" stop-color="#FD224E"/>
-                <stop offset="1" stop-color="#8f0927"/>
-              </linearGradient>
-              <linearGradient id="dmboGold" x1="0" x2="1">
-                <stop offset="0" stop-color="#ffe3a5"/>
-                <stop offset="1" stop-color="#d79a25"/>
-              </linearGradient>
-            </defs>
-            <ellipse cx="92" cy="188" rx="78" ry="12" fill="rgba(0,0,0,.28)"/>
-            <g class="runner-leg runner-leg--back">
-              <path d="M92 133 C76 151 64 166 45 181" stroke="#1c1220" stroke-width="17" stroke-linecap="round"/>
-              <path d="M45 181 L22 181" stroke="#FD224E" stroke-width="15" stroke-linecap="round"/>
-            </g>
-            <g class="runner-leg">
-              <path d="M114 132 C126 154 139 169 159 184" stroke="#271525" stroke-width="18" stroke-linecap="round"/>
-              <path d="M159 184 L187 184" stroke="#ff5a78" stroke-width="15" stroke-linecap="round"/>
-            </g>
-            <path d="M68 69 C88 37 137 37 158 70 C177 99 160 145 121 151 C78 158 45 106 68 69Z" fill="url(#dmboBody)" stroke="url(#dmboGold)" stroke-width="5"/>
-            <path d="M89 83 C105 66 132 66 146 86 C154 98 150 124 128 132 C101 142 77 112 89 83Z" fill="#120813" opacity=".82"/>
-            <text x="103" y="118" font-size="42" font-weight="900" font-family="Arial, sans-serif" fill="#fff">D</text>
-            <path d="M83 48 L67 16 L108 39" fill="#FD224E" stroke="url(#dmboGold)" stroke-width="4"/>
-            <path d="M139 48 L167 18 L156 61" fill="#FD224E" stroke="url(#dmboGold)" stroke-width="4"/>
-            <circle cx="101" cy="70" r="7" fill="#fff"/>
-            <circle cx="132" cy="71" r="7" fill="#fff"/>
-            <circle cx="104" cy="72" r="3" fill="#111"/>
-            <circle cx="135" cy="73" r="3" fill="#111"/>
-            <path d="M111 88 C121 96 132 96 143 88" fill="none" stroke="#ffe3a5" stroke-width="5" stroke-linecap="round"/>
-            <g class="runner-arm runner-arm--back">
-              <path d="M75 100 C48 98 35 83 24 68" fill="none" stroke="#271525" stroke-width="15" stroke-linecap="round"/>
-              <circle cx="22" cy="66" r="9" fill="#FD224E"/>
-            </g>
-            <g class="runner-arm">
-              <path d="M150 100 C176 93 188 75 199 58" fill="none" stroke="#271525" stroke-width="15" stroke-linecap="round"/>
-              <circle cx="201" cy="56" r="9" fill="#ff5a78"/>
-            </g>
-          </svg>
+          <img class="chase-sprite__image" src="${this.mascotSrc}" alt="" loading="lazy" />
         </div>
 
         <div class="chase-sprite chase-sprite--rabbit" aria-hidden="true">
@@ -1113,6 +1084,7 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
       instanceId: "custom-sea-bonus-widget",
       position: "before",
       attributes: {
+        "mascot-src": `${DMBOWIDGET_ASSET_BASE}dmbo-character.png`,
         "promo-link": "/en/promotions/welcome-bonus"
       }
     }
