@@ -245,9 +245,21 @@ class SlotCollections extends HTMLElement {
           padding: 13px 24px;
           cursor: pointer;
           color: #fff;
-          background: rgb(0, 189, 255);
+          background: linear-gradient(180deg, #ff5a78, #FD224E);
           font-weight: 950;
-          box-shadow: 0 12px 34px color-mix(in srgb, var(--glow), transparent 40%);
+          box-shadow:
+            0 12px 34px rgba(253, 34, 78, .34),
+            inset 0 1px 0 rgba(255, 255, 255, .22);
+          transition: transform .22s ease, box-shadow .22s ease, filter .22s ease;
+        }
+
+        .btn:hover {
+          transform: translateY(-2px);
+          filter: brightness(1.06) saturate(1.08);
+          box-shadow:
+            0 16px 40px rgba(253, 34, 78, .44),
+            0 0 26px rgba(253, 34, 78, .22),
+            inset 0 1px 0 rgba(255, 255, 255, .28);
         }
 
         .hero-layer {
@@ -303,6 +315,19 @@ class SlotCollections extends HTMLElement {
           padding: 0px;
           justify-content: center;
           align-items: center;
+          box-shadow:
+            0 10px 22px rgba(253, 34, 78, .28),
+            inset 0 1px 0 rgba(255,255,255,.2);
+          transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+        }
+
+        .arrow:hover {
+          transform: translateY(-1px);
+          filter: brightness(1.06);
+          box-shadow:
+            0 14px 28px rgba(253, 34, 78, .38),
+            0 0 20px rgba(253, 34, 78, .24),
+            inset 0 1px 0 rgba(255,255,255,.26);
         }
 
         .tabs {
@@ -315,18 +340,31 @@ class SlotCollections extends HTMLElement {
         }
 
         .tab {
-          border: 0;
+          border: 1px solid rgba(253, 34, 78, .22);
           border-radius: 12px;
           padding: 8px 13px;
           cursor: pointer;
-          background: rgb(55 71 92);
+          background: rgba(44, 14, 28, .82);
           color: rgba(255,255,255,.62);
           font-weight: 900;
+          box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+          transition: background .2s ease, color .2s ease, box-shadow .2s ease, transform .2s ease;
+        }
+
+        .tab:hover {
+          color: #fff;
+          transform: translateY(-1px);
+          background: rgba(253, 34, 78, .24);
+          box-shadow: 0 8px 18px rgba(253, 34, 78, .14);
         }
 
         .tab.active {
-          background: rgb(21 77 145);
+          background: linear-gradient(180deg, #ff5a78, #FD224E);
           color: #fff;
+          border-color: rgba(255,255,255,.18);
+          box-shadow:
+            0 10px 22px rgba(253, 34, 78, .32),
+            inset 0 1px 0 rgba(255,255,255,.2);
         }
 
         @media (max-width: 720px) {
@@ -578,11 +616,12 @@ class SeaBonusWidget extends HTMLElement {
 
         .sea-widget {
           position: relative;
-          width: min(1400px, calc(100% - 32px));
-          height: 234px;
-          margin: 60px auto;
+          width: 100%;
+          max-width: none;
+          height: clamp(300px, 24vw, 380px);
+          margin: 60px 0;
           overflow: hidden;
-          border-radius: 16px;
+          border-radius: 18px;
           background:
             radial-gradient(circle at 76% 44%, rgba(253, 34, 78, .34), transparent 34%),
             linear-gradient(135deg, #070711 0%, #150712 48%, #2c0613 100%);
@@ -612,14 +651,41 @@ class SeaBonusWidget extends HTMLElement {
         .ship-layer {
           position: absolute;
           inset: 0;
-          width: 106%;
+          width: 100%;
           height: 100%;
-          object-fit: cover;
+          object-fit: contain;
           object-position: center;
           z-index: 1;
           pointer-events: none;
           will-change: transform;
           filter: saturate(1.08) contrast(1.03);
+          opacity: .82;
+          transform-origin: center center;
+        }
+
+        .chase-character {
+          position: absolute;
+          inset: 0;
+          z-index: 4;
+          pointer-events: none;
+          background-image: url("${this.shipSrc}");
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center;
+          will-change: transform;
+          filter:
+            saturate(1.15)
+            contrast(1.06)
+            drop-shadow(0 18px 24px rgba(0,0,0,.38))
+            drop-shadow(0 0 18px rgba(253,34,78,.18));
+        }
+
+        .chase-character--mascot {
+          clip-path: polygon(5% 3%, 52% 2%, 54% 95%, 4% 98%);
+        }
+
+        .chase-character--rabbit {
+          clip-path: polygon(55% 18%, 86% 16%, 88% 88%, 54% 90%);
         }
 
         .wave-layer--front {
@@ -698,13 +764,24 @@ class SeaBonusWidget extends HTMLElement {
         .wave-layer--front {
     z-index: 6;}
           .sea-widget {
-            height: 200px;
+            height: 260px;
+            width: 100%;
+            margin: 42px 0;
             border-radius: 16px;
           }
 
           .ship-layer {
-            width: 132%;
-            object-position: 54% center;
+            width: 100%;
+            object-fit: contain;
+            object-position: center;
+          }
+
+          .chase-character--mascot {
+            clip-path: polygon(1% 5%, 57% 5%, 58% 96%, 0 98%);
+          }
+
+          .chase-character--rabbit {
+            clip-path: polygon(50% 18%, 93% 16%, 94% 91%, 49% 93%);
           }
 
           .sea-cta {
@@ -734,6 +811,8 @@ class SeaBonusWidget extends HTMLElement {
         <div class="wave-layer wave-layer--back"></div>
 
         <img class="ship-layer" src="${this.shipSrc}" alt="DMBObet rabbit chase" />
+        <div class="chase-character chase-character--mascot"></div>
+        <div class="chase-character chase-character--rabbit"></div>
 
         <div class="wave-layer wave-layer--front"></div>
 
@@ -755,6 +834,8 @@ class SeaBonusWidget extends HTMLElement {
     this.backWave = this.shadowRoot.querySelector(".wave-layer--back");
     this.frontWave = this.shadowRoot.querySelector(".wave-layer--front");
     this.ship = this.shadowRoot.querySelector(".ship-layer");
+    this.mascot = this.shadowRoot.querySelector(".chase-character--mascot");
+    this.rabbit = this.shadowRoot.querySelector(".chase-character--rabbit");
   }
 
   bindEvents() {
@@ -785,11 +866,11 @@ class SeaBonusWidget extends HTMLElement {
     );
 
     const widgetW = this.widget.offsetWidth;
-    const shipW = this.ship.offsetWidth;
-
-    const shipStart = 0;
-    const shipEnd = Math.max(18, widgetW * 0.045);
-    const shipX = shipStart + (shipEnd - shipStart) * progress;
+    const shipX = Math.max(14, widgetW * 0.025) * progress;
+    const mascotX = widgetW * 0.145 * progress;
+    const rabbitX = widgetW * 0.205 * progress;
+    const bobMascot = Math.sin(progress * Math.PI * 7) * 5;
+    const bobRabbit = Math.sin(progress * Math.PI * 9) * 6;
 
     this.backWave.style.transform = `
       translateX(${progress * 34}px)
@@ -803,8 +884,24 @@ class SeaBonusWidget extends HTMLElement {
 
     this.ship.style.transform = `
       translateX(${-shipX}px)
-      scale(${1.015 + progress * 0.035})
+      scale(${1.01 + progress * 0.02})
     `;
+
+    if (this.mascot) {
+      this.mascot.style.transform = `
+        translate3d(${mascotX}px, ${bobMascot}px, 0)
+        rotate(${Math.sin(progress * Math.PI * 4) * 1.2}deg)
+        scale(${1 + progress * 0.018})
+      `;
+    }
+
+    if (this.rabbit) {
+      this.rabbit.style.transform = `
+        translate3d(${rabbitX}px, ${bobRabbit}px, 0)
+        rotate(${Math.sin(progress * Math.PI * 5) * -1.4}deg)
+        scale(${1 + progress * 0.028})
+      `;
+    }
 
     if (progress > 0.40) {
       this.widget.classList.add("is-finished");
@@ -905,7 +1002,19 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     return true;
   }
 
+  function markDmboSportsWidgets(root = document) {
+    root.querySelectorAll?.('[data-mj="widget-game-slider"]').forEach(section => {
+      const headerText = section.querySelector('[data-mj="widget-game-slider-header"]')?.textContent || "";
+
+      if (/dmbo\s*sports/i.test(headerText)) {
+        section.setAttribute("data-dmbo-sports-widget", "true");
+      }
+    });
+  }
+
   function syncWidgets() {
+    markDmboSportsWidgets();
+
     if (!isHomePage()) {
       WIDGETS.forEach(removeWidget);
       return;
