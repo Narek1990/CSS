@@ -274,7 +274,6 @@ html body [data-mj="widget-game-slider-slide"] {
 
 html body .app-ltr-ja3k2i,
 html body .app-ltr-m6gvz8 {
-  background-color: rgb(255 255 255 / 6%) !important;
   backdrop-filter: blur(16px) !important;
   -webkit-backdrop-filter: blur(16px) !important;
 }
@@ -351,8 +350,8 @@ html body [data-mj="page-content"] [class~="app-ltr-mhyosn"]:has(iframe#game) [c
     min-height: 0 !important;
     margin-bottom: 0 !important;
     margin-block-end: 0 !important;
-    padding-bottom: 5px !important;
-    padding-block-end: 5px !important;
+    padding-bottom: 0 !important;
+    padding-block-end: 0 !important;
   }
 
   html body [data-mj="bottom-nav"] > .app-ltr-m6gvz8 > .app-ltr-ja3k2i,
@@ -361,6 +360,11 @@ html body [data-mj="page-content"] [class~="app-ltr-mhyosn"]:has(iframe#game) [c
     margin-block-end: 0 !important;
     padding-bottom: 0 !important;
     padding-block-end: 0 !important;
+  }
+
+  html body [data-mj="bottom-nav"] a[data-mj="bottom-nav-item"] {
+    padding-bottom: 8px !important;
+    padding-block-end: 8px !important;
   }
 
   html body [data-mj="logo"] {
