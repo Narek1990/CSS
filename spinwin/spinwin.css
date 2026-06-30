@@ -166,9 +166,14 @@ html body [data-spinwin-original-icon="true"] {
   filter: none !important;
 }
 
+html body [data-mj="bottom-nav"] a[data-mj="bottom-nav-item"] > span,
 html body [data-mj="bottom-nav"] [data-mj="bottom-nav-item"] > span[data-spinwin-original-icon="true"] {
   width: 33px !important;
+  min-width: 33px !important;
+  max-width: 33px !important;
   height: 33px !important;
+  min-height: 33px !important;
+  max-height: 33px !important;
   flex: 0 0 33px !important;
 }
 
@@ -278,6 +283,11 @@ html body .app-ltr-m6gvz8 {
   border-radius: 8px !important;
 }
 
+html body [data-mj="bottom-nav"] > .app-ltr-m6gvz8,
+html body [data-mj="bottom-nav"] > [class~="app-ltr-m6gvz8"] {
+  opacity: 1 !important;
+}
+
 @media (min-width: 993px) {
   html body [data-mj="custom-header"] {
     padding-left: 56px !important;
@@ -326,6 +336,16 @@ html body [data-mj="page-content"] [class~="app-ltr-mhyosn"]:has(iframe#game) [c
 }
 
 @media (max-width: 992px) {
+  html body [data-mj="logo"] {
+    max-height: 38px !important;
+  }
+
+  html body [data-mj="logo"] img {
+    width: auto !important;
+    height: auto !important;
+    max-height: 38px !important;
+  }
+
   html body [data-mj="page-content"],
   html body main[data-mj="page-content"],
   html body main[data-mj="page-content"].app-ltr-foxy03,
