@@ -166,6 +166,12 @@ html body [data-spinwin-original-icon="true"] {
   filter: none !important;
 }
 
+html body [data-mj="bottom-nav"] [data-mj="bottom-nav-item"] > span[data-spinwin-original-icon="true"] {
+  width: 33px !important;
+  height: 33px !important;
+  flex: 0 0 33px !important;
+}
+
 html body [data-mj="sidebar"] a:hover [data-spinwin-original-icon="true"],
 html body [data-mj="sidebar"] a.active-link [data-spinwin-original-icon="true"],
 html body [data-mj="sidebar"] a[aria-current="page"] [data-spinwin-original-icon="true"] {
@@ -269,7 +275,6 @@ html body .app-ltr-m6gvz8 {
 }
 
 html body .app-ltr-m6gvz8 {
-  opacity: 85% !important;
   border-radius: 8px !important;
 }
 
