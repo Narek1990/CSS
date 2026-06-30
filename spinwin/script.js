@@ -94,7 +94,13 @@
     document.querySelectorAll([
       '[data-mj="sidebar-content"] [class~="app-ltr-1trb7go"]',
       '[data-mj="sidebar"] [class~="app-ltr-1trb7go"]',
-      '[data-mj="bottom-nav"] span[style*="mask-image"]'
+      '[data-mj="bottom-nav"] span[style*="mask-image"]',
+      '[data-mj="lobby-catalog-category-item"] span',
+      '[data-mj="lobby-catalog-mobile-category-chip"] span',
+      '[data-mj="lobby-catalog-category-list"] span',
+      '[data-mj="lobby-catalog-mobile-categories"] span',
+      '[data-mj="widget-pages"] span',
+      '[data-mj="widget-pages-item"] span'
     ].join(",")).forEach(function (icon) {
       var url = getMaskUrl(icon);
 
