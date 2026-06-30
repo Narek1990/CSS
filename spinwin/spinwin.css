@@ -55,7 +55,7 @@ html body [data-mj="widget-fixed-image-banner-container"] {
 html body .spinwin-fixed-banner-deposit {
   position: absolute !important;
   top: 34% !important;
-  right: 2.1% !important;
+  right: 2.7% !important;
   z-index: 12 !important;
   display: block !important;
   width: 5.6% !important;
@@ -75,7 +75,7 @@ html body .spinwin-fixed-banner-deposit {
 html body .spinwin-fixed-banner-deposit::before {
   content: "" !important;
   position: absolute !important;
-  inset: 0 !important;
+  inset: -5px -3px -5px -8px !important;
   border-radius: inherit !important;
   background: rgba(255, 177, 34, 0) !important;
   box-shadow: none !important;
@@ -92,11 +92,30 @@ html body .spinwin-fixed-banner-deposit:focus-visible {
 
 html body .spinwin-fixed-banner-deposit:hover::before,
 html body .spinwin-fixed-banner-deposit:focus-visible::before {
-  background: linear-gradient(180deg, rgba(255, 214, 84, 0.18), rgba(226, 133, 16, 0.10)) !important;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 220, 92, 0.24), rgba(255, 168, 24, 0.10) 48%, transparent 72%) !important;
   box-shadow:
-    inset 0 0 0 2px rgba(255, 221, 112, 0.62),
     0 0 16px rgba(255, 169, 31, 0.42),
-    0 0 30px rgba(226, 133, 16, 0.22) !important;
+    0 0 32px rgba(226, 133, 16, 0.26) !important;
+}
+
+html body [data-mj="widget-phoenix-sport"] .top-events,
+html body [data-mj="widget-phoenix-sport-container"] .top-events,
+html body #ph-sport-widget .top-events {
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  scrollbar-gutter: stable !important;
+  padding-bottom: 0 !important;
+}
+
+html body [data-mj="widget-phoenix-sport"] .top-events::-webkit-scrollbar,
+html body [data-mj="widget-phoenix-sport-container"] .top-events::-webkit-scrollbar,
+html body #ph-sport-widget .top-events::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
 }
 
 html body [data-mj="logo"] img {
@@ -296,7 +315,7 @@ html body [data-mj="page-content"] [class~="app-ltr-mhyosn"]:has(iframe#game) [c
   html body .spinwin-fixed-banner-deposit {
     top: 34% !important;
     right: auto !important;
-    left: 82.8% !important;
+    left: 82.2% !important;
     width: 13% !important;
     min-width: 0 !important;
     max-width: none !important;
@@ -305,6 +324,6 @@ html body [data-mj="page-content"] [class~="app-ltr-mhyosn"]:has(iframe#game) [c
   }
 
   html body .spinwin-fixed-banner-deposit::before {
-    inset: 0 !important;
+    inset: -4px -2px -4px -7px !important;
   }
 }
