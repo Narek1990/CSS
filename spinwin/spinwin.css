@@ -53,6 +53,16 @@ html body [data-mj="widget-fixed-image-banner-container"] {
   isolation: isolate !important;
 }
 
+html body [data-spinwin-aviator-source="true"] {
+  display: none !important;
+}
+
+html body #custom-aviator-scroll-widget {
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+}
+
 html body .spinwin-fixed-banner-deposit {
   position: absolute !important;
   top: 34% !important;
