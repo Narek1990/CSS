@@ -336,6 +336,38 @@ html body [data-mj="page-content"] [class~="app-ltr-mhyosn"]:has(iframe#game) [c
 }
 
 @media (max-width: 992px) {
+  html body [data-mj="bottom-nav"] {
+    inset-block-end: 0 !important;
+    bottom: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin-bottom: 0 !important;
+    margin-block-end: 0 !important;
+    padding-bottom: 0 !important;
+    padding-block-end: 0 !important;
+  }
+
+  html body [data-mj="bottom-nav"] > .app-ltr-m6gvz8,
+  html body [data-mj="bottom-nav"] > [class~="app-ltr-m6gvz8"] {
+    inset-block-end: 0 !important;
+    bottom: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin-bottom: 0 !important;
+    margin-block-end: 0 !important;
+    padding-bottom: 0 !important;
+    padding-block-end: 0 !important;
+  }
+
+  html body [data-mj="bottom-nav"] > .app-ltr-m6gvz8 > .app-ltr-ja3k2i,
+  html body [data-mj="bottom-nav"] > [class~="app-ltr-m6gvz8"] > [class~="app-ltr-ja3k2i"] {
+    background-color: rgb(165 63 222 / 6%) !important;
+    margin-bottom: 0 !important;
+    margin-block-end: 0 !important;
+    padding-bottom: 0 !important;
+    padding-block-end: 0 !important;
+  }
+
   html body [data-mj="logo"] {
     max-height: 38px !important;
   }
