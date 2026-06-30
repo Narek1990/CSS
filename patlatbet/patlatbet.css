@@ -92,3 +92,14 @@ html body [data-mj="sidebar-footer"] .sl-select__control:has(img[src*="/flags/TR
     margin-right: auto !important;
   }
 }
+
+/* Keep the current promo authoritative if a legacy Patlatbet stylesheet is also present. */
+html body [data-mj="sidebar-footer"][data-mj="sidebar-footer"] .sl-select__control.app-ltr-1nfuhvk-control,
+html body [data-mj="sidebar-footer"][data-mj="sidebar-footer"] [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"],
+html body [data-mj="sidebar-footer"][data-mj="sidebar-footer"] .sl-select__control:has(img[src*="/flags/TR.svg"]) {
+  background-color: #020712 !important;
+  background-image: url("./patlatnew.png") !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+}

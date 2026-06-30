@@ -7,11 +7,21 @@
     : "https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/patlatbet";
 
   function ensureStylesheet() {
-    var href = baseUrl + "/patlatbet.css?v=" + Date.now();
-    var existing = document.querySelector('link[data-patlatbet-css="true"]');
+    var href = baseUrl + "/patlatbet.css";
+    var managed = document.querySelector('link[data-patlatbet-css="true"]');
 
-    if (existing) {
-      existing.href = href;
+    if (managed) {
+      if (managed.href.split("?")[0] !== href) {
+        managed.href = href;
+      }
+
+      return;
+    }
+
+    var external = document.querySelector('link[href*="/patlatbet/patlatbet.css"]');
+
+    if (external) {
+      external.setAttribute("data-patlatbet-css-external", "true");
       return;
     }
 
