@@ -2438,7 +2438,7 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"] {
   min-height: 115px !important;
   padding: 7px 10px 7px 7px !important;
   border: 1px solid rgb(98 132 184 / 18%) !important;
-  border-radius: 18px !important;
+  border-radius: 9px !important;
   background:
     radial-gradient(circle at 16% 20%, rgb(107 66 230 / 24%), transparent 34%),
     radial-gradient(circle at 88% 12%, rgb(56 174 255 / 12%), transparent 34%),
@@ -2465,7 +2465,7 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-121fhed"] {
   max-height: 101px !important;
   aspect-ratio: 427 / 575 !important;
   padding-top: 0 !important;
-  border-radius: 16px !important;
+  border-radius: 8px !important;
   overflow: hidden !important;
   background: rgb(30 42 64) !important;
   box-shadow: 0 12px 24px rgb(0 0 0 / 22%) !important;
@@ -2479,7 +2479,7 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-1lhm9a5"] {
   min-height: 100% !important;
   margin: 0 auto !important;
   object-position: center center !important;
-  border-radius: 14px !important;
+  border-radius: 7px !important;
   transition:
     transform 0.28s ease,
     filter 0.28s ease,
@@ -2619,7 +2619,7 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-odpn1z"] {
     min-height: 115px !important;
     gap: 0 !important;
     padding: 7px 10px 7px 7px !important;
-    border-radius: 18px !important;
+    border-radius: 9px !important;
   }
 
   html body [data-mj="widget-bet-win"] [class~="app-ltr-121fhed"] {
@@ -2632,7 +2632,7 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-odpn1z"] {
     max-height: 101px !important;
     aspect-ratio: 427 / 575 !important;
     padding-top: 0 !important;
-    border-radius: 16px !important;
+    border-radius: 8px !important;
   }
 }
 
