@@ -56,22 +56,21 @@
 
   function addFixedBannerDepositLink() {
     document.querySelectorAll('[data-mj="widget-fixed-image-banner-container"]').forEach(function (container) {
-      var image = container.querySelector([
-        'img[src*="0e0fb228-dd69-4bbc-b39d-b91c07cb5b24"]',
-        'img[src*="62348f42-8561-4708-8948-a5cd64177572"]'
-      ].join(","));
+      var image = container.querySelector("img");
+      var link = container.querySelector(".spinwin-fixed-banner-deposit");
 
-      if (!image || container.querySelector(".spinwin-fixed-banner-deposit")) {
+      if (!image) {
         return;
       }
 
-      container.appendChild(
-        Object.assign(document.createElement("a"), {
-          className: "spinwin-fixed-banner-deposit",
-          href: "/en/home/promotions/first-deposit",
-          "aria-label": "Deposit promotion"
-        })
-      );
+      if (!link) {
+        link = document.createElement("a");
+        link.className = "spinwin-fixed-banner-deposit";
+        container.appendChild(link);
+      }
+
+      link.href = "/en/home/promotions/first-deposit";
+      link.setAttribute("aria-label", "Deposit promotion");
     });
   }
 

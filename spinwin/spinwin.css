@@ -50,6 +50,7 @@ html body [data-mj="widget-fixed-image-banner-container"] [class~="app-ltr-1l44g
 
 html body [data-mj="widget-fixed-image-banner-container"] {
   position: relative !important;
+  isolation: isolate !important;
 }
 
 html body .spinwin-fixed-banner-deposit {
@@ -69,6 +70,7 @@ html body .spinwin-fixed-banner-deposit {
   text-decoration: none !important;
   cursor: pointer !important;
   outline: none !important;
+  pointer-events: auto !important;
   transition: filter 0.18s ease !important;
 }
 
