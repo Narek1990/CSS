@@ -74,10 +74,50 @@
     });
   }
 
+  function getMaskUrl(icon) {
+    var maskImage = icon.style.maskImage || icon.style.webkitMaskImage;
+
+    if (!maskImage || maskImage === "none") {
+      maskImage = window.getComputedStyle(icon).maskImage || window.getComputedStyle(icon).webkitMaskImage;
+    }
+
+    if (!maskImage || maskImage === "none") {
+      return "";
+    }
+
+    var match = maskImage.match(/url\((['"]?)(.*?)\1\)/);
+
+    return match ? match[2] : "";
+  }
+
+  function showOriginalSidebarIcons() {
+    document.querySelectorAll([
+      '[data-mj="sidebar-content"] [class~="app-ltr-1trb7go"]',
+      '[data-mj="sidebar"] [class~="app-ltr-1trb7go"]',
+      '[data-mj="bottom-nav"] span[style*="mask-image"]'
+    ].join(",")).forEach(function (icon) {
+      var url = getMaskUrl(icon);
+
+      if (!url) {
+        return;
+      }
+
+      icon.dataset.spinwinOriginalIcon = "true";
+      icon.style.backgroundImage = 'url("' + url + '")';
+      icon.style.backgroundColor = "transparent";
+      icon.style.backgroundPosition = "center";
+      icon.style.backgroundRepeat = "no-repeat";
+      icon.style.backgroundSize = "contain";
+      icon.style.maskImage = "none";
+      icon.style.webkitMaskImage = "none";
+    });
+  }
+
   function runEnhancements() {
     addBodyFlag();
     enableSingleCurrencyToggle();
     addFixedBannerDepositLink();
+    showOriginalSidebarIcons();
   }
 
   var observer = new MutationObserver(runEnhancements);

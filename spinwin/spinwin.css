@@ -145,69 +145,21 @@ html body [data-mj="sidebar-special-button"] {
   display: none !important;
 }
 
-html body [data-mj="sidebar"] [class~="app-ltr-1trb7go"] {
-  background-color: #f4f7ff !important;
-  color: #f4f7ff !important;
+html body [data-spinwin-original-icon="true"] {
+  background-color: transparent !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
   opacity: 1 !important;
-  filter: drop-shadow(0 0 8px rgb(255 255 255 / 18%)) !important;
+  filter: none !important;
 }
 
-html body [data-mj="sidebar"] a[href*="/sports"] [class~="app-ltr-1trb7go"],
-html body [data-mj="sidebar"] a[href*="/g-sports"] [class~="app-ltr-1trb7go"] {
-  background-color: #55d9ff !important;
-  color: #55d9ff !important;
-}
-
-html body [data-mj="sidebar"] a[href*="/casino-lobby"] [class~="app-ltr-1trb7go"],
-html body [data-mj="sidebar"] a[href*="/casino-lobby/all"] [class~="app-ltr-1trb7go"] {
-  background-color: #f6b600 !important;
-  color: #f6b600 !important;
-}
-
-html body [data-mj="sidebar"] a[href*="/buy-bonus"] [class~="app-ltr-1trb7go"] {
-  background-color: #ffcf58 !important;
-  color: #ffcf58 !important;
-}
-
-html body [data-mj="sidebar"] a[href*="/megaways"] [class~="app-ltr-1trb7go"] {
-  background-color: #9b6cff !important;
-  color: #9b6cff !important;
-}
-
-html body [data-mj="sidebar"] a[href*="/pragmatic"] [class~="app-ltr-1trb7go"] {
-  background-color: #cdd2dc !important;
-  color: #cdd2dc !important;
-}
-
-html body [data-mj="sidebar"] a[href*="/amusnet"] [class~="app-ltr-1trb7go"] {
-  background-color: #78d7ff !important;
-  color: #78d7ff !important;
-}
-
-html body [data-mj="sidebar"] a[href*="/live-casino"] [class~="app-ltr-1trb7go"] {
-  background-color: #ff6aa7 !important;
-  color: #ff6aa7 !important;
-}
-
-html body [data-mj="sidebar"] a[href*="/crash-games"] [class~="app-ltr-1trb7go"] {
-  background-color: #ff7a45 !important;
-  color: #ff7a45 !important;
-}
-
-html body [data-mj="sidebar"] a[href*="/fast"] [class~="app-ltr-1trb7go"] {
-  background-color: #ffe35e !important;
-  color: #ffe35e !important;
-}
-
-html body [data-mj="sidebar"] a[href*="/promotions"] [class~="app-ltr-1trb7go"] {
-  background-color: #35e58a !important;
-  color: #35e58a !important;
-}
-
-html body [data-mj="sidebar"] a:hover [class~="app-ltr-1trb7go"],
-html body [data-mj="sidebar"] a.active-link [class~="app-ltr-1trb7go"],
-html body [data-mj="sidebar"] a[aria-current="page"] [class~="app-ltr-1trb7go"] {
-  filter: drop-shadow(0 0 10px currentColor) brightness(1.12) !important;
+html body [data-mj="sidebar"] a:hover [data-spinwin-original-icon="true"],
+html body [data-mj="sidebar"] a.active-link [data-spinwin-original-icon="true"],
+html body [data-mj="sidebar"] a[aria-current="page"] [data-spinwin-original-icon="true"] {
+  filter: drop-shadow(0 0 8px rgb(255 255 255 / 26%)) brightness(1.08) !important;
 }
 
 html body [data-mj="sidebar"].app-ltr-17u1px6,
