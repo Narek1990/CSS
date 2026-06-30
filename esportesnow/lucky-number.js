@@ -5,7 +5,7 @@
   var baseUrl = currentScript && currentScript.src
     ? currentScript.src.split("?")[0].replace(/\/[^/]+$/, "")
     : "https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/esportesnow";
-  var cssHref = baseUrl + "/esportesnow.css?v=" + Date.now();
+  var cssHref = baseUrl + "/esportesnow.css";
   var applyScheduled = false;
 
   function ensureStylesheet() {
@@ -13,7 +13,7 @@
     var link;
 
     if (existing) {
-      if (existing.href !== cssHref) {
+      if (existing.getAttribute("href") !== cssHref) {
         existing.href = cssHref;
       }
 
@@ -258,7 +258,15 @@
         return;
       }
 
-      container.insertBefore(createMiniGame(), container.firstChild);
+      var game = createMiniGame();
+      var picker = container.querySelector('[data-esportesnow-random-picker="true"]');
+
+      if (picker) {
+        picker.insertAdjacentElement("afterend", game);
+        return;
+      }
+
+      container.insertBefore(game, container.firstChild);
     });
   }
 

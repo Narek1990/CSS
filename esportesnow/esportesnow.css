@@ -10,7 +10,9 @@ body * {
 }
 
 html body .css-1qulnur,
-html body [class~="css-1qulnur"] {
+html body [class~="css-1qulnur"],
+html body .app-ltr-1qulnur,
+html body [class~="app-ltr-1qulnur"] {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;

@@ -6,21 +6,21 @@
     ? currentScript.src.split("?")[0].replace(/\/[^/]+$/, "")
     : "https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/esportesnow";
 
-  var href = baseUrl + "/esportesnow.css?v=" + Date.now();
+  var href = baseUrl + "/esportesnow.css";
   var existing = document.querySelector('link[data-esportesnow-css="true"]');
-  var maxWidthSelector = ".css-fkpkqq, [data-mj='widget-banner-container'], [data-mj='widget-bet-win-container'], .css-i58pjb";
+  var maxWidthSelector = "[data-mj='content-wrapper'], [data-mj='widget-banner-container'], [data-mj='widget-bet-win-container'], [data-mj='widget-phoenix-sport-container'], [data-mj='widget-top-providers'] > div, .css-fkpkqq, .css-i58pjb";
   var spanColorSelector = ".css-l5xv05 .css-25j2b4 span";
   var wideContainerSelector = ".css-11xzi44 .css-1huuf1k";
   var narrowContainerSelector = ".css-11xzi44 .css-17u1px6";
   var wideContainerIconSelector = ".css-11xzi44 .css-1huuf1k .sl-icon.css-1nqq47m";
   var shadowContainerSelector = ".css-fkpkqq .css-1pyebjd";
-  var hiddenElementSelector = ".css-1qulnur, [class~='css-1qulnur']";
-  var hiddenElementCss = 'html body .css-1qulnur, html body [class~="css-1qulnur"] { display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; width: 0 !important; min-width: 0 !important; height: 0 !important; min-height: 0 !important; overflow: hidden !important; }';
+  var hiddenElementSelector = ".css-1qulnur, [class~='css-1qulnur'], .app-ltr-1qulnur, [class~='app-ltr-1qulnur']";
+  var hiddenElementCss = 'html body .css-1qulnur, html body [class~="css-1qulnur"], html body .app-ltr-1qulnur, html body [class~="app-ltr-1qulnur"] { display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; width: 0 !important; min-width: 0 !important; height: 0 !important; min-height: 0 !important; overflow: hidden !important; }';
   var menuIconSelector = ".sl-icon.css-17sgcqa, .sl-icon.css-potlfm";
   var menuSvg = '<svg data-esportesnow-svg="true" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" height="14" viewBox="0 0 19 14" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M1.26049 13.5939H8.30622C8.86214 13.5939 9.31284 13.1433 9.31284 12.5874C9.31284 12.0315 8.86214 11.5808 8.30622 11.5808H1.26049C0.70458 11.5808 0.253944 12.0315 0.253944 12.5874C0.253944 13.1433 0.70458 13.5939 1.26049 13.5939ZM1.26049 8.17949H17.365C17.9209 8.17949 18.3715 7.72887 18.3715 7.17296C18.3715 6.61704 17.9209 6.16642 17.365 6.16642H1.26045C0.704542 6.16642 0.253906 6.61704 0.253906 7.17296C0.253906 7.72887 0.70458 8.17949 1.26049 8.17949ZM1.26049 2.76505H17.365C17.9209 2.76505 18.3715 2.31441 18.3715 1.7585C18.3715 1.20259 17.9209 0.751953 17.365 0.751953H1.26045C0.704542 0.751953 0.253906 1.20259 0.253906 1.7585C0.253906 2.31441 0.70458 2.76505 1.26049 2.76505Z" fill="#E8E5FF"></path></svg>';
   var buttonIconSelector = "button.sl-icon.css-lk14jz, button .sl-icon.css-lk14jz, .sl-icon.css-lk14jz svg";
   var buttonIconSvg = menuSvg.replace('data-esportesnow-svg="true" xmlns:xlink="http://www.w3.org/1999/xlink" ', 'data-esportesnow-button-svg="true" ');
-  var heroBannerImageSelector = 'img[src*="9a71eac1-6e1c-4a81-a769-4f3044a33921"]';
+  var heroBannerImageSelector = '[data-mj="widget-banner-item"] [data-mj="widget-banner-link"] img, [data-mj="widget-banner-item"] img[src*="/AssetsSite/"]';
   var betWinGameDetails = {
     "61412": { title: "Ghost Father", provider: "Peter&Sons" },
     "73693": { title: "Gunpowder", provider: "Peter&Sons" },
@@ -315,7 +315,9 @@
   }
 
   if (existing) {
-    existing.href = href;
+    if (existing.getAttribute("href") !== href) {
+      existing.href = href;
+    }
   } else {
     var link = document.createElement("link");
     link.rel = "stylesheet";
