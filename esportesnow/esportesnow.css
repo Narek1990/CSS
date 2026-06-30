@@ -2487,7 +2487,7 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-1lhm9a5"] {
 }
 
 html body [data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"]:hover {
-  transform: translateY(-2px) !important;
+  transform: none !important;
   filter: brightness(1.04) saturate(1.05) !important;
   box-shadow:
     0 20px 38px rgb(0 0 0 / 30%),
@@ -2496,8 +2496,13 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"]:hover {
 }
 
 html body [data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"]:hover [class~="app-ltr-1lhm9a5"] {
-  transform: scale(1.035) !important;
+  transform: none !important;
   filter: brightness(1.05) saturate(1.08) !important;
+}
+
+html body [data-mj="widget-bet-win"] [class~="app-ltr-vvhetf"] [class~="app-ltr-s5hde4"],
+html body [data-mj="widget-bet-win"] [class~="app-ltr-s5hde4"] {
+  display: none !important;
 }
 
 html body [data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"].esportesnow-bet-win-refreshing {
