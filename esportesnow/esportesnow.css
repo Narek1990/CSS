@@ -2653,3 +2653,12 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-odpn1z"] {
     filter: brightness(1) saturate(1);
   }
 }
+
+html body [data-mj="promotions-page"] {
+  padding-top: 70px !important;
+}
+
+html body [data-mj="header-left"] .sl-icon[class~="app-ltr-1cw5cp5"],
+html body [data-mj="header-left"] [class~="app-ltr-1cw5cp5"] {
+  padding-left: 8px !important;
+}
