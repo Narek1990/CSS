@@ -15,17 +15,20 @@
 
   function ensureStylesheet() {
     var href = baseUrl + "/spinwin.css";
-    var existing = document.querySelector(
-      'link[data-spinwin-css="true"], link[href*="/spinwin/spinwin.css"]'
-    );
+    var managed = document.querySelector('link[data-spinwin-css="true"]');
 
-    if (existing) {
-      existing.setAttribute("data-spinwin-css", "true");
-
-      if (existing.href.split("?")[0] !== href) {
-        existing.href = href;
+    if (managed) {
+      if (managed.href.split("?")[0] !== href) {
+        managed.href = href;
       }
 
+      return;
+    }
+
+    var external = document.querySelector('link[href*="/spinwin/spinwin.css"]');
+
+    if (external) {
+      external.setAttribute("data-spinwin-css-external", "true");
       return;
     }
 
