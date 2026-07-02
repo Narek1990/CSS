@@ -354,9 +354,10 @@ html body [data-mj="bottom-nav"] > [class~="app-ltr-m6gvz8"] {
     align-self: flex-start !important;
     box-sizing: border-box !important;
     width: var(--spinwin-sidebar-width) !important;
-    height: auto !important;
+    height: calc(100vh - 70px) !important;
+    height: calc(100dvh - 70px) !important;
     min-height: 0 !important;
-    max-height: none !important;
+    max-height: calc(100dvh - 70px) !important;
     overflow: visible !important;
     transform: none !important;
     transition: width 0.3s ease !important;
