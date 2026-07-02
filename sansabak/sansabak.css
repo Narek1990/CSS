@@ -1,0 +1,5 @@
+/* Sansabak full-width content wrapper */
+
+html body [data-mj="content-wrapper"] {
+  max-width: none !important;
+}
