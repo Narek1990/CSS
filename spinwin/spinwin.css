@@ -349,6 +349,7 @@ html body [data-mj="bottom-nav"] > [class~="app-ltr-m6gvz8"] {
     max-height: calc(100dvh - 65px) !important;
     overflow: visible !important;
     transform: none !important;
+    transition: none !important;
     z-index: 40 !important;
   }
 
