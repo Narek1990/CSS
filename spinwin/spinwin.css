@@ -337,20 +337,36 @@ html body [data-mj="bottom-nav"] > [class~="app-ltr-m6gvz8"] {
 
 }
 
-@media (min-width: 993px) and (max-width: 1180px) {
+@media (min-width: 993px) and (max-width: 1400px) and (any-pointer: coarse) {
   html body [data-mj="header"] {
     z-index: 1000 !important;
   }
 
   html body #root.vertical-nav [data-mj="sidebar"] {
+    position: fixed !important;
+    inset-block-start: var(--site-header-height, 64px) !important;
+    top: var(--site-header-height, 64px) !important;
+    inset-block-end: 0 !important;
+    bottom: 0 !important;
+    height: calc(100vh - var(--site-header-height, 64px)) !important;
+    height: calc(100dvh - var(--site-header-height, 64px)) !important;
+    max-height: calc(100dvh - var(--site-header-height, 64px)) !important;
     overflow: visible !important;
+    transform: none !important;
     z-index: 1001 !important;
+  }
+
+  html body #root.vertical-nav [data-mj="sidebar-content"] {
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
   }
 
   html body #root.vertical-nav [data-mj="sidebar-collapse"] {
     position: fixed !important;
-    inset-block-start: 14px !important;
-    top: 14px !important;
+    inset-block-start: calc((var(--site-header-height, 64px) - 32px) / 2) !important;
+    top: calc((var(--site-header-height, 64px) - 32px) / 2) !important;
     inset-inline-start: 10px !important;
     left: 10px !important;
     visibility: visible !important;
