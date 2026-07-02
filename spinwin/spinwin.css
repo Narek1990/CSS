@@ -338,23 +338,24 @@ html body [data-mj="bottom-nav"] > [class~="app-ltr-m6gvz8"] {
   }
 
   html body [data-mj="sidebar"] {
-    position: fixed !important;
-    inset-block-start: var(--site-header-height, 64px) !important;
-    top: var(--site-header-height, 64px) !important;
-    inset-block-end: 0 !important;
-    bottom: 0 !important;
+    position: sticky !important;
+    inset-block-start: 70px !important;
+    top: 70px !important;
+    inset-block-end: auto !important;
+    bottom: auto !important;
     align-self: flex-start !important;
-    height: calc(100vh - var(--site-header-height, 64px)) !important;
-    height: calc(100dvh - var(--site-header-height, 64px)) !important;
-    max-height: calc(100dvh - var(--site-header-height, 64px)) !important;
+    height: calc(100vh - 65px) !important;
+    height: calc(100dvh - 65px) !important;
+    max-height: calc(100dvh - 65px) !important;
     overflow: visible !important;
     transform: none !important;
-    z-index: 1001 !important;
+    z-index: 40 !important;
   }
 
   html body [data-mj="sidebar-content"] {
-    height: 100% !important;
-    max-height: 100% !important;
+    height: calc(100vh - 65px) !important;
+    height: calc(100dvh - 65px) !important;
+    max-height: calc(100dvh - 65px) !important;
     overflow-x: hidden !important;
     overflow-y: auto !important;
   }
