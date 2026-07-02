@@ -337,7 +337,7 @@ html body [data-mj="bottom-nav"] > [class~="app-ltr-m6gvz8"] {
 
 }
 
-@media (min-width: 993px) and (max-width: 1400px) and (any-pointer: coarse) {
+@media (min-width: 993px) and (max-width: 1400px) {
   html body [data-mj="header"] {
     z-index: 1000 !important;
   }
