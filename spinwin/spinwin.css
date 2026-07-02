@@ -339,26 +339,16 @@ html body [data-mj="bottom-nav"] > [class~="app-ltr-m6gvz8"] {
 
   html body [data-mj="sidebar"] {
     position: sticky !important;
-    inset-block-start: 70px !important;
     top: 70px !important;
-    inset-block-end: auto !important;
-    bottom: auto !important;
     align-self: flex-start !important;
     height: calc(100vh - 65px) !important;
-    height: calc(100dvh - 65px) !important;
-    max-height: calc(100dvh - 65px) !important;
-    overflow: visible !important;
-    transform: none !important;
-    transition: none !important;
+    transition: width 0.3s ease !important;
     z-index: 40 !important;
   }
 
   html body [data-mj="sidebar-content"] {
     height: calc(100vh - 65px) !important;
-    height: calc(100dvh - 65px) !important;
-    max-height: calc(100dvh - 65px) !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
+    overflow: auto !important;
   }
 
   html body [data-mj="sidebar-collapse"] {
