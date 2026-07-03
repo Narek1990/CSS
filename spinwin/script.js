@@ -17,6 +17,7 @@
     candy: "candy-collection-464x225.svg",
     dragon: "dragon-collection-464x225.svg",
     egypt: "egypt-collection-464x225.svg",
+    fish: "fishing-hunting-collection-464x225.svg",
     fishing: "fishing-hunting-collection-464x225.svg",
     "fishing-hunting": "fishing-hunting-collection-464x225.svg",
     hunting: "fishing-hunting-collection-464x225.svg",
