@@ -300,7 +300,8 @@
 
           .aviator-frame {
             position: relative;
-            width: 100%;
+            width: 99%;
+            margin-left: 5px;
             aspect-ratio: 960 / 233;
             overflow: hidden;
             border: 1px solid rgba(125, 88, 255, .20);
