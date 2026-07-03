@@ -8,17 +8,15 @@
 
   var href = baseUrl + "/esportesnow.css";
   var existing = document.querySelector('link[data-esportesnow-css="true"]');
-  var maxWidthSelector = "[data-mj='content-wrapper'], [data-mj='widget-banner-container'], [data-mj='widget-bet-win-container'], [data-mj='widget-phoenix-sport-container'], [data-mj='widget-top-providers'] > div, .css-fkpkqq, .css-i58pjb";
-  var spanColorSelector = ".css-l5xv05 .css-25j2b4 span";
-  var wideContainerSelector = ".css-11xzi44 .css-1huuf1k";
-  var narrowContainerSelector = ".css-11xzi44 .css-17u1px6";
-  var wideContainerIconSelector = ".css-11xzi44 .css-1huuf1k .sl-icon.css-1nqq47m";
-  var shadowContainerSelector = ".css-fkpkqq .css-1pyebjd";
+  var maxWidthSelector = "[data-mj='content-wrapper'], [data-mj='widget-banner-container'], [data-mj='widget-bet-win-container'], [data-mj='widget-game-slider-container'], [data-mj='widget-collection-slider-container'], [data-mj='widget-fixed-image-banner-container'], [data-mj='widget-phoenix-sport-container'], [data-mj='widget-top-providers'] > div, [data-mj='header'] > div:has(> [data-mj='custom-header'])";
+  var wideContainerSelector = "[data-mj='sidebar']:has([data-mj='sidebar-collapse'][aria-label='arrow_left'])";
+  var narrowContainerSelector = "[data-mj='sidebar']:has([data-mj='sidebar-collapse'][aria-label='arrow_right'])";
+  var wideContainerIconSelector = "[data-mj='sidebar']:has([data-mj='sidebar-collapse'][aria-label='arrow_left']) [data-mj='sidebar-collapse']";
   var hiddenElementSelector = ".css-1qulnur, [class~='css-1qulnur'], .app-ltr-1qulnur, [class~='app-ltr-1qulnur']";
   var hiddenElementCss = 'html body .css-1qulnur, html body [class~="css-1qulnur"], html body .app-ltr-1qulnur, html body [class~="app-ltr-1qulnur"] { display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; width: 0 !important; min-width: 0 !important; height: 0 !important; min-height: 0 !important; overflow: hidden !important; }';
-  var menuIconSelector = ".sl-icon.css-17sgcqa, .sl-icon.css-potlfm";
+  var menuIconSelector = "[data-mj='header-left'] button[aria-label='menu']";
   var menuSvg = '<svg data-esportesnow-svg="true" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" height="14" viewBox="0 0 19 14" width="19" xmlns="http://www.w3.org/2000/svg"><path d="M1.26049 13.5939H8.30622C8.86214 13.5939 9.31284 13.1433 9.31284 12.5874C9.31284 12.0315 8.86214 11.5808 8.30622 11.5808H1.26049C0.70458 11.5808 0.253944 12.0315 0.253944 12.5874C0.253944 13.1433 0.70458 13.5939 1.26049 13.5939ZM1.26049 8.17949H17.365C17.9209 8.17949 18.3715 7.72887 18.3715 7.17296C18.3715 6.61704 17.9209 6.16642 17.365 6.16642H1.26045C0.704542 6.16642 0.253906 6.61704 0.253906 7.17296C0.253906 7.72887 0.70458 8.17949 1.26049 8.17949ZM1.26049 2.76505H17.365C17.9209 2.76505 18.3715 2.31441 18.3715 1.7585C18.3715 1.20259 17.9209 0.751953 17.365 0.751953H1.26045C0.704542 0.751953 0.253906 1.20259 0.253906 1.7585C0.253906 2.31441 0.70458 2.76505 1.26049 2.76505Z" fill="#E8E5FF"></path></svg>';
-  var buttonIconSelector = "button.sl-icon.css-lk14jz, button .sl-icon.css-lk14jz, .sl-icon.css-lk14jz svg";
+  var buttonIconSelector = "[data-mj='sidebar-collapse']";
   var buttonIconSvg = menuSvg.replace('data-esportesnow-svg="true" xmlns:xlink="http://www.w3.org/1999/xlink" ', 'data-esportesnow-button-svg="true" ');
   var heroBannerImageSelector = '[data-mj="widget-banner-item"] [data-mj="widget-banner-link"] img, [data-mj="widget-banner-item"] img[src*="/AssetsSite/"]';
   var betWinGameDetails = {
@@ -59,11 +57,9 @@
   }
 
   function setMenuIconPosition(element) {
-    var isPotlfmIcon = element.classList && element.classList.contains("css-potlfm");
-
     element.style.setProperty("position", "absolute", "important");
-    element.style.setProperty("right", isPotlfmIcon ? "207px" : "201px", "important");
-    element.style.setProperty("top", isPotlfmIcon ? "15px" : "19px", "important");
+    element.style.setProperty("right", "201px", "important");
+    element.style.setProperty("top", "19px", "important");
     element.style.setProperty("left", "auto", "important");
     element.style.setProperty("bottom", "auto", "important");
     element.style.setProperty("z-index", "10", "important");
@@ -77,14 +73,12 @@
     }
 
     if (targetSvg.getAttribute("data-esportesnow-svg") === "true") {
-      setMenuIconPosition(targetSvg);
       return;
     }
 
     var replacement = createMenuSvg();
-    replacement.setAttribute("class", targetSvg.getAttribute("class") || element.getAttribute("class") || "sl-icon css-potlfm");
+    replacement.setAttribute("class", targetSvg.getAttribute("class") || "sl-icon");
     targetSvg.replaceWith(replacement);
-    setMenuIconPosition(replacement);
   }
 
   function replaceButtonIconSvg(element) {
@@ -201,14 +195,38 @@
     return meta;
   }
 
+  function markBetWinLayout(card, image, info, userRow, amountRow) {
+    if (!card || !image || !info || !userRow) return;
+
+    var imageContainer = image && image.parentElement;
+    var item = card && card.parentElement;
+    var track = item && item.parentElement;
+    var amount = amountRow && amountRow.querySelector("p");
+    var currency = amountRow && amountRow.querySelector("object");
+
+    card.classList.add("esportesnow-bet-win-card");
+    image.classList.add("esportesnow-bet-win-image-element");
+    imageContainer.classList.add("esportesnow-bet-win-image");
+    info.classList.add("esportesnow-bet-win-info");
+    userRow.classList.add("esportesnow-bet-win-user");
+
+    if (amountRow) amountRow.classList.add("esportesnow-bet-win-amount");
+    if (amount) amount.classList.add("esportesnow-bet-win-value");
+    if (currency) currency.classList.add("esportesnow-bet-win-currency");
+    if (item) item.classList.add("esportesnow-bet-win-item");
+    if (track) track.classList.add("esportesnow-bet-win-track");
+  }
+
   function injectBetWinGameDetails() {
     var pageTitles = collectGameTitles();
 
-    document.querySelectorAll('[data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"]').forEach(function (card) {
-      var image = card.querySelector('img[src*="/gameimage/"]');
-      var info = card.querySelector('[class~="app-ltr-yawtgd"]');
-      var userRow = info && info.querySelector('[class~="app-ltr-1dx9dwl"]');
-      var amountRow = info && info.querySelector('[class~="app-ltr-1blkpw5"]');
+    document.querySelectorAll('[data-mj="widget-bet-win"] img[src*="/gameimage/"]').forEach(function (image) {
+      var imageContainer = image.parentElement;
+      var card = imageContainer && imageContainer.parentElement;
+      var userRow = card && card.querySelector('p:has(i[aria-label="user"])');
+      var info = userRow && userRow.parentElement;
+      var currency = info && info.querySelector('object[data*="/AssetTemplateSite/"]');
+      var amountRow = currency && currency.parentElement;
       var id = image && getGameImageId(image.getAttribute("src"));
       var defaults = id ? betWinGameDetails[id] : null;
       var title = (id && pageTitles[id]) || (defaults && defaults.title) || "Casino Game";
@@ -225,6 +243,8 @@
       if (!info || !userRow) {
         return;
       }
+
+      markBetWinLayout(card, image, info, userRow, amountRow);
 
       meta = info.querySelector(".esportesnow-bet-win-meta");
 
@@ -262,13 +282,9 @@
       element.style.setProperty("max-width", "none", "important");
     });
 
-    document.querySelectorAll(spanColorSelector).forEach(function (element) {
-      element.style.setProperty("color", "#c9c4c4", "important");
-    });
-
     document.querySelectorAll(wideContainerSelector).forEach(function (element) {
       element.style.setProperty("padding", "0", "important");
-      element.style.setProperty("width", "260px", "important");
+      element.style.setProperty("width", "240px", "important");
     });
 
     document.querySelectorAll(narrowContainerSelector).forEach(function (element) {
@@ -285,10 +301,6 @@
       element.style.setProperty("height", "auto", "important");
     });
 
-    document.querySelectorAll(shadowContainerSelector).forEach(function (element) {
-      element.style.setProperty("box-shadow", "none", "important");
-    });
-
     document.querySelectorAll(hiddenElementSelector).forEach(function (element) {
       hideElement(element);
     });
@@ -296,10 +308,6 @@
     document.querySelectorAll(menuIconSelector).forEach(function (element) {
       setMenuIconPosition(element);
       replaceMenuSvg(element);
-
-      if (!element.matches("svg")) {
-        element.querySelectorAll("svg").forEach(setMenuIconPosition);
-      }
     });
 
     document.querySelectorAll(buttonIconSelector).forEach(replaceButtonIconSvg);

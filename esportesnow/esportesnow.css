@@ -52,15 +52,6 @@ html body [class~="css-0"] [class~="css-10a4mqi"] {
   margin-left: 53px !important;
 }
 
-html body .css-1huuf1k .sl-icon.css-lk14jz,
-html body [class~="css-1huuf1k"] .sl-icon.css-lk14jz,
-html body [class~="css-1huuf1k"] [class~="sl-icon"][class~="css-lk14jz"] {
-  top: 13px !important;
-  left: 13px !important;
-  min-width: 43px !important;
-  min-height: 47px !important;
-}
-
 html body [data-mj="widget-fixed-image-banner"] [data-mj="widget-fixed-image-banner-container"] {
   max-width: none !important;
 }
@@ -70,16 +61,6 @@ html body [data-mj="widget-top-providers"] [class~="css-1l44gyp"],
 html body .css-18zw6tz .css-1l44gyp,
 html body [class~="css-18zw6tz"] [class~="css-1l44gyp"] {
   max-width: 2000px !important;
-}
-
-html body .css-0 .css-1huuf1k .sl-icon.css-lk14jz,
-html body [class~="css-0"] [class~="css-1huuf1k"] .sl-icon.css-lk14jz,
-html body [class~="css-0"] [class~="css-1huuf1k"] [class~="sl-icon"][class~="css-lk14jz"] {
-  position: absolute !important;
-  top: 13px !important;
-  left: 13px !important;
-  min-width: 43px !important;
-  min-height: 47px !important;
 }
 
 html body [data-mj="widget-top-providers-item"] {
@@ -118,6 +99,19 @@ html body [data-mj="sidebar-content"] {
 
 html body [data-mj="sidebar"].app-ltr-17u1px6 [data-mj="sidebar-content"],
 html body [data-mj="sidebar"][class~="app-ltr-17u1px6"] [data-mj="sidebar-content"] {
+  width: 80px !important;
+  min-width: 80px !important;
+}
+
+html body [data-mj="sidebar"]:has([data-mj="sidebar-collapse"][aria-label="arrow_left"]) {
+  width: 240px !important;
+}
+
+html body [data-mj="sidebar"]:has([data-mj="sidebar-collapse"][aria-label="arrow_right"]) {
+  width: 80px !important;
+}
+
+html body [data-mj="sidebar"]:has([data-mj="sidebar-collapse"][aria-label="arrow_right"]) [data-mj="sidebar-content"] {
   width: 80px !important;
   min-width: 80px !important;
 }
@@ -184,9 +178,9 @@ html body [data-mj="custom-header"] {
   padding-left: 56px !important;
 }
 
-html body [data-mj="header"] .app-ltr-i58pjb,
-html body [data-mj="header"].app-ltr-i58pjb,
-html body .app-ltr-i58pjb {
+html body [data-mj="header"] > div:has(> [data-mj="custom-header"]),
+html body [data-mj="custom-header"] {
+  width: 100% !important;
   max-width: none !important;
 }
 
@@ -2418,12 +2412,12 @@ html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-
 }
 
 /* Top Winners: convert vertical cards to compact horizontal cards */
-html body [data-mj="widget-bet-win"] [class~="app-ltr-1td32qb"] {
+html body [data-mj="widget-bet-win"] .esportesnow-bet-win-track {
   gap: 10px !important;
   align-items: stretch !important;
 }
 
-html body [data-mj="widget-bet-win"] [class~="app-ltr-5kgs62"] {
+html body [data-mj="widget-bet-win"] .esportesnow-bet-win-item {
   flex: 0 0 270px !important;
   width: 270px !important;
   min-width: 270px !important;
@@ -2609,7 +2603,7 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-odpn1z"] {
 }
 
 @media (max-width: 768px) {
-  html body [data-mj="widget-bet-win"] [class~="app-ltr-5kgs62"] {
+  html body [data-mj="widget-bet-win"] .esportesnow-bet-win-item {
     flex-basis: 270px !important;
     width: 270px !important;
     min-width: 270px !important;
