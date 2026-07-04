@@ -107,6 +107,11 @@ html body [data-mj="sidebar"]:has([data-mj="sidebar-collapse"][aria-label="arrow
   width: 240px !important;
 }
 
+html body [data-mj="sidebar"]:has([data-mj="sidebar-collapse"][aria-label="arrow_left"]) [data-mj="sidebar-content"] {
+  width: 240px !important;
+  min-width: 240px !important;
+}
+
 html body [data-mj="sidebar"]:has([data-mj="sidebar-collapse"][aria-label="arrow_right"]) {
   width: 80px !important;
 }
@@ -2413,8 +2418,12 @@ html body .esportesnow-random-picker[data-state="selected"] .esportesnow-random-
 
 /* Top Winners: convert vertical cards to compact horizontal cards */
 html body [data-mj="widget-bet-win"] .esportesnow-bet-win-track {
+  display: flex !important;
+  flex-flow: row nowrap !important;
   gap: 10px !important;
   align-items: stretch !important;
+  width: max-content !important;
+  min-width: 100% !important;
 }
 
 html body [data-mj="widget-bet-win"] .esportesnow-bet-win-item {
@@ -2424,6 +2433,7 @@ html body [data-mj="widget-bet-win"] .esportesnow-bet-win-item {
   max-width: 270px !important;
 }
 
+html body [data-mj="widget-bet-win"] .esportesnow-bet-win-card,
 html body [data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"] {
   display: flex !important;
   flex-direction: row !important;
@@ -2449,6 +2459,7 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"] {
     filter 0.24s ease !important;
 }
 
+html body [data-mj="widget-bet-win"] .esportesnow-bet-win-image,
 html body [data-mj="widget-bet-win"] [class~="app-ltr-121fhed"] {
   position: relative !important;
   flex: 0 0 calc(101px * 427 / 575) !important;
@@ -2467,6 +2478,7 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-121fhed"] {
   box-shadow: 0 12px 24px rgb(0 0 0 / 22%) !important;
 }
 
+html body [data-mj="widget-bet-win"] .esportesnow-bet-win-image img,
 html body [data-mj="widget-bet-win"] [class~="app-ltr-121fhed"] img,
 html body [data-mj="widget-bet-win"] [class~="app-ltr-1lhm9a5"] {
   display: block !important;
@@ -2482,6 +2494,7 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-1lhm9a5"] {
     opacity 0.28s ease !important;
 }
 
+html body [data-mj="widget-bet-win"] .esportesnow-bet-win-card:hover,
 html body [data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"]:hover {
   transform: none !important;
   filter: brightness(1.04) saturate(1.05) !important;
@@ -2491,6 +2504,7 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"]:hover {
     inset 0 1px 0 rgb(255 255 255 / 10%) !important;
 }
 
+html body [data-mj="widget-bet-win"] .esportesnow-bet-win-card:hover .esportesnow-bet-win-image-element,
 html body [data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"]:hover [class~="app-ltr-1lhm9a5"] {
   transform: none !important;
   filter: brightness(1.05) saturate(1.08) !important;
@@ -2501,10 +2515,12 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-s5hde4"] {
   display: none !important;
 }
 
+html body [data-mj="widget-bet-win"] .esportesnow-bet-win-card.esportesnow-bet-win-refreshing,
 html body [data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"].esportesnow-bet-win-refreshing {
   animation: esportesnowBetWinCardRefresh 0.34s ease both !important;
 }
 
+html body [data-mj="widget-bet-win"] .esportesnow-bet-win-info,
 html body [data-mj="widget-bet-win"] [class~="app-ltr-yawtgd"] {
   position: static !important;
   inset: auto !important;
@@ -2517,6 +2533,9 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-yawtgd"] {
   gap: 4px !important;
   width: auto !important;
   min-width: 0 !important;
+  overflow: hidden !important;
+  visibility: visible !important;
+  opacity: 1 !important;
   height: auto !important;
   min-height: 0 !important;
   align-self: stretch !important;
@@ -2610,6 +2629,7 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-odpn1z"] {
     max-width: 270px !important;
   }
 
+  html body [data-mj="widget-bet-win"] .esportesnow-bet-win-card,
   html body [data-mj="widget-bet-win"] [class~="app-ltr-27yrbd"] {
     height: 115px !important;
     min-height: 115px !important;
@@ -2618,6 +2638,7 @@ html body [data-mj="widget-bet-win"] [class~="app-ltr-odpn1z"] {
     border-radius: 9px !important;
   }
 
+  html body [data-mj="widget-bet-win"] .esportesnow-bet-win-image,
   html body [data-mj="widget-bet-win"] [class~="app-ltr-121fhed"] {
     flex-basis: calc(101px * 427 / 575) !important;
     width: calc(101px * 427 / 575) !important;

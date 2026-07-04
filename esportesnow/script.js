@@ -213,8 +213,20 @@
     if (amountRow) amountRow.classList.add("esportesnow-bet-win-amount");
     if (amount) amount.classList.add("esportesnow-bet-win-value");
     if (currency) currency.classList.add("esportesnow-bet-win-currency");
-    if (item) item.classList.add("esportesnow-bet-win-item");
-    if (track) track.classList.add("esportesnow-bet-win-track");
+    if (item) {
+      item.classList.add("esportesnow-bet-win-item");
+      item.style.setProperty("flex", "0 0 270px", "important");
+      item.style.setProperty("width", "270px", "important");
+      item.style.setProperty("min-width", "270px", "important");
+      item.style.setProperty("max-width", "270px", "important");
+    }
+    if (track) {
+      track.classList.add("esportesnow-bet-win-track");
+      track.style.setProperty("display", "flex", "important");
+      track.style.setProperty("flex-flow", "row nowrap", "important");
+      track.style.setProperty("width", "max-content", "important");
+      track.style.setProperty("min-width", "100%", "important");
+    }
   }
 
   function injectBetWinGameDetails() {
@@ -293,12 +305,9 @@
     });
 
     document.querySelectorAll(wideContainerIconSelector).forEach(function (element) {
-      element.style.removeProperty("width");
-      element.style.removeProperty("min-width");
-      element.style.removeProperty("height");
-      element.style.setProperty("width", "auto", "important");
-      element.style.setProperty("min-width", "0", "important");
-      element.style.setProperty("height", "auto", "important");
+      element.style.setProperty("width", "41px", "important");
+      element.style.setProperty("min-width", "41px", "important");
+      element.style.setProperty("height", "41px", "important");
     });
 
     document.querySelectorAll(hiddenElementSelector).forEach(function (element) {
