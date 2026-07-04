@@ -399,7 +399,7 @@ html body [data-mj="bottom-nav"] > [class~="app-ltr-m6gvz8"] {
   }
 
   html body [data-mj="page-content"]:has(#sportsbook-wrapper) {
-    margin-top: 70px !important;
+    margin-top: -11% !important;
   }
 }
 
@@ -482,11 +482,11 @@ html body [data-mj="page-content"] [class~="app-ltr-mhyosn"]:has(iframe#game) [c
 
   html body main[data-mj="page-content"].app-ltr-foxy03:has(#sportsbook-wrapper),
   html body main[data-mj="page-content"][class~="app-ltr-foxy03"]:has(#sportsbook-wrapper) {
-    margin-top: 0 !important;
+    margin-top: -11% !important;
   }
 
   html body [data-mj="page-content"]:has(#sportsbook-wrapper) {
-    margin-top: 0 !important;
+    margin-top: -11% !important;
   }
 
   html body [data-mj="widget-banner"] {
