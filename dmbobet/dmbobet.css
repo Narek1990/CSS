@@ -418,7 +418,7 @@ nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:fir
 nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:first-child > a[href*="/world-cup/"] {
   position: absolute;
   top: -62px;
-  left: 171px;
+  left: 22%;
   z-index: 9999999999;
   display: inline-flex !important;
   align-items: center;
