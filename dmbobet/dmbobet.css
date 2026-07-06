@@ -1392,3 +1392,109 @@ html body:has(.modal[role="alertdialog"].app-ltr-1hznvn2)
     padding: 16px !important;
   }
 }
+
+/* Bonus offer card hierarchy: 1 full, 2–3 half, remaining compact full rows */
+
+html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(2),
+html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(3) {
+  grid-column: auto !important;
+}
+
+html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(n + 4) {
+  grid-column: 1 / -1 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto auto !important;
+  grid-template-areas: "summary details request" !important;
+  align-items: center !important;
+  min-height: 76px !important;
+  height: 76px !important;
+  max-height: 76px !important;
+  background:
+    linear-gradient(90deg, rgb(217 43 87 / 14%), transparent 46%),
+    #121b25 !important;
+}
+
+html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(n + 4) .app-ltr-10dxb2a {
+  grid-area: summary !important;
+  align-self: stretch !important;
+  min-width: 0 !important;
+  padding: 10px 14px !important;
+  border: 0 !important;
+}
+
+html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(n + 4) .app-ltr-2t7346 {
+  flex-basis: 40px !important;
+  width: 40px !important;
+  min-width: 40px !important;
+  height: 40px !important;
+}
+
+html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(n + 4) .app-ltr-1mck7sp {
+  grid-area: details !important;
+  align-self: center !important;
+  min-height: 38px !important;
+  margin: 0 !important;
+  padding: 0 8px !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(n + 4) .app-ltr-1959n0c {
+  display: none !important;
+}
+
+html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(n + 4) .app-ltr-o47sux {
+  grid-area: request !important;
+  align-self: center !important;
+  margin: 0 !important;
+  padding: 10px 12px 10px 4px !important;
+}
+
+html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(n + 4) .app-ltr-opf53q {
+  min-width: 106px !important;
+  min-height: 34px !important;
+}
+
+@media (max-width: 640px) {
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(n + 4) {
+    grid-template-columns: minmax(0, 1fr) auto auto !important;
+    min-height: 72px !important;
+    height: 72px !important;
+    max-height: 72px !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(n + 4) .app-ltr-10dxb2a {
+    display: flex !important;
+    padding: 8px 10px !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(n + 4) .app-ltr-1xbglrd,
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(n + 4) .app-ltr-1q1huvb {
+    display: none !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(n + 4) .app-ltr-o47sux {
+    padding: 8px 8px 8px 2px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(n + 4) {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-areas:
+      "summary details"
+      "request request" !important;
+    min-height: 116px !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(n + 4) .app-ltr-o47sux {
+    justify-content: stretch !important;
+    padding: 0 8px 8px !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(n + 4) .app-ltr-opf53q {
+    width: 100% !important;
+  }
+}
