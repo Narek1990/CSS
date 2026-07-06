@@ -1147,7 +1147,7 @@ html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-1wszxof:hover {
   transform: translateX(3px) !important;
 }
 
-html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m:not(:has(.app-ltr-1wckybu)) {
+html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m.dmbobet-bonus-calculating {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1155,7 +1155,7 @@ html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m:not(:has(.a
   padding: 32px !important;
 }
 
-html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m:not(:has(.app-ltr-1wckybu)) > * {
+html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m.dmbobet-bonus-calculating > * {
   position: relative !important;
   display: flex !important;
   flex-direction: column !important;
@@ -1163,8 +1163,10 @@ html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m:not(:has(.a
   justify-content: center !important;
   gap: 8px !important;
   width: min(460px, 100%) !important;
-  min-height: 290px !important;
-  padding: 142px 34px 56px !important;
+  min-height: 250px !important;
+  height: 250px !important;
+  max-height: 250px !important;
+  padding: 94px 28px 52px !important;
   overflow: hidden !important;
   text-align: center !important;
   border: 1px solid rgb(217 43 87 / 28%) !important;
@@ -1177,13 +1179,13 @@ html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m:not(:has(.a
     inset 0 1px 0 rgb(255 255 255 / 6%) !important;
 }
 
-html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m:not(:has(.app-ltr-1wckybu)) > *::before {
+html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m.dmbobet-bonus-calculating > *::before {
   content: "" !important;
   position: absolute !important;
-  top: 28px !important;
+  top: 22px !important;
   left: 50% !important;
-  width: 92px !important;
-  height: 92px !important;
+  width: 58px !important;
+  height: 58px !important;
   border-radius: 50% !important;
   background: conic-gradient(#d92b57 0 356deg, rgb(255 255 255 / 9%) 356deg 360deg) !important;
   box-shadow: 0 0 34px rgb(217 43 87 / 28%) !important;
@@ -1193,7 +1195,7 @@ html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m:not(:has(.a
   animation: dmbobetBonusProgressPulse 1.4s ease-in-out infinite !important;
 }
 
-html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m:not(:has(.app-ltr-1wckybu)) > *::after {
+html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m.dmbobet-bonus-calculating > *::after {
   content: "" !important;
   position: absolute !important;
   right: 34px !important;
@@ -1208,34 +1210,32 @@ html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m:not(:has(.a
   animation: dmbobetBonusProgressGlow 1.2s ease-in-out infinite alternate !important;
 }
 
-html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m:not(:has(.app-ltr-1wckybu)) > * > :first-child {
-  position: absolute !important;
-  top: 62px !important;
-  left: 50% !important;
+html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m.dmbobet-bonus-calculating > * > :first-child {
+  position: static !important;
   z-index: 2 !important;
   margin: 0 !important;
   color: #ffffff !important;
-  font-size: 20px !important;
+  font-size: 16px !important;
   font-weight: 800 !important;
-  line-height: 1 !important;
-  transform: translate(-50%, -50%) !important;
+  line-height: 1.3 !important;
+  transform: none !important;
 }
 
-html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m:not(:has(.app-ltr-1wckybu)) :is(p, span) {
+html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m.dmbobet-bonus-calculating :is(p, span) {
   max-width: 360px !important;
   margin-right: auto !important;
   margin-left: auto !important;
   text-align: center !important;
 }
 
-html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m:not(:has(.app-ltr-1wckybu)) p:first-of-type {
+html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m.dmbobet-bonus-calculating p:first-of-type {
   color: #ffffff !important;
   font-size: 20px !important;
   font-weight: 750 !important;
   line-height: 1.25 !important;
 }
 
-html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m:not(:has(.app-ltr-1wckybu)) p:last-of-type {
+html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m.dmbobet-bonus-calculating p:last-of-type {
   color: rgb(255 255 255 / 58%) !important;
   font-size: 13px !important;
   line-height: 1.4 !important;
@@ -1362,14 +1362,16 @@ html body:has(.modal[role="alertdialog"].app-ltr-1hznvn2)
 }
 
 @media (max-width: 640px) {
-  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m:not(:has(.app-ltr-1wckybu)) {
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m.dmbobet-bonus-calculating {
     min-height: calc(100dvh - 74px) !important;
     padding: 16px !important;
   }
 
-  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m:not(:has(.app-ltr-1wckybu)) > * {
-    min-height: 280px !important;
-    padding: 136px 20px 52px !important;
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m.dmbobet-bonus-calculating > * {
+    min-height: 230px !important;
+    height: 230px !important;
+    max-height: 230px !important;
+    padding: 88px 20px 48px !important;
     border-radius: 14px !important;
   }
 
@@ -1404,7 +1406,7 @@ html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type
   grid-column: 1 / -1 !important;
   display: grid !important;
   grid-template-columns: minmax(0, 1fr) auto auto !important;
-  grid-template-areas: "summary details request" !important;
+  grid-template-areas: "summary request details" !important;
   align-items: center !important;
   min-height: 76px !important;
   height: 76px !important;
@@ -1434,7 +1436,7 @@ html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type
   align-self: center !important;
   min-height: 38px !important;
   margin: 0 !important;
-  padding: 0 8px !important;
+  padding: 0 12px 0 2px !important;
   border: 0 !important;
   background: transparent !important;
 }
@@ -1483,7 +1485,7 @@ html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type
     grid-template-columns: minmax(0, 1fr) auto !important;
     grid-template-areas:
       "summary details"
-      "request request" !important;
+      "request details" !important;
     min-height: 116px !important;
     height: auto !important;
     max-height: none !important;
@@ -1496,5 +1498,10 @@ html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type
 
   html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(n + 4) .app-ltr-opf53q {
     width: 100% !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type(n + 4) .app-ltr-1mck7sp {
+    align-self: stretch !important;
+    padding: 0 10px 0 4px !important;
   }
 }

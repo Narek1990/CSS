@@ -1230,3 +1230,37 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     scheduleSync();
   };
 })();
+
+(function () {
+  const modalBodySelector =
+    '.modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m';
+  let scheduled = false;
+
+  function syncBonusModalState() {
+    scheduled = false;
+
+    document.querySelectorAll(modalBodySelector).forEach((modalBody) => {
+      const content = (modalBody.textContent || "").replace(/\s+/g, " ").trim();
+
+      modalBody.classList.toggle(
+        "dmbobet-bonus-calculating",
+        /calculating offers/i.test(content)
+      );
+    });
+  }
+
+  function scheduleBonusModalSync() {
+    if (scheduled) return;
+
+    scheduled = true;
+    requestAnimationFrame(syncBonusModalState);
+  }
+
+  syncBonusModalState();
+
+  new MutationObserver(scheduleBonusModalSync).observe(document.body, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+})();
