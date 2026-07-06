@@ -1500,3 +1500,193 @@ html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-cdtv9n:nth-of-type
     padding: 0 10px 0 4px !important;
   }
 }
+
+/* Bonus Offers mobile UI */
+
+@media (max-width: 480px) {
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 {
+    width: calc(100vw - 6px) !important;
+    height: calc(100dvh - 6px) !important;
+    border-radius: 8px !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-1jp2anc {
+    flex-basis: 54px !important;
+    min-height: 54px !important;
+    padding: 0 12px !important;
+    font-size: 16px !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-1jp2anc button[aria-label="close"] {
+    width: 34px !important;
+    min-width: 34px !important;
+    height: 34px !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-p2ly1m {
+    padding: 12px 10px 20px !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-1wckybu > .app-ltr-1wdhvac {
+    gap: 16px !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-1p87wkm {
+    margin-bottom: 8px !important;
+    font-size: 14px !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-z0v629 {
+    min-height: 52px !important;
+    padding: 12px !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2
+    .app-ltr-1wckybu > .app-ltr-1wdhvac > .app-ltr-1wdhvac:last-child {
+    gap: 9px !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2
+    .app-ltr-1wckybu > .app-ltr-1wdhvac > .app-ltr-1wdhvac:last-child
+    .app-ltr-cdtv9n {
+    position: relative !important;
+    grid-column: auto !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas:
+      "summary"
+      "request" !important;
+    min-height: 112px !important;
+    height: auto !important;
+    max-height: none !important;
+    border-radius: 10px !important;
+    background:
+      linear-gradient(110deg, rgb(217 43 87 / 13%), transparent 52%),
+      #121b25 !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2
+    .app-ltr-1wckybu > .app-ltr-1wdhvac > .app-ltr-1wdhvac:last-child
+    .app-ltr-cdtv9n .app-ltr-10dxb2a {
+    grid-area: summary !important;
+    display: flex !important;
+    align-items: center !important;
+    min-width: 0 !important;
+    min-height: 64px !important;
+    padding: 10px 44px 9px 10px !important;
+    border-bottom: 1px solid rgb(255 255 255 / 6%) !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2
+    .app-ltr-1wckybu > .app-ltr-1wdhvac > .app-ltr-1wdhvac:last-child
+    .app-ltr-cdtv9n .app-ltr-2t7346 {
+    flex-basis: 40px !important;
+    width: 40px !important;
+    min-width: 40px !important;
+    height: 40px !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2
+    .app-ltr-1wckybu > .app-ltr-1wdhvac > .app-ltr-1wdhvac:last-child
+    .app-ltr-cdtv9n .app-ltr-gfovjz {
+    max-width: 100% !important;
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2
+    .app-ltr-1wckybu > .app-ltr-1wdhvac > .app-ltr-1wdhvac:last-child
+    .app-ltr-cdtv9n .app-ltr-1xbglrd {
+    display: block !important;
+    margin-top: 3px !important;
+    overflow: hidden !important;
+    font-size: 10px !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2
+    .app-ltr-1wckybu > .app-ltr-1wdhvac > .app-ltr-1wdhvac:last-child
+    .app-ltr-cdtv9n .app-ltr-1mck7sp {
+    position: absolute !important;
+    top: 17px !important;
+    right: 10px !important;
+    z-index: 4 !important;
+    grid-area: auto !important;
+    display: flex !important;
+    width: 26px !important;
+    min-width: 26px !important;
+    min-height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2
+    .app-ltr-1wckybu > .app-ltr-1wdhvac > .app-ltr-1wdhvac:last-child
+    .app-ltr-cdtv9n .app-ltr-1959n0c {
+    display: none !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2
+    .app-ltr-1wckybu > .app-ltr-1wdhvac > .app-ltr-1wdhvac:last-child
+    .app-ltr-cdtv9n .app-ltr-o47sux {
+    grid-area: request !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    min-height: 46px !important;
+    margin: 0 !important;
+    padding: 6px 9px 8px !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2
+    .app-ltr-1wckybu > .app-ltr-1wdhvac > .app-ltr-1wdhvac:last-child
+    .app-ltr-cdtv9n button[type="button"]:not([aria-label]) {
+    width: auto !important;
+    min-width: 104px !important;
+    min-height: 34px !important;
+    padding: 7px 16px !important;
+    color: #ffffff !important;
+    border: 1px solid #d92b57 !important;
+    border-radius: 8px !important;
+    background: #d92b57 !important;
+    box-shadow: 0 7px 18px rgb(217 43 87 / 20%) !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2
+    .app-ltr-1wckybu > .app-ltr-1wdhvac > .app-ltr-1wdhvac:last-child
+    .app-ltr-cdtv9n i[aria-label="info"] {
+    width: 24px !important;
+    min-width: 24px !important;
+    height: 30px !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2
+    .app-ltr-1wckybu > .app-ltr-1wdhvac > .app-ltr-1wdhvac:first-child
+    .app-ltr-cdtv9n {
+    border-radius: 10px !important;
+    box-shadow: 0 10px 24px rgb(0 0 0 / 18%) !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2
+    .app-ltr-1wckybu > .app-ltr-1wdhvac > .app-ltr-1wdhvac:first-child
+    .app-ltr-10dxb2a {
+    padding: 10px !important;
+  }
+
+  html body .modal[role="alertdialog"].app-ltr-1hznvn2
+    .app-ltr-1wckybu > .app-ltr-1wdhvac > .app-ltr-1wdhvac:first-child
+    .app-ltr-1mck7sp {
+    min-height: 40px !important;
+    margin: 7px 8px 0 !important;
+    padding: 0 8px 0 10px !important;
+    border-radius: 8px !important;
+    background: rgb(217 43 87 / 7%) !important;
+  }
+}
