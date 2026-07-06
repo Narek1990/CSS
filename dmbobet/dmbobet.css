@@ -737,9 +737,6 @@ html body .modal[role="alertdialog"].app-ltr-1hznvn2 > .app-ltr-1fg8vzl {
 }
 
 html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-1jp2anc {
-  position: sticky !important;
-  top: 0 !important;
-  z-index: 20 !important;
   flex: 0 0 62px !important;
   display: flex !important;
   align-items: center !important;
@@ -749,8 +746,6 @@ html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-1jp2anc {
   color: #ffffff !important;
   font-size: 18px !important;
   font-weight: 700 !important;
-  border-bottom: 1px solid rgb(255 255 255 / 8%) !important;
-  background: rgb(7 12 17 / 34%) !important;
 }
 
 html body .modal[role="alertdialog"].app-ltr-1hznvn2 .app-ltr-1jp2anc button[aria-label="close"] {
