@@ -2597,63 +2597,135 @@ html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu
   border-radius: 11px !important;
 }
 
-/* The opened submenu becomes a flyout over the neighbouring grid cell. */
+/* Expanded menu: keep the category grid fixed and float the injected sibling. */
 html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
   [data-mj="account-menu"] > li:has(> button:is([aria-label="arrow_up"], [name="arrow_up"])) {
-  z-index: 20 !important;
-  overflow: visible !important;
+  z-index: 50 !important;
+  overflow: hidden !important;
   border-color: rgb(217 43 87 / 38%) !important;
   background: linear-gradient(135deg, rgb(217 43 87 / 19%), #142130) !important;
   box-shadow: 0 12px 28px rgb(0 0 0 / 30%) !important;
 }
 
 html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
-  [data-mj="account-menu"] > li:has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
-  > :not(.app-ltr-8atqhb):not(button) {
+  [data-mj="account-menu"] {
+  position: relative !important;
+  isolation: isolate !important;
+}
+
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]
+  > li:has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
+  + :not(li) {
   position: absolute !important;
   top: 0 !important;
-  left: calc(100% + 7px) !important;
-  z-index: 30 !important;
+  right: 0 !important;
+  left: auto !important;
+  z-index: 40 !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
   gap: 2px !important;
-  width: 100% !important;
+  width: calc(50% - 3.5px) !important;
   min-width: 0 !important;
   min-height: 50px !important;
+  max-height: 164px !important;
   margin: 0 !important;
-  padding: 5px 8px !important;
-  overflow: hidden !important;
-  border: 1px solid rgb(217 43 87 / 24%) !important;
+  padding: 6px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  list-style: none !important;
+  border: 1px solid rgb(217 43 87 / 34%) !important;
   border-radius: 12px !important;
-  background: linear-gradient(145deg, #1b2a3a, #121e2b) !important;
-  box-shadow: 0 14px 30px rgb(0 0 0 / 38%) !important;
+  background:
+    radial-gradient(circle at 100% 0%, rgb(217 43 87 / 18%), transparent 52%),
+    linear-gradient(145deg, #1b2a3a, #0f1a27) !important;
+  box-shadow:
+    0 18px 36px rgb(0 0 0 / 52%),
+    inset 0 1px 0 rgb(255 255 255 / 6%) !important;
+  animation: dmb-account-submenu-in 0.18s ease-out both !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgb(217 43 87 / 70%) transparent !important;
 }
 
-/* Categories in the right column open toward the left, never outside the panel. */
+/* Right-column categories reveal their submenu over the left column. */
 html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
-  [data-mj="account-menu"] > li:nth-child(odd):has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
-  > :not(.app-ltr-8atqhb):not(button) {
-  right: calc(100% + 7px) !important;
-  left: auto !important;
+  [data-mj="account-menu"]
+  > li:nth-of-type(even):has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
+  + :not(li) {
+  right: auto !important;
+  left: 0 !important;
+}
+
+/* Align the overlay with the selected category row. */
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]
+  > li:nth-of-type(3):has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
+  + :not(li),
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]
+  > li:nth-of-type(4):has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
+  + :not(li) {
+  top: 57px !important;
 }
 
 html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
-  [data-mj="account-menu"] > li:has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
-  > :not(.app-ltr-8atqhb):not(button) a {
-  min-height: 0 !important;
-  padding: 4px 6px !important;
+  [data-mj="account-menu"]
+  > li:nth-of-type(5):has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
+  + :not(li),
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]
+  > li:nth-of-type(6):has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
+  + :not(li) {
+  top: 114px !important;
+  transform: translateY(-100%) !important;
+  margin-top: 50px !important;
+}
+
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]
+  > li:has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
+  + :not(li) ul,
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]
+  > li:has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
+  + :not(li) li {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]
+  > li:has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
+  + :not(li) a {
+  min-height: 28px !important;
+  padding: 5px 7px !important;
   color: rgb(255 255 255 / 78%) !important;
   font-size: 11px !important;
-  line-height: 1.2 !important;
+  font-weight: 650 !important;
+  line-height: 1.15 !important;
   border-radius: 7px !important;
+  white-space: normal !important;
 }
 
 html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
-  [data-mj="account-menu"] > li:has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
-  > :not(.app-ltr-8atqhb):not(button) a:hover {
+  [data-mj="account-menu"]
+  > li:has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
+  + :not(li) a:hover {
   color: #ffffff !important;
   background: rgb(217 43 87 / 16%) !important;
+}
+
+@keyframes dmb-account-submenu-in {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
 }
 
 @media (max-width: 480px) {
