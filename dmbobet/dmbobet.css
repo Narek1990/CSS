@@ -2748,8 +2748,9 @@ html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu
   }
 }
 
-/* Header profile trigger: custom wolf avatar */
-html body button[aria-label="user"].app-ltr-1rb13tj {
+/* Header profile triggers: custom wolf avatar on desktop and mobile */
+html body button[aria-label="user"].app-ltr-1rb13tj,
+html body button[aria-label="user"].app-ltr-jzpbmh {
   display: inline-flex !important;
   flex: 0 0 46px !important;
   width: 46px !important;
@@ -2773,7 +2774,8 @@ html body button[aria-label="user"].app-ltr-1rb13tj {
     0 0 18px rgb(217 43 87 / 16%) !important;
 }
 
-html body button[aria-label="user"].app-ltr-1rb13tj:hover {
+html body button[aria-label="user"].app-ltr-1rb13tj:hover,
+html body button[aria-label="user"].app-ltr-jzpbmh:hover {
   border-color: #ff6688 !important;
   background-size: 148% auto !important;
   box-shadow:
@@ -2783,9 +2785,30 @@ html body button[aria-label="user"].app-ltr-1rb13tj:hover {
     0 0 22px rgb(217 43 87 / 30%) !important;
 }
 
-html body button[aria-label="user"].app-ltr-1rb13tj > svg {
+html body button[aria-label="user"].app-ltr-1rb13tj > svg,
+html body button[aria-label="user"].app-ltr-jzpbmh > svg {
   width: 0 !important;
   height: 0 !important;
   opacity: 0 !important;
   visibility: hidden !important;
+}
+
+html body button[aria-label="user"].app-ltr-jzpbmh {
+  flex-basis: 36px !important;
+  width: 36px !important;
+  min-width: 36px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  border-width: 1px !important;
+  background-position: 50% 37% !important;
+  background-size: 148% auto !important;
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 9%),
+    0 0 0 2px rgb(12 21 32 / 88%),
+    0 5px 13px rgb(0 0 0 / 32%),
+    0 0 14px rgb(217 43 87 / 15%) !important;
+}
+
+html body button[aria-label="user"].app-ltr-jzpbmh:hover {
+  background-size: 154% auto !important;
 }
