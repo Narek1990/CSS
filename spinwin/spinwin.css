@@ -508,3 +508,9 @@ html body [data-mj="page-content"] [class~="app-ltr-mhyosn"]:has(iframe#game) [c
     inset: -4px -2px -4px -7px !important;
   }
 }
+
+@media (min-width: 993px) {
+  html body .sl-container.app-ltr-15v05ez {
+    padding-top: 70px !important;
+  }
+}
