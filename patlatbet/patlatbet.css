@@ -1,27 +1,27 @@
-html body [data-mj="sidebar-footer"] .app-ltr-1tvzmkd:has(.sl-select__control.app-ltr-1nfuhvk-control),
-html body [data-mj="sidebar-footer"] .app-ltr-1tvzmkd:has([class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"]),
-html body [data-mj="sidebar-footer"] [class~="app-ltr-1tvzmkd"]:has(.sl-select__control:has(img[src*="/flags/TR.svg"])),
-html body [data-mj="sidebar-footer"] [class*="-container"]:has(> .sl-select__control.app-ltr-1nfuhvk-control),
-html body [data-mj="sidebar-footer"] [class*="-container"]:has(> [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"]),
-html body [data-mj="sidebar-footer"] [class*="-container"]:has(> .sl-select__control:has(img[src*="/flags/TR.svg"])) {
-  width: 230px !important;
-  min-width: 230px !important;
-  max-width: 230px !important;
-  height: 180px !important;
+/* Patlatbet sidebar promo: stable against generated app class changes */
+html body [data-mj="sidebar-footer"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
   min-height: 180px !important;
-  max-height: 180px !important;
   overflow: visible !important;
 }
 
-html body [data-mj="sidebar-footer"] .sl-select__control.app-ltr-1nfuhvk-control,
-html body [data-mj="sidebar-footer"] [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"],
-html body [data-mj="sidebar-footer"] .sl-select__control:has(img[src*="/flags/TR.svg"]) {
+html body [data-mj="sidebar-footer"] > *:has(> .sl-select__control),
+html body [data-mj="sidebar-footer"] .patlatbet-sidebar-promo {
   width: 230px !important;
   min-width: 230px !important;
   max-width: 230px !important;
   height: 180px !important;
   min-height: 180px !important;
   max-height: 180px !important;
+  margin-inline: auto !important;
+  overflow: visible !important;
+}
+
+html body [data-mj="sidebar-footer"] .sl-select__control,
+html body [data-mj="sidebar-footer"] .patlatbet-sidebar-promo {
   padding: 0 !important;
   border: 1px solid rgba(36, 255, 94, 0.34) !important;
   border-radius: 16px !important;
@@ -33,14 +33,25 @@ html body [data-mj="sidebar-footer"] .sl-select__control:has(img[src*="/flags/TR
   box-shadow:
     0 0 22px rgba(32, 255, 84, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.16) !important;
-  cursor: pointer !important;
   overflow: hidden !important;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease !important;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease !important;
 }
 
-html body [data-mj="sidebar-footer"] .sl-select__control.app-ltr-1nfuhvk-control:hover,
-html body [data-mj="sidebar-footer"] [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"]:hover,
-html body [data-mj="sidebar-footer"] .sl-select__control:has(img[src*="/flags/TR.svg"]):hover {
+html body [data-mj="sidebar-footer"] .sl-select__control {
+  width: 230px !important;
+  min-width: 230px !important;
+  max-width: 230px !important;
+  height: 180px !important;
+  min-height: 180px !important;
+  max-height: 180px !important;
+  cursor: pointer !important;
+}
+
+html body [data-mj="sidebar-footer"] .sl-select__control:hover,
+html body [data-mj="sidebar-footer"] .patlatbet-sidebar-promo:hover {
   transform: translateY(-1px) !important;
   border-color: rgba(63, 255, 112, 0.58) !important;
   box-shadow:
@@ -48,58 +59,31 @@ html body [data-mj="sidebar-footer"] .sl-select__control:has(img[src*="/flags/TR
     inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
 }
 
-html body [data-mj="sidebar-footer"] .sl-select__control.app-ltr-1nfuhvk-control .sl-select__value-container,
-html body [data-mj="sidebar-footer"] [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"] [class~="sl-select__value-container"],
-html body [data-mj="sidebar-footer"] .sl-select__control:has(img[src*="/flags/TR.svg"]) .sl-select__value-container,
-html body [data-mj="sidebar-footer"] .sl-select__control.app-ltr-1nfuhvk-control .sl-select__indicators,
-html body [data-mj="sidebar-footer"] [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"] [class~="sl-select__indicators"],
-html body [data-mj="sidebar-footer"] .sl-select__control:has(img[src*="/flags/TR.svg"]) .sl-select__indicators {
+html body [data-mj="sidebar-footer"] .sl-select__control .sl-select__value-container,
+html body [data-mj="sidebar-footer"] .sl-select__control .sl-select__indicators {
   display: none !important;
   visibility: hidden !important;
-  opacity: 0 !important;
   width: 0 !important;
   min-width: 0 !important;
   height: 0 !important;
+  padding: 0 !important;
   overflow: hidden !important;
+  opacity: 0 !important;
+}
+
+html body [data-mj="sidebar-footer"] .patlatbet-sidebar-promo {
+  display: block !important;
+  flex: 0 0 auto !important;
+  pointer-events: none !important;
 }
 
 @media (max-width: 768px) {
-  html body [data-mj="sidebar-footer"] {
-    display: flex !important;
-    justify-content: center !important;
-  }
-
-  html body [data-mj="sidebar-footer"] .app-ltr-1tvzmkd:has(.sl-select__control.app-ltr-1nfuhvk-control),
-  html body [data-mj="sidebar-footer"] .app-ltr-1tvzmkd:has([class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"]),
-  html body [data-mj="sidebar-footer"] [class~="app-ltr-1tvzmkd"]:has(.sl-select__control:has(img[src*="/flags/TR.svg"])),
-  html body [data-mj="sidebar-footer"] [class*="-container"]:has(> .sl-select__control.app-ltr-1nfuhvk-control),
-  html body [data-mj="sidebar-footer"] [class*="-container"]:has(> [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"]),
-  html body [data-mj="sidebar-footer"] [class*="-container"]:has(> .sl-select__control:has(img[src*="/flags/TR.svg"])) {
-    width: 260px !important;
-    min-width: 260px !important;
+  html body [data-mj="sidebar-footer"] > *:has(> .sl-select__control),
+  html body [data-mj="sidebar-footer"] .sl-select__control,
+  html body [data-mj="sidebar-footer"] .patlatbet-sidebar-promo {
+    width: min(260px, calc(100vw - 24px)) !important;
+    min-width: 0 !important;
     max-width: 260px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    margin-inline: auto !important;
   }
-
-  html body [data-mj="sidebar-footer"] .sl-select__control.app-ltr-1nfuhvk-control,
-  html body [data-mj="sidebar-footer"] [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"],
-  html body [data-mj="sidebar-footer"] .sl-select__control:has(img[src*="/flags/TR.svg"]) {
-    width: 260px !important;
-    min-width: 260px !important;
-    max-width: 260px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-}
-
-/* Keep the current promo authoritative if a legacy Patlatbet stylesheet is also present. */
-html body [data-mj="sidebar-footer"][data-mj="sidebar-footer"] .sl-select__control.app-ltr-1nfuhvk-control,
-html body [data-mj="sidebar-footer"][data-mj="sidebar-footer"] [class~="sl-select__control"][class~="app-ltr-1nfuhvk-control"],
-html body [data-mj="sidebar-footer"][data-mj="sidebar-footer"] .sl-select__control:has(img[src*="/flags/TR.svg"]) {
-  background-color: #020712 !important;
-  background-image: url("./patlatnew.png") !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  background-size: contain !important;
 }
