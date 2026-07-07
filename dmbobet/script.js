@@ -1122,12 +1122,16 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
 
   function isHomePage() {
     const path = location.pathname.toLowerCase();
+    const hasHomeWidgetTarget = Boolean(
+      document.querySelector('[data-mj="widget-top-providers"]')
+    );
 
     return (
       path === "/" ||
       path === "/test.html" ||
       path === "/en" ||
-      path === "/en/"
+      path === "/en/" ||
+      hasHomeWidgetTarget
     );
   }
 
