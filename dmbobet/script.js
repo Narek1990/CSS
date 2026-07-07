@@ -1266,13 +1266,24 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
 })();
 
 (function initDmbobetAccountAccordion() {
-  if (window.__dmbobetAccountAccordionReady) return;
-  window.__dmbobetAccountAccordionReady = true;
+  const version = 2;
+  const previousController = window.__dmbobetAccountAccordionController;
+
+  if (previousController && previousController.version === version) return;
+  if (previousController && typeof previousController.destroy === "function") {
+    previousController.destroy();
+  }
+
+  window.__dmbobetAccountAccordionReady = version;
 
   const menuSelector = '[data-mj="account-menu"]';
   const arrowSelector =
     'button[aria-label^="arrow_"], button[name^="arrow_"]';
   const activeClass = "dmb-account-active";
+  const closingClass = "dmb-account-is-closing";
+  let activeItemIndex = null;
+  let observer = null;
+  let syncScheduled = false;
   let closingOtherMenus = false;
 
   function isOpenButton(button) {
@@ -1296,19 +1307,51 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
   function applyVisualState(menu) {
     if (!menu || !menu.isConnected) return;
 
-    const activeIndex = Number(menu.dataset.dmbActiveAccountIndex);
-    const hasActiveIndex = Number.isInteger(activeIndex) && activeIndex >= 0;
+    const hasActiveIndex =
+      Number.isInteger(activeItemIndex) && activeItemIndex >= 0;
 
     getDirectMenuItems(menu).forEach((item, index) => {
-      item.classList.toggle(activeClass, hasActiveIndex && index === activeIndex);
+      item.classList.toggle(
+        activeClass,
+        hasActiveIndex && index === activeItemIndex
+      );
     });
   }
 
-  function scheduleVisualSync(menu) {
-    queueMicrotask(() => applyVisualState(menu));
-    requestAnimationFrame(() => applyVisualState(menu));
-    setTimeout(() => applyVisualState(menu), 80);
-    setTimeout(() => applyVisualState(menu), 220);
+  function syncAllMenus() {
+    syncScheduled = false;
+
+    const menus = document.querySelectorAll(menuSelector);
+    menus.forEach(applyVisualState);
+
+    if (!menus.length && activeItemIndex !== null) {
+      activeItemIndex = null;
+      stopObserver();
+    }
+  }
+
+  function scheduleVisualSync() {
+    if (syncScheduled) return;
+    syncScheduled = true;
+    requestAnimationFrame(syncAllMenus);
+  }
+
+  function startObserver() {
+    if (observer) return;
+
+    observer = new MutationObserver(scheduleVisualSync);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["aria-label", "name"]
+    });
+  }
+
+  function stopObserver() {
+    if (!observer) return;
+    observer.disconnect();
+    observer = null;
   }
 
   function closeOtherItems(menu, currentItem) {
@@ -1329,42 +1372,75 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     }
   }
 
-  document.addEventListener(
-    "click",
-    (event) => {
-      if (closingOtherMenus) return;
+  function hasInjectedSubmenus() {
+    return Array.from(document.querySelectorAll(menuSelector)).some((menu) =>
+      Array.from(menu.children).some((element) => element.tagName !== "LI")
+    );
+  }
 
-      const target = event.target;
-      if (!(target instanceof Element)) return;
+  function releaseClosingState(attempt = 0) {
+    if (!document.body.classList.contains(closingClass)) return;
 
-      const button = target.closest(arrowSelector);
-      if (!button) return;
+    if (hasInjectedSubmenus() && attempt < 10) {
+      setTimeout(() => releaseClosingState(attempt + 1), 60);
+      return;
+    }
 
-      const menu = button.closest(menuSelector);
-      if (!menu) return;
+    document.body.classList.remove(closingClass);
+  }
 
-      const currentItem = getDirectMenuItem(button, menu);
-      if (!currentItem) return;
+  function handleAccountMenuClick(event) {
+    if (closingOtherMenus) return;
 
-      const itemIndex = getDirectMenuItems(menu).indexOf(currentItem);
-      const isClosingCurrentItem = isOpenButton(button);
+    const target = event.target;
+    if (!(target instanceof Element)) return;
 
-      if (isClosingCurrentItem) {
-        delete menu.dataset.dmbActiveAccountIndex;
-        applyVisualState(menu);
-        scheduleVisualSync(menu);
-        return;
-      }
+    const button = target.closest(arrowSelector);
+    if (!button) return;
 
-      menu.dataset.dmbActiveAccountIndex = String(itemIndex);
-      applyVisualState(menu);
+    const menu = button.closest(menuSelector);
+    if (!menu) return;
 
-      /* Close existing sections before React opens the requested section. */
-      closeOtherItems(menu, currentItem);
+    const currentItem = getDirectMenuItem(button, menu);
+    if (!currentItem) return;
 
-      /* Preserve visual ownership while React replaces the menu children. */
-      scheduleVisualSync(menu);
-    },
-    true
-  );
+    const itemIndex = getDirectMenuItems(menu).indexOf(currentItem);
+    const isClosingCurrentItem = isOpenButton(button);
+
+    if (isClosingCurrentItem) {
+      activeItemIndex = null;
+      document.body.classList.add(closingClass);
+      syncAllMenus();
+      stopObserver();
+
+      setTimeout(releaseClosingState, 60);
+
+      return;
+    }
+
+    document.body.classList.remove(closingClass);
+    activeItemIndex = itemIndex;
+    applyVisualState(menu);
+    startObserver();
+
+    /* Close existing sections before React opens the requested section. */
+    closeOtherItems(menu, currentItem);
+
+    /* Reapply ownership whenever React replaces the menu node or its children. */
+    scheduleVisualSync();
+  }
+
+  document.addEventListener("click", handleAccountMenuClick, true);
+
+  window.__dmbobetAccountAccordionController = {
+    version,
+    destroy() {
+      document.removeEventListener("click", handleAccountMenuClick, true);
+      stopObserver();
+      document.body.classList.remove(closingClass);
+      document
+        .querySelectorAll(`${menuSelector} > li.${activeClass}`)
+        .forEach((item) => item.classList.remove(activeClass));
+    }
+  };
 })();

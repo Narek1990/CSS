@@ -2905,7 +2905,16 @@ html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu
 
 /* JS-owned accordion visibility: stale React submenus never overlap. */
 html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
-  [data-mj="account-menu"]:has(> li > button[aria-label^="arrow_"])
+  [data-mj="account-menu"]:has(> li.dmb-account-active)
+  > :not(li) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html body.dmb-account-is-closing
+  [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]
   > :not(li) {
   display: none !important;
   visibility: hidden !important;
