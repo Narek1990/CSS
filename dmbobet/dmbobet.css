@@ -526,13 +526,7 @@ nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:fir
   align-items: stretch !important;
   justify-content: space-between !important;
   gap: 4px !important;
-  border: 1px solid rgba(255, 92, 120, 0.32) !important;
-  border-top-color: rgba(255, 118, 144, 0.52) !important;
   border-radius: 16px !important;
-  background:
-    radial-gradient(circle at 50% 0%, rgba(255, 83, 124, 0.14), transparent 40%),
-    radial-gradient(circle at 14% 20%, rgba(255, 152, 91, 0.08), transparent 24%),
-    linear-gradient(180deg, rgba(53, 39, 50, 0.94), rgba(27, 24, 34, 0.96)) !important;
   box-shadow:
     0 14px 30px rgba(0, 0, 0, 0.24),
     0 0 22px rgba(255, 64, 106, 0.08),
@@ -553,7 +547,6 @@ nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:fir
   gap: 4px !important;
   min-width: 0 !important;
   min-height: 56px !important;
-  padding: 8px 4px 6px !important;
   border: 1px solid transparent !important;
   border-radius: 12px !important;
   background: transparent !important;
