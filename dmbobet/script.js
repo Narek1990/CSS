@@ -1272,6 +1272,7 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
   const menuSelector = '[data-mj="account-menu"]';
   const arrowSelector =
     'button[aria-label^="arrow_"], button[name^="arrow_"]';
+  const activeClass = "dmb-account-active";
   let closingOtherMenus = false;
 
   function isOpenButton(button) {
@@ -1284,6 +1285,30 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
   function getDirectMenuItem(button, menu) {
     const item = button.closest("li");
     return item && item.parentElement === menu ? item : null;
+  }
+
+  function getDirectMenuItems(menu) {
+    return Array.from(menu.children).filter(
+      (element) => element.tagName === "LI"
+    );
+  }
+
+  function applyVisualState(menu) {
+    if (!menu || !menu.isConnected) return;
+
+    const activeIndex = Number(menu.dataset.dmbActiveAccountIndex);
+    const hasActiveIndex = Number.isInteger(activeIndex) && activeIndex >= 0;
+
+    getDirectMenuItems(menu).forEach((item, index) => {
+      item.classList.toggle(activeClass, hasActiveIndex && index === activeIndex);
+    });
+  }
+
+  function scheduleVisualSync(menu) {
+    queueMicrotask(() => applyVisualState(menu));
+    requestAnimationFrame(() => applyVisualState(menu));
+    setTimeout(() => applyVisualState(menu), 80);
+    setTimeout(() => applyVisualState(menu), 220);
   }
 
   function closeOtherItems(menu, currentItem) {
@@ -1319,16 +1344,26 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
       if (!menu) return;
 
       const currentItem = getDirectMenuItem(button, menu);
-      if (!currentItem || isOpenButton(button)) return;
+      if (!currentItem) return;
+
+      const itemIndex = getDirectMenuItems(menu).indexOf(currentItem);
+      const isClosingCurrentItem = isOpenButton(button);
+
+      if (isClosingCurrentItem) {
+        delete menu.dataset.dmbActiveAccountIndex;
+        applyVisualState(menu);
+        scheduleVisualSync(menu);
+        return;
+      }
+
+      menu.dataset.dmbActiveAccountIndex = String(itemIndex);
+      applyVisualState(menu);
 
       /* Close existing sections before React opens the requested section. */
       closeOtherItems(menu, currentItem);
 
-      /* A second pass handles batched React updates without polling the page. */
-      requestAnimationFrame(() => {
-        const currentMenu = currentItem.closest(menuSelector);
-        if (currentMenu) closeOtherItems(currentMenu, currentItem);
-      });
+      /* Preserve visual ownership while React replaces the menu children. */
+      scheduleVisualSync(menu);
     },
     true
   );

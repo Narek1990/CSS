@@ -2902,3 +2902,49 @@ html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu
   padding: 6px 9px !important;
   text-align: left !important;
 }
+
+/* JS-owned accordion visibility: stale React submenus never overlap. */
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]:has(> li > button[aria-label^="arrow_"])
+  > :not(li) {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]
+  > li.dmb-account-active
+  + :not(li) {
+  display: flex !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"] > li.dmb-account-active {
+  z-index: 50 !important;
+  border-color: rgb(217 43 87 / 38%) !important;
+  background: linear-gradient(135deg, rgb(217 43 87 / 19%), #142130) !important;
+  box-shadow: 0 12px 28px rgb(0 0 0 / 30%) !important;
+}
+
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]
+  > li:not(.dmb-account-active):has(
+    > button:is([aria-label="arrow_up"], [name="arrow_up"])
+  ) {
+  z-index: auto !important;
+  border-color: rgb(255 255 255 / 6%) !important;
+  background: linear-gradient(145deg, rgb(255 255 255 / 5%), rgb(255 255 255 / 2%)) !important;
+  box-shadow: none !important;
+}
+
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]
+  > li:not(.dmb-account-active):has(
+    > button:is([aria-label="arrow_up"], [name="arrow_up"])
+  )
+  > button[aria-label^="arrow_"] svg {
+  transform: rotate(180deg) !important;
+}
