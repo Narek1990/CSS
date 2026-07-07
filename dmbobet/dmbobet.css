@@ -2957,3 +2957,22 @@ html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu
   > button[aria-label^="arrow_"] svg {
   transform: rotate(180deg) !important;
 }
+
+/* Closing invariant: an injected submenu must never return to grid flow. */
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]
+  > :not(li) {
+  position: absolute !important;
+}
+
+/* React flips the arrow before removing the submenu; hide that stale frame. */
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]
+  > li:not(
+    :has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
+  )
+  + :not(li) {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
