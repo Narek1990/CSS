@@ -8,6 +8,36 @@ html body [data-mj="sidebar-footer"] {
   overflow: visible !important;
 }
 
+/* CSS-only fallback for the new empty footer DOM. */
+html body [data-mj="sidebar-footer"]::before {
+  content: "" !important;
+  display: block !important;
+  flex: 0 0 230px !important;
+  width: 230px !important;
+  min-width: 230px !important;
+  max-width: 230px !important;
+  height: 180px !important;
+  min-height: 180px !important;
+  max-height: 180px !important;
+  margin-inline: auto !important;
+  border: 1px solid rgba(36, 255, 94, 0.34) !important;
+  border-radius: 16px !important;
+  background-color: #020712 !important;
+  background-image: url("https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/patlatbet/patlatnew.png") !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+  box-shadow:
+    0 0 22px rgba(32, 255, 84, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16) !important;
+}
+
+html body [data-mj="sidebar-footer"]:has(.sl-select__control)::before,
+html body [data-mj="sidebar-footer"]:has(.patlatbet-sidebar-promo)::before {
+  display: none !important;
+  content: none !important;
+}
+
 html body [data-mj="sidebar-footer"] > *:has(> .sl-select__control),
 html body [data-mj="sidebar-footer"] .patlatbet-sidebar-promo {
   width: 230px !important;
@@ -26,7 +56,7 @@ html body [data-mj="sidebar-footer"] .patlatbet-sidebar-promo {
   border: 1px solid rgba(36, 255, 94, 0.34) !important;
   border-radius: 16px !important;
   background-color: #020712 !important;
-  background-image: url("./patlatnew.png") !important;
+  background-image: url("https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/patlatbet/patlatnew.png") !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
   background-size: contain !important;
@@ -78,6 +108,7 @@ html body [data-mj="sidebar-footer"] .patlatbet-sidebar-promo {
 }
 
 @media (max-width: 768px) {
+  html body [data-mj="sidebar-footer"]::before,
   html body [data-mj="sidebar-footer"] > *:has(> .sl-select__control),
   html body [data-mj="sidebar-footer"] .sl-select__control,
   html body [data-mj="sidebar-footer"] .patlatbet-sidebar-promo {
@@ -85,5 +116,9 @@ html body [data-mj="sidebar-footer"] .patlatbet-sidebar-promo {
     min-width: 0 !important;
     max-width: 260px !important;
     margin-inline: auto !important;
+  }
+
+  html body [data-mj="sidebar-footer"]::before {
+    flex-basis: min(260px, calc(100vw - 24px)) !important;
   }
 }
