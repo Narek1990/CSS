@@ -2812,3 +2812,93 @@ html body button[aria-label="user"].app-ltr-jzpbmh {
 html body button[aria-label="user"].app-ltr-jzpbmh:hover {
   background-size: 154% auto !important;
 }
+
+/* Account menu interaction polish: stable tiles and strict left alignment */
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"] > li,
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"] > li:hover {
+  transform: none !important;
+}
+
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"] > li > .app-ltr-8atqhb > a {
+  display: grid !important;
+  grid-template-columns: 30px minmax(0, 1fr) !important;
+  align-items: center !important;
+  justify-content: start !important;
+  column-gap: 8px !important;
+  text-align: left !important;
+}
+
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"] .app-ltr-1p1m4ay {
+  display: grid !important;
+  grid-template-columns: 30px minmax(0, 1fr) !important;
+  align-items: center !important;
+  justify-content: start !important;
+  column-gap: 8px !important;
+  width: 100% !important;
+  text-align: left !important;
+}
+
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"] .app-ltr-dq5rxc {
+  width: 100% !important;
+  text-align: left !important;
+}
+
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"] > li > button[aria-label^="arrow_"] {
+  color: rgb(255 255 255 / 52%) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"] > li > button[aria-label^="arrow_"]:hover {
+  color: #ff7895 !important;
+  background: transparent !important;
+}
+
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]
+  > li:has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
+  + :not(li) {
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  text-align: left !important;
+}
+
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]
+  > li:has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
+  + :not(li) ul {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 2px !important;
+  width: 100% !important;
+}
+
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]
+  > li:has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
+  + :not(li) li {
+  width: 100% !important;
+  text-align: left !important;
+}
+
+html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
+  [data-mj="account-menu"]
+  > li:has(> button:is([aria-label="arrow_up"], [name="arrow_up"]))
+  + :not(li) a {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  width: 100% !important;
+  padding: 6px 9px !important;
+  text-align: left !important;
+}

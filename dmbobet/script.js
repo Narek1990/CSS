@@ -1264,3 +1264,72 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     characterData: true
   });
 })();
+
+(function initDmbobetAccountAccordion() {
+  if (window.__dmbobetAccountAccordionReady) return;
+  window.__dmbobetAccountAccordionReady = true;
+
+  const menuSelector = '[data-mj="account-menu"]';
+  const arrowSelector =
+    'button[aria-label^="arrow_"], button[name^="arrow_"]';
+  let closingOtherMenus = false;
+
+  function isOpenButton(button) {
+    return (
+      button.getAttribute("aria-label") === "arrow_up" ||
+      button.getAttribute("name") === "arrow_up"
+    );
+  }
+
+  function getDirectMenuItem(button, menu) {
+    const item = button.closest("li");
+    return item && item.parentElement === menu ? item : null;
+  }
+
+  function closeOtherItems(menu, currentItem) {
+    if (!menu || closingOtherMenus) return;
+
+    closingOtherMenus = true;
+
+    try {
+      menu.querySelectorAll(arrowSelector).forEach((button) => {
+        const item = getDirectMenuItem(button, menu);
+
+        if (item && item !== currentItem && isOpenButton(button)) {
+          button.click();
+        }
+      });
+    } finally {
+      closingOtherMenus = false;
+    }
+  }
+
+  document.addEventListener(
+    "click",
+    (event) => {
+      if (closingOtherMenus) return;
+
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const button = target.closest(arrowSelector);
+      if (!button) return;
+
+      const menu = button.closest(menuSelector);
+      if (!menu) return;
+
+      const currentItem = getDirectMenuItem(button, menu);
+      if (!currentItem || isOpenButton(button)) return;
+
+      /* Close existing sections before React opens the requested section. */
+      closeOtherItems(menu, currentItem);
+
+      /* A second pass handles batched React updates without polling the page. */
+      requestAnimationFrame(() => {
+        const currentMenu = currentItem.closest(menuSelector);
+        if (currentMenu) closeOtherItems(currentMenu, currentItem);
+      });
+    },
+    true
+  );
+})();
