@@ -2917,6 +2917,24 @@ html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu
   pointer-events: none !important;
 }
 
+/* RTL account menu opens from the left edge. */
+html[dir="rtl"] body
+  [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"]) {
+  inset: 74px auto auto 16px !important;
+  right: auto !important;
+  left: 16px !important;
+  transform: none !important;
+}
+
+@media (max-width: 480px) {
+  html[dir="rtl"] body
+    [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"]) {
+    inset: 70px auto auto 8px !important;
+    right: auto !important;
+    left: 8px !important;
+  }
+}
+
 html body.dmb-account-is-closing
   [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu"])
   [data-mj="account-menu"]
