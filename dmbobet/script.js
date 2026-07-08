@@ -70,6 +70,11 @@ class SlotCollections extends HTMLElement {
   }
 
   connectedCallback() {
+    const inheritedDirection =
+      document.documentElement.getAttribute("dir") ||
+      window.getComputedStyle(this).direction;
+
+    this.setAttribute("dir", inheritedDirection === "rtl" ? "rtl" : "ltr");
     this.render();
     this.updateSlide(true);
     this.bindEvents();
@@ -94,6 +99,10 @@ class SlotCollections extends HTMLElement {
           display: block;
           width: 100%;
           font-family: 'Rubik';
+        }
+
+        :host([dir="rtl"]) {
+          direction: rtl;
         }
 
         .collection-widget {
@@ -360,6 +369,46 @@ class SlotCollections extends HTMLElement {
             inset 0 1px 0 rgba(255,255,255,.2);
         }
 
+        :host([dir="rtl"]) .content-layer {
+          margin-left: auto;
+          text-align: right;
+        }
+
+        :host([dir="rtl"]) .title::after {
+          margin-right: 4px;
+          margin-left: 0;
+        }
+
+        :host([dir="rtl"]) .games,
+        :host([dir="rtl"]) .tags {
+          direction: rtl;
+          justify-content: flex-start;
+        }
+
+        :host([dir="rtl"]) .hero-layer {
+          right: auto;
+          left: -36px;
+        }
+
+        :host([dir="rtl"]) .hero-layer.is-changing {
+          transform: translateX(-50px) scale(.96);
+        }
+
+        :host([dir="rtl"]) .glow {
+          right: auto;
+          left: 5%;
+        }
+
+        :host([dir="rtl"]) .nav {
+          right: auto;
+          left: 24px;
+        }
+
+        :host([dir="rtl"]) .tabs {
+          right: 24px;
+          left: auto;
+        }
+
         @media (max-width: 720px) {
 
 
@@ -424,6 +473,26 @@ class SlotCollections extends HTMLElement {
             top: auto;
             bottom: 70px;
             right: 24px;
+          }
+
+          :host([dir="rtl"]) .hero-layer {
+            right: auto;
+            left: -78px;
+          }
+
+          :host([dir="rtl"]) .glow {
+            right: auto;
+            left: -80px;
+          }
+
+          :host([dir="rtl"]) .tabs {
+            right: 40px;
+            left: 24px;
+          }
+
+          :host([dir="rtl"]) .nav {
+            right: auto;
+            left: 24px;
           }
         }
       </style>

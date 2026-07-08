@@ -36,9 +36,16 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
 [data-mj="widget-promotions-slider-container"],
 [data-mj="widget-phoenix-sport-container"],
 [data-mj="widget-phoenix-sport"],
-[data-mj="widget-top-providers"] .app-ltr-1l44gyp {
+[data-mj="widget-top-providers"],
+[data-mj="widget-top-providers"] > div,
+[data-mj="widget-top-providers"] [data-mj="widget-top-providers-slider"] {
   max-width: none !important;
   width: 100% !important;
+}
+
+[data-mj="widget-top-providers"] > div {
+  margin-inline: 0 !important;
+  box-sizing: border-box !important;
 }
 
 [data-mj="footer"] {
