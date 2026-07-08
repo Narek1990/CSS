@@ -1188,18 +1188,31 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
   ];
 
   let scheduled = false;
+  let observer;
+
+  function getPageDirection() {
+    return document.documentElement.getAttribute("dir") === "rtl" ? "rtl" : "ltr";
+  }
+
+  function getLanguagePrefix() {
+    const segment = location.pathname.split("/").filter(Boolean)[0];
+    return segment && /^[a-z]{2}(?:-[a-z]{2})?$/i.test(segment)
+      ? `/${segment}`
+      : "/en";
+  }
 
   function isHomePage() {
     const path = location.pathname.toLowerCase();
     const hasHomeWidgetTarget = Boolean(
-      document.querySelector('[data-mj="widget-top-providers"]')
+      document.querySelector(
+        '[data-mj="widget-top-providers"], [data-mj="widget-collection-slider"]'
+      )
     );
 
     return (
       path === "/" ||
       path === "/test.html" ||
-      path === "/en" ||
-      path === "/en/" ||
+      /^\/[a-z]{2}(?:-[a-z]{2})?\/?$/i.test(path) ||
       hasHomeWidgetTarget
     );
   }
@@ -1240,6 +1253,14 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     }
 
     applyAttributes(widget, attributes);
+    widget.setAttribute("dir", getPageDirection());
+
+    if (instanceId === "custom-sea-bonus-widget") {
+      widget.setAttribute(
+        "promo-link",
+        `${getLanguagePrefix()}/promotions/welcome-bonus`
+      );
+    }
 
     const isCorrectPosition =
       position === "before"
@@ -1278,30 +1299,41 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     });
   }
 
-  syncWidgets();
+  function startWidgetInjector() {
+    if (!document.body || observer) return;
 
-  const observer = new MutationObserver(scheduleSync);
+    syncWidgets();
 
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true
-  });
+    observer = new MutationObserver(scheduleSync);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
 
-  window.addEventListener("popstate", scheduleSync);
-  window.addEventListener("hashchange", scheduleSync);
+    window.addEventListener("popstate", scheduleSync);
+    window.addEventListener("hashchange", scheduleSync);
 
-  const originalPushState = history.pushState;
-  const originalReplaceState = history.replaceState;
+    const originalPushState = history.pushState;
+    const originalReplaceState = history.replaceState;
 
-  history.pushState = function () {
-    originalPushState.apply(this, arguments);
-    scheduleSync();
-  };
+    history.pushState = function () {
+      originalPushState.apply(this, arguments);
+      scheduleSync();
+    };
 
-  history.replaceState = function () {
-    originalReplaceState.apply(this, arguments);
-    scheduleSync();
-  };
+    history.replaceState = function () {
+      originalReplaceState.apply(this, arguments);
+      scheduleSync();
+    };
+  }
+
+  if (document.body) {
+    startWidgetInjector();
+  } else {
+    document.addEventListener("DOMContentLoaded", startWidgetInjector, {
+      once: true
+    });
+  }
 })();
 
 (function () {
