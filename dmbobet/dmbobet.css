@@ -27,7 +27,6 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
 }
 
 [data-mj="header"].app-ltr-i58pjb,
-[data-mj="footer"].app-ltr-1l44gyp,
 [data-mj="widget-game-slider-container"],
 [data-mj="widget-pages-container"],
 [data-mj="widget-collection-slider-container"],
@@ -46,11 +45,6 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
 [data-mj="widget-top-providers"] > div {
   margin-inline: 0 !important;
   box-sizing: border-box !important;
-}
-
-[data-mj="footer"] {
-  z-index: 999999999 !important;
-  padding-bottom: 70px !important;
 }
 
 .app-ltr-i58pjb {
@@ -91,55 +85,6 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
   }
 }
 
-@media (min-width: 992px) {
-  [data-mj="social-links"] {
-    position: fixed !important;
-    top: 20px !important;
-    right: clamp(27%, 23vw, 311px) !important;
-    z-index: 1200 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 10px !important;
-    margin: 0 !important;
-  }
-
-  html[dir="rtl"] body [data-mj="social-links"] {
-    right: auto !important;
-    left: clamp(27%, 23vw, 311px) !important;
-  }
-
-  [data-mj="social-links"] > a {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 24px !important;
-    height: 24px !important;
-    overflow: visible !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-
-  [data-mj="social-links"] .app-ltr-7wh13m,
-  [data-mj="social-links"] img {
-    display: block !important;
-    width: 40px !important;
-    max-width: none !important;
-    object-fit: contain !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    filter: none !important;
-  }
-
-  [data-mj="social-links"] > a:first-child img {
-    width: 40px !important;
-  }
-
-  [data-mj="social-links"] > a:not(:first-child) img {
-    width: 40px !important;
-    margin-inline-start: 40px !important;
-  }
-}
-
 [data-mj="page-content"] {
   padding-top: 18px;
 }
@@ -173,10 +118,6 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
 
 [data-mj="lobby-catalog-category-next"] {
   display: none !important;
-}
-
-[data-mj="footer-content"] .app-ltr-19zdw54 .app-ltr-vztaa3 {
-  color: inherit !important;
 }
 
 [data-mj="header-right"] [data-mj="login-button"],
