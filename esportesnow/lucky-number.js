@@ -1,6 +1,12 @@
 (function () {
   "use strict";
 
+  if (window.__esportesnowLuckyNumberLoaded) {
+    return;
+  }
+
+  window.__esportesnowLuckyNumberLoaded = true;
+
   var currentScript = document.currentScript;
   var baseUrl = currentScript && currentScript.src
     ? currentScript.src.split("?")[0].replace(/\/[^/]+$/, "")

@@ -44,6 +44,51 @@
   ];
   var applyScheduled = false;
 
+  function buildAssetUrl(fileName) {
+    return baseUrl + "/" + fileName + "?v=" + Date.now();
+  }
+
+  function ensureCompanionScript(fileName, loadedFlagName, queuedFlagName, readySelector) {
+    var script;
+
+    if (window[loadedFlagName] || window[queuedFlagName]) {
+      return;
+    }
+
+    if (readySelector && document.querySelector(readySelector)) {
+      window[loadedFlagName] = true;
+      return;
+    }
+
+    window[queuedFlagName] = true;
+    script = document.createElement("script");
+    script.src = buildAssetUrl(fileName);
+    script.async = false;
+    script.setAttribute("data-esportesnow-companion", fileName);
+    script.onload = function () {
+      window[queuedFlagName] = false;
+    };
+    script.onerror = function () {
+      window[queuedFlagName] = false;
+    };
+    (document.head || document.documentElement).appendChild(script);
+  }
+
+  function ensureCompanionScripts() {
+    ensureCompanionScript(
+      "random-game-picker.js",
+      "__esportesnowRandomGamePickerLoaded",
+      "__esportesnowRandomGamePickerQueued",
+      '[data-esportesnow-random-picker="true"]'
+    );
+    ensureCompanionScript(
+      "lucky-number.js",
+      "__esportesnowLuckyNumberLoaded",
+      "__esportesnowLuckyNumberQueued",
+      '[data-esportesnow-mini-game="true"]'
+    );
+  }
+
   function createMenuSvg() {
     var template = document.createElement("template");
     template.innerHTML = menuSvg;
@@ -293,6 +338,7 @@
 
   function applyOverrides() {
     applyScheduled = false;
+    ensureCompanionScripts();
     injectHiddenElementCss();
     injectHeroHotspots();
     injectBetWinGameDetails();
