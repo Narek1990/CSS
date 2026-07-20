@@ -58,9 +58,9 @@
 
   function setMenuIconPosition(element) {
     element.style.setProperty("position", "absolute", "important");
-    element.style.setProperty("right", "201px", "important");
+    element.style.setProperty("left", "16px", "important");
     element.style.setProperty("top", "19px", "important");
-    element.style.setProperty("left", "auto", "important");
+    element.style.setProperty("right", "auto", "important");
     element.style.setProperty("bottom", "auto", "important");
     element.style.setProperty("z-index", "10", "important");
   }

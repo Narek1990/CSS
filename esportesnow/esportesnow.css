@@ -2675,7 +2675,20 @@ html body [data-mj="promotions-page"] {
   padding-top: 70px !important;
 }
 
-html body [data-mj="header-left"] .sl-icon[class~="app-ltr-1cw5cp5"],
-html body [data-mj="header-left"] [class~="app-ltr-1cw5cp5"] {
-  padding-left: 8px !important;
+html body [data-mj="header-left"] button[aria-label="menu"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 36px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  flex: 0 0 44px !important;
+  box-sizing: border-box !important;
+}
+
+html body [data-mj="header-left"] button[aria-label="menu"] > svg {
+  display: block !important;
+  flex: 0 0 auto !important;
 }
