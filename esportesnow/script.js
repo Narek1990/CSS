@@ -57,12 +57,19 @@
   }
 
   function setMenuIconPosition(element) {
+    var headerLeft = element.closest("[data-mj='header-left']");
+
+    if (headerLeft) {
+      headerLeft.style.setProperty("position", "relative", "important");
+    }
+
     element.style.setProperty("position", "absolute", "important");
-    element.style.setProperty("left", "16px", "important");
-    element.style.setProperty("top", "19px", "important");
+    element.style.setProperty("left", "10px", "important");
+    element.style.setProperty("top", "50%", "important");
     element.style.setProperty("right", "auto", "important");
     element.style.setProperty("bottom", "auto", "important");
-    element.style.setProperty("z-index", "10", "important");
+    element.style.setProperty("transform", "translateY(-50%)", "important");
+    element.style.setProperty("z-index", "30", "important");
   }
 
   function replaceMenuSvg(element) {
