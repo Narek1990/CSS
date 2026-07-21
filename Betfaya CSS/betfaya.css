@@ -55,3 +55,21 @@
 [data-mj="widget-top-providers-item"] {
   background-color: #918484 !important;
 }
+
+/* --- Hide mobile bottom navigation only while a game/player is open --- */
+@media screen and (max-width: 1024px) {
+  html.betfaya-game-open [data-mj="bottom-nav"],
+  body.betfaya-game-open [data-mj="bottom-nav"],
+  [data-mj="bottom-nav"][data-betfaya-game-hidden="true"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+}
