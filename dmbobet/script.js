@@ -1549,3 +1549,260 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     }
   };
 })();
+
+(function initDmbobetMobileBottomNavGuard() {
+  const version = 1;
+  const previousController = window.__dmbobetMobileBottomNavGuardController;
+
+  if (previousController && previousController.version === version) return;
+  if (previousController && typeof previousController.destroy === "function") {
+    previousController.destroy();
+  }
+
+  const mobileQuery = "(max-width: 991px)";
+  const navSelector = '[data-mj="bottom-nav"]';
+  const restoredAttribute = "data-dmbobet-bottom-nav-restored";
+  const managedAttribute = "data-dmbobet-bottom-nav-managed";
+  const storageKey = "dmbobet:last-mobile-bottom-nav";
+  const managedProperties = [
+    "display",
+    "visibility",
+    "opacity",
+    "position",
+    "left",
+    "right",
+    "top",
+    "bottom",
+    "width",
+    "max-width",
+    "height",
+    "min-height",
+    "margin-bottom",
+    "padding-bottom",
+    "transform",
+    "translate",
+    "pointer-events",
+    "overflow",
+    "z-index"
+  ];
+  let observer = null;
+  let scheduled = false;
+
+  function isMobile() {
+    if (window.matchMedia) {
+      return window.matchMedia(mobileQuery).matches;
+    }
+
+    return window.innerWidth <= 991;
+  }
+
+  function getStoredMarkup() {
+    try {
+      return sessionStorage.getItem(storageKey) || localStorage.getItem(storageKey);
+    } catch (error) {
+      return "";
+    }
+  }
+
+  function storeMarkup(nav) {
+    if (!nav || nav.hasAttribute(restoredAttribute)) return;
+
+    try {
+      sessionStorage.setItem(storageKey, nav.outerHTML);
+      localStorage.setItem(storageKey, nav.outerHTML);
+    } catch (error) {
+      /* Storage can be blocked in private mode; the live nav still gets pinned. */
+    }
+  }
+
+  function setImportant(element, property, value) {
+    if (
+      element.style.getPropertyValue(property) === value &&
+      element.style.getPropertyPriority(property) === "important"
+    ) {
+      return;
+    }
+
+    element.style.setProperty(property, value, "important");
+  }
+
+  function clearManagedStyles(element) {
+    if (!element || element.getAttribute(managedAttribute) !== "true") return;
+
+    managedProperties.forEach((property) => {
+      element.style.removeProperty(property);
+    });
+    element.removeAttribute(managedAttribute);
+  }
+
+  function pinElement(element, asFixedNav, displayValue) {
+    if (!element) return;
+
+    element.setAttribute(managedAttribute, "true");
+    setImportant(element, "display", displayValue || (asFixedNav ? "block" : "flex"));
+    setImportant(element, "visibility", "visible");
+    setImportant(element, "opacity", "1");
+    setImportant(element, "left", "0");
+    setImportant(element, "right", "0");
+    setImportant(element, "top", "auto");
+    setImportant(element, "bottom", "0");
+    setImportant(element, "width", "100%");
+    setImportant(element, "max-width", "100%");
+    setImportant(element, "height", "auto");
+    setImportant(element, "min-height", "0");
+    setImportant(element, "margin-bottom", "0");
+    setImportant(element, "padding-bottom", "0");
+    setImportant(element, "transform", "none");
+    setImportant(element, "translate", "none");
+    setImportant(element, "pointer-events", "auto");
+    setImportant(element, "overflow", "visible");
+
+    if (asFixedNav) {
+      setImportant(element, "position", "fixed");
+      setImportant(element, "z-index", "2147483000");
+    } else {
+      setImportant(element, "position", "relative");
+    }
+  }
+
+  function pinNav(nav) {
+    if (!nav) return;
+
+    pinElement(nav, true);
+
+    Array.from(nav.children).forEach((child) => pinElement(child, false, "block"));
+
+    const inner = nav.querySelector('[class~="app-ltr-ja3k2i"]');
+    if (inner) {
+      pinElement(inner, false, "flex");
+      setImportant(inner, "display", "flex");
+    }
+
+    nav.querySelectorAll('a[data-mj="bottom-nav-item"]').forEach((item) => {
+      setImportant(item, "display", "inline-flex");
+      setImportant(item, "visibility", "visible");
+      setImportant(item, "opacity", "1");
+      setImportant(item, "pointer-events", "auto");
+    });
+  }
+
+  function getNativeNavs() {
+    return Array.from(document.querySelectorAll(navSelector)).filter(
+      (nav) => !nav.hasAttribute(restoredAttribute)
+    );
+  }
+
+  function removeRestoredNavs() {
+    document
+      .querySelectorAll(`${navSelector}[${restoredAttribute}="true"]`)
+      .forEach((nav) => nav.remove());
+  }
+
+  function restoreCachedNav() {
+    if (!document.body || document.querySelector(navSelector)) return null;
+
+    const markup = getStoredMarkup();
+    if (!markup) return null;
+
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = markup.trim();
+
+    const nav = wrapper.querySelector(navSelector);
+    if (!nav) return null;
+
+    nav.setAttribute(restoredAttribute, "true");
+    document.body.appendChild(nav);
+    return nav;
+  }
+
+  function cleanupDesktopState() {
+    document
+      .querySelectorAll(`[${managedAttribute}="true"]`)
+      .forEach(clearManagedStyles);
+    removeRestoredNavs();
+  }
+
+  function syncBottomNav() {
+    scheduled = false;
+
+    if (!isMobile()) {
+      cleanupDesktopState();
+      return;
+    }
+
+    const nativeNavs = getNativeNavs();
+
+    if (nativeNavs.length) {
+      removeRestoredNavs();
+      nativeNavs.forEach((nav) => {
+        storeMarkup(nav);
+        pinNav(nav);
+      });
+      return;
+    }
+
+    const restoredNav = restoreCachedNav();
+    if (restoredNav) pinNav(restoredNav);
+  }
+
+  function scheduleSync() {
+    if (scheduled) return;
+
+    scheduled = true;
+    requestAnimationFrame(syncBottomNav);
+  }
+
+  function patchHistory(method) {
+    const original = history[method];
+    if (!original || original.__dmbobetBottomNavGuardPatched) return;
+
+    history[method] = function () {
+      const result = original.apply(this, arguments);
+      scheduleSync();
+      return result;
+    };
+    history[method].__dmbobetBottomNavGuardPatched = true;
+  }
+
+  function start() {
+    if (!document.body) return;
+
+    scheduleSync();
+
+    observer = new MutationObserver(scheduleSync);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["class", "style", "aria-hidden"]
+    });
+
+    window.addEventListener("scroll", scheduleSync, { passive: true });
+    window.addEventListener("resize", scheduleSync);
+    window.addEventListener("orientationchange", scheduleSync);
+    window.addEventListener("popstate", scheduleSync);
+    window.addEventListener("hashchange", scheduleSync);
+    patchHistory("pushState");
+    patchHistory("replaceState");
+  }
+
+  window.__dmbobetMobileBottomNavGuardController = {
+    version,
+    destroy() {
+      if (observer) observer.disconnect();
+      observer = null;
+      window.removeEventListener("scroll", scheduleSync);
+      window.removeEventListener("resize", scheduleSync);
+      window.removeEventListener("orientationchange", scheduleSync);
+      window.removeEventListener("popstate", scheduleSync);
+      window.removeEventListener("hashchange", scheduleSync);
+      cleanupDesktopState();
+    }
+  };
+
+  if (document.body) {
+    start();
+  } else {
+    document.addEventListener("DOMContentLoaded", start, { once: true });
+  }
+})();
