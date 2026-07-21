@@ -428,7 +428,7 @@ html body [data-mj="page-content"] [class~="app-ltr-mhyosn"]:has(iframe#game) [c
 
 @media (max-width: 992px) {
   html body [data-mj="content-wrapper"] {
-    padding-top: 45px !important;
+    padding-bottom: 63px !important;
   }
 
   html body [data-mj="bottom-nav"] {
