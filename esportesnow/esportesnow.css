@@ -2869,7 +2869,7 @@ html body [data-mj="header-left"] button[aria-label="menu"] > svg {
 html body .esportesnow-random-picker {
   background:
     linear-gradient(90deg, rgba(4, 13, 22, 0.92) 0%, rgba(4, 13, 22, 0.76) 42%, rgba(4, 13, 22, 0.25) 68%, rgba(4, 13, 22, 0.08) 100%),
-    url("./assets/random.png") center center / cover no-repeat !important;
+    var(--esportesnow-random-picker-bg, url("https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/esportesnow/assets/random.png")) center center / cover no-repeat !important;
   background-color: #061018 !important;
 }
 
@@ -2885,6 +2885,6 @@ html body .esportesnow-random-picker::before {
   html body .esportesnow-random-picker {
     background:
       linear-gradient(180deg, rgba(4, 13, 22, 0.84) 0%, rgba(4, 13, 22, 0.5) 52%, rgba(4, 13, 22, 0.18) 100%),
-      url("./assets/random.png") 68% center / cover no-repeat !important;
+      var(--esportesnow-random-picker-bg, url("https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/esportesnow/assets/random.png")) 68% center / cover no-repeat !important;
   }
 }

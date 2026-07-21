@@ -1,18 +1,25 @@
 (function () {
   "use strict";
 
-  if (window.__esportesnowRandomGamePickerLoaded) {
+  var pickerVersion = 2;
+
+  if (window.__esportesnowRandomGamePickerLoaded === pickerVersion) {
     return;
   }
 
-  window.__esportesnowRandomGamePickerLoaded = true;
+  window.__esportesnowRandomGamePickerLoaded = pickerVersion;
 
   var currentScript = document.currentScript;
   var baseUrl = currentScript && currentScript.src
     ? currentScript.src.split("?")[0].replace(/\/[^/]+$/, "")
     : "https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/esportesnow";
   var cssHref = baseUrl + "/esportesnow.css";
+  var backgroundUrl = baseUrl + "/assets/random.png?v=" + pickerVersion;
   var applyScheduled = false;
+
+  function escapeCssUrl(value) {
+    return String(value).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+  }
 
   function ensureStylesheet() {
     var existing = document.querySelector('link[data-esportesnow-css="true"]');
@@ -31,6 +38,54 @@
     link.href = cssHref;
     link.setAttribute("data-esportesnow-css", "true");
     document.head.appendChild(link);
+  }
+
+  function ensureRandomPickerBackgroundStyles() {
+    var styleId = "esportesnow-random-picker-background-style";
+    var style = document.getElementById(styleId);
+    var fallbackUrl = "https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/esportesnow/assets/random.png";
+    var css =
+      'html body .esportesnow-random-picker{' +
+      '--esportesnow-random-picker-bg:url("' + escapeCssUrl(backgroundUrl) + '");' +
+      'background:linear-gradient(90deg,rgba(4,13,22,.92) 0%,rgba(4,13,22,.76) 42%,rgba(4,13,22,.25) 68%,rgba(4,13,22,.08) 100%),var(--esportesnow-random-picker-bg,url("' + fallbackUrl + '")) center center/cover no-repeat!important;' +
+      'background-color:#061018!important;' +
+      '}' +
+      'html body .esportesnow-random-picker::before{' +
+      'background:radial-gradient(circle at 73% 52%,rgba(255,220,97,.22),transparent 18%),radial-gradient(circle at 72% 52%,rgba(72,230,255,.2),transparent 34%),linear-gradient(90deg,rgba(2,16,24,.26),transparent 68%)!important;' +
+      'opacity:.92!important;' +
+      '}' +
+      '@media(max-width:768px){html body .esportesnow-random-picker{' +
+      'background:linear-gradient(180deg,rgba(4,13,22,.84) 0%,rgba(4,13,22,.5) 52%,rgba(4,13,22,.18) 100%),var(--esportesnow-random-picker-bg,url("' + fallbackUrl + '")) 68% center/cover no-repeat!important;' +
+      '}}';
+
+    if (!style) {
+      style = document.createElement("style");
+      style.id = styleId;
+      style.setAttribute("data-esportesnow-random-picker-background", "true");
+      document.head.appendChild(style);
+    }
+
+    if (style.textContent !== css) {
+      style.textContent = css;
+    }
+  }
+
+  function applyRandomPickerBackground(picker) {
+    if (!picker) {
+      return;
+    }
+
+    picker.style.setProperty(
+      "--esportesnow-random-picker-bg",
+      'url("' + backgroundUrl + '")'
+    );
+    picker.setAttribute("data-random-picker-background", "random.png");
+  }
+
+  function syncRandomPickerBackgrounds() {
+    document
+      .querySelectorAll('[data-esportesnow-random-picker="true"]')
+      .forEach(applyRandomPickerBackground);
   }
 
   function getRandomIndex(max) {
@@ -375,6 +430,7 @@
     picker.className = "esportesnow-random-picker";
     picker.setAttribute("data-esportesnow-random-picker", "true");
     picker.setAttribute("data-state", "ready");
+    applyRandomPickerBackground(picker);
 
     intro.className = "esportesnow-random-picker-intro";
     badge.className = "esportesnow-random-picker-badge";
@@ -471,7 +527,9 @@
   function apply() {
     applyScheduled = false;
     ensureStylesheet();
+    ensureRandomPickerBackgroundStyles();
     injectRandomGamePicker();
+    syncRandomPickerBackgrounds();
   }
 
   function scheduleApply() {

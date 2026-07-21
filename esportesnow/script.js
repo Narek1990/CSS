@@ -48,14 +48,22 @@
     return baseUrl + "/" + fileName + "?v=" + Date.now();
   }
 
-  function ensureCompanionScript(fileName, loadedFlagName, queuedFlagName, readySelector) {
+  function ensureCompanionScript(fileName, loadedFlagName, queuedFlagName, readySelector, requiredLoadedValue) {
     var script;
 
-    if (window[loadedFlagName] || window[queuedFlagName]) {
+    if (window[queuedFlagName]) {
       return;
     }
 
-    if (readySelector && document.querySelector(readySelector)) {
+    if (requiredLoadedValue) {
+      if (window[loadedFlagName] === requiredLoadedValue) {
+        return;
+      }
+    } else if (window[loadedFlagName]) {
+      return;
+    }
+
+    if (!requiredLoadedValue && readySelector && document.querySelector(readySelector)) {
       window[loadedFlagName] = true;
       return;
     }
@@ -79,7 +87,8 @@
       "random-game-picker.js",
       "__esportesnowRandomGamePickerLoaded",
       "__esportesnowRandomGamePickerQueued",
-      '[data-esportesnow-random-picker="true"]'
+      '[data-esportesnow-random-picker="true"]',
+      2
     );
     ensureCompanionScript(
       "lucky-number.js",
