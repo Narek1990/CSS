@@ -1,0 +1,3 @@
+html body [data-mj="content-wrapper"] {
+  max-width: none !important;
+}
