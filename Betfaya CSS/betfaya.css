@@ -58,6 +58,8 @@
 
 /* --- Hide mobile bottom navigation only while a game/player is open --- */
 @media screen and (max-width: 1024px) {
+  [data-mj="root-layout"]:has(#sportsbook-wrapper) [data-mj="bottom-nav"],
+  [data-mj="page-content"]:has(#sportsbook-wrapper) ~ [data-mj="bottom-nav"],
   html.betfaya-game-open [data-mj="bottom-nav"],
   body.betfaya-game-open [data-mj="bottom-nav"],
   [data-mj="bottom-nav"][data-betfaya-game-hidden="true"] {

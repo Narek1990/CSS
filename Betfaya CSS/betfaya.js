@@ -2,9 +2,11 @@
   "use strict";
 
   var MOBILE_QUERY = "(max-width: 1024px)";
-  var GAME_URL_PATTERN = /(?:\/(?:game|games|play)(?:\/|$)|\/casino\/[^/?#]+|[?&#](?:gameId|gameUrl|providerGameId|launch|realGame|demoGame|game|play)=|[?&#](?:m|t)=game\b)/i;
-  var GAME_FRAME_PATTERN = /(game|launch|casino|slot|spribe|aviator|evolution|pragmatic|softswiss|betconstruct|playtech|player)/i;
+  var GAME_URL_PATTERN = /(?:\/(?:game|games|play)(?:\/|$)|\/(?:sportsbook|sport|spor)\/demo(?:\/|$)|\/casino\/[^/?#]+|[?&#](?:gameId|gameUrl|providerGameId|launch|realGame|demoGame|game|play)=|[?&#](?:m|t)=game\b)/i;
+  var GAME_FRAME_PATTERN = /(game|launch|casino|slot|spribe|aviator|evolution|pragmatic|softswiss|betconstruct|playtech|player|sportbook|sportsbook|hattrick|socratespace|firstsportbook)/i;
   var GAME_SHELL_SELECTOR = [
+    "#sportsbook-wrapper",
+    "iframe#firstSportbook",
     "#game-dialog-overlay",
     "[id*='game-dialog']",
     "[id*='gameDialog']",
