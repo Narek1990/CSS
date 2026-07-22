@@ -11,6 +11,7 @@
   var AVIATOR_SOURCE_ATTRIBUTE = "data-spinwin-aviator-source";
   var AVIATOR_VIDEO_SRC = baseUrl + "/assets/aviator-scroll.mp4";
   var AVIATOR_POSTER_SRC = baseUrl + "/assets/aviator-scroll-poster.webp";
+  var AVIATOR_STATIC_MEDIA_QUERY = "(max-width: 768px), (pointer: coarse), (prefers-reduced-motion: reduce)";
   var COLLECTION_IMAGE_BY_KEY = {
     animal: "animal-collection-464x225.svg",
     book: "book-collection-464x225.svg",
@@ -220,6 +221,7 @@
       this.lastFrame = -1;
       this.pendingFrame = 0;
       this.mediaLoaded = false;
+      this.staticPosterMode = false;
       this.seekInProgress = false;
       this.requestUpdate = this.requestUpdate.bind(this);
       this.onMetadata = this.onMetadata.bind(this);
@@ -237,6 +239,7 @@
       this.video = this.shadowRoot.querySelector("video");
       this.frame = this.shadowRoot.querySelector(".aviator-frame");
       this.reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      this.staticPosterMode = this.shouldUseStaticPoster();
       this.posterSrc = this.getAttribute("poster-src") || AVIATOR_POSTER_SRC;
 
       this.video.muted = true;
@@ -245,11 +248,15 @@
       this.video.poster = this.posterSrc;
       this.frame.style.backgroundImage =
         'url("' + this.posterSrc + '"), url("' + AVIATOR_INLINE_POSTER + '")';
-      this.video.addEventListener("loadedmetadata", this.onMetadata);
-      this.video.addEventListener("loadeddata", this.onData);
-      this.video.addEventListener("seeked", this.onSeeked);
+      this.frame.classList.toggle("is-static-poster", this.staticPosterMode);
 
-      if (!this.reducedMotion && "IntersectionObserver" in window) {
+      if (!this.staticPosterMode) {
+        this.video.addEventListener("loadedmetadata", this.onMetadata);
+        this.video.addEventListener("loadeddata", this.onData);
+        this.video.addEventListener("seeked", this.onSeeked);
+      }
+
+      if (!this.staticPosterMode && "IntersectionObserver" in window) {
         this.viewportObserver = new IntersectionObserver((entries) => {
           if (entries.some((entry) => entry.isIntersecting)) {
             this.loadMedia();
@@ -257,11 +264,11 @@
           }
         }, { rootMargin: "900px 0px" });
         this.viewportObserver.observe(this);
-      } else if (!this.reducedMotion) {
+      } else if (!this.staticPosterMode) {
         this.loadMedia();
       }
 
-      if (!this.reducedMotion) {
+      if (!this.staticPosterMode) {
         window.addEventListener("scroll", this.requestUpdate, { passive: true });
         window.addEventListener("resize", this.requestUpdate);
       }
@@ -281,6 +288,12 @@
         this.video.removeEventListener("loadedmetadata", this.onMetadata);
         this.video.removeEventListener("loadeddata", this.onData);
         this.video.removeEventListener("seeked", this.onSeeked);
+
+        if (this.mediaLoaded) {
+          this.video.pause();
+          this.video.removeAttribute("src");
+          this.video.load();
+        }
       }
     }
 
@@ -291,7 +304,7 @@
             display: block;
             width: 100%;
             margin: clamp(24px, 3vw, 48px) 0;
-            contain: layout style;
+            contain: layout style paint;
           }
 
           * {
@@ -345,6 +358,10 @@
             opacity: 1;
           }
 
+          .aviator-frame.is-static-poster video {
+            display: none;
+          }
+
           @media (max-width: 700px) {
             :host {
               margin: 22px 0;
@@ -377,6 +394,13 @@
       return Math.min(Math.max(value, min), max);
     }
 
+    shouldUseStaticPoster() {
+      return Boolean(
+        window.matchMedia &&
+        window.matchMedia(AVIATOR_STATIC_MEDIA_QUERY).matches
+      );
+    }
+
     onMetadata() {
       this.video.pause();
       this.update(true);
@@ -396,7 +420,7 @@
     }
 
     loadMedia() {
-      if (this.mediaLoaded || !this.video) return;
+      if (this.staticPosterMode || this.mediaLoaded || !this.video) return;
 
       this.mediaLoaded = true;
       this.video.preload = "auto";
@@ -405,6 +429,7 @@
     }
 
     requestUpdate() {
+      if (this.staticPosterMode) return;
       if (this.ticking) return;
 
       this.ticking = true;
@@ -413,6 +438,12 @@
 
     update(force) {
       if (!this.frame || !this.video) {
+        this.ticking = false;
+        return;
+      }
+
+      if (this.staticPosterMode) {
+        this.frame.style.setProperty("--aviator-progress", "0.4200");
         this.ticking = false;
         return;
       }
@@ -431,6 +462,7 @@
     }
 
     seekToPendingFrame(force) {
+      if (this.staticPosterMode) return;
       if (!this.video || this.video.readyState < 1 || this.seekInProgress) {
         return;
       }

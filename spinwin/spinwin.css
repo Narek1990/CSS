@@ -61,6 +61,8 @@ html body #custom-aviator-scroll-widget {
   display: block !important;
   width: 100% !important;
   max-width: none !important;
+  content-visibility: auto !important;
+  contain-intrinsic-size: 233px !important;
 }
 
 html body .spinwin-fixed-banner-deposit {
@@ -306,6 +308,20 @@ html body .app-ltr-ja3k2i,
 html body .app-ltr-m6gvz8 {
   backdrop-filter: blur(16px) !important;
   -webkit-backdrop-filter: blur(16px) !important;
+}
+
+@media (max-width: 768px), (pointer: coarse) {
+  html body #custom-aviator-scroll-widget {
+    contain: layout style paint !important;
+    content-visibility: auto !important;
+    contain-intrinsic-size: 112px !important;
+  }
+
+  html body .app-ltr-ja3k2i,
+  html body .app-ltr-m6gvz8 {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
 }
 
 html body [data-mj="bottom-nav"] > .app-ltr-m6gvz8,
