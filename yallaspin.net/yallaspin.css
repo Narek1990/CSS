@@ -308,7 +308,7 @@ body * {
   color: transparent !important;
   mask-image: none !important;
   -webkit-mask-image: none !important;
-  background-image: url("https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/yallaspin.net/world-cup.png") !important;
+  background-image: url("https://cdn.jsdelivr.net/gh/Narek1990/CSS@2c6cf65992783390a749b60c0d888fb8e04d4e62/yallaspin.net/world-cup.png") !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
   background-size: contain !important;
