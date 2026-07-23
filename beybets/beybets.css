@@ -1,3 +1,25 @@
 [data-mj="footer-nav"] {
   padding: 29px !important;
 }
+
+/* Hide mobile bottom navigation only while a game/sportsbook player is open. */
+@media screen and (max-width: 1024px) {
+  html body [data-mj="root-layout"]:has(#sportsbook-wrapper) [data-mj="bottom-nav"],
+  html body [data-mj="content-wrapper"]:has(#sportsbook-wrapper) > [data-mj="bottom-nav"],
+  html body [data-mj="page-content"]:has(#sportsbook-wrapper) ~ [data-mj="bottom-nav"],
+  html body [data-mj="page-content"]:has(iframe#firstSportbook) ~ [data-mj="bottom-nav"],
+  html.beybets-game-open body [data-mj="bottom-nav"],
+  body.beybets-game-open [data-mj="bottom-nav"],
+  html body [data-mj="bottom-nav"][data-beybets-game-hidden="true"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+}
