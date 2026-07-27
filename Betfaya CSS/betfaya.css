@@ -51,6 +51,12 @@
   object-fit: contain !important;
 }
 
+@media screen and (max-width: 1024px) {
+  [data-mj="logo"] > img {
+    width: 120% !important;
+  }
+}
+
 /* --- WIDGET SETTINGS --- */
 [data-mj="widget-top-providers-item"] {
   background-color: #918484 !important;
