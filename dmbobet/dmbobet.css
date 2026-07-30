@@ -85,10 +85,6 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
   }
 }
 
-[data-mj="page-content"] {
-  padding-top: 18px;
-}
-
 [data-mj="widget-pages-grid"] {
   padding-top: 25px;
 }
