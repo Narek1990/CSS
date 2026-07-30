@@ -1551,7 +1551,7 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
 })();
 
 (function initDmbobetMobileBottomNavGuard() {
-  const version = 1;
+  const version = 2;
   const previousController = window.__dmbobetMobileBottomNavGuardController;
 
   if (previousController && previousController.version === version) return;
@@ -1563,6 +1563,8 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
   const navSelector = '[data-mj="bottom-nav"]';
   const restoredAttribute = "data-dmbobet-bottom-nav-restored";
   const managedAttribute = "data-dmbobet-bottom-nav-managed";
+  const sportViewClass = "dmbobet-mobile-sport-view";
+  const navHeightVariable = "--dmbobet-mobile-bottom-nav-height";
   const storageKey = "dmbobet:last-mobile-bottom-nav";
   const managedProperties = [
     "display",
@@ -1594,6 +1596,52 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     }
 
     return window.innerWidth <= 991;
+  }
+
+  function isSportView() {
+    const path = String(window.location.pathname || "").toLowerCase();
+    const search = String(window.location.search || "").toLowerCase();
+
+    return Boolean(
+      document.querySelector("#sportsbook-wrapper") ||
+        document.querySelector('[id*="sportsbook" i]') ||
+        document.querySelector('[class*="sportsbook" i]') ||
+        path.includes("/sport") ||
+        path.includes("/world-cup") ||
+        search.includes("sportsbook") ||
+        search.includes("sport%2f") ||
+        search.includes("sport/")
+    );
+  }
+
+  function clearSportInsetState() {
+    if (document.documentElement) {
+      document.documentElement.style.removeProperty(navHeightVariable);
+    }
+
+    if (document.body) {
+      document.body.classList.remove(sportViewClass);
+      document.body.style.removeProperty(navHeightVariable);
+    }
+  }
+
+  function syncSportInset(nav) {
+    if (!document.body) return;
+
+    if (!isMobile()) {
+      clearSportInsetState();
+      return;
+    }
+
+    const rect = nav && typeof nav.getBoundingClientRect === "function"
+      ? nav.getBoundingClientRect()
+      : null;
+    const measuredHeight = rect && rect.height ? Math.ceil(rect.height) : 78;
+    const navHeight = Math.max(64, measuredHeight);
+
+    document.documentElement.style.setProperty(navHeightVariable, `${navHeight}px`);
+    document.body.style.setProperty(navHeightVariable, `${navHeight}px`);
+    document.body.classList.toggle(sportViewClass, isSportView());
   }
 
   function getStoredMarkup() {
@@ -1720,6 +1768,7 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
       .querySelectorAll(`[${managedAttribute}="true"]`)
       .forEach(clearManagedStyles);
     removeRestoredNavs();
+    clearSportInsetState();
   }
 
   function syncBottomNav() {
@@ -1738,11 +1787,18 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
         storeMarkup(nav);
         pinNav(nav);
       });
+      syncSportInset(nativeNavs[nativeNavs.length - 1]);
       return;
     }
 
     const restoredNav = restoreCachedNav();
-    if (restoredNav) pinNav(restoredNav);
+    if (restoredNav) {
+      pinNav(restoredNav);
+      syncSportInset(restoredNav);
+      return;
+    }
+
+    syncSportInset(null);
   }
 
   function scheduleSync() {

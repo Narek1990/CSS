@@ -698,6 +698,39 @@ nav[data-mj="header-nav-list"] .app-ltr-8zi5g1 > [data-mj="header-nav-item"]:fir
     padding-bottom: 8px !important;
     padding-block-end: 8px !important;
   }
+
+  html body.dmbobet-mobile-sport-view,
+  html body:has(#sportsbook-wrapper) {
+    --dmbobet-mobile-sport-bottom-space: calc(var(--dmbobet-mobile-bottom-nav-height, 78px) + env(safe-area-inset-bottom, 0px) + 16px);
+  }
+
+  html body.dmbobet-mobile-sport-view main[data-mj="page-content"],
+  html body.dmbobet-mobile-sport-view [data-mj="page-content"],
+  html body main[data-mj="page-content"]:has(#sportsbook-wrapper),
+  html body:has(#sportsbook-wrapper) main[data-mj="page-content"],
+  html body.dmbobet-mobile-sport-view #sportsbook-wrapper,
+  html body #sportsbook-wrapper {
+    padding-bottom: var(--dmbobet-mobile-sport-bottom-space, calc(var(--dmbobet-mobile-bottom-nav-height, 78px) + env(safe-area-inset-bottom, 0px) + 16px)) !important;
+    scroll-padding-bottom: var(--dmbobet-mobile-sport-bottom-space, calc(var(--dmbobet-mobile-bottom-nav-height, 78px) + env(safe-area-inset-bottom, 0px) + 16px)) !important;
+    box-sizing: border-box !important;
+  }
+
+  html body.dmbobet-mobile-sport-view #sportsbook-wrapper::after,
+  html body #sportsbook-wrapper::after {
+    content: "" !important;
+    display: block !important;
+    flex: 0 0 var(--dmbobet-mobile-sport-bottom-space, calc(var(--dmbobet-mobile-bottom-nav-height, 78px) + env(safe-area-inset-bottom, 0px) + 16px)) !important;
+    width: 100% !important;
+    height: var(--dmbobet-mobile-sport-bottom-space, calc(var(--dmbobet-mobile-bottom-nav-height, 78px) + env(safe-area-inset-bottom, 0px) + 16px)) !important;
+    pointer-events: none !important;
+  }
+
+  html body.dmbobet-mobile-sport-view #sportsbook-wrapper [class*="betslip" i],
+  html body.dmbobet-mobile-sport-view #sportsbook-wrapper [class*="bet-slip" i],
+  html body.dmbobet-mobile-sport-view #sportsbook-wrapper [id*="betslip" i],
+  html body.dmbobet-mobile-sport-view #sportsbook-wrapper [id*="bet-slip" i] {
+    bottom: calc(var(--dmbobet-mobile-bottom-nav-height, 78px) + env(safe-area-inset-bottom, 0px)) !important;
+  }
 }
 
 [data-mj="widget-game-card"] .app-ltr-z7vkcd .app-ltr-19aa1rc > span,
