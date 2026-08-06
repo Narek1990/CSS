@@ -17,3 +17,26 @@ span.app-rtl-1phvdj0 {
   line-height: 0 !important;
   overflow: visible !important;
 }
+
+.donebets-vip-status-image {
+  display: block !important;
+  width: min(100%, 360px) !important;
+  height: auto !important;
+  margin: 8px auto 0 !important;
+  object-fit: contain !important;
+  border-radius: 14px !important;
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.28)) !important;
+}
+
+[data-donebets-vip-status-ready="true"] {
+  overflow: visible !important;
+}
+
+@media (max-width: 767px) {
+  .donebets-vip-status-image {
+    width: 100% !important;
+    max-width: 280px !important;
+    margin-top: 6px !important;
+    border-radius: 10px !important;
+  }
+}
