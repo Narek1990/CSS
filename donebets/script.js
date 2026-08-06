@@ -51,8 +51,8 @@
     return element && element.tagName === "P" && normalizeText(element) === "My Status";
   }
 
-  function isTestStatusValue(element) {
-    return element && element.tagName === "P" && normalizeText(element) === "Test";
+  function isVipStatusValue(element) {
+    return element && element.tagName === "P" && normalizeText(element) === "VIP";
   }
 
   function enhanceVipStatusCard(card) {
@@ -69,7 +69,7 @@
         label = paragraph;
       }
 
-      if (!value && isTestStatusValue(paragraph)) {
+      if (!value && isVipStatusValue(paragraph)) {
         value = paragraph;
       }
     });
@@ -105,7 +105,7 @@
     root.querySelectorAll("p").forEach(function (paragraph) {
       var text = normalizeText(paragraph);
 
-      if ((text === "My Status" || text === "Test") && paragraph.parentElement) {
+      if ((text === "My Status" || text === "VIP") && paragraph.parentElement) {
         enhanceVipStatusCard(paragraph.parentElement);
       }
     });
