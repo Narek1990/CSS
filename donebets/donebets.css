@@ -20,23 +20,39 @@ span.app-rtl-1phvdj0 {
 
 .donebets-vip-status-image {
   display: block !important;
-  width: min(100%, 360px) !important;
+  width: 100% !important;
+  max-width: 420px !important;
   height: auto !important;
-  margin: 8px auto 0 !important;
+  margin: 0 auto !important;
   object-fit: contain !important;
   border-radius: 14px !important;
   filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.28)) !important;
 }
 
 [data-donebets-vip-status-ready="true"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: min(100%, 440px) !important;
+  max-width: calc(100vw - 32px) !important;
+  min-width: 0 !important;
+  margin: 18px auto !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  background: transparent !important;
   overflow: visible !important;
 }
 
 @media (max-width: 767px) {
+  [data-donebets-vip-status-ready="true"] {
+    width: min(100%, 430px) !important;
+    max-width: calc(100vw - 28px) !important;
+    margin: 14px auto 18px !important;
+  }
+
   .donebets-vip-status-image {
     width: 100% !important;
-    max-width: 280px !important;
-    margin-top: 6px !important;
+    max-width: 420px !important;
     border-radius: 10px !important;
   }
 }

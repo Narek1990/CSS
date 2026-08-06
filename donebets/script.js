@@ -87,6 +87,10 @@
     image.decoding = "async";
     image.loading = "eager";
 
+    if (label.parentNode) {
+      label.parentNode.removeChild(label);
+    }
+
     if (value.parentNode) {
       value.parentNode.replaceChild(image, value);
     }
