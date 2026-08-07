@@ -160,8 +160,9 @@ body > #root,
 }
 
 [data-mj="register-button"].myluck-3d-button {
-  --myluck-register-width: clamp(154px, 11vw, 186px);
-  --myluck-register-height: 50px;
+  --myluck-register-width: clamp(176px, 12vw, 212px);
+  --myluck-register-height: 58px;
+  --myluck-register-radius: 18px;
   position: relative !important;
   isolation: isolate !important;
   width: var(--myluck-register-width) !important;
@@ -169,9 +170,9 @@ body > #root,
   height: var(--myluck-register-height) !important;
   min-height: var(--myluck-register-height) !important;
   padding: 0 !important;
-  overflow: visible !important;
+  overflow: hidden !important;
   border: 0 !important;
-  border-radius: 999px !important;
+  border-radius: var(--myluck-register-radius) !important;
   color: #fff4ff !important;
   background: transparent !important;
   box-shadow: none !important;
@@ -197,7 +198,8 @@ body > #root,
   display: block !important;
   width: 100% !important;
   height: 100% !important;
-  overflow: visible !important;
+  border-radius: inherit !important;
+  overflow: hidden !important;
   pointer-events: none !important;
 }
 
@@ -207,14 +209,14 @@ body > #root,
   z-index: 0 !important;
   border-radius: inherit !important;
   background:
-    radial-gradient(circle at 50% 0%, rgba(249, 198, 254, 0.42), transparent 38%),
-    linear-gradient(180deg, #34325d 0%, #17162b 54%, #090912 100%) !important;
+    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.22), transparent 36%),
+    radial-gradient(circle at 70% 50%, rgba(249, 198, 254, 0.2), transparent 34%),
+    linear-gradient(180deg, rgba(35, 31, 54, 0.96) 0%, rgba(17, 17, 28, 0.98) 100%) !important;
   box-shadow:
-    inset 0 2px 0 rgba(255, 255, 255, 0.25),
-    inset 0 -5px 0 rgba(0, 0, 0, 0.34),
-    0 7px 0 #070711,
-    0 18px 34px rgba(0, 0, 0, 0.38),
-    0 0 24px rgba(249, 198, 254, 0.28) !important;
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.26),
+    0 10px 22px rgba(0, 0, 0, 0.28),
+    0 0 20px rgba(249, 198, 254, 0.2) !important;
 }
 
 [data-mj="register-button"].myluck-3d-button .myluck-3d-splash {
@@ -228,7 +230,7 @@ body > #root,
   overflow: visible !important;
   opacity: 0 !important;
   stroke: #f9c6fe !important;
-  transform: translate(-50%, -50%) scale(0.58) !important;
+  transform: translate(-50%, -50%) scale(0.42) !important;
   transition: opacity 0.18s ease !important;
 }
 
@@ -250,12 +252,12 @@ body > #root,
 
 [data-mj="register-button"].myluck-3d-button .myluck-3d-path {
   position: absolute !important;
-  inset: 4px 6px !important;
-  width: calc(100% - 12px) !important;
-  height: calc(100% - 8px) !important;
+  inset: 7px 9px !important;
+  width: calc(100% - 18px) !important;
+  height: calc(100% - 14px) !important;
   pointer-events: none !important;
   overflow: visible !important;
-  stroke: rgba(255, 255, 255, 0.74) !important;
+  stroke: rgba(255, 255, 255, 0.72) !important;
 }
 
 [data-mj="register-button"].myluck-3d-button .myluck-3d-path path {
@@ -266,7 +268,7 @@ body > #root,
 
 [data-mj="register-button"].myluck-3d-button .myluck-3d-outline {
   position: absolute !important;
-  inset: 4px 6px !important;
+  inset: 7px 9px !important;
   border-radius: inherit !important;
   border: 1px solid rgba(249, 198, 254, 0.28) !important;
   box-shadow:
@@ -284,7 +286,7 @@ body > #root,
   width: 100% !important;
   height: 100% !important;
   color: #ffffff !important;
-  font-size: 15px !important;
+  font-size: 15.5px !important;
   font-weight: 900 !important;
   letter-spacing: 0.02em !important;
   text-transform: none !important;
@@ -309,17 +311,20 @@ body > #root,
 
 [data-mj="register-button"].myluck-3d-button .myluck-3d-state-2 {
   position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
   opacity: 0 !important;
   pointer-events: none !important;
+  transform: translate(-50%, -50%) !important;
 }
 
 [data-mj="register-button"].myluck-3d-button .myluck-3d-icon {
   position: relative !important;
-  width: 22px !important;
+  width: 30px !important;
   height: 22px !important;
-  margin: 0 9px !important;
+  margin: 0 0 0 9px !important;
   color: #f9c6fe !important;
-  overflow: hidden !important;
+  overflow: visible !important;
   flex: 0 0 auto !important;
 }
 
@@ -335,18 +340,18 @@ body > #root,
 }
 
 [data-mj="register-button"].myluck-3d-button .myluck-3d-icon > span {
-  left: 2px !important;
+  left: 1px !important;
   top: 10px !important;
-  width: 18px !important;
+  width: 24px !important;
   height: 3px !important;
 }
 
 [data-mj="register-button"].myluck-3d-button .myluck-3d-icon > span::before,
 [data-mj="register-button"].myluck-3d-button .myluck-3d-icon > span::after {
   right: 0 !important;
-  width: 9px !important;
+  width: 11px !important;
   height: 3px !important;
-  transform-origin: 8px 50% !important;
+  transform-origin: 10px 50% !important;
 }
 
 [data-mj="register-button"].myluck-3d-button .myluck-3d-icon > span::before {
@@ -366,11 +371,10 @@ body > #root,
 
 [data-mj="register-button"].myluck-3d-button:hover .myluck-3d-bg {
   box-shadow:
-    inset 0 2px 0 rgba(255, 255, 255, 0.32),
-    inset 0 -5px 0 rgba(0, 0, 0, 0.3),
-    0 10px 0 #070711,
-    0 23px 42px rgba(0, 0, 0, 0.42),
-    0 0 32px rgba(249, 198, 254, 0.38) !important;
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.24),
+    0 13px 26px rgba(0, 0, 0, 0.34),
+    0 0 26px rgba(249, 198, 254, 0.3) !important;
 }
 
 [data-mj="register-button"].myluck-3d-button:hover .myluck-3d-splash {
