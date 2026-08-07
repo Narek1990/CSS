@@ -1,0 +1,63 @@
+html,
+body {
+  min-height: 100% !important;
+  background-color: #06111a !important;
+  background-image: url("./assets/body-background.png") !important;
+  background-repeat: no-repeat !important;
+  background-position: center top !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+}
+
+body {
+  position: relative !important;
+  isolation: isolate !important;
+}
+
+body::before {
+  content: "" !important;
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  background:
+    linear-gradient(180deg, rgba(3, 8, 15, 0.18), rgba(3, 8, 15, 0.46)),
+    url("./assets/body-background.png") center top / cover no-repeat !important;
+}
+
+body > #root,
+#root,
+[data-mj="root-layout"],
+[data-mj="content-wrapper"],
+main[data-mj="page-content"] {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+body > #root,
+#root {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+[data-mj="header"],
+[data-mj="custom-header"],
+[data-mj="footer"] {
+  background-color: rgba(3, 8, 15, 0.72) !important;
+  backdrop-filter: blur(12px) saturate(1.12) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.12) !important;
+}
+
+@media (max-width: 767px) {
+  html,
+  body {
+    background-position: 38% top !important;
+    background-attachment: scroll !important;
+  }
+
+  body::before {
+    background:
+      linear-gradient(180deg, rgba(3, 8, 15, 0.2), rgba(3, 8, 15, 0.52)),
+      url("./assets/body-background.png") 38% top / cover no-repeat !important;
+  }
+}
