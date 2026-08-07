@@ -159,6 +159,15 @@ body > #root,
   transform: translateX(-50%) scaleX(1) !important;
 }
 
+section[data-mj="widget-game-slider"] [data-mj="widget-game-slider-header"] > p {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  font-size: 24px !important;
+  padding-bottom: 13px !important;
+  font-family: cursive !important;
+}
+
 section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) {
   margin-top: 27% !important;
   width: 80% !important;
