@@ -48,6 +48,15 @@ body > #root,
   -webkit-backdrop-filter: blur(12px) saturate(1.12) !important;
 }
 
+[data-mj="header-nav"] {
+  position: absolute !important;
+  left: 16% !important;
+  bottom: 3% !important;
+  z-index: 99999999999 !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
 @media (max-width: 767px) {
   html,
   body {
