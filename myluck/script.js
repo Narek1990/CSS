@@ -3,6 +3,7 @@
 
   var BUTTON_SELECTOR = '[data-mj="register-button"]';
   var READY_ATTR = "data-myluck-3d-register-ready";
+  var OVERLAY_ATTR = "data-myluck-3d-enhancement";
 
   function escapeHtml(value) {
     return String(value)
@@ -31,7 +32,10 @@
 
   function getRegisterButtonMarkup() {
     return (
-      '<span class="myluck-3d-bg" aria-hidden="true"></span>' +
+      '<span class="myluck-3d-overlay" ' +
+      OVERLAY_ATTR +
+      '="true" aria-hidden="true">' +
+      '<span class="myluck-3d-bg"></span>' +
       '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 342 208" height="208" width="342" class="myluck-3d-splash" aria-hidden="true" focusable="false">' +
       '<path stroke-linecap="round" stroke-width="3" d="M54.1054 99.7837C54.1054 99.7837 40.0984 90.7874 26.6893 97.6362C13.2802 104.485 1.5 97.6362 1.5 97.6362"></path>' +
       '<path stroke-linecap="round" stroke-width="3" d="M285.273 99.7841C285.273 99.7841 299.28 90.7879 312.689 97.6367C326.098 104.486 340.105 95.4893 340.105 95.4893"></path>' +
@@ -60,8 +64,15 @@
       createLetters("JoinNow") +
       "</span>" +
       "</span>" +
+      "</span>" +
       "</span>"
     );
+  }
+
+  function createEnhancement() {
+    var template = document.createElement("template");
+    template.innerHTML = getRegisterButtonMarkup();
+    return template.content.firstElementChild;
   }
 
   function enhanceButton(button) {
@@ -71,7 +82,7 @@
 
     if (
       button.getAttribute(READY_ATTR) === "true" &&
-      button.querySelector("[data-myluck-3d-inner='true']")
+      button.querySelector("[" + OVERLAY_ATTR + "='true']")
     ) {
       return;
     }
@@ -86,7 +97,10 @@
     button.classList.add("myluck-3d-button");
     button.setAttribute(READY_ATTR, "true");
     button.setAttribute("aria-label", "Join now");
-    button.innerHTML = getRegisterButtonMarkup();
+
+    if (!button.querySelector("[" + OVERLAY_ATTR + "='true']")) {
+      button.appendChild(createEnhancement());
+    }
   }
 
   function enhanceAll() {

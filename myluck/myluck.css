@@ -184,6 +184,23 @@ body > #root,
   box-sizing: border-box !important;
 }
 
+[data-mj="register-button"].myluck-3d-button > :not(.myluck-3d-overlay) {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+[data-mj="register-button"].myluck-3d-button .myluck-3d-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 3 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: visible !important;
+  pointer-events: none !important;
+}
+
 [data-mj="register-button"].myluck-3d-button .myluck-3d-bg {
   position: absolute !important;
   inset: 0 !important;
