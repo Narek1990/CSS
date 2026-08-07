@@ -61,7 +61,7 @@ body > #root,
 [data-mj="header-nav"] {
   position: absolute !important;
   left: 16% !important;
-  bottom: 19% !important;
+  bottom: 2% !important;
   z-index: 99999999999 !important;
   background-color: transparent !important;
   background-image: none !important;
@@ -111,7 +111,7 @@ body > #root,
 
 [data-mj="header-nav-item"] > a p {
   color: currentColor !important;
-  font: inherit !important;
+  font-size: 16px !important;
   margin: 0 !important;
   white-space: nowrap !important;
 }
