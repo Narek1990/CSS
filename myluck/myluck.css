@@ -285,10 +285,6 @@ section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt=
   margin-left: 12% !important;
 }
 
-section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) [data-mj="widget-game-slider-header"] {
-  padding-left: 42% !important;
-}
-
 section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) [data-mj="widget-game-slider-header"] p {
   font-size: 24px !important;
   padding-bottom: 13px !important;
