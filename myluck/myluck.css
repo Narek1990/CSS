@@ -152,6 +152,21 @@ body > #root,
   transform: translateX(-50%) scaleX(1) !important;
 }
 
+section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) {
+  margin-top: 27% !important;
+  width: 80% !important;
+}
+
+section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) [data-mj="widget-game-slider-container"] {
+  margin-left: 12% !important;
+}
+
+section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) .app-ltr-1dzjkmt,
+section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) .app-rtl-1dzjkmt,
+section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) [data-mj="widget-game-slider-header"] > div:last-child {
+  display: none !important;
+}
+
 @media (max-width: 767px) {
   html,
   body {
