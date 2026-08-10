@@ -5,6 +5,12 @@
   var HIGH_SCORES_HIDDEN_ATTR = "data-myluck-highscores-hidden";
   var HIGH_SCORES_EVENTS_ATTR = "data-myluck-highscores-events";
   var HIGH_SCORES_SIGNATURE_ATTR = "data-myluck-highscores-signature";
+  var HOME_BANNER_READY_ATTR = "data-myluck-home-banner-ready";
+  var scriptSrc =
+    (document.currentScript && document.currentScript.src) ||
+    "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/myluck/script.js";
+  var ASSET_BASE_URL = scriptSrc.replace(/\/script\.js(?:\?.*)?$/, "/");
+  var HOME_BANNER_SRC = ASSET_BASE_URL + "assets/home-banner.gif";
 
   var highScoresHistoryHooked = false;
   var highScoresState = {
@@ -453,6 +459,32 @@
     );
   }
 
+  function replaceHomeBannerImages() {
+    document
+      .querySelectorAll(
+        '[data-mj="widget-banner"] [data-mj="widget-banner-link"] img, [data-mj="widget-banner"] img[src*="ea665672-bd41-4e71-8a6a-6d4b346f3a0b"]'
+      )
+      .forEach(function (image) {
+        if (!image || image.nodeType !== 1) {
+          return;
+        }
+
+        if (
+          image.getAttribute(HOME_BANNER_READY_ATTR) === "true" &&
+          image.getAttribute("src") === HOME_BANNER_SRC
+        ) {
+          return;
+        }
+
+        image.setAttribute(HOME_BANNER_READY_ATTR, "true");
+        image.setAttribute("src", HOME_BANNER_SRC);
+        image.setAttribute("alt", image.getAttribute("alt") || "home");
+        image.setAttribute("loading", "eager");
+        image.setAttribute("decoding", "async");
+        image.setAttribute("fetchpriority", "high");
+      });
+  }
+
   function isHighScoresContext() {
     var path = (window.location.pathname || "").toLowerCase();
 
@@ -858,6 +890,7 @@
   }
 
   function runEnhancements() {
+    replaceHomeBannerImages();
     renderHighScoresPage(false);
   }
 

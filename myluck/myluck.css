@@ -40,6 +40,13 @@ body > #root,
   z-index: 1 !important;
 }
 
+[data-mj="widget-banner"] img[data-myluck-home-banner-ready="true"] {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
 [data-mj="header"],
 [data-mj="custom-header"],
 [data-mj="footer"] {
