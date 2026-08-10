@@ -508,7 +508,6 @@ section[data-mj="widget-game-slider"] [data-mj="widget-game-slider-header"] > p 
 }
 
 section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) {
-  margin-top: 27% !important;
   width: 80% !important;
 }
 
