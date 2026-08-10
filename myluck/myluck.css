@@ -43,7 +43,6 @@ body > #root,
 [data-mj="header"],
 [data-mj="custom-header"],
 [data-mj="footer"] {
-  background-color: rgba(3, 8, 15, 0.72) !important;
   backdrop-filter: blur(12px) saturate(1.12) !important;
   -webkit-backdrop-filter: blur(12px) saturate(1.12) !important;
 }
