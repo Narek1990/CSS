@@ -214,6 +214,8 @@ html body .app-ltr-79elbk:has([data-mj="game-catalog-game-search"]),
 html body .app-rtl-79elbk:has([data-mj="game-catalog-game-search"]),
 html body .app-ltr-1d93vvc:has([data-mj="game-catalog-game-search"]),
 html body .app-rtl-1d93vvc:has([data-mj="game-catalog-game-search"]) {
+  display: flex !important;
+  align-items: center !important;
   height: 32px !important;
   min-height: 32px !important;
   border-radius: 9px !important;
@@ -227,24 +229,42 @@ html body .app-rtl-1d93vvc:has([data-mj="game-catalog-game-search"]) {
 
 html body .app-ltr-rnjuc1,
 html body .app-rtl-rnjuc1 {
-  width: 28px !important;
-  min-width: 28px !important;
+  position: static !important;
+  inset: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 34px !important;
+  width: 34px !important;
+  min-width: 34px !important;
   height: 32px !important;
+  margin: 0 !important;
+  padding: 0 !important;
   color: rgba(162, 168, 211, 0.76) !important;
+  pointer-events: none !important;
 }
 
 html body .app-ltr-rnjuc1 svg,
-html body .app-rtl-rnjuc1 svg,
+html body .app-rtl-rnjuc1 svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+
 html body .app-ltr-b7repu:has([data-mj="game-catalog-game-search"]) svg,
 html body .app-rtl-b7repu:has([data-mj="game-catalog-game-search"]) svg {
-  width: 12px !important;
-  height: 12px !important;
+  width: 14px !important;
+  height: 14px !important;
 }
 
 html body [data-mj="game-catalog-game-search"] {
+  position: relative !important;
+  flex: 1 1 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
   height: 32px !important;
   min-height: 32px !important;
-  padding: 0 10px 0 0 !important;
+  margin: 0 !important;
+  padding: 0 12px 0 0 !important;
   color: rgba(232, 235, 255, 0.92) !important;
   background: transparent !important;
   border: 0 !important;
