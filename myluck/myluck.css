@@ -91,9 +91,30 @@ html body [data-mj="game-catalog-right-section"] [style*="rgb(4, 15, 35)"] {
 }
 
 html body [data-mj="game-catalog-category-slider"] {
+  position: static !important;
+  inset: auto !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  z-index: auto !important;
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
+}
+
+html body [data-mj="game-catalog-right-section"] div:has([data-mj="game-catalog-category-slider"]),
+html body [data-mj="game-catalog-right-section"] div:has([data-mj="game-catalog-game-search"]),
+html body [data-mj="game-catalog-right-section"] div:has(> [data-mj="game-catalog-category-slider"]),
+html body [data-mj="game-catalog-right-section"] div:has(> [data-mj="game-catalog-game-search"]) {
+  position: static !important;
+  inset: auto !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  z-index: auto !important;
+  transform: none !important;
 }
 
 html body [data-mj="game-catalog-category-next"],
@@ -197,6 +218,13 @@ html body [data-mj="game-catalog-category-slider-item"].app-rtl-lheo0l > span {
 
 html body .app-ltr-b7repu:has([data-mj="game-catalog-game-search"]),
 html body .app-rtl-b7repu:has([data-mj="game-catalog-game-search"]) {
+  position: static !important;
+  inset: auto !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  z-index: auto !important;
   display: flex !important;
   align-items: center !important;
   gap: 10px !important;
