@@ -7,8 +7,6 @@
   var HIGH_SCORES_SIGNATURE_ATTR = "data-myluck-highscores-signature";
   var HOME_BANNER_READY_ATTR = "data-myluck-home-banner-ready";
   var BODY_VIDEO_READY_ATTR = "data-myluck-video-background-ready";
-  var WHEEL_CONTAINER_POPUP_ATTR = "data-myluck-wheel-container-popup";
-  var WHEEL_CONTAINER_CLOSE_ATTR = "data-myluck-wheel-container-close";
   var scriptSrc =
     (document.currentScript && document.currentScript.src) ||
     "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/myluck/script.js";
@@ -17,7 +15,6 @@
   var BODY_VIDEO_SRC = ASSET_BASE_URL + "assets/background_2.mp4";
 
   var highScoresHistoryHooked = false;
-  var wheelContainerEventsHooked = false;
   var highScoresState = {
     tab: "winners",
     period: "all",
@@ -547,112 +544,6 @@
     return document.querySelector('main[data-mj="page-content"]');
   }
 
-  function isWheelPath() {
-    return (window.location.pathname || "").toLowerCase().indexOf("/wheel") !== -1;
-  }
-
-  function getWheelContainer(main) {
-    return (main || document).querySelector('[class*="wheelWrapper_wheelContainer"]');
-  }
-
-  function getLocaleHomePath() {
-    var path = window.location.pathname || "/en/";
-    var parts = path.split("/").filter(Boolean);
-    var locale = parts[0] || "en";
-
-    return "/" + locale + "/";
-  }
-
-  function getCloseIconMarkup() {
-    return (
-      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
-      '<path d="M6.4 5 5 6.4l5.6 5.6L5 17.6 6.4 19l5.6-5.6 5.6 5.6 1.4-1.4-5.6-5.6L19 6.4 17.6 5 12 10.6 6.4 5Z" fill="currentColor"></path>' +
-      "</svg>"
-    );
-  }
-
-  function ensureWheelContainerClose(main) {
-    var closeButton = document.querySelector("[" + WHEEL_CONTAINER_CLOSE_ATTR + ']');
-
-    if (!main || closeButton) {
-      return;
-    }
-
-    closeButton = document.createElement("button");
-    closeButton.type = "button";
-    closeButton.className = "myluck-wheel-container-close";
-    closeButton.setAttribute(WHEEL_CONTAINER_CLOSE_ATTR, "true");
-    closeButton.setAttribute("aria-label", "Close wheel");
-    closeButton.innerHTML = getCloseIconMarkup();
-    main.appendChild(closeButton);
-  }
-
-  function restoreWheelContainerPopup() {
-    var activeContainer = document.querySelector("[" + WHEEL_CONTAINER_POPUP_ATTR + ']');
-    var closeButton = document.querySelector("[" + WHEEL_CONTAINER_CLOSE_ATTR + ']');
-
-    if (document.documentElement) {
-      document.documentElement.classList.remove("myluck-wheel-container-popup-active");
-    }
-
-    if (document.body) {
-      document.body.classList.remove("myluck-wheel-container-popup-active");
-    }
-
-    if (activeContainer) {
-      activeContainer.removeAttribute(WHEEL_CONTAINER_POPUP_ATTR);
-    }
-
-    if (closeButton && closeButton.parentNode) {
-      closeButton.parentNode.removeChild(closeButton);
-    }
-  }
-
-  function enhanceWheelContainerPopup() {
-    var main = getPageContent();
-    var container = main && getWheelContainer(main);
-
-    if (!main || !container || !isWheelPath()) {
-      restoreWheelContainerPopup();
-      return;
-    }
-
-    if (document.documentElement) {
-      document.documentElement.classList.add("myluck-wheel-container-popup-active");
-    }
-
-    if (document.body) {
-      document.body.classList.add("myluck-wheel-container-popup-active");
-    }
-
-    container.setAttribute(WHEEL_CONTAINER_POPUP_ATTR, "true");
-    ensureWheelContainerClose(main);
-  }
-
-  function hookWheelContainerEvents() {
-    if (wheelContainerEventsHooked) {
-      return;
-    }
-
-    wheelContainerEventsHooked = true;
-
-    document.addEventListener("click", function (event) {
-      var target =
-        event.target && typeof event.target.closest === "function"
-          ? event.target
-          : null;
-      var closeButton =
-        target && target.closest("[" + WHEEL_CONTAINER_CLOSE_ATTR + "]");
-
-      if (!closeButton) {
-        return;
-      }
-
-      event.preventDefault();
-      window.location.href = getLocaleHomePath();
-    });
-  }
-
   function getCurrentHighScoresRows() {
     return (
       HIGH_SCORES_ROWS_BY_PERIOD[highScoresState.period] ||
@@ -1028,7 +919,7 @@
       window.history[method] = function () {
         var result = original.apply(this, arguments);
         window.setTimeout(function () {
-          runEnhancements();
+          renderHighScoresPage(false);
         }, 0);
         return result;
       };
@@ -1036,7 +927,7 @@
 
     window.addEventListener("popstate", function () {
       window.setTimeout(function () {
-        runEnhancements();
+        renderHighScoresPage(false);
       }, 0);
     });
   }
@@ -1045,12 +936,10 @@
     ensureVideoBackground();
     replaceHomeBannerImages();
     renderHighScoresPage(false);
-    enhanceWheelContainerPopup();
   }
 
   function start() {
     hookHighScoresNavigation();
-    hookWheelContainerEvents();
     runEnhancements();
 
     var scheduled = false;
