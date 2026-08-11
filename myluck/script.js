@@ -7,15 +7,6 @@
   var HIGH_SCORES_SIGNATURE_ATTR = "data-myluck-highscores-signature";
   var HOME_BANNER_READY_ATTR = "data-myluck-home-banner-ready";
   var BODY_VIDEO_READY_ATTR = "data-myluck-video-background-ready";
-  var WHEEL_READY_ATTR = "data-myluck-wheel-modal-ready";
-  var WHEEL_CHROME_ATTR = "data-myluck-wheel-modal-chrome";
-  var WHEEL_PREVIOUS_PATH_KEY = "myluck-wheel-previous-path";
-  var WHEEL_IFRAME_PARAM = "myluckWheelFrame";
-  var WHEEL_IFRAME_NAME = "myluck-wheel-frame";
-  var WHEEL_IFRAME_MODAL_ATTR = "data-myluck-wheel-iframe-modal";
-  var WHEEL_IFRAME_SRC_ATTR = "data-myluck-wheel-iframe-src";
-  var WHEEL_ROUTE_MODAL_ATTR = "data-myluck-wheel-route-modal";
-  var WHEEL_ROUTE_CLOSE_ATTR = "data-myluck-wheel-route-close";
   var scriptSrc =
     (document.currentScript && document.currentScript.src) ||
     "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/myluck/script.js";
@@ -24,11 +15,6 @@
   var BODY_VIDEO_SRC = ASSET_BASE_URL + "assets/background_2.mp4";
 
   var highScoresHistoryHooked = false;
-  var routeHistoryHooked = false;
-  var wheelEventsHooked = false;
-  var wheelLinkEventsHooked = false;
-  var wheelModalOpenedInPlace = false;
-  var wheelIframeSrcOverride = "";
   var highScoresState = {
     tab: "winners",
     period: "all",
@@ -558,333 +544,6 @@
     return document.querySelector('main[data-mj="page-content"]');
   }
 
-  function isWheelContext() {
-    var path = (window.location.pathname || "").toLowerCase();
-
-    if (path.indexOf("/wheel") !== -1) {
-      return true;
-    }
-
-    return !!document.querySelector(
-      'a[href*="/wheel"].active-link, a[href*="/wheel"][aria-current="page"]'
-    );
-  }
-
-  function isWheelFrameContext() {
-    if (window.name === WHEEL_IFRAME_NAME) {
-      return true;
-    }
-
-    try {
-      return (
-        new URLSearchParams(window.location.search || "").get(WHEEL_IFRAME_PARAM) ===
-        "1"
-      );
-    } catch (error) {
-      return (window.location.search || "").indexOf(WHEEL_IFRAME_PARAM + "=1") !== -1;
-    }
-  }
-
-  function setWheelFrameMode(active) {
-    if (document.documentElement) {
-      document.documentElement.classList.toggle("myluck-wheel-frame-mode", !!active);
-    }
-
-    if (document.body) {
-      document.body.classList.toggle("myluck-wheel-frame-mode", !!active);
-    }
-  }
-
-  function rememberNonWheelPath() {
-    var path = window.location.pathname || "/";
-    var value;
-
-    if (path.toLowerCase().indexOf("/wheel") !== -1) {
-      return;
-    }
-
-    value = path + (window.location.search || "") + (window.location.hash || "");
-
-    try {
-      window.sessionStorage.setItem(WHEEL_PREVIOUS_PATH_KEY, value);
-    } catch (error) {
-      /* noop */
-    }
-  }
-
-  function getWheelReturnPath() {
-    var saved = "";
-    var path = window.location.pathname || "/";
-    var parts = path.split("/").filter(Boolean);
-    var locale = parts[0] || "en";
-
-    try {
-      saved = window.sessionStorage.getItem(WHEEL_PREVIOUS_PATH_KEY) || "";
-    } catch (error) {
-      saved = "";
-    }
-
-    if (saved && saved.charAt(0) === "/" && saved.toLowerCase().indexOf("/wheel") === -1) {
-      return saved;
-    }
-
-    return "/" + locale + "/";
-  }
-
-  function getCloseIconMarkup() {
-    return (
-      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
-      '<path d="M6.4 5 5 6.4l5.6 5.6L5 17.6 6.4 19l5.6-5.6 5.6 5.6 1.4-1.4-5.6-5.6L19 6.4 17.6 5 12 10.6 6.4 5Z" fill="currentColor"></path>' +
-      "</svg>"
-    );
-  }
-
-  function getWheelIframeSrc(sourceHref) {
-    var url;
-    var source = sourceHref || wheelIframeSrcOverride || window.location.href;
-
-    try {
-      url = new URL(source, window.location.origin);
-      url.searchParams.delete(WHEEL_IFRAME_PARAM);
-      return url.href;
-    } catch (error) {
-      return (window.location.pathname || "/en/wheel") + (window.location.hash || "");
-    }
-  }
-
-  function ensureWheelIframeModal() {
-    var modal = document.querySelector("[" + WHEEL_IFRAME_MODAL_ATTR + ']');
-    var iframe;
-    var src = getWheelIframeSrc();
-
-    if (!document.body) {
-      return;
-    }
-
-    if (!modal) {
-      modal = document.createElement("div");
-      modal.className = "myluck-wheel-iframe-modal";
-      modal.setAttribute(WHEEL_IFRAME_MODAL_ATTR, "true");
-      modal.innerHTML =
-        '<div class="myluck-wheel-iframe-dialog" role="dialog" aria-modal="true" aria-label="MyLuck Wheel">' +
-        '<button type="button" class="myluck-wheel-modal-close" aria-label="Close wheel">' +
-        getCloseIconMarkup() +
-        "</button>" +
-        '<iframe class="myluck-wheel-iframe" name="' +
-        WHEEL_IFRAME_NAME +
-        '" title="MyLuck Wheel" loading="eager" allow="autoplay; fullscreen; clipboard-write"></iframe>' +
-        "</div>";
-      document.body.appendChild(modal);
-    }
-
-    iframe = modal.querySelector(".myluck-wheel-iframe");
-
-    if (iframe && iframe.getAttribute(WHEEL_IFRAME_SRC_ATTR) !== src) {
-      iframe.setAttribute(WHEEL_IFRAME_SRC_ATTR, src);
-      iframe.src = src;
-    }
-  }
-
-  function closeWheelModal() {
-    window.location.href = getWheelReturnPath();
-  }
-
-  function ensureWheelRouteModalChrome() {
-    var closeButton = document.querySelector("[" + WHEEL_ROUTE_CLOSE_ATTR + ']');
-
-    if (!document.body || closeButton) {
-      return;
-    }
-
-    closeButton = document.createElement("button");
-    closeButton.type = "button";
-    closeButton.className = "myluck-wheel-route-modal-close";
-    closeButton.setAttribute(WHEEL_ROUTE_CLOSE_ATTR, "true");
-    closeButton.setAttribute("aria-label", "Close wheel");
-    closeButton.innerHTML = getCloseIconMarkup();
-    document.body.appendChild(closeButton);
-  }
-
-  function openWheelModalFromLink(href) {
-    rememberNonWheelPath();
-    wheelModalOpenedInPlace = true;
-    wheelIframeSrcOverride = getWheelIframeSrc(href);
-
-    if (document.documentElement) {
-      document.documentElement.classList.add("myluck-wheel-iframe-active");
-    }
-
-    if (document.body) {
-      document.body.classList.add("myluck-wheel-iframe-active");
-    }
-
-    ensureWheelIframeModal();
-    hookWheelModalEvents();
-  }
-
-  function hookWheelLinkEvents() {
-    if (wheelLinkEventsHooked) {
-      return;
-    }
-
-    wheelLinkEventsHooked = true;
-
-    document.addEventListener(
-      "click",
-      function (event) {
-        var target;
-        var link;
-        var href;
-
-        if (isWheelFrameContext()) {
-          return;
-        }
-
-        target =
-          event.target && typeof event.target.closest === "function"
-            ? event.target
-            : null;
-        link = target && target.closest('a[href*="/wheel"]');
-
-        if (!link || link.closest("[" + WHEEL_IFRAME_MODAL_ATTR + ']')) {
-          return;
-        }
-
-        href = link.getAttribute("href") || "";
-
-        if (href.indexOf("/wheel") === -1) {
-          return;
-        }
-
-        rememberNonWheelPath();
-      },
-      true
-    );
-  }
-
-  function hookWheelModalEvents() {
-    if (wheelEventsHooked) {
-      return;
-    }
-
-    wheelEventsHooked = true;
-
-    document.addEventListener("click", function (event) {
-      var target =
-        event.target && typeof event.target.closest === "function"
-          ? event.target
-          : null;
-      var closeButton = target && target.closest(".myluck-wheel-modal-close");
-      var routeCloseButton =
-        target && target.closest("[" + WHEEL_ROUTE_CLOSE_ATTR + "]");
-
-      if (closeButton || routeCloseButton) {
-        event.preventDefault();
-        closeWheelModal();
-      }
-    });
-
-    document.addEventListener("keydown", function (event) {
-      if (
-        event.key === "Escape" &&
-        document.body &&
-        (document.body.classList.contains("myluck-wheel-modal-active") ||
-          document.body.classList.contains("myluck-wheel-iframe-active") ||
-          document.body.classList.contains("myluck-wheel-route-modal-active"))
-      ) {
-        closeWheelModal();
-      }
-    });
-  }
-
-  function restoreWheelModal() {
-    var wrappers = document.querySelectorAll("[" + WHEEL_READY_ATTR + ']');
-    var iframeModal = document.querySelector("[" + WHEEL_IFRAME_MODAL_ATTR + ']');
-    var routeCloseButton = document.querySelector("[" + WHEEL_ROUTE_CLOSE_ATTR + ']');
-    var routeModal = document.querySelector("[" + WHEEL_ROUTE_MODAL_ATTR + ']');
-
-    wheelModalOpenedInPlace = false;
-    wheelIframeSrcOverride = "";
-
-    if (document.documentElement) {
-      document.documentElement.classList.remove("myluck-wheel-modal-active");
-      document.documentElement.classList.remove("myluck-wheel-iframe-active");
-      document.documentElement.classList.remove("myluck-wheel-route-modal-active");
-    }
-
-    if (document.body) {
-      document.body.classList.remove("myluck-wheel-modal-active");
-      document.body.classList.remove("myluck-wheel-iframe-active");
-      document.body.classList.remove("myluck-wheel-route-modal-active");
-    }
-
-    Array.prototype.forEach.call(wrappers, function (wrapper) {
-      wrapper.removeAttribute(WHEEL_READY_ATTR);
-    });
-
-    if (iframeModal && iframeModal.parentNode) {
-      iframeModal.parentNode.removeChild(iframeModal);
-    }
-
-    if (routeCloseButton && routeCloseButton.parentNode) {
-      routeCloseButton.parentNode.removeChild(routeCloseButton);
-    }
-
-    if (routeModal) {
-      routeModal.removeAttribute(WHEEL_ROUTE_MODAL_ATTR);
-    }
-  }
-
-  function removeLegacyWheelIframeModal() {
-    var iframeModal = document.querySelector("[" + WHEEL_IFRAME_MODAL_ATTR + ']');
-
-    if (document.documentElement) {
-      document.documentElement.classList.remove("myluck-wheel-iframe-active");
-      document.documentElement.classList.remove("myluck-wheel-modal-active");
-    }
-
-    if (document.body) {
-      document.body.classList.remove("myluck-wheel-iframe-active");
-      document.body.classList.remove("myluck-wheel-modal-active");
-    }
-
-    if (iframeModal && iframeModal.parentNode) {
-      iframeModal.parentNode.removeChild(iframeModal);
-    }
-  }
-
-  function renderWheelModal() {
-    var main;
-
-    if (isWheelFrameContext()) {
-      restoreWheelModal();
-      setWheelFrameMode(true);
-      return;
-    }
-
-    setWheelFrameMode(false);
-
-    if (!isWheelContext()) {
-      rememberNonWheelPath();
-      restoreWheelModal();
-      return;
-    }
-
-    if (!document.body) {
-      return;
-    }
-
-    removeLegacyWheelIframeModal();
-    main = getPageContent();
-    document.documentElement.classList.add("myluck-wheel-route-modal-active");
-    document.body.classList.add("myluck-wheel-route-modal-active");
-    if (main) {
-      main.setAttribute(WHEEL_ROUTE_MODAL_ATTR, "true");
-    }
-    ensureWheelRouteModalChrome();
-    hookWheelModalEvents();
-  }
-
   function getCurrentHighScoresRows() {
     return (
       HIGH_SCORES_ROWS_BY_PERIOD[highScoresState.period] ||
@@ -1243,12 +902,11 @@
     }
   }
 
-  function hookRouteNavigation() {
-    if (routeHistoryHooked) {
+  function hookHighScoresNavigation() {
+    if (highScoresHistoryHooked) {
       return;
     }
 
-    routeHistoryHooked = true;
     highScoresHistoryHooked = true;
 
     ["pushState", "replaceState"].forEach(function (method) {
@@ -1261,7 +919,7 @@
       window.history[method] = function () {
         var result = original.apply(this, arguments);
         window.setTimeout(function () {
-          runEnhancements();
+          renderHighScoresPage(false);
         }, 0);
         return result;
       };
@@ -1269,7 +927,7 @@
 
     window.addEventListener("popstate", function () {
       window.setTimeout(function () {
-        runEnhancements();
+        renderHighScoresPage(false);
       }, 0);
     });
   }
@@ -1278,12 +936,10 @@
     ensureVideoBackground();
     replaceHomeBannerImages();
     renderHighScoresPage(false);
-    renderWheelModal();
   }
 
   function start() {
-    hookRouteNavigation();
-    hookWheelLinkEvents();
+    hookHighScoresNavigation();
     runEnhancements();
 
     var scheduled = false;
