@@ -79,6 +79,17 @@ body > #root,
   margin-top: 7px !important;
 }
 
+@media (max-width: 1024px) {
+  [data-mj="logo"] {
+    max-width: none !important;
+    margin-top: 0 !important;
+  }
+
+  [data-mj="logo"] > img {
+    max-width: none !important;
+  }
+}
+
 [data-mj="header-nav"] {
   position: absolute !important;
   left: 26% !important;
