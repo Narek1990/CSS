@@ -10,6 +10,7 @@
   var WHEEL_CHROME_ATTR = "data-myluck-wheel-modal-chrome";
   var WHEEL_PREVIOUS_PATH_KEY = "myluck-wheel-previous-path";
   var WHEEL_IFRAME_PARAM = "myluckWheelFrame";
+  var WHEEL_IFRAME_NAME = "myluck-wheel-frame";
   var WHEEL_IFRAME_MODAL_ATTR = "data-myluck-wheel-iframe-modal";
   var WHEEL_IFRAME_SRC_ATTR = "data-myluck-wheel-iframe-src";
   var scriptSrc =
@@ -21,6 +22,9 @@
   var highScoresHistoryHooked = false;
   var routeHistoryHooked = false;
   var wheelEventsHooked = false;
+  var wheelLinkEventsHooked = false;
+  var wheelModalOpenedInPlace = false;
+  var wheelIframeSrcOverride = "";
   var highScoresState = {
     tab: "winners",
     period: "all",
@@ -522,6 +526,10 @@
   }
 
   function isWheelFrameContext() {
+    if (window.name === WHEEL_IFRAME_NAME) {
+      return true;
+    }
+
     try {
       return (
         new URLSearchParams(window.location.search || "").get(WHEEL_IFRAME_PARAM) ===
@@ -586,12 +594,13 @@
     );
   }
 
-  function getWheelIframeSrc() {
+  function getWheelIframeSrc(sourceHref) {
     var url;
     var search;
+    var source = sourceHref || wheelIframeSrcOverride || window.location.href;
 
     try {
-      url = new URL(window.location.href);
+      url = new URL(source, window.location.origin);
       url.searchParams.set(WHEEL_IFRAME_PARAM, "1");
       return url.pathname + url.search + url.hash;
     } catch (error) {
@@ -623,7 +632,9 @@
         '<button type="button" class="myluck-wheel-modal-close" aria-label="Close wheel">' +
         getCloseIconMarkup() +
         "</button>" +
-        '<iframe class="myluck-wheel-iframe" title="MyLuck Wheel" loading="eager" allow="autoplay; fullscreen; clipboard-write"></iframe>' +
+        '<iframe class="myluck-wheel-iframe" name="' +
+        WHEEL_IFRAME_NAME +
+        '" title="MyLuck Wheel" loading="eager" allow="autoplay; fullscreen; clipboard-write"></iframe>' +
         "</div>";
       document.body.appendChild(modal);
     }
@@ -637,7 +648,76 @@
   }
 
   function closeWheelModal() {
+    if (wheelModalOpenedInPlace) {
+      restoreWheelModal();
+      return;
+    }
+
     window.location.href = getWheelReturnPath();
+  }
+
+  function openWheelModalFromLink(href) {
+    rememberNonWheelPath();
+    wheelModalOpenedInPlace = true;
+    wheelIframeSrcOverride = getWheelIframeSrc(href);
+
+    if (document.documentElement) {
+      document.documentElement.classList.add("myluck-wheel-iframe-active");
+    }
+
+    if (document.body) {
+      document.body.classList.add("myluck-wheel-iframe-active");
+    }
+
+    ensureWheelIframeModal();
+    hookWheelModalEvents();
+  }
+
+  function hookWheelLinkEvents() {
+    if (wheelLinkEventsHooked) {
+      return;
+    }
+
+    wheelLinkEventsHooked = true;
+
+    document.addEventListener(
+      "click",
+      function (event) {
+        var target;
+        var link;
+        var href;
+
+        if (isWheelFrameContext()) {
+          return;
+        }
+
+        target =
+          event.target && typeof event.target.closest === "function"
+            ? event.target
+            : null;
+        link = target && target.closest('a[href*="/wheel"]');
+
+        if (!link || link.closest("[" + WHEEL_IFRAME_MODAL_ATTR + ']')) {
+          return;
+        }
+
+        href = link.getAttribute("href") || "";
+
+        if (href.indexOf("/wheel") === -1) {
+          return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (typeof event.stopImmediatePropagation === "function") {
+          event.stopImmediatePropagation();
+        }
+
+        openWheelModalFromLink(link.href || href);
+      },
+      true
+    );
   }
 
   function hookWheelModalEvents() {
@@ -676,6 +756,9 @@
     var wrappers = document.querySelectorAll("[" + WHEEL_READY_ATTR + ']');
     var iframeModal = document.querySelector("[" + WHEEL_IFRAME_MODAL_ATTR + ']');
 
+    wheelModalOpenedInPlace = false;
+    wheelIframeSrcOverride = "";
+
     if (document.documentElement) {
       document.documentElement.classList.remove("myluck-wheel-modal-active");
       document.documentElement.classList.remove("myluck-wheel-iframe-active");
@@ -703,6 +786,20 @@
     }
 
     setWheelFrameMode(false);
+
+    if (wheelModalOpenedInPlace) {
+      if (document.documentElement) {
+        document.documentElement.classList.add("myluck-wheel-iframe-active");
+      }
+
+      if (document.body) {
+        document.body.classList.add("myluck-wheel-iframe-active");
+      }
+
+      ensureWheelIframeModal();
+      hookWheelModalEvents();
+      return;
+    }
 
     if (!isWheelContext()) {
       rememberNonWheelPath();
@@ -1117,6 +1214,7 @@
 
   function start() {
     hookRouteNavigation();
+    hookWheelLinkEvents();
     runEnhancements();
 
     var scheduled = false;
