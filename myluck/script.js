@@ -9,6 +9,9 @@
   var WHEEL_READY_ATTR = "data-myluck-wheel-modal-ready";
   var WHEEL_CHROME_ATTR = "data-myluck-wheel-modal-chrome";
   var WHEEL_PREVIOUS_PATH_KEY = "myluck-wheel-previous-path";
+  var WHEEL_IFRAME_PARAM = "myluckWheelFrame";
+  var WHEEL_IFRAME_MODAL_ATTR = "data-myluck-wheel-iframe-modal";
+  var WHEEL_IFRAME_SRC_ATTR = "data-myluck-wheel-iframe-src";
   var scriptSrc =
     (document.currentScript && document.currentScript.src) ||
     "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/myluck/script.js";
@@ -518,6 +521,27 @@
     );
   }
 
+  function isWheelFrameContext() {
+    try {
+      return (
+        new URLSearchParams(window.location.search || "").get(WHEEL_IFRAME_PARAM) ===
+        "1"
+      );
+    } catch (error) {
+      return (window.location.search || "").indexOf(WHEEL_IFRAME_PARAM + "=1") !== -1;
+    }
+  }
+
+  function setWheelFrameMode(active) {
+    if (document.documentElement) {
+      document.documentElement.classList.toggle("myluck-wheel-frame-mode", !!active);
+    }
+
+    if (document.body) {
+      document.body.classList.toggle("myluck-wheel-frame-mode", !!active);
+    }
+  }
+
   function rememberNonWheelPath() {
     var path = window.location.pathname || "/";
     var value;
@@ -554,10 +578,6 @@
     return "/" + locale + "/";
   }
 
-  function getWheelWrapper() {
-    return document.querySelector('[class*="wheelWrapper_wrapper"]');
-  }
-
   function getCloseIconMarkup() {
     return (
       '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
@@ -566,22 +586,54 @@
     );
   }
 
-  function ensureWheelModalChrome(wrapper) {
-    var chrome;
+  function getWheelIframeSrc() {
+    var url;
+    var search;
 
-    if (!wrapper || wrapper.querySelector("[" + WHEEL_CHROME_ATTR + ']')) {
+    try {
+      url = new URL(window.location.href);
+      url.searchParams.set(WHEEL_IFRAME_PARAM, "1");
+      return url.pathname + url.search + url.hash;
+    } catch (error) {
+      search = window.location.search || "";
+
+      if (search.indexOf(WHEEL_IFRAME_PARAM + "=1") === -1) {
+        search += (search ? "&" : "?") + WHEEL_IFRAME_PARAM + "=1";
+      }
+
+      return (window.location.pathname || "/en/wheel") + search + (window.location.hash || "");
+    }
+  }
+
+  function ensureWheelIframeModal() {
+    var modal = document.querySelector("[" + WHEEL_IFRAME_MODAL_ATTR + ']');
+    var iframe;
+    var src = getWheelIframeSrc();
+
+    if (!document.body) {
       return;
     }
 
-    chrome = document.createElement("div");
-    chrome.className = "myluck-wheel-modal-chrome";
-    chrome.setAttribute(WHEEL_CHROME_ATTR, "true");
-    chrome.innerHTML =
-      '<button type="button" class="myluck-wheel-modal-close" aria-label="Close wheel">' +
-      getCloseIconMarkup() +
-      "</button>";
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.className = "myluck-wheel-iframe-modal";
+      modal.setAttribute(WHEEL_IFRAME_MODAL_ATTR, "true");
+      modal.innerHTML =
+        '<div class="myluck-wheel-iframe-dialog" role="dialog" aria-modal="true" aria-label="MyLuck Wheel">' +
+        '<button type="button" class="myluck-wheel-modal-close" aria-label="Close wheel">' +
+        getCloseIconMarkup() +
+        "</button>" +
+        '<iframe class="myluck-wheel-iframe" title="MyLuck Wheel" loading="eager" allow="autoplay; fullscreen; clipboard-write"></iframe>' +
+        "</div>";
+      document.body.appendChild(modal);
+    }
 
-    wrapper.insertBefore(chrome, wrapper.firstChild);
+    iframe = modal.querySelector(".myluck-wheel-iframe");
+
+    if (iframe && iframe.getAttribute(WHEEL_IFRAME_SRC_ATTR) !== src) {
+      iframe.setAttribute(WHEEL_IFRAME_SRC_ATTR, src);
+      iframe.src = src;
+    }
   }
 
   function closeWheelModal() {
@@ -612,7 +664,8 @@
       if (
         event.key === "Escape" &&
         document.body &&
-        document.body.classList.contains("myluck-wheel-modal-active")
+        (document.body.classList.contains("myluck-wheel-modal-active") ||
+          document.body.classList.contains("myluck-wheel-iframe-active"))
       ) {
         closeWheelModal();
       }
@@ -621,22 +674,35 @@
 
   function restoreWheelModal() {
     var wrappers = document.querySelectorAll("[" + WHEEL_READY_ATTR + ']');
+    var iframeModal = document.querySelector("[" + WHEEL_IFRAME_MODAL_ATTR + ']');
 
     if (document.documentElement) {
       document.documentElement.classList.remove("myluck-wheel-modal-active");
+      document.documentElement.classList.remove("myluck-wheel-iframe-active");
     }
 
     if (document.body) {
       document.body.classList.remove("myluck-wheel-modal-active");
+      document.body.classList.remove("myluck-wheel-iframe-active");
     }
 
     Array.prototype.forEach.call(wrappers, function (wrapper) {
       wrapper.removeAttribute(WHEEL_READY_ATTR);
     });
+
+    if (iframeModal && iframeModal.parentNode) {
+      iframeModal.parentNode.removeChild(iframeModal);
+    }
   }
 
   function renderWheelModal() {
-    var wrapper;
+    if (isWheelFrameContext()) {
+      restoreWheelModal();
+      setWheelFrameMode(true);
+      return;
+    }
+
+    setWheelFrameMode(false);
 
     if (!isWheelContext()) {
       rememberNonWheelPath();
@@ -644,27 +710,13 @@
       return;
     }
 
-    wrapper = getWheelWrapper();
-
-    if (!wrapper || !document.body) {
+    if (!document.body) {
       return;
     }
 
-    document.documentElement.classList.add("myluck-wheel-modal-active");
-    document.body.classList.add("myluck-wheel-modal-active");
-    wrapper.setAttribute(WHEEL_READY_ATTR, "true");
-    Array.prototype.forEach.call(
-      wrapper.querySelectorAll('[class*="wheelWrapper_content"]'),
-      function (content) {
-        if (content && content.style && content.style.backgroundImage) {
-          content.style.setProperty(
-            "--myluck-wheel-bg-image",
-            content.style.backgroundImage
-          );
-        }
-      }
-    );
-    ensureWheelModalChrome(wrapper);
+    document.documentElement.classList.add("myluck-wheel-iframe-active");
+    document.body.classList.add("myluck-wheel-iframe-active");
+    ensureWheelIframeModal();
     hookWheelModalEvents();
   }
 
