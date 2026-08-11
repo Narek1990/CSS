@@ -596,21 +596,14 @@
 
   function getWheelIframeSrc(sourceHref) {
     var url;
-    var search;
     var source = sourceHref || wheelIframeSrcOverride || window.location.href;
 
     try {
       url = new URL(source, window.location.origin);
-      url.searchParams.set(WHEEL_IFRAME_PARAM, "1");
-      return url.pathname + url.search + url.hash;
+      url.searchParams.delete(WHEEL_IFRAME_PARAM);
+      return url.href;
     } catch (error) {
-      search = window.location.search || "";
-
-      if (search.indexOf(WHEEL_IFRAME_PARAM + "=1") === -1) {
-        search += (search ? "&" : "?") + WHEEL_IFRAME_PARAM + "=1";
-      }
-
-      return (window.location.pathname || "/en/wheel") + search + (window.location.hash || "");
+      return (window.location.pathname || "/en/wheel") + (window.location.hash || "");
     }
   }
 
