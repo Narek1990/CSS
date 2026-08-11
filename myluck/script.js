@@ -6,6 +6,9 @@
   var HIGH_SCORES_EVENTS_ATTR = "data-myluck-highscores-events";
   var HIGH_SCORES_SIGNATURE_ATTR = "data-myluck-highscores-signature";
   var HOME_BANNER_READY_ATTR = "data-myluck-home-banner-ready";
+  var WHEEL_READY_ATTR = "data-myluck-wheel-modal-ready";
+  var WHEEL_CHROME_ATTR = "data-myluck-wheel-modal-chrome";
+  var WHEEL_PREVIOUS_PATH_KEY = "myluck-wheel-previous-path";
   var scriptSrc =
     (document.currentScript && document.currentScript.src) ||
     "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/myluck/script.js";
@@ -13,6 +16,8 @@
   var HOME_BANNER_SRC = ASSET_BASE_URL + "assets/home-banner.gif";
 
   var highScoresHistoryHooked = false;
+  var routeHistoryHooked = false;
+  var wheelEventsHooked = false;
   var highScoresState = {
     tab: "winners",
     period: "all",
@@ -501,6 +506,190 @@
     return document.querySelector('main[data-mj="page-content"]');
   }
 
+  function isWheelContext() {
+    var path = (window.location.pathname || "").toLowerCase();
+
+    if (path.indexOf("/wheel") !== -1) {
+      return true;
+    }
+
+    return !!document.querySelector(
+      'a[href*="/wheel"].active-link, a[href*="/wheel"][aria-current="page"]'
+    );
+  }
+
+  function rememberNonWheelPath() {
+    var path = window.location.pathname || "/";
+    var value;
+
+    if (path.toLowerCase().indexOf("/wheel") !== -1) {
+      return;
+    }
+
+    value = path + (window.location.search || "") + (window.location.hash || "");
+
+    try {
+      window.sessionStorage.setItem(WHEEL_PREVIOUS_PATH_KEY, value);
+    } catch (error) {
+      /* noop */
+    }
+  }
+
+  function getWheelReturnPath() {
+    var saved = "";
+    var path = window.location.pathname || "/";
+    var parts = path.split("/").filter(Boolean);
+    var locale = parts[0] || "en";
+
+    try {
+      saved = window.sessionStorage.getItem(WHEEL_PREVIOUS_PATH_KEY) || "";
+    } catch (error) {
+      saved = "";
+    }
+
+    if (saved && saved.charAt(0) === "/" && saved.toLowerCase().indexOf("/wheel") === -1) {
+      return saved;
+    }
+
+    return "/" + locale + "/";
+  }
+
+  function getWheelWrapper() {
+    return document.querySelector('[class*="wheelWrapper_wrapper"]');
+  }
+
+  function getSpeakerIconMarkup() {
+    return (
+      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+      '<path d="M4 9.75v4.5c0 .69.56 1.25 1.25 1.25H8l5.02 3.76c.82.62 1.98.03 1.98-1V5.74c0-1.03-1.16-1.62-1.98-1L8 8.5H5.25C4.56 8.5 4 9.06 4 9.75Z" fill="currentColor"></path>' +
+      '<path d="M18 8.5a5 5 0 0 1 0 7M20.2 6.3a8.1 8.1 0 0 1 0 11.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>' +
+      "</svg>"
+    );
+  }
+
+  function getCloseIconMarkup() {
+    return (
+      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+      '<path d="M6.4 5 5 6.4l5.6 5.6L5 17.6 6.4 19l5.6-5.6 5.6 5.6 1.4-1.4-5.6-5.6L19 6.4 17.6 5 12 10.6 6.4 5Z" fill="currentColor"></path>' +
+      "</svg>"
+    );
+  }
+
+  function ensureWheelModalChrome(wrapper) {
+    var chrome;
+
+    if (!wrapper || wrapper.querySelector("[" + WHEEL_CHROME_ATTR + ']')) {
+      return;
+    }
+
+    chrome = document.createElement("div");
+    chrome.className = "myluck-wheel-modal-chrome";
+    chrome.setAttribute(WHEEL_CHROME_ATTR, "true");
+    chrome.innerHTML =
+      '<div class="myluck-wheel-modal-controls">' +
+      '<button type="button" class="myluck-wheel-modal-audio" aria-label="Toggle wheel sound">' +
+      getSpeakerIconMarkup() +
+      "</button>" +
+      '<button type="button" class="myluck-wheel-modal-close" aria-label="Close wheel">' +
+      getCloseIconMarkup() +
+      "</button>" +
+      "</div>" +
+      '<div class="myluck-wheel-modal-prizes" aria-hidden="true">' +
+      '<div class="myluck-wheel-modal-prize is-active"><span>₿</span><strong>Free Spin</strong></div>' +
+      '<div class="myluck-wheel-modal-prize"><span>💎</span><strong>Up to 1 BTC</strong></div>' +
+      '<div class="myluck-wheel-modal-prize"><span>🎁</span><strong>Up to 3 BTC</strong></div>' +
+      '<div class="myluck-wheel-modal-prize"><span>🏆</span><strong>Up to 5 BTC</strong></div>' +
+      "</div>" +
+      '<div class="myluck-wheel-modal-title" aria-hidden="true">' +
+      "<span>MYLUCK</span><strong>Wheel</strong>" +
+      "</div>" +
+      '<div class="myluck-wheel-modal-footer" aria-hidden="true">' +
+      '<span>🪙 8000</span><span>💠 10000</span><span>🎟 10000</span><span>🪙 8000</span>' +
+      "</div>";
+
+    wrapper.insertBefore(chrome, wrapper.firstChild);
+  }
+
+  function closeWheelModal() {
+    window.location.href = getWheelReturnPath();
+  }
+
+  function hookWheelModalEvents() {
+    if (wheelEventsHooked) {
+      return;
+    }
+
+    wheelEventsHooked = true;
+
+    document.addEventListener("click", function (event) {
+      var target =
+        event.target && typeof event.target.closest === "function"
+          ? event.target
+          : null;
+      var closeButton = target && target.closest(".myluck-wheel-modal-close");
+      var audioButton = target && target.closest(".myluck-wheel-modal-audio");
+
+      if (closeButton) {
+        event.preventDefault();
+        closeWheelModal();
+        return;
+      }
+
+      if (audioButton) {
+        event.preventDefault();
+        audioButton.classList.toggle("is-muted");
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (
+        event.key === "Escape" &&
+        document.body &&
+        document.body.classList.contains("myluck-wheel-modal-active")
+      ) {
+        closeWheelModal();
+      }
+    });
+  }
+
+  function restoreWheelModal() {
+    var wrappers = document.querySelectorAll("[" + WHEEL_READY_ATTR + ']');
+
+    if (document.documentElement) {
+      document.documentElement.classList.remove("myluck-wheel-modal-active");
+    }
+
+    if (document.body) {
+      document.body.classList.remove("myluck-wheel-modal-active");
+    }
+
+    Array.prototype.forEach.call(wrappers, function (wrapper) {
+      wrapper.removeAttribute(WHEEL_READY_ATTR);
+    });
+  }
+
+  function renderWheelModal() {
+    var wrapper;
+
+    if (!isWheelContext()) {
+      rememberNonWheelPath();
+      restoreWheelModal();
+      return;
+    }
+
+    wrapper = getWheelWrapper();
+
+    if (!wrapper || !document.body) {
+      return;
+    }
+
+    document.documentElement.classList.add("myluck-wheel-modal-active");
+    document.body.classList.add("myluck-wheel-modal-active");
+    wrapper.setAttribute(WHEEL_READY_ATTR, "true");
+    ensureWheelModalChrome(wrapper);
+    hookWheelModalEvents();
+  }
+
   function getCurrentHighScoresRows() {
     return (
       HIGH_SCORES_ROWS_BY_PERIOD[highScoresState.period] ||
@@ -859,11 +1048,12 @@
     }
   }
 
-  function hookHighScoresNavigation() {
-    if (highScoresHistoryHooked) {
+  function hookRouteNavigation() {
+    if (routeHistoryHooked) {
       return;
     }
 
+    routeHistoryHooked = true;
     highScoresHistoryHooked = true;
 
     ["pushState", "replaceState"].forEach(function (method) {
@@ -876,7 +1066,7 @@
       window.history[method] = function () {
         var result = original.apply(this, arguments);
         window.setTimeout(function () {
-          renderHighScoresPage(false);
+          runEnhancements();
         }, 0);
         return result;
       };
@@ -884,7 +1074,7 @@
 
     window.addEventListener("popstate", function () {
       window.setTimeout(function () {
-        renderHighScoresPage(false);
+        runEnhancements();
       }, 0);
     });
   }
@@ -892,10 +1082,11 @@
   function runEnhancements() {
     replaceHomeBannerImages();
     renderHighScoresPage(false);
+    renderWheelModal();
   }
 
   function start() {
-    hookHighScoresNavigation();
+    hookRouteNavigation();
     runEnhancements();
 
     var scheduled = false;
