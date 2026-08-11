@@ -1054,13 +1054,20 @@ body.myluck-highscores-active [data-myluck-highscores-hidden="true"] {
   display: none !important;
 }
 
+body.myluck-highscores-active footer,
+body.myluck-highscores-active [data-mj="footer"] {
+  display: none !important;
+}
+
 .myluck-highscores-page {
   width: 100% !important;
+  min-height: calc(100vh - 80px) !important;
+  background: #080d28 !important;
 }
 
 .myluck-highscores {
   width: 100% !important;
-  min-height: calc(100vh - 80px) !important;
+  min-height: inherit !important;
   color: #f5f7ff !important;
   background: #080d28 !important;
   font-family: TT-Interphases-Pro, system-ui, sans-serif !important;
@@ -1076,7 +1083,7 @@ body.myluck-highscores-active [data-myluck-highscores-hidden="true"] {
   width: 100% !important;
   max-width: 1368px !important;
   margin: 0 auto !important;
-  padding: 48px 24px 70px !important;
+  padding: 48px 24px 118px !important;
 }
 
 .myluck-highscores-titlebar {
@@ -1532,12 +1539,13 @@ body.myluck-highscores-active [data-myluck-highscores-hidden="true"] {
   }
 
   body.myluck-highscores-active main[data-mj="page-content"],
+  .myluck-highscores-page,
   .myluck-highscores {
     min-height: calc(100vh - 64px) !important;
   }
 
   .myluck-highscores-inner {
-    padding: 24px 12px 78px !important;
+    padding: 24px 12px calc(128px + env(safe-area-inset-bottom, 0px)) !important;
   }
 
   .myluck-highscores h1 {

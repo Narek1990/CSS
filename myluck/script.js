@@ -40,6 +40,81 @@
     { key: "day", label: "Last Day" }
   ];
 
+  var HIGH_SCORES_PLAYERS_BY_TAB = {
+    winners: [
+      "Sharik",
+      "PrayingMantis",
+      "signature",
+      "ggg1",
+      "punkism",
+      "Duteren111",
+      "manto3",
+      "FloatBet",
+      "darcoking",
+      "kidcudifan"
+    ],
+    losers: [
+      "NightFold",
+      "ZeroPatience",
+      "AceBreaker",
+      "LuckyCrash",
+      "TiltRunner",
+      "coinwolf",
+      "BetDrift",
+      "redfable",
+      "StackDust",
+      "OrbitLose"
+    ],
+    wagers: [
+      "WhaleMode",
+      "VaultKing",
+      "MaxStake",
+      "TurboSeven",
+      "GoldVector",
+      "CryptoRider",
+      "RiskAtlas",
+      "BlueToken",
+      "SpinLedger",
+      "CashPilot"
+    ],
+    wins: [
+      "JackpotNova",
+      "RoyalDice",
+      "MegaClubs",
+      "LuckyOrbit",
+      "PixelCrown",
+      "FortuneFox",
+      "BonusMint",
+      "GreenArrow",
+      "MyluckHero",
+      "DiamondRush"
+    ],
+    losses: [
+      "ColdDeck",
+      "FinalBet",
+      "SlowRiver",
+      "MoonBust",
+      "DarkChip",
+      "RedLimit",
+      "LastTicket",
+      "NoMercy",
+      "BlindCall",
+      "DownSpin"
+    ],
+    luckiest: [
+      "MiracleRoll",
+      "StarChance",
+      "OneClickWin",
+      "GoldenPulse",
+      "RareHit",
+      "WildSeven",
+      "MagicSeed",
+      "LuckySignal",
+      "BrightAce",
+      "NeonCharm"
+    ]
+  };
+
   var HIGH_SCORES_ROWS_BY_PERIOD = {
     all: [
       {
@@ -462,6 +537,13 @@
     );
   }
 
+  function getHighScoresPlayerName(tabKey, index, fallback) {
+    var names =
+      HIGH_SCORES_PLAYERS_BY_TAB[tabKey] || HIGH_SCORES_PLAYERS_BY_TAB.winners;
+
+    return names[index % names.length] || fallback;
+  }
+
   function replaceHomeBannerImages() {
     document
       .querySelectorAll(
@@ -596,10 +678,21 @@
   }
 
   function getCurrentHighScoresRows() {
-    return (
+    var rows =
       HIGH_SCORES_ROWS_BY_PERIOD[highScoresState.period] ||
-      HIGH_SCORES_ROWS_BY_PERIOD.all
-    );
+      HIGH_SCORES_ROWS_BY_PERIOD.all;
+
+    return rows.map(function (row, index) {
+      var nextRow = Object.assign({}, row);
+
+      nextRow.player = getHighScoresPlayerName(
+        highScoresState.tab,
+        index,
+        row.player
+      );
+
+      return nextRow;
+    });
   }
 
   function getCurrentHighScoresRanks() {
@@ -776,6 +869,7 @@
 
   function getHighScoresCardMarkup() {
     var ranks = getCurrentHighScoresRanks();
+    var leader = getCurrentHighScoresRows()[0] || { player: "Sharik" };
 
     return (
       '<aside class="myluck-highscores-card" aria-label="Selected player rankings">' +
@@ -783,7 +877,9 @@
       '<span class="myluck-highscores-trophy">' +
       getTrophyIconMarkup() +
       "</span>" +
-      '<strong>Sharik</strong>' +
+      "<strong>" +
+      escapeHtml(leader.player) +
+      "</strong>" +
       "</div>" +
       '<dl class="myluck-highscores-stats">' +
       '<div><dt>Top Wagers</dt><dd>' +
