@@ -1237,15 +1237,19 @@ section[data-mj="widget-game-slider"] [data-mj="widget-game-slider-header"] > p 
 }
 
 section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) {
-  width: 80% !important;
+  width: min(72vw, 1360px) !important;
+  max-width: calc(100vw - 96px) !important;
   margin-right: auto !important;
   margin-left: auto !important;
+  overflow: visible !important;
 }
 
 section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) [data-mj="widget-game-slider-container"] {
   width: 100% !important;
+  max-width: 100% !important;
   margin-right: auto !important;
   margin-left: auto !important;
+  overflow: visible !important;
 }
 
 section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) [data-mj="widget-game-slider-header"] p {
@@ -1257,7 +1261,45 @@ section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt=
 @media (min-width: 1200px) {
   section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) [data-mj="widget-game-slider-list"],
   section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) .keen-slider {
-    justify-content: center !important;
+    display: grid !important;
+    grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+    gap: clamp(8px, 0.65vw, 14px) !important;
+    justify-content: stretch !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) .keen-slider__slide {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    flex: none !important;
+    transform: none !important;
+  }
+
+  section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) .keen-slider__slide:nth-child(n + 9) {
+    display: none !important;
+  }
+
+  section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) a,
+  section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) [data-mj*="game-card"],
+  section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) [class*="game-card"],
+  section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) [class*="GameCard"] {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) img {
+    max-width: 100% !important;
+    object-fit: contain !important;
+  }
+}
+
+@media (min-width: 1600px) {
+  section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) {
+    width: min(76vw, 1500px) !important;
   }
 }
 
