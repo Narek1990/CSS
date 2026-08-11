@@ -7,6 +7,7 @@
   var HIGH_SCORES_SIGNATURE_ATTR = "data-myluck-highscores-signature";
   var HOME_BANNER_READY_ATTR = "data-myluck-home-banner-ready";
   var BODY_VIDEO_READY_ATTR = "data-myluck-video-background-ready";
+  var CATALOG_ACTIVE_ATTR = "data-myluck-catalog-active";
   var scriptSrc =
     (document.currentScript && document.currentScript.src) ||
     "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/myluck/script.js";
@@ -544,6 +545,56 @@
     return document.querySelector('main[data-mj="page-content"]');
   }
 
+  function normalizeCatalogPath(path) {
+    var normalized = (path || "").split("?")[0].split("#")[0];
+
+    if (normalized.length > 1) {
+      normalized = normalized.replace(/\/+$/, "");
+    }
+
+    return normalized || "/";
+  }
+
+  function markActiveCatalogCategories() {
+    var currentPath = normalizeCatalogPath(window.location.pathname || "");
+
+    document
+      .querySelectorAll(
+        '[data-mj="game-catalog-category-slider-item"], [data-mj="game-catalog-mobile-category-chip"]'
+      )
+      .forEach(function (link) {
+        var href = link.getAttribute("href") || "";
+        var linkPath;
+        var isActive;
+
+        try {
+          linkPath = normalizeCatalogPath(new URL(href, window.location.origin).pathname);
+        } catch (error) {
+          linkPath = normalizeCatalogPath(href);
+        }
+
+        isActive = currentPath === linkPath;
+
+        if (
+          !isActive &&
+          linkPath.match(/\/casino$/) &&
+          currentPath.match(/\/casino\/?$/)
+        ) {
+          isActive = true;
+        }
+
+        if (isActive) {
+          link.setAttribute(CATALOG_ACTIVE_ATTR, "true");
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.removeAttribute(CATALOG_ACTIVE_ATTR);
+          if (link.getAttribute("aria-current") === "page") {
+            link.removeAttribute("aria-current");
+          }
+        }
+      });
+  }
+
   function getCurrentHighScoresRows() {
     return (
       HIGH_SCORES_ROWS_BY_PERIOD[highScoresState.period] ||
@@ -919,7 +970,7 @@
       window.history[method] = function () {
         var result = original.apply(this, arguments);
         window.setTimeout(function () {
-          renderHighScoresPage(false);
+          runEnhancements();
         }, 0);
         return result;
       };
@@ -927,7 +978,7 @@
 
     window.addEventListener("popstate", function () {
       window.setTimeout(function () {
-        renderHighScoresPage(false);
+        runEnhancements();
       }, 0);
     });
   }
@@ -935,6 +986,7 @@
   function runEnhancements() {
     ensureVideoBackground();
     replaceHomeBannerImages();
+    markActiveCatalogCategories();
     renderHighScoresPage(false);
   }
 
