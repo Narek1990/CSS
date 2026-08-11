@@ -13,6 +13,8 @@
   var WHEEL_IFRAME_NAME = "myluck-wheel-frame";
   var WHEEL_IFRAME_MODAL_ATTR = "data-myluck-wheel-iframe-modal";
   var WHEEL_IFRAME_SRC_ATTR = "data-myluck-wheel-iframe-src";
+  var WHEEL_ROUTE_MODAL_ATTR = "data-myluck-wheel-route-modal";
+  var WHEEL_ROUTE_CLOSE_ATTR = "data-myluck-wheel-route-close";
   var scriptSrc =
     (document.currentScript && document.currentScript.src) ||
     "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/myluck/script.js";
@@ -641,12 +643,23 @@
   }
 
   function closeWheelModal() {
-    if (wheelModalOpenedInPlace) {
-      restoreWheelModal();
+    window.location.href = getWheelReturnPath();
+  }
+
+  function ensureWheelRouteModalChrome() {
+    var closeButton = document.querySelector("[" + WHEEL_ROUTE_CLOSE_ATTR + ']');
+
+    if (!document.body || closeButton) {
       return;
     }
 
-    window.location.href = getWheelReturnPath();
+    closeButton = document.createElement("button");
+    closeButton.type = "button";
+    closeButton.className = "myluck-wheel-route-modal-close";
+    closeButton.setAttribute(WHEEL_ROUTE_CLOSE_ATTR, "true");
+    closeButton.setAttribute("aria-label", "Close wheel");
+    closeButton.innerHTML = getCloseIconMarkup();
+    document.body.appendChild(closeButton);
   }
 
   function openWheelModalFromLink(href) {
@@ -700,14 +713,7 @@
           return;
         }
 
-        event.preventDefault();
-        event.stopPropagation();
-
-        if (typeof event.stopImmediatePropagation === "function") {
-          event.stopImmediatePropagation();
-        }
-
-        openWheelModalFromLink(link.href || href);
+        rememberNonWheelPath();
       },
       true
     );
@@ -726,8 +732,10 @@
           ? event.target
           : null;
       var closeButton = target && target.closest(".myluck-wheel-modal-close");
+      var routeCloseButton =
+        target && target.closest("[" + WHEEL_ROUTE_CLOSE_ATTR + "]");
 
-      if (closeButton) {
+      if (closeButton || routeCloseButton) {
         event.preventDefault();
         closeWheelModal();
       }
@@ -738,7 +746,8 @@
         event.key === "Escape" &&
         document.body &&
         (document.body.classList.contains("myluck-wheel-modal-active") ||
-          document.body.classList.contains("myluck-wheel-iframe-active"))
+          document.body.classList.contains("myluck-wheel-iframe-active") ||
+          document.body.classList.contains("myluck-wheel-route-modal-active"))
       ) {
         closeWheelModal();
       }
@@ -748,6 +757,8 @@
   function restoreWheelModal() {
     var wrappers = document.querySelectorAll("[" + WHEEL_READY_ATTR + ']');
     var iframeModal = document.querySelector("[" + WHEEL_IFRAME_MODAL_ATTR + ']');
+    var routeCloseButton = document.querySelector("[" + WHEEL_ROUTE_CLOSE_ATTR + ']');
+    var routeModal = document.querySelector("[" + WHEEL_ROUTE_MODAL_ATTR + ']');
 
     wheelModalOpenedInPlace = false;
     wheelIframeSrcOverride = "";
@@ -755,11 +766,13 @@
     if (document.documentElement) {
       document.documentElement.classList.remove("myluck-wheel-modal-active");
       document.documentElement.classList.remove("myluck-wheel-iframe-active");
+      document.documentElement.classList.remove("myluck-wheel-route-modal-active");
     }
 
     if (document.body) {
       document.body.classList.remove("myluck-wheel-modal-active");
       document.body.classList.remove("myluck-wheel-iframe-active");
+      document.body.classList.remove("myluck-wheel-route-modal-active");
     }
 
     Array.prototype.forEach.call(wrappers, function (wrapper) {
@@ -769,9 +782,37 @@
     if (iframeModal && iframeModal.parentNode) {
       iframeModal.parentNode.removeChild(iframeModal);
     }
+
+    if (routeCloseButton && routeCloseButton.parentNode) {
+      routeCloseButton.parentNode.removeChild(routeCloseButton);
+    }
+
+    if (routeModal) {
+      routeModal.removeAttribute(WHEEL_ROUTE_MODAL_ATTR);
+    }
+  }
+
+  function removeLegacyWheelIframeModal() {
+    var iframeModal = document.querySelector("[" + WHEEL_IFRAME_MODAL_ATTR + ']');
+
+    if (document.documentElement) {
+      document.documentElement.classList.remove("myluck-wheel-iframe-active");
+      document.documentElement.classList.remove("myluck-wheel-modal-active");
+    }
+
+    if (document.body) {
+      document.body.classList.remove("myluck-wheel-iframe-active");
+      document.body.classList.remove("myluck-wheel-modal-active");
+    }
+
+    if (iframeModal && iframeModal.parentNode) {
+      iframeModal.parentNode.removeChild(iframeModal);
+    }
   }
 
   function renderWheelModal() {
+    var main;
+
     if (isWheelFrameContext()) {
       restoreWheelModal();
       setWheelFrameMode(true);
@@ -779,20 +820,6 @@
     }
 
     setWheelFrameMode(false);
-
-    if (wheelModalOpenedInPlace) {
-      if (document.documentElement) {
-        document.documentElement.classList.add("myluck-wheel-iframe-active");
-      }
-
-      if (document.body) {
-        document.body.classList.add("myluck-wheel-iframe-active");
-      }
-
-      ensureWheelIframeModal();
-      hookWheelModalEvents();
-      return;
-    }
 
     if (!isWheelContext()) {
       rememberNonWheelPath();
@@ -804,9 +831,14 @@
       return;
     }
 
-    document.documentElement.classList.add("myluck-wheel-iframe-active");
-    document.body.classList.add("myluck-wheel-iframe-active");
-    ensureWheelIframeModal();
+    removeLegacyWheelIframeModal();
+    main = getPageContent();
+    document.documentElement.classList.add("myluck-wheel-route-modal-active");
+    document.body.classList.add("myluck-wheel-route-modal-active");
+    if (main) {
+      main.setAttribute(WHEEL_ROUTE_MODAL_ATTR, "true");
+    }
+    ensureWheelRouteModalChrome();
     hookWheelModalEvents();
   }
 
