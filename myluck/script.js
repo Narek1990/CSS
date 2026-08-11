@@ -558,15 +558,6 @@
     return document.querySelector('[class*="wheelWrapper_wrapper"]');
   }
 
-  function getSpeakerIconMarkup() {
-    return (
-      '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
-      '<path d="M4 9.75v4.5c0 .69.56 1.25 1.25 1.25H8l5.02 3.76c.82.62 1.98.03 1.98-1V5.74c0-1.03-1.16-1.62-1.98-1L8 8.5H5.25C4.56 8.5 4 9.06 4 9.75Z" fill="currentColor"></path>' +
-      '<path d="M18 8.5a5 5 0 0 1 0 7M20.2 6.3a8.1 8.1 0 0 1 0 11.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>' +
-      "</svg>"
-    );
-  }
-
   function getCloseIconMarkup() {
     return (
       '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
@@ -586,26 +577,9 @@
     chrome.className = "myluck-wheel-modal-chrome";
     chrome.setAttribute(WHEEL_CHROME_ATTR, "true");
     chrome.innerHTML =
-      '<div class="myluck-wheel-modal-controls">' +
-      '<button type="button" class="myluck-wheel-modal-audio" aria-label="Toggle wheel sound">' +
-      getSpeakerIconMarkup() +
-      "</button>" +
       '<button type="button" class="myluck-wheel-modal-close" aria-label="Close wheel">' +
       getCloseIconMarkup() +
-      "</button>" +
-      "</div>" +
-      '<div class="myluck-wheel-modal-prizes" aria-hidden="true">' +
-      '<div class="myluck-wheel-modal-prize is-active"><span>₿</span><strong>Free Spin</strong></div>' +
-      '<div class="myluck-wheel-modal-prize"><span>💎</span><strong>Up to 1 BTC</strong></div>' +
-      '<div class="myluck-wheel-modal-prize"><span>🎁</span><strong>Up to 3 BTC</strong></div>' +
-      '<div class="myluck-wheel-modal-prize"><span>🏆</span><strong>Up to 5 BTC</strong></div>' +
-      "</div>" +
-      '<div class="myluck-wheel-modal-title" aria-hidden="true">' +
-      "<span>MYLUCK</span><strong>Wheel</strong>" +
-      "</div>" +
-      '<div class="myluck-wheel-modal-footer" aria-hidden="true">' +
-      '<span>🪙 8000</span><span>💠 10000</span><span>🎟 10000</span><span>🪙 8000</span>' +
-      "</div>";
+      "</button>";
 
     wrapper.insertBefore(chrome, wrapper.firstChild);
   }
@@ -627,17 +601,10 @@
           ? event.target
           : null;
       var closeButton = target && target.closest(".myluck-wheel-modal-close");
-      var audioButton = target && target.closest(".myluck-wheel-modal-audio");
 
       if (closeButton) {
         event.preventDefault();
         closeWheelModal();
-        return;
-      }
-
-      if (audioButton) {
-        event.preventDefault();
-        audioButton.classList.toggle("is-muted");
       }
     });
 
@@ -686,6 +653,17 @@
     document.documentElement.classList.add("myluck-wheel-modal-active");
     document.body.classList.add("myluck-wheel-modal-active");
     wrapper.setAttribute(WHEEL_READY_ATTR, "true");
+    Array.prototype.forEach.call(
+      wrapper.querySelectorAll('[class*="wheelWrapper_content"]'),
+      function (content) {
+        if (content && content.style && content.style.backgroundImage) {
+          content.style.setProperty(
+            "--myluck-wheel-bg-image",
+            content.style.backgroundImage
+          );
+        }
+      }
+    );
     ensureWheelModalChrome(wrapper);
     hookWheelModalEvents();
   }
