@@ -2,7 +2,7 @@ html,
 body {
   min-height: 100% !important;
   background-color: #06111a !important;
-  background-image: url("./assets/body-background.png") !important;
+  background-image: none !important;
   background-repeat: no-repeat !important;
   background-position: center top !important;
   background-size: cover !important;
@@ -506,11 +506,26 @@ body::before {
   content: "" !important;
   position: fixed !important;
   inset: 0 !important;
-  z-index: 0 !important;
+  z-index: 1 !important;
   pointer-events: none !important;
-  background:
-    linear-gradient(180deg, rgba(3, 8, 15, 0.18), rgba(3, 8, 15, 0.46)),
-    url("./assets/body-background.png") center top / cover no-repeat !important;
+  background: linear-gradient(180deg, rgba(3, 8, 15, 0.18), rgba(3, 8, 15, 0.46)) !important;
+}
+
+.myluck-video-background {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  display: block !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  min-width: 100vw !important;
+  min-height: 100vh !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+  transform: translateZ(0) !important;
+  background: #06111a !important;
 }
 
 body > #root,
@@ -525,7 +540,7 @@ main[data-mj="page-content"] {
 body > #root,
 #root {
   position: relative !important;
-  z-index: 1 !important;
+  z-index: 2 !important;
 }
 
 [data-mj="widget-banner"] img[data-myluck-home-banner-ready="true"] {
@@ -1817,9 +1832,11 @@ body.myluck-highscores-active [data-myluck-highscores-hidden="true"] {
   }
 
   body::before {
-    background:
-      linear-gradient(180deg, rgba(3, 8, 15, 0.2), rgba(3, 8, 15, 0.52)),
-      url("./assets/body-background.png") 38% top / cover no-repeat !important;
+    background: linear-gradient(180deg, rgba(3, 8, 15, 0.2), rgba(3, 8, 15, 0.52)) !important;
+  }
+
+  .myluck-video-background {
+    object-position: 38% center !important;
   }
 
   [data-mj="header"] {

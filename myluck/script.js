@@ -6,6 +6,7 @@
   var HIGH_SCORES_EVENTS_ATTR = "data-myluck-highscores-events";
   var HIGH_SCORES_SIGNATURE_ATTR = "data-myluck-highscores-signature";
   var HOME_BANNER_READY_ATTR = "data-myluck-home-banner-ready";
+  var BODY_VIDEO_READY_ATTR = "data-myluck-video-background-ready";
   var WHEEL_READY_ATTR = "data-myluck-wheel-modal-ready";
   var WHEEL_CHROME_ATTR = "data-myluck-wheel-modal-chrome";
   var WHEEL_PREVIOUS_PATH_KEY = "myluck-wheel-previous-path";
@@ -20,6 +21,7 @@
     "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/myluck/script.js";
   var ASSET_BASE_URL = scriptSrc.replace(/\/script\.js(?:\?.*)?$/, "/");
   var HOME_BANNER_SRC = ASSET_BASE_URL + "assets/home-banner.gif";
+  var BODY_VIDEO_SRC = ASSET_BASE_URL + "assets/background_2.mp4";
 
   var highScoresHistoryHooked = false;
   var routeHistoryHooked = false;
@@ -497,6 +499,47 @@
         image.setAttribute("decoding", "async");
         image.setAttribute("fetchpriority", "high");
       });
+  }
+
+  function ensureVideoBackground() {
+    var video = document.querySelector("video[" + BODY_VIDEO_READY_ATTR + ']');
+    var source;
+
+    if (!document.body) {
+      return;
+    }
+
+    if (!video) {
+      video = document.createElement("video");
+      video.className = "myluck-video-background";
+      video.setAttribute(BODY_VIDEO_READY_ATTR, "true");
+      video.setAttribute("aria-hidden", "true");
+      video.muted = true;
+      video.loop = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.defaultMuted = true;
+      video.preload = "auto";
+
+      source = document.createElement("source");
+      source.src = BODY_VIDEO_SRC;
+      source.type = "video/mp4";
+      video.appendChild(source);
+
+      document.body.insertBefore(video, document.body.firstChild);
+    } else {
+      source = video.querySelector("source");
+      if (source && source.src !== BODY_VIDEO_SRC) {
+        source.src = BODY_VIDEO_SRC;
+        video.load();
+      }
+    }
+
+    if (video.paused && typeof video.play === "function") {
+      video.play().catch(function () {
+        /* muted autoplay can still be blocked by browser power/data settings */
+      });
+    }
   }
 
   function isHighScoresContext() {
@@ -1232,6 +1275,7 @@
   }
 
   function runEnhancements() {
+    ensureVideoBackground();
     replaceHomeBannerImages();
     renderHighScoresPage(false);
     renderWheelModal();
