@@ -848,16 +848,27 @@ section[data-mj="widget-game-slider"] [data-mj="widget-game-slider-header"] > p 
 
 section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) {
   width: 80% !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
 }
 
 section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) [data-mj="widget-game-slider-container"] {
-  margin-left: 12% !important;
+  width: 100% !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
 }
 
 section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) [data-mj="widget-game-slider-header"] p {
   font-size: 24px !important;
   padding-bottom: 13px !important;
   font-family: cursive !important;
+}
+
+@media (min-width: 1200px) {
+  section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) [data-mj="widget-game-slider-list"],
+  section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) .keen-slider {
+    justify-content: center !important;
+  }
 }
 
 section[data-mj="widget-game-slider"]:has(img[src*="gameimage/195149.webp"][alt="Dice"]) .app-ltr-1dzjkmt,
