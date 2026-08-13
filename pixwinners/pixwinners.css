@@ -1,0 +1,9 @@
+/* PixWinners mobile sport launch fixes */
+
+@media (max-width: 1024px) {
+  html body:has(#sportsbook-wrapper) [data-mj="bottom-nav"],
+  html body:has(#firstSportbook) [data-mj="bottom-nav"],
+  html body.pixwinners-sport-launched [data-mj="bottom-nav"] {
+    display: none !important;
+  }
+}
