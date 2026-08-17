@@ -238,14 +238,26 @@
 /* Payment Methods Row - Footer Bottom */
 
 [data-mj="footer-bottom"] {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
   justify-content: center !important;
+  gap: 0 !important;
   text-align: center !important;
 }
 
+[data-mj="footer-bottom"] [data-mj="social-links"] {
+  display: none !important;
+}
+
 [data-mj="footer-bottom"] [data-mj="footer-copyright"] {
+  display: block !important;
+  flex: 0 1 auto !important;
   width: 100% !important;
   max-width: 980px !important;
+  margin-top: 0 !important;
   margin-right: auto !important;
+  margin-bottom: 0 !important;
   margin-left: auto !important;
   text-align: center !important;
 }
