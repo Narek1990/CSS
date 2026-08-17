@@ -237,6 +237,19 @@
 
 /* Payment Methods Row - Footer Bottom */
 
+[data-mj="footer-bottom"] {
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+[data-mj="footer-bottom"] [data-mj="footer-copyright"] {
+  width: 100% !important;
+  max-width: 980px !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  text-align: center !important;
+}
+
 [data-mj="footer"]::after {
   content: "" !important;
   display: block !important;
