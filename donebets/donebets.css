@@ -29,6 +29,14 @@ span.app-rtl-1phvdj0 {
   filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.28)) !important;
 }
 
+/* Bonus modal description text */
+html body .app-ltr-gdo5mm p.app-ltr-lneb7o[color="#858585"],
+html body .app-rtl-gdo5mm p.app-rtl-lneb7o[color="#858585"],
+html body [class*="gdo5mm"] p[class*="lneb7o"][color="#858585"] {
+  line-height: normal !important;
+  font-size: 14px !important;
+}
+
 [data-donebets-vip-status-ready="true"] {
   display: flex !important;
   align-items: center !important;
