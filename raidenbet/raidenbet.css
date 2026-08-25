@@ -11,3 +11,13 @@ html body [data-mj="auth-modal"] [data-raidenbet-phone-code="iran"] .sl-select__
   height: 14px !important;
   object-fit: cover !important;
 }
+
+/* Prevent a transient Afghanistan/default flag from flashing while the
+   portal-rendered Iran option is being selected. */
+html[data-raidenbet-phone-defaulting] [data-mj="auth-modal"] [data-raidenbet-phone-code="pending"] .sl-select__single-value {
+  visibility: hidden !important;
+}
+
+html[data-raidenbet-phone-defaulting] .sl-select__menu-portal {
+  visibility: hidden !important;
+}

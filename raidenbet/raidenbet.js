@@ -5,6 +5,8 @@
   var completedForms = new WeakSet();
   var pendingForms = new WeakSet();
   var cancelledForms = new WeakSet();
+  var openedForms = new WeakSet();
+  var suppressControlClick = new WeakSet();
 
   function isIranOption(option) {
     if (!option) return false;
@@ -40,6 +42,15 @@
   function markIran(parts) {
     var target = parts.container || parts.combobox;
     if (target) target.setAttribute('data-raidenbet-phone-code', 'iran');
+    if (!document.querySelector('[data-raidenbet-phone-code="pending"]')) {
+      document.documentElement.removeAttribute('data-raidenbet-phone-defaulting');
+    }
+  }
+
+  function markPending(parts) {
+    var target = parts.container || parts.combobox;
+    if (target) target.setAttribute('data-raidenbet-phone-code', 'pending');
+    document.documentElement.setAttribute('data-raidenbet-phone-defaulting', 'true');
   }
 
   function findIranOption(parts) {
@@ -78,17 +89,39 @@
     }
 
     var control = parts.container || parts.combobox;
-    if (control && control.getAttribute('aria-expanded') !== 'true') {
+    if (control && !openedForms.has(form) && control.getAttribute('aria-expanded') !== 'true') {
+      openedForms.add(form);
+      suppressControlClick.add(form);
       control.click();
+      window.setTimeout(function () { suppressControlClick.delete(form); }, 0);
     }
 
-    [40, 140, 320, 640].forEach(function (delay) {
-      window.setTimeout(function () {
-        if (!completedForms.has(form) && !cancelledForms.has(form)) {
-          chooseIran(form, getPhoneParts(form));
-        }
-      }, delay);
-    });
+    waitForIran(form, 0);
+  }
+
+  function waitForIran(form, attempt) {
+    if (completedForms.has(form) || cancelledForms.has(form)) return;
+    var parts = getPhoneParts(form);
+    if (selectedIran(parts)) {
+      completedForms.add(form);
+      pendingForms.delete(form);
+      markIran(parts);
+      return;
+    }
+    var option = findIranOption(parts);
+    if (option) {
+      option.click();
+      window.setTimeout(function () { chooseIran(form, getPhoneParts(form)); }, 0);
+      return;
+    }
+    /* The country list is portal-rendered asynchronously. Keep one poller,
+       never click the control again, so the menu cannot be toggled closed. */
+    if (attempt < 160) {
+      window.setTimeout(function () { waitForIran(form, attempt + 1); }, 50);
+    } else {
+      pendingForms.delete(form);
+      document.documentElement.removeAttribute('data-raidenbet-phone-defaulting');
+    }
   }
 
   function scan() {
@@ -97,12 +130,25 @@
       var parts = getPhoneParts(form);
       if (!parts.hidden && !parts.combobox) return;
       pendingForms.add(form);
+      markPending(parts);
       chooseIran(form, parts);
     });
   }
 
   /* If the user chooses another country, never replace that manual choice. */
   document.addEventListener('click', function (event) {
+    var control = event.target && event.target.closest && event.target.closest(
+      '#phoneCode, .sl-select__control'
+    );
+    if (control) {
+      getRegistrationForms().forEach(function (form) {
+        if (pendingForms.has(form) && !suppressControlClick.has(form)) {
+          cancelledForms.add(form);
+          pendingForms.delete(form);
+          document.documentElement.removeAttribute('data-raidenbet-phone-defaulting');
+        }
+      });
+    }
     var option = event.target && event.target.closest && event.target.closest(
       '[role="option"], .sl-select__option, [id^="react-select-"][id*="-option-"]'
     );
@@ -111,6 +157,7 @@
       if (pendingForms.has(form)) {
         cancelledForms.add(form);
         pendingForms.delete(form);
+        document.documentElement.removeAttribute('data-raidenbet-phone-defaulting');
       }
     });
   }, true);
