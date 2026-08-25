@@ -1,0 +1,13 @@
+/* Raidenbet registration defaults. The selected value is set by raidenbet.js. */
+html body [data-mj="auth-modal"] [data-raidenbet-phone-code="iran"] .sl-select__single-value {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+html body [data-mj="auth-modal"] [data-raidenbet-phone-code="iran"] .sl-select__single-value img {
+  display: inline-block !important;
+  width: 20px !important;
+  height: 14px !important;
+  object-fit: cover !important;
+}
