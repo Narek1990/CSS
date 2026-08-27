@@ -7,8 +7,8 @@
   color: #fff !important;
 }
 
-.sl-navlink p,
-.sl-navlink .sl-icon {
+[data-mj="header-nav"] [data-mj="header-nav-list"] .sl-navlink p,
+[data-mj="header-nav"] [data-mj="header-nav-list"] .sl-navlink .sl-icon {
   color: white !important;
 }
 
