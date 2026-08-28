@@ -55,6 +55,9 @@ const DEFAULT_LEGACY_CONFIG = {
   menuButtonText: "Play",
   menuButtonId: "play",
   welcomeText: "Hello {{first_name}},\n\nWelcome to EsportesNew. Choose an action below.",
+  welcomeMessages: {
+    default: "Hello {{first_name}},\n\nWelcome to EsportesNew. Choose an action below."
+  },
   welcomeParseMode: "HTML",
   buttons: DEFAULT_BUTTONS,
   commands: DEFAULT_COMMANDS
@@ -84,6 +87,9 @@ const DEFAULT_CONFIG = {
           menuButtonText: "Play",
           menuButtonId: "play",
           welcomeText: "Hello {{first_name}},\n\nWelcome to EsportesNew. Choose an action below.",
+          welcomeMessages: {
+            default: "Hello {{first_name}},\n\nWelcome to EsportesNew. Choose an action below."
+          },
           welcomeParseMode: "HTML",
           buttons: DEFAULT_BUTTONS,
           commands: DEFAULT_COMMANDS
@@ -198,6 +204,42 @@ function normalizeParseMode(value) {
   return "";
 }
 
+function normalizeLanguageCode(value) {
+  const code = String(value || "default")
+    .trim()
+    .replace(/_/g, "-")
+    .toLowerCase();
+
+  if (!code || code === "default") {
+    return "default";
+  }
+
+  return /^[a-z]{2,3}(-[a-z0-9]{2,8})?$/.test(code) ? code : "";
+}
+
+function normalizeWelcomeMessages(messages, fallbackText) {
+  const fallback = String(fallbackText || DEFAULT_LEGACY_CONFIG.welcomeText);
+  const result = {
+    default: fallback
+  };
+
+  if (messages && typeof messages === "object" && !Array.isArray(messages)) {
+    Object.entries(messages).forEach(([key, value]) => {
+      const language = normalizeLanguageCode(key);
+
+      if (language && typeof value === "string") {
+        result[language] = value || fallback;
+      }
+    });
+  }
+
+  if (!result.default) {
+    result.default = fallback;
+  }
+
+  return result;
+}
+
 function normalizeBot(bot, index, options) {
   const source = bot || {};
   const generateSecrets = Boolean(options && options.generateSecrets);
@@ -205,6 +247,8 @@ function normalizeBot(bot, index, options) {
   const id = slugify(source.id || source.username || source.label, fallbackId);
   const label = String(source.label || source.username || `Bot ${index + 1}`).replace(/^@/, "").trim() || `Bot ${index + 1}`;
   const webhookSecretToken = String(source.webhookSecretToken || "").trim() || (generateSecrets ? randomSecret() : "");
+  const welcomeText = String(source.welcomeText || DEFAULT_LEGACY_CONFIG.welcomeText);
+  const welcomeMessages = normalizeWelcomeMessages(source.welcomeMessages, welcomeText);
 
   return {
     id,
@@ -214,7 +258,8 @@ function normalizeBot(bot, index, options) {
     webhookSecretToken,
     menuButtonText: String(source.menuButtonText || "Play").trim().slice(0, 32) || "Play",
     menuButtonId: String(source.menuButtonId || "play").trim(),
-    welcomeText: String(source.welcomeText || DEFAULT_LEGACY_CONFIG.welcomeText),
+    welcomeText: welcomeMessages.default,
+    welcomeMessages,
     welcomeParseMode: normalizeParseMode(source.welcomeParseMode || source.parseMode),
     buttons: normalizeButtons(source.buttons),
     commands: normalizeCommands(source.commands)
@@ -284,6 +329,7 @@ function legacyToModern(rawConfig) {
             menuButtonText: legacy.menuButtonText,
             menuButtonId: legacy.menuButtonId,
             welcomeText: legacy.welcomeText,
+            welcomeMessages: legacy.welcomeMessages,
             welcomeParseMode: legacy.welcomeParseMode || legacy.parseMode || "HTML",
             buttons: legacy.buttons,
             commands: legacy.commands
@@ -400,6 +446,7 @@ function applyLegacyPatch(config, patch) {
     "menuButtonText",
     "menuButtonId",
     "welcomeText",
+    "welcomeMessages",
     "welcomeParseMode",
     "parseMode",
     "buttons",
@@ -472,6 +519,7 @@ function toRuntimeConfig(website, bot) {
     menuButtonText: bot.menuButtonText,
     menuButtonId: bot.menuButtonId,
     welcomeText: bot.welcomeText,
+    welcomeMessages: bot.welcomeMessages,
     welcomeParseMode: bot.welcomeParseMode,
     buttons: bot.buttons,
     commands: bot.commands
@@ -488,14 +536,16 @@ function maskToken(token) {
   return `${value.slice(0, 6)}...${value.slice(-4)}`;
 }
 
-function sanitizeConfig(config) {
+function sanitizeConfig(config, options = {}) {
+  const revealTokens = Boolean(options.revealTokens);
+
   return {
     ...config,
     websites: config.websites.map((website) => ({
       ...website,
       bots: website.bots.map((bot) => ({
         ...bot,
-        telegramBotToken: maskToken(bot.telegramBotToken),
+        telegramBotToken: revealTokens ? bot.telegramBotToken : maskToken(bot.telegramBotToken),
         hasTelegramBotToken: Boolean(bot.telegramBotToken)
       }))
     }))

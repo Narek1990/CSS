@@ -6,6 +6,7 @@ const {
   buildLaunchUrl,
   getMenuButton,
   inlineKeyboard,
+  renderWelcomeText,
   replyKeyboard
 } = require("../src/telegram-client");
 
@@ -85,4 +86,20 @@ test("wrapper launch URL carries target path", () => {
   }, "/en/home?m=deposit");
 
   assert.equal(url, "https://bot.esportesnew.com/miniapp?target=https%3A%2F%2Fesportesnew.com%2Fen%2Fhome%3Fm%3Ddeposit");
+});
+
+test("welcome text follows Telegram user language with default fallback", () => {
+  const welcomeConfig = {
+    welcomeParseMode: "HTML",
+    welcomeText: "Default {{first_name}}",
+    welcomeMessages: {
+      default: "Default {{first_name}}",
+      en: "Hello <b>{{first_name}}</b>",
+      pt: "Ola {{first_name}}"
+    }
+  };
+
+  assert.equal(renderWelcomeText(welcomeConfig, { first_name: "Narek", language_code: "en-US" }), "Hello <b>Narek</b>");
+  assert.equal(renderWelcomeText(welcomeConfig, { first_name: "Joao", language_code: "pt" }), "Ola Joao");
+  assert.equal(renderWelcomeText(welcomeConfig, { first_name: "Ani", language_code: "hy" }), "Default Ani");
 });

@@ -456,7 +456,7 @@ async function route(req, res) {
 
     sendJson(res, 200, {
       ok: true,
-      config: sanitizeConfig(config),
+      config: sanitizeConfig(config, { revealTokens: true }),
       selection: selectionSummary(selection),
       launchUrl: getSafeLaunchUrl(selection.runtimeConfig)
     });
@@ -478,7 +478,7 @@ async function route(req, res) {
 
     sendJson(res, 200, {
       ok: true,
-      config: sanitizeConfig(savedConfig),
+      config: sanitizeConfig(savedConfig, { revealTokens: true }),
       selection: selectionSummary(selection),
       launchUrl: getSafeLaunchUrl(selection.runtimeConfig)
     });
@@ -505,7 +505,7 @@ async function route(req, res) {
     sendJson(res, 200, {
       ok: true,
       bot,
-      config: sanitizeConfig(savedConfig)
+      config: sanitizeConfig(savedConfig, { revealTokens: true })
     });
     return;
   }
@@ -523,7 +523,7 @@ async function route(req, res) {
     sendJson(res, 200, {
       ok: true,
       ...result,
-      config: sanitizeConfig(savedConfig),
+      config: sanitizeConfig(savedConfig, { revealTokens: true }),
       webhookUrl: selection.runtimeConfig.publicBaseUrl ? buildWebhookUrl(selection.runtimeConfig) : ""
     });
     return;

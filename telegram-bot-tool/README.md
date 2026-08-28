@@ -8,11 +8,11 @@ It is intentionally dependency-free and runs on Node 18+.
 
 - Verifies a Telegram bot token with `getMe`.
 - Manages several websites from one dashboard.
-- Lets each website have several Telegram bot profiles.
+- Connects one Telegram bot per website profile.
 - Sets bot commands: `/start`, `/app`, `/keyboard`.
 - Sets the private-chat menu button with `setChatMenuButton`.
 - Manages a separate button list per bot: add, edit, disable, delete, reorder, choose row, and choose button type.
-- Adds a rich welcome-message editor for Telegram HTML formatting.
+- Adds a rich welcome-message editor with per-language Telegram HTML messages.
 - Sends a single welcome message with inline buttons, matching the simple bot shown in the recording.
 - Can also send reply-keyboard Web App buttons when a button's placement is set to **Reply Keyboard** or **Both**.
 - Hosts `/miniapp`, an optional wrapper that loads `https://esportesnew.com/` in an iframe.
@@ -59,8 +59,8 @@ Telegram opens Mini Apps in its own webview. Opening the site directly is usuall
 
 There are two levels of connection:
 
-1. **Token connection**: choose the website and bot, paste the token, then verify. This confirms the tool can call Telegram as the selected bot.
-2. **Webhook connection**: set `PUBLIC_BASE_URL` to the public HTTPS URL where this tool is hosted, then publish the selected bot. This lets Telegram deliver `/start` and button callback updates to the tool.
+1. **Token connection**: choose the website, paste the connected bot token, then verify. This confirms the tool can call Telegram as that website's bot.
+2. **Webhook connection**: set `PUBLIC_BASE_URL` to the public HTTPS URL where this tool is hosted, then publish. This lets Telegram deliver `/start` and button callback updates to the tool.
 
 Local URLs such as `http://127.0.0.1:8787` cannot be used by Telegram as a webhook. For a quick test, expose the local server with an HTTPS tunnel and use that tunnel URL as `PUBLIC_BASE_URL`. For production, deploy the tool and use a stable URL such as `https://bot.esportesnew.com`.
 
@@ -68,7 +68,7 @@ After changing `PUBLIC_BASE_URL`, restart the tool or save the value in the dash
 
 ## Button Manager
 
-Each bot profile has its own buttons. The first bot starts with the same simple shape as your sample bot:
+Each website's connected bot has its own buttons. A new website starts with the same simple shape as your sample bot:
 
 - `Play`
 - `Deposit`
@@ -83,9 +83,9 @@ Each button has:
 - **URL or Path**: use a full HTTPS URL or a site-relative path such as `/en/home?m=deposit`.
 - **Callback Data**: used only for callback buttons.
 
-The preview panel shows the message and buttons before you publish. `Publish to Telegram` updates commands, the chat menu button, and the webhook for the selected bot only. New `/start` messages use the latest saved buttons for that bot profile.
+The preview panel shows the message and buttons before you publish. `Publish to Telegram` updates commands, the chat menu button, and the webhook for the selected website's bot. New `/start` messages use the latest saved buttons and language-specific welcome message for that bot.
 
-## Multiple Websites And Bots
+## Multiple Websites
 
 Use **Add Website** to create another website profile. Each website stores:
 
@@ -94,20 +94,20 @@ Use **Add Website** to create another website profile. Each website stores:
 - Public bot-tool URL.
 - Direct-site or iframe-wrapper launch mode.
 - Mini App and webhook paths.
+- One connected Telegram bot token.
+- Bot name, such as `esportesnew_bot`.
+- Display name, such as `esportesnew.com`.
+- Per-language welcome messages.
+- Menu button choice.
+- Managed Telegram buttons.
 
-Use **Add Bot** inside a website to create another Telegram bot profile. Each bot stores:
-
-- Its own Telegram token.
-- Its own Telegram username after verification.
-- Its own welcome message.
-- Its own menu button choice.
-- Its own managed Telegram buttons.
-
-The webhook URL includes the website ID and bot ID, so one public tool can receive updates for several bots separately.
+The webhook URL includes the website ID and bot ID, so one public tool can receive updates for each website's connected bot separately.
 
 ## Welcome Message Editor
 
-The welcome editor stores Telegram HTML. The toolbar supports bold, italic, underline, strikethrough, code, links, and clear formatting. You can still use placeholders:
+The welcome editor stores Telegram HTML. Choose a language, edit that message, and save. Telegram users receive the message matching their `language_code`; if there is no match, the bot uses **Default**.
+
+The toolbar supports bold, italic, underline, strikethrough, code, links, and clear formatting. You can still use placeholders:
 
 ```text
 {{first_name}}

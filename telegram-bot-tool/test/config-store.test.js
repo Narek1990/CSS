@@ -54,6 +54,17 @@ test("saving sanitized config preserves stored bot tokens", () => {
   assert.equal(selection.runtimeConfig.telegramBotToken, "123456:secret-token");
 });
 
+test("sanitized config can reveal tokens only when admin route asks for it", () => {
+  const config = normalizeConfig({
+    telegramBotToken: "123456:secret-token"
+  });
+  const masked = sanitizeConfig(config);
+  const revealed = sanitizeConfig(config, { revealTokens: true });
+
+  assert.equal(masked.websites[0].bots[0].telegramBotToken, "123456...oken");
+  assert.equal(revealed.websites[0].bots[0].telegramBotToken, "123456:secret-token");
+});
+
 test("selects independent bot profiles inside the same website", () => {
   const config = normalizeConfig({
     activeWebsiteId: "site",

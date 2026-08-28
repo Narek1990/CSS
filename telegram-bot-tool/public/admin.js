@@ -14,11 +14,24 @@ const messagePreview = document.querySelector("#messagePreview");
 const inlinePreview = document.querySelector("#inlinePreview");
 const replyPreview = document.querySelector("#replyPreview");
 const websiteSelect = document.querySelector("#websiteSelect");
-const botSelect = document.querySelector("#botSelect");
+const languageSelect = document.querySelector("#languageSelect");
 const welcomeEditor = document.querySelector("#welcomeEditor");
 const profileState = document.querySelector("#profileState");
 const previewBotName = document.querySelector("#previewBotName");
 const previewAvatar = document.querySelector("#previewAvatar");
+const notice = document.querySelector("#notice");
+
+const LANGUAGE_LABELS = {
+  default: "Default",
+  en: "English",
+  pt: "Portuguese",
+  es: "Spanish",
+  ru: "Russian",
+  hy: "Armenian",
+  fr: "French",
+  tr: "Turkish",
+  ar: "Arabic"
+};
 
 let appConfig = {
   activeWebsiteId: "esportesnew",
@@ -27,7 +40,9 @@ let appConfig = {
 };
 let buttons = [];
 let hydrating = false;
+let noticeTimer = null;
 const pendingTokens = new Map();
+const activeLanguageByProfile = new Map();
 
 function adminHeaders() {
   const token = window.localStorage.getItem("telegramToolAdminToken") || "";
@@ -64,6 +79,20 @@ async function api(path, options = {}) {
 
 function print(value) {
   output.textContent = JSON.stringify(value, null, 2);
+}
+
+function notify(message, state = "info", sticky = false) {
+  notice.textContent = message;
+  notice.dataset.state = state;
+  notice.hidden = false;
+
+  window.clearTimeout(noticeTimer);
+
+  if (!sticky) {
+    noticeTimer = window.setTimeout(() => {
+      notice.hidden = true;
+    }, 6500);
+  }
 }
 
 function setStatus(text, state) {
@@ -146,6 +175,45 @@ function defaultButtons(websiteUrl) {
   ];
 }
 
+function normalizeLanguageCode(value) {
+  const code = String(value || "default")
+    .trim()
+    .replace(/_/g, "-")
+    .toLowerCase();
+
+  if (!code || code === "default") {
+    return "default";
+  }
+
+  return /^[a-z]{2,3}(-[a-z0-9]{2,8})?$/.test(code) ? code : "";
+}
+
+function languageLabel(code) {
+  return LANGUAGE_LABELS[code] || code;
+}
+
+function normalizeWelcomeMessages(messages, fallback) {
+  const result = {
+    default: String(fallback || "Hello {{first_name}},\n\nWelcome. Choose an action below.")
+  };
+
+  if (messages && typeof messages === "object" && !Array.isArray(messages)) {
+    Object.entries(messages).forEach(([key, value]) => {
+      const code = normalizeLanguageCode(key);
+
+      if (code && typeof value === "string") {
+        result[code] = value;
+      }
+    });
+  }
+
+  if (!result.default) {
+    result.default = "Hello {{first_name}},\n\nWelcome. Choose an action below.";
+  }
+
+  return result;
+}
+
 function normalizeButton(button, index, usedIds) {
   const label = String(button.label || "Open").trim().slice(0, 64) || "Open";
   const id = uniqueId(button.id || label, usedIds, `button-${index + 1}`);
@@ -165,28 +233,30 @@ function normalizeButton(button, index, usedIds) {
   };
 }
 
-function normalizeButtons(sourceButtons) {
+function normalizeButtons(sourceButtons, websiteUrl) {
   const usedIds = new Set();
 
-  return (Array.isArray(sourceButtons) && sourceButtons.length ? sourceButtons : defaultButtons(currentWebsite().websiteUrl))
+  return (Array.isArray(sourceButtons) && sourceButtons.length ? sourceButtons : defaultButtons(websiteUrl))
     .map((button, index) => normalizeButton(button, index, usedIds));
 }
 
 function normalizeBot(bot, index, website) {
   const source = bot || {};
+  const welcomeMessages = normalizeWelcomeMessages(source.welcomeMessages, source.welcomeText);
 
   return {
     id: source.id || `bot-${index + 1}`,
-    label: source.label || source.username || `Bot ${index + 1}`,
-    username: String(source.username || "").replace(/^@/, ""),
+    label: source.label || source.name || source.username || website.name || `Bot ${index + 1}`,
+    username: String(source.username || source.botUsername || "").replace(/^@/, ""),
     telegramBotToken: source.telegramBotToken || "",
     hasTelegramBotToken: Boolean(source.hasTelegramBotToken || source.telegramBotToken),
     webhookSecretToken: source.webhookSecretToken || "",
     menuButtonText: source.menuButtonText || "Play",
     menuButtonId: source.menuButtonId || "play",
-    welcomeText: source.welcomeText || "Hello {{first_name}},\n\nWelcome. Choose an action below.",
+    welcomeText: welcomeMessages.default,
+    welcomeMessages,
     welcomeParseMode: "HTML",
-    buttons: normalizeButtons(source.buttons || defaultButtons(website.websiteUrl)),
+    buttons: normalizeButtons(source.buttons, website.websiteUrl),
     commands: Array.isArray(source.commands) && source.commands.length ? source.commands : [
       { command: "start", description: "Open website" },
       { command: "app", description: "Launch the website" },
@@ -197,7 +267,6 @@ function normalizeBot(bot, index, website) {
 
 function normalizeWebsite(website, index) {
   const source = website || {};
-  const bots = Array.isArray(source.bots) && source.bots.length ? source.bots : [];
   const normalized = {
     id: source.id || (index === 0 ? "esportesnew" : `website-${index + 1}`),
     name: source.name || source.appTitle || `Website ${index + 1}`,
@@ -210,12 +279,14 @@ function normalizeWebsite(website, index) {
     activeBotId: source.activeBotId || "",
     bots: []
   };
+  const existingBots = Array.isArray(source.bots) && source.bots.length ? source.bots : [];
 
-  normalized.bots = (bots.length ? bots : [createBot(normalized, 0)])
+  normalized.bots = (existingBots.length ? existingBots : [createBot(normalized, 0)])
     .map((bot, botIndex) => normalizeBot(bot, botIndex, normalized));
-  normalized.activeBotId = normalized.bots.some((bot) => bot.id === source.activeBotId)
-    ? source.activeBotId
-    : normalized.bots[0].id;
+
+  if (!normalized.bots.some((bot) => bot.id === normalized.activeBotId)) {
+    normalized.activeBotId = normalized.bots[0].id;
+  }
 
   return normalized;
 }
@@ -235,12 +306,10 @@ function normalizeAppConfig(config) {
   }
 
   const website = currentWebsite();
+  const bot = currentBot();
 
-  if (!website.bots.some((bot) => bot.id === appConfig.activeBotId)) {
-    appConfig.activeBotId = website.activeBotId || website.bots[0].id;
-  }
-
-  website.activeBotId = appConfig.activeBotId;
+  appConfig.activeBotId = bot.id;
+  website.activeBotId = bot.id;
   return appConfig;
 }
 
@@ -251,7 +320,9 @@ function currentWebsite() {
 function currentBot() {
   const website = currentWebsite();
 
-  return website.bots.find((bot) => bot.id === appConfig.activeBotId) || website.bots.find((bot) => bot.id === website.activeBotId) || website.bots[0];
+  return website.bots.find((bot) => bot.id === appConfig.activeBotId)
+    || website.bots.find((bot) => bot.id === website.activeBotId)
+    || website.bots[0];
 }
 
 function selectedProfile() {
@@ -309,24 +380,22 @@ function createWebsite(index) {
 }
 
 function createBot(website, index) {
-  const current = appConfig.websites && appConfig.websites.length ? currentBot() : null;
-  const existingIds = new Set((website.bots || []).map((bot) => bot.id));
-  const id = uniqueId(`bot-${index + 1}`, existingIds, `bot-${index + 1}`);
-  const sourceButtons = current && current.buttons ? clone(current.buttons) : defaultButtons(website.websiteUrl);
-
   return {
-    id,
-    label: `Bot ${index + 1}`,
+    id: `${website.id || "website"}-bot`,
+    label: website.name || "Website",
     username: "",
     telegramBotToken: "",
     hasTelegramBotToken: false,
     webhookSecretToken: "",
-    menuButtonText: current ? current.menuButtonText : "Play",
-    menuButtonId: current ? current.menuButtonId : "play",
-    welcomeText: current ? current.welcomeText : "Hello {{first_name}},\n\nWelcome. Choose an action below.",
+    menuButtonText: "Play",
+    menuButtonId: "play",
+    welcomeText: "Hello {{first_name}},\n\nWelcome. Choose an action below.",
+    welcomeMessages: {
+      default: "Hello {{first_name}},\n\nWelcome. Choose an action below."
+    },
     welcomeParseMode: "HTML",
-    buttons: sourceButtons,
-    commands: current && current.commands ? clone(current.commands) : [
+    buttons: defaultButtons(website.websiteUrl),
+    commands: [
       { command: "start", description: "Open website" },
       { command: "app", description: "Launch the website" },
       { command: "keyboard", description: "Show Telegram app button" }
@@ -340,15 +409,43 @@ function fillSelectors() {
   websiteSelect.innerHTML = appConfig.websites
     .map((item) => option(item.id, item.name, website.id))
     .join("");
-  botSelect.innerHTML = website.bots
-    .map((item) => option(item.id, item.username ? `${item.label} (@${item.username})` : item.label, appConfig.activeBotId))
+}
+
+function activeLanguage() {
+  const { website, bot } = selectedProfile();
+  const key = profileKey(website, bot);
+  const requested = activeLanguageByProfile.get(key) || "default";
+
+  return bot.welcomeMessages[requested] !== undefined ? requested : "default";
+}
+
+function setActiveLanguage(language) {
+  const { website, bot } = selectedProfile();
+
+  activeLanguageByProfile.set(profileKey(website, bot), language);
+}
+
+function fillLanguageOptions() {
+  const bot = currentBot();
+  const languages = Object.keys(bot.welcomeMessages || { default: bot.welcomeText || "" })
+    .sort((left, right) => {
+      if (left === "default") return -1;
+      if (right === "default") return 1;
+      return languageLabel(left).localeCompare(languageLabel(right));
+    });
+  const selected = activeLanguage();
+
+  languageSelect.innerHTML = languages
+    .map((language) => option(language, languageLabel(language), selected))
     .join("");
+  languageSelect.value = selected;
 }
 
 function fillForm() {
   const { website, bot } = selectedProfile();
   const mode = website.launchMode || "direct";
   const modeInput = form.querySelector(`input[name="launchMode"][value="${mode}"]`);
+  const pendingToken = pendingTokens.get(profileKey(website, bot));
 
   hydrating = true;
   form.websiteName.value = website.name || "";
@@ -357,17 +454,19 @@ function fillForm() {
   form.publicBaseUrl.value = website.publicBaseUrl || "";
   form.miniAppPath.value = website.miniAppPath || "/miniapp";
   form.webhookPath.value = website.webhookPath || "/telegram/webhook";
-  form.botLabel.value = bot.label || "";
-  form.telegramBotToken.value = pendingTokens.get(profileKey(website, bot)) || "";
+  form.botLabel.value = bot.label || website.name || "";
+  form.botUsername.value = bot.username || "";
+  form.telegramBotToken.value = pendingToken || bot.telegramBotToken || "";
   form.menuButtonText.value = bot.menuButtonText || "Play";
 
   if (modeInput) {
     modeInput.checked = true;
   }
 
-  buttons = normalizeButtons(bot.buttons);
-  setEditorHtml(bot.welcomeText || "");
-  form.welcomeText.value = bot.welcomeText || "";
+  buttons = normalizeButtons(bot.buttons, website.websiteUrl);
+  fillLanguageOptions();
+  setEditorHtml(bot.welcomeMessages[activeLanguage()] || bot.welcomeText || "");
+  form.welcomeText.value = bot.welcomeMessages[activeLanguage()] || bot.welcomeText || "";
   renderButtons(bot.menuButtonId || "play");
   renderPreview();
   updateFacts();
@@ -381,6 +480,7 @@ function syncCurrentFormToState() {
 
   const { website, bot } = selectedProfile();
   const token = form.telegramBotToken.value.trim();
+  const language = activeLanguage();
 
   website.name = form.websiteName.value.trim() || website.name || "Website";
   website.appTitle = form.appTitle.value.trim() || website.name;
@@ -393,13 +493,16 @@ function syncCurrentFormToState() {
   appConfig.activeWebsiteId = website.id;
   appConfig.activeBotId = bot.id;
 
-  bot.label = form.botLabel.value.trim() || bot.label || "Bot";
+  bot.label = form.botLabel.value.trim() || website.name || "Website";
+  bot.username = form.botUsername.value.trim().replace(/^@/, "");
   bot.menuButtonText = form.menuButtonText.value.trim() || "Play";
   bot.menuButtonId = menuButtonId.value;
-  bot.welcomeText = editorToTelegramHtml();
+  bot.welcomeMessages = normalizeWelcomeMessages(bot.welcomeMessages, bot.welcomeText);
+  bot.welcomeMessages[language] = editorToTelegramHtml();
+  bot.welcomeText = bot.welcomeMessages.default || "";
   bot.welcomeParseMode = "HTML";
-  bot.buttons = normalizeButtons(buttons);
-  form.welcomeText.value = bot.welcomeText;
+  bot.buttons = normalizeButtons(buttons, website.websiteUrl);
+  form.welcomeText.value = bot.welcomeMessages[language] || "";
 
   if (token) {
     pendingTokens.set(profileKey(website, bot), token);
@@ -452,6 +555,10 @@ async function saveConfig(options = {}) {
 
   if (options.printResult) {
     print(result);
+  }
+
+  if (!options.silent) {
+    notify("Configuration saved successfully.", "success");
   }
 
   return result;
@@ -620,9 +727,7 @@ function updateFacts() {
   const pendingToken = pendingTokens.get(profileKey(website, bot));
 
   profileState.textContent = `${website.name || "Website"} / ${bot.label || "Bot"}`;
-  tokenState.textContent = pendingToken
-    ? "New token ready to save"
-    : (bot.hasTelegramBotToken || bot.telegramBotToken ? bot.telegramBotToken || "Saved" : "Not saved");
+  tokenState.textContent = pendingToken || bot.telegramBotToken || "Not saved";
   webhookState.textContent = website.publicBaseUrl ? "Ready to publish" : "Needs public HTTPS URL";
 }
 
@@ -816,12 +921,15 @@ async function checkConnection(printResult = true) {
   if (!status.tokenSaved) {
     setStatus("Token missing", "error");
     webhookState.textContent = "Paste token, save config";
+    notify("Token is missing for this website bot.", "error", true);
   } else if (status.connected && status.bot) {
     setStatus(`@${status.bot.username} connected`, "ready");
     webhookState.textContent = status.webhook && status.webhook.url ? status.webhook.url : "Connected";
+    notify("Telegram bot is connected.", "success");
   } else if (status.bot) {
     setStatus(`@${status.bot.username} token OK`, "ready");
     webhookState.textContent = status.nextStep || (status.publicBaseUrlSet ? "Webhook not active" : "Needs public HTTPS URL");
+    notify(status.nextStep || "Bot token is valid, but webhook is not connected yet.", "warning", true);
   }
 
   if (status.launchUrl) {
@@ -874,6 +982,8 @@ form.addEventListener("submit", async (event) => {
     print(result);
   } catch (error) {
     savedState.textContent = "Failed";
+    setStatus("Save failed", "error");
+    notify(`Save failed: ${error.message}`, "error", true);
     print({ error: error.message });
   }
 });
@@ -934,6 +1044,7 @@ websiteSelect.addEventListener("change", () => {
   syncCurrentFormToState();
   appConfig.activeWebsiteId = websiteSelect.value;
   appConfig.activeBotId = currentWebsite().activeBotId || currentWebsite().bots[0].id;
+  setActiveLanguage(activeLanguage());
   fillSelectors();
   fillForm();
   markDirty();
@@ -941,17 +1052,40 @@ websiteSelect.addEventListener("change", () => {
   loadUsers().catch((error) => print({ error: error.message }));
 });
 
-botSelect.addEventListener("change", () => {
+languageSelect.addEventListener("change", () => {
   syncCurrentFormToState();
-  const website = currentWebsite();
-
-  appConfig.activeBotId = botSelect.value;
-  website.activeBotId = botSelect.value;
-  fillSelectors();
-  fillForm();
+  setActiveLanguage(languageSelect.value || "default");
+  fillLanguageOptions();
+  setEditorHtml(currentBot().welcomeMessages[activeLanguage()] || "");
+  form.welcomeText.value = currentBot().welcomeMessages[activeLanguage()] || "";
+  renderPreview();
   markDirty();
-  checkConnection(false).catch(() => {});
-  loadUsers().catch((error) => print({ error: error.message }));
+});
+
+document.querySelector("#addLanguage").addEventListener("click", () => {
+  syncCurrentFormToState();
+  const code = normalizeLanguageCode(window.prompt("Language code, for example en, pt, es, ru, hy") || "");
+
+  if (!code || code === "default") {
+    notify("Enter a valid language code such as en, pt, es, ru, or hy.", "error", true);
+    return;
+  }
+
+  const bot = currentBot();
+
+  bot.welcomeMessages = normalizeWelcomeMessages(bot.welcomeMessages, bot.welcomeText);
+
+  if (bot.welcomeMessages[code] === undefined) {
+    bot.welcomeMessages[code] = bot.welcomeMessages.default || bot.welcomeText || "";
+  }
+
+  setActiveLanguage(code);
+  fillLanguageOptions();
+  setEditorHtml(bot.welcomeMessages[code]);
+  form.welcomeText.value = bot.welcomeMessages[code];
+  renderPreview();
+  markDirty();
+  notify(`Added ${languageLabel(code)} welcome message.`, "success");
 });
 
 document.querySelector("#addWebsite").addEventListener("click", () => {
@@ -961,22 +1095,11 @@ document.querySelector("#addWebsite").addEventListener("click", () => {
   appConfig.websites.push(website);
   appConfig.activeWebsiteId = website.id;
   appConfig.activeBotId = website.activeBotId;
+  setActiveLanguage("default");
   fillSelectors();
   fillForm();
   markDirty();
-});
-
-document.querySelector("#addBot").addEventListener("click", () => {
-  syncCurrentFormToState();
-  const website = currentWebsite();
-  const bot = createBot(website, website.bots.length);
-
-  website.bots.push(bot);
-  website.activeBotId = bot.id;
-  appConfig.activeBotId = bot.id;
-  fillSelectors();
-  fillForm();
-  markDirty();
+  notify("New website profile added. Save when ready.", "success");
 });
 
 buttonsList.addEventListener("input", (event) => {
@@ -1024,6 +1147,7 @@ document.querySelector("#addButton").addEventListener("click", () => {
   syncCurrentFormToState();
   renderPreview();
   markDirty();
+  notify("Button added. Save and publish when ready.", "success");
 });
 
 document.querySelector("#verifyBot").addEventListener("click", async () => {
@@ -1047,10 +1171,12 @@ document.querySelector("#verifyBot").addEventListener("click", async () => {
     fillForm();
     setStatus(result.bot.username ? `@${result.bot.username} verified` : "Verified", "ready");
     savedState.textContent = "Saved";
+    notify("Bot verified and saved successfully.", "success");
     print(result);
   } catch (error) {
     savedState.textContent = "Failed";
     setStatus("Bot error", "error");
+    notify(`Verify failed: ${error.message}`, "error", true);
     print({ error: error.message });
   }
 });
@@ -1058,11 +1184,12 @@ document.querySelector("#verifyBot").addEventListener("click", async () => {
 document.querySelector("#checkConnection").addEventListener("click", async () => {
   try {
     savedState.textContent = "Saving";
-    await saveConfig();
+    await saveConfig({ silent: true });
     await checkConnection();
   } catch (error) {
     savedState.textContent = "Failed";
     setStatus("Connection error", "error");
+    notify(`Connection check failed: ${error.message}`, "error", true);
     print({ error: error.message });
   }
 });
@@ -1070,7 +1197,7 @@ document.querySelector("#checkConnection").addEventListener("click", async () =>
 document.querySelector("#setupBot").addEventListener("click", async () => {
   try {
     savedState.textContent = "Saving";
-    await saveConfig();
+    await saveConfig({ silent: true });
     const result = await api("/api/bot/setup", {
       method: "POST",
       body: JSON.stringify(selectedPayload())
@@ -1083,11 +1210,13 @@ document.querySelector("#setupBot").addEventListener("click", async () => {
     webhookState.textContent = result.webhookUrl || result.webhookSkippedReason || "Menu/button configured";
     setStatus("Telegram setup done", "ready");
     savedState.textContent = "Saved";
+    notify("Published to Telegram successfully.", "success");
     print(result);
     await checkConnection(false);
   } catch (error) {
     savedState.textContent = "Failed";
     setStatus("Setup failed", "error");
+    notify(`Publish failed: ${error.message}`, "error", true);
     print({ error: error.message });
   }
 });
@@ -1096,7 +1225,7 @@ document.querySelector("#sendTest").addEventListener("click", async () => {
   const chatId = document.querySelector("#chatId").value.trim();
 
   try {
-    await saveConfig();
+    await saveConfig({ silent: true });
     const result = await api("/api/bot/send-test", {
       method: "POST",
       body: JSON.stringify(selectedPayload({
@@ -1104,8 +1233,10 @@ document.querySelector("#sendTest").addEventListener("click", async () => {
         message: form.welcomeText.value.trim()
       }))
     });
+    notify("Test message sent.", "success");
     print(result);
   } catch (error) {
+    notify(`Test message failed: ${error.message}`, "error", true);
     print({ error: error.message });
   }
 });
@@ -1117,14 +1248,21 @@ document.querySelector("#deleteWebhook").addEventListener("click", async () => {
       body: JSON.stringify(selectedPayload())
     });
     webhookState.textContent = "Deleted";
+    notify("Webhook deleted.", "success");
     print(result);
   } catch (error) {
+    notify(`Delete webhook failed: ${error.message}`, "error", true);
     print({ error: error.message });
   }
 });
 
 document.querySelector("#refreshUsers").addEventListener("click", () => {
-  loadUsers().catch((error) => print({ error: error.message }));
+  loadUsers()
+    .then(() => notify("Users refreshed.", "success"))
+    .catch((error) => {
+      notify(`Refresh failed: ${error.message}`, "error", true);
+      print({ error: error.message });
+    });
 });
 
 async function loadConfig() {
@@ -1149,10 +1287,14 @@ async function loadConfig() {
     }
 
     setStatus("Config error", "error");
+    notify(`Config load failed: ${error.message}`, "error", true);
     print({ error: error.message });
   }
 }
 
 loadConfig()
   .then(loadUsers)
-  .catch((error) => print({ error: error.message }));
+  .catch((error) => {
+    notify(`Startup failed: ${error.message}`, "error", true);
+    print({ error: error.message });
+  });

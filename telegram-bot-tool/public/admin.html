@@ -16,6 +16,8 @@
         <div class="status-pill" id="connectionStatus">Not checked</div>
       </header>
 
+      <div class="notice" id="notice" hidden></div>
+
       <section class="grid">
         <form class="panel" id="configForm">
           <div class="panel-title">
@@ -71,20 +73,23 @@
 
           <div class="panel-title section-title">
             <h2>Bot</h2>
-            <div class="selector-actions">
-              <select id="botSelect" aria-label="Telegram bot"></select>
-              <button type="button" class="secondary small" id="addBot">Add Bot</button>
-            </div>
+            <span>One connected bot per website</span>
+          </div>
+
+          <div class="split">
+            <label>
+              <span>Name</span>
+              <input name="botLabel" maxlength="60" placeholder="esportesnew.com">
+            </label>
+            <label>
+              <span>Bot Name</span>
+              <input name="botUsername" maxlength="60" placeholder="esportesnew_bot">
+            </label>
           </div>
 
           <label>
-            <span>Bot Label</span>
-            <input name="botLabel" maxlength="60" placeholder="Main Telegram Bot">
-          </label>
-
-          <label>
             <span>Telegram Bot Token</span>
-            <input name="telegramBotToken" type="password" autocomplete="off" placeholder="Paste a new token only when changing this bot">
+            <input name="telegramBotToken" type="text" autocomplete="off" spellcheck="false" placeholder="Paste the bot token">
           </label>
 
           <div class="split">
@@ -100,6 +105,10 @@
 
           <label class="welcome-field">
             <span>Welcome Message</span>
+            <div class="language-row">
+              <select id="languageSelect" aria-label="Welcome message language"></select>
+              <button type="button" class="secondary small" id="addLanguage">Add Language</button>
+            </div>
             <div class="editor-toolbar" aria-label="Welcome message formatting">
               <button type="button" class="icon-btn" data-format="bold">B</button>
               <button type="button" class="icon-btn" data-format="italic">I</button>

@@ -258,6 +258,27 @@ function replyKeyboard(config) {
   };
 }
 
+function normalizeLanguageCode(value) {
+  return String(value || "")
+    .trim()
+    .replace(/_/g, "-")
+    .toLowerCase();
+}
+
+function selectWelcomeText(config, user) {
+  const messages = config.welcomeMessages && typeof config.welcomeMessages === "object"
+    ? config.welcomeMessages
+    : {};
+  const languageCode = normalizeLanguageCode(user && user.language_code);
+  const shortLanguage = languageCode.split("-")[0];
+
+  return messages[languageCode]
+    || messages[shortLanguage]
+    || messages.default
+    || config.welcomeText
+    || "";
+}
+
 function renderWelcomeText(config, user) {
   const useHtml = (config.welcomeParseMode || config.parseMode) === "HTML";
   const serialize = useHtml ? escapeHtml : String;
@@ -265,7 +286,7 @@ function renderWelcomeText(config, user) {
   const lastName = serialize(user && user.last_name ? user.last_name : "");
   const username = serialize(user && user.username ? user.username : "");
 
-  return String(config.welcomeText || "")
+  return String(selectWelcomeText(config, user))
     .replaceAll("{{first_name}}", firstName)
     .replaceAll("{{last_name}}", lastName)
     .replaceAll("{{username}}", username);
@@ -288,7 +309,7 @@ async function handleTelegramUpdate(update, config, store) {
     await client.answerCallbackQuery(callbackQuery.id, "Done");
 
     if (callbackQuery.message && callbackQuery.message.chat) {
-      await client.sendMessage(callbackQuery.message.chat.id, "Choose an action below.", inlineKeyboard(config));
+      await sendLaunchMessages(client, callbackQuery.message.chat.id, config, callbackQuery.from);
     }
 
     return { handled: true, type: "callback_query" };
@@ -348,6 +369,7 @@ module.exports = {
   handleTelegramUpdate,
   inlineKeyboard,
   replyKeyboard,
+  renderWelcomeText,
   resolveWebsiteUrl,
   sendLaunchMessages
 };
