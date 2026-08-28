@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Telegram Bot Manager</title>
+    <link rel="stylesheet" href="/public/admin.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Telegram Integration</p>
+          <h1>Website Bot Manager</h1>
+        </div>
+        <div class="status-pill" id="connectionStatus">Not checked</div>
+      </header>
+
+      <section class="grid">
+        <form class="panel" id="configForm">
+          <div class="panel-title">
+            <h2>Website</h2>
+            <div class="selector-actions">
+              <select id="websiteSelect" aria-label="Website"></select>
+              <button type="button" class="secondary small" id="addWebsite">Add Website</button>
+            </div>
+          </div>
+
+          <div class="split">
+            <label>
+              <span>Website Name</span>
+              <input name="websiteName" maxlength="60" placeholder="EsportesNew">
+            </label>
+            <label>
+              <span>App Title</span>
+              <input name="appTitle" maxlength="60" placeholder="EsportesNew">
+            </label>
+          </div>
+
+          <label>
+            <span>Website URL</span>
+            <input name="websiteUrl" type="url" required placeholder="https://esportesnew.com/">
+          </label>
+
+          <label>
+            <span>Public Bot Tool URL</span>
+            <input name="publicBaseUrl" type="url" placeholder="https://bot.esportesnew.com">
+          </label>
+
+          <div class="split">
+            <label>
+              <span>Mini App Path</span>
+              <input name="miniAppPath" placeholder="/miniapp">
+            </label>
+            <label>
+              <span>Webhook Path</span>
+              <input name="webhookPath" placeholder="/telegram/webhook">
+            </label>
+          </div>
+
+          <div class="segmented" role="radiogroup" aria-label="Launch mode">
+            <label>
+              <input type="radio" name="launchMode" value="direct">
+              <span>Direct Site</span>
+            </label>
+            <label>
+              <input type="radio" name="launchMode" value="wrapper">
+              <span>Iframe Wrapper</span>
+            </label>
+          </div>
+
+          <div class="panel-title section-title">
+            <h2>Bot</h2>
+            <div class="selector-actions">
+              <select id="botSelect" aria-label="Telegram bot"></select>
+              <button type="button" class="secondary small" id="addBot">Add Bot</button>
+            </div>
+          </div>
+
+          <label>
+            <span>Bot Label</span>
+            <input name="botLabel" maxlength="60" placeholder="Main Telegram Bot">
+          </label>
+
+          <label>
+            <span>Telegram Bot Token</span>
+            <input name="telegramBotToken" type="password" autocomplete="off" placeholder="Paste a new token only when changing this bot">
+          </label>
+
+          <div class="split">
+            <label>
+              <span>Menu Button Text</span>
+              <input name="menuButtonText" maxlength="32" placeholder="Play">
+            </label>
+            <label>
+              <span>Menu Opens Button</span>
+              <select name="menuButtonId" id="menuButtonId"></select>
+            </label>
+          </div>
+
+          <label class="welcome-field">
+            <span>Welcome Message</span>
+            <div class="editor-toolbar" aria-label="Welcome message formatting">
+              <button type="button" class="icon-btn" data-format="bold">B</button>
+              <button type="button" class="icon-btn" data-format="italic">I</button>
+              <button type="button" class="icon-btn" data-format="underline">U</button>
+              <button type="button" class="icon-btn" data-format="strikeThrough">S</button>
+              <button type="button" class="icon-btn" data-format="code">Code</button>
+              <button type="button" class="icon-btn" data-format="createLink">Link</button>
+              <button type="button" class="icon-btn" data-format="removeFormat">Clear</button>
+            </div>
+            <div id="welcomeEditor" class="rich-editor" contenteditable="true" role="textbox" aria-multiline="true"></div>
+            <textarea name="welcomeText" hidden></textarea>
+          </label>
+
+          <div class="actions">
+            <button type="submit">Save Config</button>
+            <button type="button" class="secondary" id="verifyBot">Verify Bot</button>
+            <button type="button" class="secondary" id="checkConnection">Check Connection</button>
+            <button type="button" class="secondary" id="setupBot">Publish to Telegram</button>
+          </div>
+        </form>
+
+        <aside class="panel">
+          <div class="panel-title">
+            <h2>Telegram Preview</h2>
+            <span id="savedState">Unsaved</span>
+          </div>
+
+          <div class="telegram-preview">
+            <div class="telegram-message">
+              <div class="avatar" id="previewAvatar">E</div>
+              <div class="bubble">
+                <div class="bot-name" id="previewBotName">Telegram bot</div>
+                <div class="message-copy" id="messagePreview"></div>
+                <div class="inline-preview" id="inlinePreview"></div>
+              </div>
+            </div>
+            <div class="reply-preview" id="replyPreview"></div>
+          </div>
+
+          <dl class="facts compact">
+            <div>
+              <dt>Selected Profile</dt>
+              <dd id="profileState">-</dd>
+            </div>
+            <div>
+              <dt>Launch URL</dt>
+              <dd id="launchUrl">-</dd>
+            </div>
+            <div>
+              <dt>Stored Token</dt>
+              <dd id="tokenState">-</dd>
+            </div>
+            <div>
+              <dt>Webhook</dt>
+              <dd id="webhookState">Not configured</dd>
+            </div>
+          </dl>
+        </aside>
+      </section>
+
+      <section class="panel button-panel">
+        <div class="panel-title">
+          <h2>Buttons</h2>
+          <button type="button" class="secondary small" id="addButton">Add Button</button>
+        </div>
+
+        <div class="buttons-list" id="buttonsList"></div>
+      </section>
+
+      <section class="grid lower-grid">
+        <section class="panel">
+          <div class="panel-title">
+            <h2>Operations</h2>
+          </div>
+
+          <div class="test-send">
+            <label>
+              <span>Test Chat ID</span>
+              <input id="chatId" inputmode="numeric" placeholder="123456789">
+            </label>
+            <button type="button" id="sendTest">Send Test Message</button>
+            <button type="button" class="danger" id="deleteWebhook">Delete Webhook</button>
+          </div>
+
+          <pre class="output" id="output">{}</pre>
+        </section>
+
+        <section class="panel users-panel">
+          <div class="panel-title">
+            <h2>Telegram Users</h2>
+            <button type="button" class="secondary small" id="refreshUsers">Refresh</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Username</th>
+                  <th>Bot</th>
+                  <th>Source</th>
+                  <th>Last Seen</th>
+                </tr>
+              </thead>
+              <tbody id="usersBody">
+                <tr>
+                  <td colspan="6">No users yet.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/public/admin.js"></script>
+  </body>
+</html>

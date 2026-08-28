@@ -1,0 +1,15 @@
+{
+  "name": "esportesnew-telegram-bot-tool",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Telegram bot and Mini App manager for EsportesNew.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "check": "node --check server.js && node --check src/telegram-auth.js && node --check src/config-store.js && node --check src/telegram-client.js && node --check public/admin.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

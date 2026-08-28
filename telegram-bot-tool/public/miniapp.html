@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>EsportesNew Mini App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: var(--tg-theme-bg-color, #101216);
+        --panel: var(--tg-theme-secondary-bg-color, #171b22);
+        --text: var(--tg-theme-text-color, #edf2f7);
+        --hint: var(--tg-theme-hint-color, #9aa6b2);
+        --button: var(--tg-theme-button-color, #25c084);
+        --button-text: var(--tg-theme-button-text-color, #071410);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        height: 100vh;
+        background: var(--bg);
+        color: var(--text);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        overflow: hidden;
+      }
+
+      .bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        height: 52px;
+        padding: max(10px, env(safe-area-inset-top)) 12px 10px;
+        background: var(--panel);
+        border-bottom: 1px solid rgb(255 255 255 / 10%);
+      }
+
+      .brand {
+        min-width: 0;
+      }
+
+      .brand strong,
+      .brand span {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .brand span {
+        color: var(--hint);
+        font-size: 12px;
+      }
+
+      .open {
+        border: 0;
+        border-radius: 6px;
+        background: var(--button);
+        color: var(--button-text);
+        font-weight: 800;
+        padding: 10px 12px;
+        white-space: nowrap;
+      }
+
+      iframe {
+        display: block;
+        width: 100%;
+        height: calc(100vh - 52px);
+        border: 0;
+        background: #17181c;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bar">
+      <div class="brand">
+        <strong id="title">EsportesNew</strong>
+        <span id="authState">Connecting Telegram</span>
+      </div>
+      <button class="open" id="openSite" type="button">Open</button>
+    </div>
+    <iframe id="siteFrame" title="EsportesNew"></iframe>
+
+    <script>
+      const tg = window.Telegram && window.Telegram.WebApp;
+      const frame = document.querySelector("#siteFrame");
+      const title = document.querySelector("#title");
+      const authState = document.querySelector("#authState");
+      const openSite = document.querySelector("#openSite");
+
+      if (tg) {
+        tg.ready();
+        tg.expand();
+        tg.setHeaderColor("secondary_bg_color");
+        tg.setBackgroundColor("bg_color");
+      }
+
+      async function boot() {
+        const params = new URLSearchParams(window.location.search);
+        const websiteId = params.get("websiteId") || "";
+        const botId = params.get("botId") || "";
+        const selectionParams = new URLSearchParams();
+
+        if (websiteId) {
+          selectionParams.set("websiteId", websiteId);
+        }
+
+        if (botId) {
+          selectionParams.set("botId", botId);
+        }
+
+        const configPath = selectionParams.toString()
+          ? "/api/public-config?" + selectionParams.toString()
+          : "/api/public-config";
+        const configResponse = await fetch(configPath);
+        const configResult = await configResponse.json();
+        const config = configResult.config || {};
+        const targetParam = params.get("target");
+        const websiteUrl = resolveTargetUrl(config.websiteUrl || "https://esportesnew.com/", targetParam);
+        title.textContent = config.appTitle || "EsportesNew";
+        frame.src = websiteUrl;
+        openSite.addEventListener("click", () => {
+          if (tg && tg.openLink) {
+            tg.openLink(frame.src);
+            return;
+          }
+
+          window.open(frame.src, "_blank", "noopener");
+        });
+
+        if (!tg || !tg.initData) {
+          authState.textContent = "Opened outside Telegram";
+          return;
+        }
+
+        const authResponse = await fetch("/api/auth/telegram", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            initData: tg.initData,
+            websiteId: config.websiteId || websiteId,
+            botId: config.botId || botId
+          })
+        });
+        const authResult = await authResponse.json();
+
+        if (!authResponse.ok || !authResult.ok) {
+          authState.textContent = "Telegram sign-in failed";
+          return;
+        }
+
+        authState.textContent = authResult.user.username
+          ? "Signed in as @" + authResult.user.username
+          : "Signed in with Telegram";
+
+        frame.addEventListener("load", () => {
+          try {
+            const targetOrigin = new URL(frame.src).origin;
+            frame.contentWindow.postMessage({
+              source: "esportesnew-telegram-bot-tool",
+              type: "telegram-auth",
+              user: authResult.user,
+              sessionToken: authResult.sessionToken
+            }, targetOrigin);
+          } catch (_error) {
+          }
+        });
+      }
+
+      boot().catch(() => {
+        authState.textContent = "Mini App unavailable";
+      });
+
+      function resolveTargetUrl(defaultUrl, targetUrl) {
+        try {
+          const base = new URL(defaultUrl);
+          const candidate = targetUrl ? new URL(targetUrl, base) : base;
+
+          if (candidate.origin !== base.origin || candidate.protocol !== "https:") {
+            return base.toString();
+          }
+
+          return candidate.toString();
+        } catch (_error) {
+          return "https://esportesnew.com/";
+        }
+      }
+    </script>
+  </body>
+</html>
