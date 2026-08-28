@@ -373,39 +373,34 @@ function pathSegmentsAfter(basePath, requestPath) {
 function findWebhookSelection(config, requestPath) {
   for (const website of config.websites || []) {
     const segments = pathSegmentsAfter(website.webhookPath, requestPath);
+    const activeBot = website.bots.find((entry) => entry.id === website.activeBotId) || website.bots[0];
 
-    if (!segments || !segments.length) {
+    if (!segments || !segments.length || !activeBot) {
       continue;
     }
 
     if (segments.length >= 3 && segments[0] === website.id) {
-      const bot = website.bots.find((entry) => entry.id === segments[1]);
-
-      if (bot) {
+      if (activeBot.id === segments[1]) {
         return {
           secretFromPath: segments[2],
-          ...selectConfig(config, website.id, bot.id)
+          ...selectConfig(config, website.id, activeBot.id)
         };
       }
     }
 
     if (segments.length >= 2) {
-      const bot = website.bots.find((entry) => entry.id === segments[0]);
-
-      if (bot) {
+      if (activeBot.id === segments[0]) {
         return {
           secretFromPath: segments[1],
-          ...selectConfig(config, website.id, bot.id)
+          ...selectConfig(config, website.id, activeBot.id)
         };
       }
     }
 
-    const bot = website.bots.find((entry) => entry.webhookSecretToken === segments[0]);
-
-    if (bot) {
+    if (activeBot.webhookSecretToken === segments[0]) {
       return {
         secretFromPath: segments[0],
-        ...selectConfig(config, website.id, bot.id)
+        ...selectConfig(config, website.id, activeBot.id)
       };
     }
   }

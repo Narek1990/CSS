@@ -65,7 +65,7 @@ test("sanitized config can reveal tokens only when admin route asks for it", () 
   assert.equal(revealed.websites[0].bots[0].telegramBotToken, "123456:secret-token");
 });
 
-test("selects independent bot profiles inside the same website", () => {
+test("uses one connected bot per website and leaves old bot records inert", () => {
   const config = normalizeConfig({
     activeWebsiteId: "site",
     activeBotId: "second",
@@ -104,7 +104,8 @@ test("selects independent bot profiles inside the same website", () => {
   const first = selectConfig(config, "site", "first");
   const second = selectConfig(config, "site", "second");
 
-  assert.equal(first.runtimeConfig.telegramBotToken, "111:first");
+  assert.equal(config.websites[0].bots.length, 2);
   assert.equal(second.runtimeConfig.telegramBotToken, "222:second");
   assert.equal(second.runtimeConfig.buttons[0].url, "/second");
+  assert.equal(first.runtimeConfig.telegramBotToken, "222:second");
 });

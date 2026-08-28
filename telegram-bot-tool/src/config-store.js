@@ -383,6 +383,10 @@ function findBot(website, botId) {
   return website && (website.bots || []).find((bot) => bot.id === botId) || null;
 }
 
+function findConnectedBot(website) {
+  return findBot(website, website && website.activeBotId) || (website && website.bots && website.bots[0]) || null;
+}
+
 function preserveSensitiveData(nextConfig, previousConfig) {
   nextConfig.websites.forEach((website) => {
     const previousWebsite = findWebsite(previousConfig, website.id);
@@ -487,8 +491,7 @@ function selectConfig(config, websiteId, botId) {
   const requestedWebsite = websiteId ? findWebsite(config, websiteId) : null;
   const activeWebsite = findWebsite(config, config.activeWebsiteId);
   const website = requestedWebsite || activeWebsite || config.websites[0];
-  const requestedBotId = botId || (website.id === config.activeWebsiteId ? config.activeBotId : website.activeBotId);
-  const bot = findBot(website, requestedBotId) || findBot(website, website.activeBotId) || website.bots[0];
+  const bot = findConnectedBot(website);
 
   if (!website || !bot) {
     throw new Error("No website or bot profile is configured.");
