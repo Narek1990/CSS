@@ -2,7 +2,7 @@
 
 const assert = require("assert/strict");
 const test = require("node:test");
-const { buildSsoContext, buildSsoPreview, renderPayload } = require("../src/website-sso");
+const { attemptWebsiteSso, buildSsoContext, buildSsoPreview, renderPayload } = require("../src/website-sso");
 
 test("builds EsportesNew SSO context from Telegram user", () => {
   const context = buildSsoContext({
@@ -58,4 +58,52 @@ test("previews login and signup payloads without sending requests", () => {
     userName: "player",
     language: "es"
   });
+});
+
+test("records failed EsportesNew signup response after password login is skipped", async (t) => {
+  const originalFetch = global.fetch;
+  t.after(() => {
+    global.fetch = originalFetch;
+  });
+  global.fetch = async () => ({
+    ok: false,
+    status: 500,
+    text: async () => JSON.stringify({ message: "Internal Exception" })
+  });
+
+  const result = await attemptWebsiteSso({
+    websiteUrl: "https://esportesnew.com/",
+    sso: {
+      serverLoginEnabled: true,
+      signupFallbackEnabled: true,
+      usernameTemplate: "{{telegram_username}}",
+      signupPayload: {
+        userName: "{{username}}",
+        language: "{{language}}"
+      }
+    }
+  }, {
+    id: 516395245,
+    username: "Goravanes",
+    language_code: "en"
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.username, "Goravanes");
+  assert.equal(result.reason, "Signup failed HTTP 500: Internal Exception");
+  assert.deepEqual(result.attempts, [
+    {
+      action: "login",
+      ok: false,
+      skipped: true,
+      reason: "Login password template is empty."
+    },
+    {
+      action: "signup",
+      ok: false,
+      status: 500,
+      message: "Internal Exception",
+      networkError: false
+    }
+  ]);
 });

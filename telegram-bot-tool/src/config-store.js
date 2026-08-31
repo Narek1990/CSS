@@ -147,6 +147,48 @@ function cleanBaseUrl(value) {
   return String(value || "").trim().replace(/\/+$/, "");
 }
 
+function normalizeSsoAttempts(attempts) {
+  if (!Array.isArray(attempts)) {
+    return [];
+  }
+
+  return attempts.slice(-10).map((attempt) => ({
+    action: String((attempt && attempt.action) || "").slice(0, 64),
+    ok: Boolean(attempt && attempt.ok),
+    skipped: Boolean(attempt && attempt.skipped),
+    status: Number.isFinite(Number(attempt && attempt.status)) ? Number(attempt.status) : 0,
+    message: String((attempt && (attempt.message || attempt.reason)) || "").slice(0, 500),
+    networkError: Boolean(attempt && attempt.networkError)
+  })).filter((attempt) => attempt.action || attempt.message || attempt.status);
+}
+
+function ssoLastError(ssoResult, previous) {
+  if (!ssoResult) {
+    return previous.ssoLastError || "";
+  }
+
+  if (ssoResult.ok) {
+    return "";
+  }
+
+  const reason = String(ssoResult.reason || ssoResult.error || "").trim();
+
+  if (reason) {
+    return reason.slice(0, 500);
+  }
+
+  const failedAttempt = normalizeSsoAttempts(ssoResult.attempts).find((attempt) => {
+    return !attempt.ok && !attempt.skipped;
+  });
+
+  if (!failedAttempt) {
+    return "";
+  }
+
+  const status = failedAttempt.status ? ` HTTP ${failedAttempt.status}` : "";
+  return `${failedAttempt.action}${status}: ${failedAttempt.message || "Request failed."}`.slice(0, 500);
+}
+
 function randomSecret() {
   return crypto.randomBytes(24).toString("base64url");
 }
@@ -733,6 +775,7 @@ function createStore(baseDir) {
     const existingIndex = users.findIndex((entry) => String(entry.id) === userId && String(entry.botId || "") === botId);
     const previous = existingIndex >= 0 ? users[existingIndex] : {};
     const ssoResult = context.ssoResult;
+    const ssoAttempts = ssoResult ? normalizeSsoAttempts(ssoResult.attempts) : (previous.ssoLastAttempts || []);
     const record = {
       id: user.id,
       first_name: user.first_name || "",
@@ -749,7 +792,9 @@ function createStore(baseDir) {
       ssoStatus: ssoResult ? (ssoResult.ok ? "ok" : (ssoResult.skipped ? "skipped" : "failed")) : (previous.ssoStatus || ""),
       ssoAction: ssoResult ? (ssoResult.action || "") : (previous.ssoAction || ""),
       ssoUsername: ssoResult ? (ssoResult.username || "") : (previous.ssoUsername || ""),
-      ssoLastError: ssoResult ? (ssoResult.reason || ssoResult.error || "") : (previous.ssoLastError || ""),
+      ssoLastError: ssoLastError(ssoResult, previous),
+      ssoLastAttempts: ssoAttempts,
+      ssoLastAttemptAt: ssoResult ? now : (previous.ssoLastAttemptAt || ""),
       firstSeenAt: existingIndex >= 0 ? users[existingIndex].firstSeenAt : now,
       lastSeenAt: now
     };

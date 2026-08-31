@@ -11,6 +11,7 @@ const {
   getCommandConfig,
   getMenuButton,
   inlineKeyboard,
+  renderSsoFallbackText,
   renderWelcomeText,
   replyKeyboard
 } = require("../src/telegram-client");
@@ -199,4 +200,22 @@ test("welcome text follows Telegram user language with default fallback", () => 
   assert.equal(renderWelcomeText(welcomeConfig, { first_name: "Narek", language_code: "en-US" }), "Hello <b>Narek</b>");
   assert.equal(renderWelcomeText(welcomeConfig, { first_name: "Joao", language_code: "pt" }), "Ola Joao");
   assert.equal(renderWelcomeText(welcomeConfig, { first_name: "Ani", language_code: "hy" }), "Default Ani");
+});
+
+test("SSO fallback text keeps backend failure private for Telegram users", () => {
+  const text = renderSsoFallbackText({
+    appTitle: "EsportesNew",
+    welcomeParseMode: "HTML"
+  }, {
+    first_name: "Gor",
+    username: "Goravanes"
+  }, {
+    ok: false,
+    username: "Goravanes",
+    reason: "Signup failed HTTP 500: Internal Exception"
+  });
+
+  assert.equal(text.includes("Internal Exception"), false);
+  assert.equal(text.includes("Telegram sign-in for <b>Goravanes</b> is not completed yet."), true);
+  assert.equal(text.includes("open EsportesNew inside Telegram"), true);
 });

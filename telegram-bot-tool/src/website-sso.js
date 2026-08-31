@@ -179,8 +179,8 @@ async function attemptWebsiteSso(config, user) {
   const attempts = [];
 
   if (preview.loginPayload.password) {
-    const login = await postJson(preview.loginEndpoint, preview.loginPayload);
-    attempts.push(summarizeAttempt("login", login));
+    const login = await requestJsonAttempt("login", preview.loginEndpoint, preview.loginPayload);
+    attempts.push(login);
 
     if (login.ok) {
       return {
@@ -209,8 +209,8 @@ async function attemptWebsiteSso(config, user) {
     };
   }
 
-  const signup = await postJson(preview.signupEndpoint, preview.signupPayload);
-  attempts.push(summarizeAttempt("signup", signup));
+  const signup = await requestJsonAttempt("signup", preview.signupEndpoint, preview.signupPayload);
+  attempts.push(signup);
 
   if (!signup.ok) {
     return {
@@ -218,13 +218,13 @@ async function attemptWebsiteSso(config, user) {
       action: "signup",
       username: preview.username,
       attempts,
-      reason: signup.message
+      reason: describeAttemptFailure(signup, "Signup request failed.")
     };
   }
 
   if (preview.loginPayload.password) {
-    const retryLogin = await postJson(preview.loginEndpoint, preview.loginPayload);
-    attempts.push(summarizeAttempt("login_after_signup", retryLogin));
+    const retryLogin = await requestJsonAttempt("login_after_signup", preview.loginEndpoint, preview.loginPayload);
+    attempts.push(retryLogin);
 
     if (retryLogin.ok) {
       return {
@@ -242,6 +242,20 @@ async function attemptWebsiteSso(config, user) {
     username: preview.username,
     attempts
   };
+}
+
+async function requestJsonAttempt(action, url, payload) {
+  try {
+    return summarizeAttempt(action, await postJson(url, payload));
+  } catch (error) {
+    return {
+      action,
+      ok: false,
+      status: 0,
+      message: error.message || "Request failed before the website responded.",
+      networkError: true
+    };
+  }
 }
 
 async function postJson(url, payload) {
@@ -269,8 +283,30 @@ function summarizeAttempt(action, attempt) {
     action,
     ok: attempt.ok,
     status: attempt.status,
-    message: attempt.message || ""
+    message: attempt.message || "",
+    networkError: Boolean(attempt.networkError)
   };
+}
+
+function describeAttemptFailure(attempt, fallback) {
+  if (!attempt) {
+    return fallback;
+  }
+
+  if (attempt.skipped) {
+    return attempt.reason || fallback;
+  }
+
+  const status = attempt.status ? ` HTTP ${attempt.status}` : "";
+  const message = attempt.message || fallback;
+
+  return `${humanAction(attempt.action)} failed${status}: ${message}`.slice(0, 500);
+}
+
+function humanAction(action) {
+  return String(action || "SSO")
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
 function safeJson(text) {
@@ -302,6 +338,7 @@ module.exports = {
   attemptWebsiteSso,
   buildSsoContext,
   buildSsoPreview,
+  describeAttemptFailure,
   normalizeSsoConfig,
   renderPayload,
   renderTemplate

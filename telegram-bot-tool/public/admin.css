@@ -704,6 +704,60 @@ td {
   color: var(--text);
 }
 
+.sso-badge {
+  display: inline-flex;
+  min-width: 68px;
+  justify-content: center;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 999px;
+  background: #273241;
+  color: var(--muted);
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.sso-badge[data-status="ok"] {
+  border-color: rgb(50 213 131 / 32%);
+  background: rgb(50 213 131 / 14%);
+  color: #85e7b4;
+}
+
+.sso-badge[data-status="failed"] {
+  border-color: rgb(255 107 107 / 32%);
+  background: rgb(255 107 107 / 12%);
+  color: #ff9b9b;
+}
+
+.sso-badge[data-status="skipped"] {
+  border-color: rgb(251 191 36 / 30%);
+  background: rgb(251 191 36 / 12%);
+  color: #f7d885;
+}
+
+.sso-detail {
+  display: grid;
+  gap: 4px;
+  min-width: 260px;
+  max-width: 620px;
+}
+
+.sso-detail strong {
+  color: var(--text);
+}
+
+.sso-detail span,
+.sso-detail small {
+  color: var(--muted);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.sso-detail .sso-error {
+  color: #ffb0b0;
+}
+
 @media (max-width: 1080px) {
   .grid,
   .split,

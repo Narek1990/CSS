@@ -1344,22 +1344,50 @@ async function loadUsers() {
   const result = await api(selectedPath("/api/users"));
   const rows = result.users.map((user) => {
     const name = [user.first_name, user.last_name].filter(Boolean).join(" ");
+    const status = user.ssoStatus || "-";
     return `
       <tr>
         <td>${escapeHtml(user.id)}</td>
         <td>${escapeHtml(name || "-")}</td>
         <td>${escapeHtml(user.username || "-")}</td>
         <td>${escapeHtml(user.botUsername ? `@${user.botUsername}` : (user.botLabel || user.botId || "-"))}</td>
-        <td>${escapeHtml(user.ssoStatus || "-")}</td>
+        <td><span class="sso-badge" data-status="${escapeHtml(status)}">${escapeHtml(status)}</span></td>
+        <td>${ssoDetailHtml(user)}</td>
         <td>${escapeHtml(user.source || "-")}</td>
         <td>${escapeHtml(user.lastSeenAt || "-")}</td>
+        <td><button type="button" class="secondary small" data-retry-sso="${escapeHtml(user.id)}">Retry SSO</button></td>
       </tr>
     `;
   });
 
   usersBody.innerHTML = rows.length
     ? rows.join("")
-    : '<tr><td colspan="7">No users yet.</td></tr>';
+    : '<tr><td colspan="9">No users yet.</td></tr>';
+}
+
+function ssoDetailHtml(user) {
+  const attempts = Array.isArray(user.ssoLastAttempts) ? user.ssoLastAttempts : [];
+  const attemptText = attempts.length
+    ? attempts.map(formatSsoAttempt).join(" | ")
+    : "No SSO attempt details yet.";
+  const error = user.ssoLastError || (user.ssoStatus === "ok" ? "Connected" : "");
+
+  return `
+    <div class="sso-detail">
+      <strong>${escapeHtml(user.ssoUsername || user.username || "-")}</strong>
+      <span>${escapeHtml(user.ssoAction || "-")}${user.ssoLastAttemptAt ? ` at ${escapeHtml(user.ssoLastAttemptAt)}` : ""}</span>
+      ${error ? `<small class="${user.ssoStatus === "failed" ? "sso-error" : ""}">${escapeHtml(error)}</small>` : ""}
+      <small title="${escapeHtml(attemptText)}">${escapeHtml(attemptText)}</small>
+    </div>
+  `;
+}
+
+function formatSsoAttempt(attempt) {
+  const status = attempt.status ? ` HTTP ${attempt.status}` : "";
+  const state = attempt.skipped ? "skipped" : (attempt.ok ? "ok" : "failed");
+  const message = attempt.message ? `: ${attempt.message}` : "";
+
+  return `${attempt.action || "sso"} ${state}${status}${message}`;
 }
 
 function escapeHtml(value) {
@@ -1369,6 +1397,43 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 }
+
+usersBody.addEventListener("click", async (event) => {
+  const button = event.target.closest("[data-retry-sso]");
+
+  if (!button) {
+    return;
+  }
+
+  const telegramId = button.dataset.retrySso;
+  button.disabled = true;
+  button.textContent = "Retrying";
+  notify(`Retrying SSO for Telegram user ${telegramId}...`, "warning", true);
+
+  try {
+    const result = await api(selectedPath("/api/sso/retry"), {
+      method: "POST",
+      body: JSON.stringify(selectedPayload({ telegramId }))
+    });
+    const error = result.ssoResult && (result.ssoResult.reason || result.ssoResult.error);
+
+    print(result);
+    notify(
+      result.ssoResult && result.ssoResult.ok
+        ? `SSO succeeded for Telegram user ${telegramId}.`
+        : `SSO failed for Telegram user ${telegramId}: ${error || "check details below."}`,
+      result.ssoResult && result.ssoResult.ok ? "success" : "error",
+      !(result.ssoResult && result.ssoResult.ok)
+    );
+    await loadUsers();
+  } catch (error) {
+    notify(`SSO retry failed: ${error.message}`, "error", true);
+    print({ error: error.message });
+  } finally {
+    button.disabled = false;
+    button.textContent = "Retry SSO";
+  }
+});
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();

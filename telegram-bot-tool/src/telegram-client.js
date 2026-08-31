@@ -336,6 +336,19 @@ async function sendLaunchMessages(client, chatId, config, user) {
   return client.sendMessage(chatId, renderWelcomeText(config, user), inlineKeyboard(config, user), config.welcomeParseMode || config.parseMode);
 }
 
+function renderSsoFallbackText(config, user, result) {
+  const useHtml = (config.welcomeParseMode || config.parseMode) === "HTML";
+  const serialize = useHtml ? escapeHtml : String;
+  const firstName = serialize(user && user.first_name ? user.first_name : "there");
+  const appName = serialize(config.appTitle || config.websiteName || "the website");
+  const username = serialize((result && result.username) || (user && user.username) || "");
+  const accountText = username
+    ? (useHtml ? ` for <b>${username}</b>` : ` for ${username}`)
+    : "";
+
+  return `Hello ${firstName},\n\nTelegram sign-in${accountText} is not completed yet. Tap a button below to open ${appName} inside Telegram and finish login.`;
+}
+
 function telegramLanguageCode(value) {
   const code = normalizeLanguageCode(value);
 
@@ -507,7 +520,18 @@ async function handleConfiguredCommand(client, chatId, config, user, command, st
   }
 
   if (action === "sso") {
-    await recordSsoAttempt(config, store, user);
+    const ssoResult = await recordSsoAttempt(config, store, user);
+
+    if (ssoResult && !ssoResult.ok && !ssoResult.skipped) {
+      await client.sendMessage(
+        chatId,
+        renderSsoFallbackText(config, user, ssoResult),
+        inlineKeyboard(config, user),
+        config.welcomeParseMode || config.parseMode
+      );
+      return { handled: true, type: "command", command: command.command, action, sso: "failed" };
+    }
+
     await sendLaunchMessages(client, chatId, config, user);
     return { handled: true, type: "command", command: command.command, action };
   }
@@ -596,6 +620,7 @@ module.exports = {
   handleTelegramUpdate,
   inlineKeyboard,
   replyKeyboard,
+  renderSsoFallbackText,
   renderWelcomeText,
   resolveWebsiteUrl,
   sendLaunchMessages

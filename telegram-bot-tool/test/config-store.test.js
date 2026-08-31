@@ -163,3 +163,46 @@ test("normalizes localized button labels, commands, and sso config", () => {
   assert.equal(selection.runtimeConfig.sso.usernameTemplate, "tg_{{telegram_username}}");
   assert.equal(selection.runtimeConfig.sso.loginEndpoint, "/api/identity/api/v1/playeraccount/login");
 });
+
+test("stores SSO attempt details for Telegram users", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "telegram-config-store-"));
+  const store = createStore(dir);
+  const record = store.upsertTelegramUser({
+    id: 516395245,
+    username: "Goravanes",
+    first_name: "Gor",
+    language_code: "en"
+  }, "sso", {
+    websiteId: "esportesnew",
+    websiteName: "EsportesNew",
+    botId: "esportesnew-bot",
+    botLabel: "EsportesNew bot",
+    botUsername: "esportesnew_bot",
+    ssoResult: {
+      ok: false,
+      action: "signup",
+      username: "Goravanes",
+      reason: "Signup failed HTTP 500: Internal Exception",
+      attempts: [
+        {
+          action: "login",
+          ok: false,
+          skipped: true,
+          reason: "Login password template is empty."
+        },
+        {
+          action: "signup",
+          ok: false,
+          status: 500,
+          message: "Internal Exception"
+        }
+      ]
+    }
+  });
+
+  assert.equal(record.ssoStatus, "failed");
+  assert.equal(record.ssoLastError, "Signup failed HTTP 500: Internal Exception");
+  assert.equal(record.ssoLastAttempts.length, 2);
+  assert.equal(record.ssoLastAttempts[1].status, 500);
+  assert.ok(record.ssoLastAttemptAt);
+});
