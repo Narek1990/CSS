@@ -39,12 +39,15 @@ const DEFAULT_BUTTONS = [
 ];
 
 const DEFAULT_COMMANDS = [
-  { command: "start", description: "Start Telegram SSO", enabled: true, action: "sso", responseText: "", buttonLabel: "Open App", buttonUrl: "/" },
-  { command: "login", description: "Sign in with Telegram", enabled: true, action: "sso", responseText: "", buttonLabel: "Open App", buttonUrl: "/" },
-  { command: "password", description: "Reset password", enabled: true, action: "password", responseText: "Open password reset.", buttonLabel: "Reset Password", buttonUrl: "/en/forgot-password" },
-  { command: "menu", description: "Show menu", enabled: true, action: "welcome", responseText: "", buttonLabel: "", buttonUrl: "" },
-  { command: "app", description: "Launch the website", enabled: true, action: "welcome", responseText: "", buttonLabel: "", buttonUrl: "" },
-  { command: "keyboard", description: "Show Telegram app button", enabled: true, action: "keyboard", responseText: "The launch button is now on your Telegram keyboard.", buttonLabel: "", buttonUrl: "" }
+  { command: "start", description: "Start Telegram SSO", descriptions: { default: "Start Telegram SSO" }, enabled: true, action: "sso", responseText: "", buttonLabel: "Open App", buttonUrl: "/" },
+  { command: "login", description: "Sign in with Telegram", descriptions: { default: "Sign in with Telegram" }, enabled: true, action: "sso", responseText: "", buttonLabel: "Open App", buttonUrl: "/" },
+  { command: "password", description: "Reset password", descriptions: { default: "Reset password" }, enabled: true, action: "password", responseText: "Open password reset.", buttonLabel: "Reset Password", buttonUrl: "/en/forgot-password" },
+  { command: "menu", description: "Show menu", descriptions: { default: "Show menu" }, enabled: true, action: "welcome", responseText: "", buttonLabel: "", buttonUrl: "" },
+  { command: "chat", description: "Contact support", descriptions: { default: "Contact support" }, enabled: false, action: "custom", responseText: "Open the website to contact support.", buttonLabel: "Open Support", buttonUrl: "/" },
+  { command: "language", description: "Change language", descriptions: { default: "Change language" }, enabled: false, action: "custom", responseText: "Open the website to change language.", buttonLabel: "Open App", buttonUrl: "/" },
+  { command: "logout", description: "Log out", descriptions: { default: "Log out" }, enabled: false, action: "custom", responseText: "Open the website to manage your session.", buttonLabel: "Open App", buttonUrl: "/" },
+  { command: "app", description: "Launch the website", descriptions: { default: "Launch the website" }, enabled: true, action: "welcome", responseText: "", buttonLabel: "", buttonUrl: "" },
+  { command: "keyboard", description: "Show Telegram app button", descriptions: { default: "Show Telegram app button" }, enabled: true, action: "keyboard", responseText: "The launch button is now on your Telegram keyboard.", buttonLabel: "", buttonUrl: "" }
 ];
 
 const DEFAULT_LEGACY_CONFIG = {
@@ -193,6 +196,16 @@ function normalizeCommands(commands) {
     });
   }
 
+  const existing = new Set(normalized.map((command) => command.command));
+
+  DEFAULT_COMMANDS
+    .filter((command) => command.enabled === false)
+    .forEach((command) => {
+      if (!existing.has(command.command)) {
+        normalized.push(normalizeCommand(command));
+      }
+    });
+
   return normalized.length ? normalized : clone(DEFAULT_COMMANDS);
 }
 
@@ -209,6 +222,10 @@ function inferCommandAction(command) {
     return "password";
   }
 
+  if (command === "chat" || command === "language" || command === "logout") {
+    return "custom";
+  }
+
   return "welcome";
 }
 
@@ -219,18 +236,20 @@ function normalizeCommand(command) {
     .toLowerCase()
     .replace(/[^a-z0-9_]/g, "")
     .slice(0, 32);
-  const description = String((command && command.description) || "").trim().slice(0, 256);
+  const rawDescription = String((command && command.description) || "").trim().slice(0, 256);
+  const descriptions = normalizeCommandDescriptions(command && (command.descriptions || command.descriptionTranslations), rawDescription || `${value} command`);
   const action = ["sso", "welcome", "keyboard", "password", "custom", "none"].includes(command && command.action)
     ? command.action
     : inferCommandAction(value);
 
-  if (!value || !description) {
+  if (!value || !descriptions.default) {
     return null;
   }
 
   return {
     command: value,
-    description,
+    description: descriptions.default,
+    descriptions,
     enabled: !command || command.enabled !== false,
     action,
     responseText: String((command && command.responseText) || "").trim(),
@@ -297,6 +316,29 @@ function normalizeLocalizedText(messages, fallbackText) {
 
       if (language && typeof value === "string") {
         result[language] = String(value || fallback).trim().slice(0, 64) || fallback;
+      }
+    });
+  }
+
+  if (!result.default) {
+    result.default = fallback;
+  }
+
+  return result;
+}
+
+function normalizeCommandDescriptions(messages, fallbackText) {
+  const fallback = String(fallbackText || "Command").trim().slice(0, 256) || "Command";
+  const result = {
+    default: fallback
+  };
+
+  if (messages && typeof messages === "object" && !Array.isArray(messages)) {
+    Object.entries(messages).forEach(([key, value]) => {
+      const language = normalizeLanguageCode(key);
+
+      if (language && typeof value === "string") {
+        result[language] = String(value || fallback).trim().slice(0, 256) || fallback;
       }
     });
   }

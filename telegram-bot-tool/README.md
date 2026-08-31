@@ -100,8 +100,11 @@ Default commands:
 - `/password`: sends a password-reset link.
 - `/menu` and `/app`: show the welcome message and inline buttons.
 - `/keyboard`: shows reply-keyboard Web App buttons.
+- `/chat`, `/language`, and `/logout`: available as predefined disabled presets that can be enabled and customized.
 
-Each command can be enabled or disabled, given a Telegram description, and assigned an action: Telegram SSO, Welcome + Buttons, Reply Keyboard, Password Reset, Custom Reply, or No Reply. Press **Publish to Telegram** after changing commands.
+Each command can be enabled or disabled, given a Telegram menu description, and assigned an action: Telegram SSO, Welcome + Buttons, Reply Keyboard, Password Reset, Custom Reply, or No Reply. The Telegram preview includes a command-menu block similar to the menu shown when users type `/`.
+
+Command descriptions are language-aware. Choose a language in **Language Content**, edit each command's **Menu Description**, then press **Publish to Telegram**. The tool publishes the default command menu and each configured language menu with Telegram's `language_code`.
 
 ## Multiple Websites
 

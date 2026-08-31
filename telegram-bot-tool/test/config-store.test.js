@@ -135,6 +135,10 @@ test("normalizes localized button labels, commands, and sso config", () => {
               {
                 command: "/login",
                 description: "Sign in",
+                descriptions: {
+                  default: "Sign in",
+                  hy: "Մուտք"
+                },
                 action: "sso",
                 enabled: true,
                 responseText: "Open app"
@@ -155,6 +159,7 @@ test("normalizes localized button labels, commands, and sso config", () => {
   assert.equal(selection.runtimeConfig.buttons[0].labels.es, "Deposito");
   assert.equal(selection.runtimeConfig.commands[0].command, "login");
   assert.equal(selection.runtimeConfig.commands[0].action, "sso");
+  assert.equal(selection.runtimeConfig.commands[0].descriptions.hy, "Մուտք");
   assert.equal(selection.runtimeConfig.sso.usernameTemplate, "tg_{{telegram_username}}");
   assert.equal(selection.runtimeConfig.sso.loginEndpoint, "/api/identity/api/v1/playeraccount/login");
 });

@@ -39,8 +39,36 @@ class TelegramBotApi {
     return this.request("getWebhookInfo");
   }
 
-  setMyCommands(commands) {
-    return this.request("setMyCommands", { commands: botApiCommands(commands) });
+  setMyCommands(commands, languageCode) {
+    const payload = {
+      commands: botApiCommands(commands, languageCode || "default")
+    };
+    const telegramLanguage = telegramLanguageCode(languageCode);
+
+    if (telegramLanguage) {
+      payload.language_code = telegramLanguage;
+    }
+
+    return this.request("setMyCommands", payload);
+  }
+
+  async publishCommandMenus(commands) {
+    const results = [];
+
+    for (const set of botCommandPublishSets(commands)) {
+      const ok = await this.request("setMyCommands", {
+        commands: set.commands,
+        ...(set.languageCode ? { language_code: set.languageCode } : {})
+      });
+
+      results.push({
+        languageCode: set.languageCode || "default",
+        count: set.commands.length,
+        ok
+      });
+    }
+
+    return results;
   }
 
   setChatMenuButton(text, url) {
@@ -308,13 +336,62 @@ async function sendLaunchMessages(client, chatId, config, user) {
   return client.sendMessage(chatId, renderWelcomeText(config, user), inlineKeyboard(config, user), config.welcomeParseMode || config.parseMode);
 }
 
-function botApiCommands(commands) {
+function telegramLanguageCode(value) {
+  const code = normalizeLanguageCode(value);
+
+  if (!code || code === "default") {
+    return "";
+  }
+
+  const shortCode = code.split("-")[0];
+
+  return /^[a-z]{2}$/.test(shortCode) ? shortCode : "";
+}
+
+function getCommandDescription(command, userOrLanguage) {
+  return selectLocalizedText(command.descriptions, command.description, userOrLanguage);
+}
+
+function botApiCommands(commands, userOrLanguage) {
   return (commands || [])
-    .filter((command) => command && command.enabled !== false && command.command && command.description)
+    .filter((command) => command && command.enabled !== false && command.command && getCommandDescription(command, userOrLanguage))
     .map((command) => ({
       command: String(command.command).replace(/^\//, "").toLowerCase().slice(0, 32),
-      description: String(command.description).slice(0, 256)
+      description: String(getCommandDescription(command, userOrLanguage)).slice(0, 256)
     }));
+}
+
+function botCommandPublishSets(commands) {
+  const sets = [
+    {
+      languageCode: "",
+      commands: botApiCommands(commands, "default")
+    }
+  ];
+  const languageSources = new Map();
+
+  (commands || []).forEach((command) => {
+    if (!command || !command.descriptions || typeof command.descriptions !== "object") {
+      return;
+    }
+
+    Object.keys(command.descriptions).forEach((language) => {
+      const languageCode = telegramLanguageCode(language);
+
+      if (languageCode && !languageSources.has(languageCode)) {
+        languageSources.set(languageCode, language);
+      }
+    });
+  });
+
+  languageSources.forEach((sourceLanguage, languageCode) => {
+    sets.push({
+      languageCode,
+      commands: botApiCommands(commands, sourceLanguage)
+    });
+  });
+
+  return sets.filter((set) => set.commands.length);
 }
 
 function parseCommand(text) {
@@ -508,10 +585,12 @@ function escapeHtml(value) {
 
 module.exports = {
   TelegramBotApi,
+  botCommandPublishSets,
   botApiCommands,
   buildLaunchUrl,
   buildWebhookUrl,
   getButtonLabel,
+  getCommandDescription,
   getCommandConfig,
   getMenuButton,
   handleTelegramUpdate,

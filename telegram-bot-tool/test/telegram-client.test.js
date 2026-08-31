@@ -3,9 +3,11 @@
 const assert = require("assert/strict");
 const test = require("node:test");
 const {
+  botCommandPublishSets,
   botApiCommands,
   buildLaunchUrl,
   getButtonLabel,
+  getCommandDescription,
   getCommandConfig,
   getMenuButton,
   inlineKeyboard,
@@ -94,6 +96,10 @@ test("bot commands publish only Telegram-supported fields", () => {
     {
       command: "start",
       description: "Start Telegram SSO",
+      descriptions: {
+        default: "Start Telegram SSO",
+        hy: "Սկսել"
+      },
       enabled: true,
       action: "sso",
       responseText: "Internal"
@@ -112,6 +118,48 @@ test("bot commands publish only Telegram-supported fields", () => {
       description: "Start Telegram SSO"
     }
   ]);
+});
+
+test("bot command publish sets include language-specific menu descriptions", () => {
+  const commands = [
+    {
+      command: "start",
+      description: "Start Telegram SSO",
+      descriptions: {
+        default: "Start Telegram SSO",
+        hy: "Սկսել բոտը"
+      },
+      enabled: true
+    },
+    {
+      command: "menu",
+      description: "Show menu",
+      descriptions: {
+        default: "Show menu",
+        hy: "Ցույց տալ մենյուն"
+      },
+      enabled: true
+    }
+  ];
+  const sets = botCommandPublishSets(commands);
+
+  assert.deepEqual(sets, [
+    {
+      languageCode: "",
+      commands: [
+        { command: "start", description: "Start Telegram SSO" },
+        { command: "menu", description: "Show menu" }
+      ]
+    },
+    {
+      languageCode: "hy",
+      commands: [
+        { command: "start", description: "Սկսել բոտը" },
+        { command: "menu", description: "Ցույց տալ մենյուն" }
+      ]
+    }
+  ]);
+  assert.equal(getCommandDescription(commands[0], "hy-AM"), "Սկսել բոտը");
 });
 
 test("configured command actions are selected from slash commands", () => {

@@ -13,6 +13,7 @@ const menuButtonId = document.querySelector("#menuButtonId");
 const messagePreview = document.querySelector("#messagePreview");
 const inlinePreview = document.querySelector("#inlinePreview");
 const replyPreview = document.querySelector("#replyPreview");
+const commandMenuPreview = document.querySelector("#commandMenuPreview");
 const websiteSelect = document.querySelector("#websiteSelect");
 const languageSelect = document.querySelector("#languageSelect");
 const welcomeEditor = document.querySelector("#welcomeEditor");
@@ -183,12 +184,15 @@ function defaultButtons(websiteUrl) {
 
 function defaultCommands() {
   return [
-    { command: "start", description: "Start Telegram SSO", enabled: true, action: "sso", responseText: "", buttonLabel: "Open App", buttonUrl: "/" },
-    { command: "login", description: "Sign in with Telegram", enabled: true, action: "sso", responseText: "", buttonLabel: "Open App", buttonUrl: "/" },
-    { command: "password", description: "Reset password", enabled: true, action: "password", responseText: "Open password reset.", buttonLabel: "Reset Password", buttonUrl: "/en/forgot-password" },
-    { command: "menu", description: "Show menu", enabled: true, action: "welcome", responseText: "", buttonLabel: "", buttonUrl: "" },
-    { command: "app", description: "Launch the website", enabled: true, action: "welcome", responseText: "", buttonLabel: "", buttonUrl: "" },
-    { command: "keyboard", description: "Show Telegram app button", enabled: true, action: "keyboard", responseText: "The launch button is now on your Telegram keyboard.", buttonLabel: "", buttonUrl: "" }
+    { command: "start", description: "Start Telegram SSO", descriptions: { default: "Start Telegram SSO" }, enabled: true, action: "sso", responseText: "", buttonLabel: "Open App", buttonUrl: "/" },
+    { command: "login", description: "Sign in with Telegram", descriptions: { default: "Sign in with Telegram" }, enabled: true, action: "sso", responseText: "", buttonLabel: "Open App", buttonUrl: "/" },
+    { command: "password", description: "Reset password", descriptions: { default: "Reset password" }, enabled: true, action: "password", responseText: "Open password reset.", buttonLabel: "Reset Password", buttonUrl: "/en/forgot-password" },
+    { command: "menu", description: "Show menu", descriptions: { default: "Show menu" }, enabled: true, action: "welcome", responseText: "", buttonLabel: "", buttonUrl: "" },
+    { command: "chat", description: "Contact support", descriptions: { default: "Contact support" }, enabled: false, action: "custom", responseText: "Open the website to contact support.", buttonLabel: "Open Support", buttonUrl: "/" },
+    { command: "language", description: "Change language", descriptions: { default: "Change language" }, enabled: false, action: "custom", responseText: "Open the website to change language.", buttonLabel: "Open App", buttonUrl: "/" },
+    { command: "logout", description: "Log out", descriptions: { default: "Log out" }, enabled: false, action: "custom", responseText: "Open the website to manage your session.", buttonLabel: "Open App", buttonUrl: "/" },
+    { command: "app", description: "Launch the website", descriptions: { default: "Launch the website" }, enabled: true, action: "welcome", responseText: "", buttonLabel: "", buttonUrl: "" },
+    { command: "keyboard", description: "Show Telegram app button", descriptions: { default: "Show Telegram app button" }, enabled: true, action: "keyboard", responseText: "The launch button is now on your Telegram keyboard.", buttonLabel: "", buttonUrl: "" }
   ];
 }
 
@@ -286,6 +290,24 @@ function normalizeWelcomeMessages(messages, fallback) {
   return result;
 }
 
+function normalizeCommandDescriptions(messages, fallback) {
+  const result = {
+    default: String(fallback || "Command").trim().slice(0, 256) || "Command"
+  };
+
+  if (messages && typeof messages === "object" && !Array.isArray(messages)) {
+    Object.entries(messages).forEach(([key, value]) => {
+      const code = normalizeLanguageCode(key);
+
+      if (code && typeof value === "string") {
+        result[code] = String(value || result.default).trim().slice(0, 256) || result.default;
+      }
+    });
+  }
+
+  return result;
+}
+
 function normalizeButton(button, index, usedIds) {
   const label = String(button.label || "Open").trim().slice(0, 64) || "Open";
   const labels = normalizeLocalizedText(button.labels || button.labelTranslations, label);
@@ -327,6 +349,10 @@ function inferCommandAction(command) {
     return "password";
   }
 
+  if (command === "chat" || command === "language" || command === "logout") {
+    return "custom";
+  }
+
   return "welcome";
 }
 
@@ -338,13 +364,15 @@ function normalizeCommand(command, index) {
     .replace(/[^a-z0-9_]/g, "")
     .slice(0, 32) || `command${index + 1}`;
   const description = String(source.description || `${name} command`).trim().slice(0, 256);
+  const descriptions = normalizeCommandDescriptions(source.descriptions || source.descriptionTranslations, description);
   const action = ["sso", "welcome", "keyboard", "password", "custom", "none"].includes(source.action)
     ? source.action
     : inferCommandAction(name);
 
   return {
     command: name,
-    description,
+    description: descriptions.default,
+    descriptions,
     enabled: source.enabled !== false,
     action,
     responseText: String(source.responseText || ""),
@@ -371,6 +399,16 @@ function normalizeCommands(sourceCommands) {
       }
     });
   }
+
+  const existing = new Set(normalized.map((command) => command.command));
+
+  defaultCommands()
+    .filter((command) => command.enabled === false)
+    .forEach((command) => {
+      if (!existing.has(command.command)) {
+        normalized.push(normalizeCommand(command, normalized.length));
+      }
+    });
 
   return normalized;
 }
@@ -589,6 +627,10 @@ function profileLanguages(bot) {
 
   (bot.buttons || []).forEach((button) => {
     Object.keys(button.labels || {}).forEach((language) => languages.add(language));
+  });
+
+  (bot.commands || []).forEach((command) => {
+    Object.keys(command.descriptions || {}).forEach((language) => languages.add(language));
   });
 
   return [...languages];
@@ -839,7 +881,10 @@ function renderButtons(selectedMenuId) {
 function createCommand(name) {
   const preset = defaultCommands().find((command) => command.command === name);
 
-  return normalizeCommand(preset || {
+  return normalizeCommand(preset ? {
+    ...preset,
+    enabled: true
+  } : {
     command: name || "menu",
     description: `${name || "menu"} command`,
     enabled: true,
@@ -851,7 +896,11 @@ function createCommand(name) {
 }
 
 function renderCommands() {
+  const language = activeLanguage();
+
   commandsList.innerHTML = commands.map((command, index) => {
+    const descriptionText = language === "default" ? "Menu Description" : `Menu Description (${languageLabel(language)})`;
+
     return `
       <article class="command-row" data-index="${index}">
         <div class="button-row-top">
@@ -867,8 +916,8 @@ function renderCommands() {
             <input data-field="command" value="/${escapeHtml(command.command)}">
           </label>
           <label>
-            <span>Description</span>
-            <input data-field="description" maxlength="256" value="${escapeHtml(command.description)}">
+            <span>${escapeHtml(descriptionText)}</span>
+            <input data-field="description" maxlength="256" value="${escapeHtml(localizedText(command.descriptions, command.description, language))}">
           </label>
           <label>
             <span>Action</span>
@@ -917,12 +966,23 @@ function updateCommandFromField(target) {
     commands[index].enabled = target.checked;
   } else if (field === "command") {
     commands[index].command = target.value.replace(/^\//, "");
+  } else if (field === "description") {
+    const language = activeLanguage();
+    commands[index].descriptions = normalizeCommandDescriptions(commands[index].descriptions, commands[index].description);
+
+    if (language === "default") {
+      commands[index].descriptions.default = target.value.trim();
+      commands[index].description = commands[index].descriptions.default;
+    } else {
+      commands[index].descriptions[language] = target.value.trim();
+    }
   } else {
     commands[index][field] = target.value;
   }
 
   commands[index] = normalizeCommand(commands[index], index);
   syncCurrentFormToState();
+  renderPreview();
   markDirty();
 }
 
@@ -954,8 +1014,37 @@ function renderPreview() {
   replyPreview.innerHTML = replyButtons.length
     ? `<div class="reply-title">Reply keyboard</div>${renderPreviewRows(replyButtons)}`
     : "";
+  commandMenuPreview.innerHTML = renderCommandMenuPreview();
   launchUrl.textContent = buildPreviewUrl(menuButtonId.value);
   profileState.textContent = `${form.websiteName.value || website.name} / ${form.botLabel.value || bot.label}`;
+}
+
+function renderCommandMenuPreview() {
+  const language = activeLanguage();
+  const rows = normalizeCommands(commands)
+    .filter((command) => command.enabled !== false)
+    .map((command) => {
+      const description = localizedText(command.descriptions, command.description, language);
+
+      return `
+        <div class="command-preview-row">
+          <span class="command-preview-icon">${escapeHtml((form.appTitle.value || "T").slice(0, 1).toUpperCase())}</span>
+          <span>
+            <strong>/${escapeHtml(command.command)}</strong>
+            <small>${escapeHtml(description)}</small>
+          </span>
+        </div>
+      `;
+    });
+
+  if (!rows.length) {
+    return "";
+  }
+
+  return `
+    <div class="command-preview-title">Telegram menu</div>
+    <div class="command-preview-list">${rows.join("")}</div>
+  `;
 }
 
 function renderPreviewRows(sourceButtons) {
@@ -1368,6 +1457,7 @@ languageSelect.addEventListener("change", () => {
   setEditorHtml(currentBot().welcomeMessages[activeLanguage()] || "");
   form.welcomeText.value = currentBot().welcomeMessages[activeLanguage()] || "";
   renderButtons(menuButtonId.value);
+  renderCommands();
   renderPreview();
   markDirty();
 });
@@ -1401,15 +1491,29 @@ document.querySelector("#addLanguage").addEventListener("click", () => {
       labels
     };
   });
+  commands = commands.map((command) => {
+    const descriptions = normalizeCommandDescriptions(command.descriptions, command.description);
+
+    if (descriptions[code] === undefined) {
+      descriptions[code] = descriptions.default;
+    }
+
+    return {
+      ...command,
+      descriptions
+    };
+  });
   bot.buttons = normalizeButtons(buttons, currentWebsite().websiteUrl);
+  bot.commands = normalizeCommands(commands);
   setActiveLanguage(code);
   fillLanguageOptions();
   setEditorHtml(bot.welcomeMessages[code]);
   form.welcomeText.value = bot.welcomeMessages[code];
   renderButtons(menuButtonId.value);
+  renderCommands();
   renderPreview();
   markDirty();
-  notify(`Added ${languageLabel(code)} welcome message.`, "success");
+  notify(`Added ${languageLabel(code)} content.`, "success");
 });
 
 document.querySelector("#addWebsite").addEventListener("click", () => {
@@ -1495,6 +1599,7 @@ commandsList.addEventListener("click", (event) => {
   commands.splice(Number(row.dataset.index), 1);
   renderCommands();
   syncCurrentFormToState();
+  renderPreview();
   markDirty();
 });
 
@@ -1510,6 +1615,7 @@ document.querySelector("#addCommand").addEventListener("click", () => {
   commands.push(command);
   renderCommands();
   syncCurrentFormToState();
+  renderPreview();
   markDirty();
   notify(`/${command.command} command added. Save and publish when ready.`, "success");
 });

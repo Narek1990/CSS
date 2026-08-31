@@ -590,11 +590,67 @@ dd {
   padding-top: 10px;
 }
 
+.command-menu-preview {
+  margin-top: 14px;
+}
+
+.command-preview-title,
 .reply-title {
   color: var(--muted);
   font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
+}
+
+.command-preview-list {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #132233;
+}
+
+.command-preview-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-height: 48px;
+  padding: 8px 10px;
+}
+
+.command-preview-row + .command-preview-row {
+  border-top: 1px solid rgb(255 255 255 / 8%);
+}
+
+.command-preview-icon {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 50%;
+  background: #d72580;
+  color: white;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.command-preview-row strong,
+.command-preview-row small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.command-preview-row strong {
+  color: #f4f8ff;
+  font-size: 13px;
+}
+
+.command-preview-row small {
+  margin-top: 2px;
+  color: #b7c3d2;
+  font-size: 12px;
 }
 
 .preview-row {

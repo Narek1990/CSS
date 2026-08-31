@@ -261,8 +261,8 @@ async function setupBot(config) {
   const menuButton = getMenuButton(config);
   const launchUrl = menuButton ? buildLaunchUrl(config, menuButton.url) : buildLaunchUrl(config);
   const bot = await client.getMe();
+  const commandMenus = await client.publishCommandMenus(config.commands);
 
-  await client.setMyCommands(config.commands);
 
   if (menuButton) {
     await client.setChatMenuButton(config.menuButtonText || menuButton.label, launchUrl);
@@ -279,6 +279,7 @@ async function setupBot(config) {
 
   return {
     bot,
+    commandMenus,
     launchUrl,
     menuButton: menuButton ? {
       id: menuButton.id,
