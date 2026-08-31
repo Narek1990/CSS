@@ -3,6 +3,7 @@
 const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
+const { DEFAULT_SSO_CONFIG, normalizeSsoConfig } = require("./website-sso");
 
 const DEFAULT_BUTTONS = [
   {
@@ -38,9 +39,12 @@ const DEFAULT_BUTTONS = [
 ];
 
 const DEFAULT_COMMANDS = [
-  { command: "start", description: "Open EsportesNew" },
-  { command: "app", description: "Launch the website" },
-  { command: "keyboard", description: "Show Telegram app button" }
+  { command: "start", description: "Start Telegram SSO", enabled: true, action: "sso", responseText: "", buttonLabel: "Open App", buttonUrl: "/" },
+  { command: "login", description: "Sign in with Telegram", enabled: true, action: "sso", responseText: "", buttonLabel: "Open App", buttonUrl: "/" },
+  { command: "password", description: "Reset password", enabled: true, action: "password", responseText: "Open password reset.", buttonLabel: "Reset Password", buttonUrl: "/en/forgot-password" },
+  { command: "menu", description: "Show menu", enabled: true, action: "welcome", responseText: "", buttonLabel: "", buttonUrl: "" },
+  { command: "app", description: "Launch the website", enabled: true, action: "welcome", responseText: "", buttonLabel: "", buttonUrl: "" },
+  { command: "keyboard", description: "Show Telegram app button", enabled: true, action: "keyboard", responseText: "The launch button is now on your Telegram keyboard.", buttonLabel: "", buttonUrl: "" }
 ];
 
 const DEFAULT_LEGACY_CONFIG = {
@@ -59,6 +63,7 @@ const DEFAULT_LEGACY_CONFIG = {
     default: "Hello {{first_name}},\n\nWelcome to EsportesNew. Choose an action below."
   },
   welcomeParseMode: "HTML",
+  sso: DEFAULT_SSO_CONFIG,
   buttons: DEFAULT_BUTTONS,
   commands: DEFAULT_COMMANDS
 };
@@ -91,6 +96,7 @@ const DEFAULT_CONFIG = {
             default: "Hello {{first_name}},\n\nWelcome to EsportesNew. Choose an action below."
           },
           welcomeParseMode: "HTML",
+          sso: DEFAULT_SSO_CONFIG,
           buttons: DEFAULT_BUTTONS,
           commands: DEFAULT_COMMANDS
         }
@@ -144,6 +150,7 @@ function randomSecret() {
 
 function normalizeButton(button, index, usedIds) {
   const label = String((button && button.label) || "Open").trim().slice(0, 64) || "Open";
+  const labels = normalizeLocalizedText(button && (button.labels || button.labelTranslations), label);
   const id = uniqueId((button && button.id) || label, usedIds, `button-${index + 1}`);
   const type = ["web_app", "url", "callback"].includes(button && button.type) ? button.type : "web_app";
   const placement = ["inline", "reply", "both"].includes(button && button.placement) ? button.placement : "inline";
@@ -151,7 +158,8 @@ function normalizeButton(button, index, usedIds) {
 
   return {
     id,
-    label,
+    label: labels.default,
+    labels,
     type,
     placement,
     url: String((button && button.url) || "").trim(),
@@ -168,6 +176,42 @@ function normalizeButtons(buttons) {
   return source.map((button, index) => normalizeButton(button, index, usedIds));
 }
 
+function normalizeCommands(commands) {
+  const source = Array.isArray(commands) ? commands : [];
+  const normalized = (source.length ? source : DEFAULT_COMMANDS).map(normalizeCommand).filter(Boolean);
+  const needsDefaultUpgrade = source.length > 0 && source.some((command) => {
+    return !Object.prototype.hasOwnProperty.call(command || {}, "action");
+  });
+
+  if (needsDefaultUpgrade) {
+    const existing = new Set(normalized.map((command) => command.command));
+
+    DEFAULT_COMMANDS.forEach((command) => {
+      if (!existing.has(command.command)) {
+        normalized.push(normalizeCommand(command));
+      }
+    });
+  }
+
+  return normalized.length ? normalized : clone(DEFAULT_COMMANDS);
+}
+
+function inferCommandAction(command) {
+  if (command === "start" || command === "login") {
+    return "sso";
+  }
+
+  if (command === "keyboard") {
+    return "keyboard";
+  }
+
+  if (command === "password") {
+    return "password";
+  }
+
+  return "welcome";
+}
+
 function normalizeCommand(command) {
   const value = String((command && command.command) || "")
     .trim()
@@ -176,6 +220,9 @@ function normalizeCommand(command) {
     .replace(/[^a-z0-9_]/g, "")
     .slice(0, 32);
   const description = String((command && command.description) || "").trim().slice(0, 256);
+  const action = ["sso", "welcome", "keyboard", "password", "custom", "none"].includes(command && command.action)
+    ? command.action
+    : inferCommandAction(value);
 
   if (!value || !description) {
     return null;
@@ -183,15 +230,13 @@ function normalizeCommand(command) {
 
   return {
     command: value,
-    description
+    description,
+    enabled: !command || command.enabled !== false,
+    action,
+    responseText: String((command && command.responseText) || "").trim(),
+    buttonLabel: String((command && command.buttonLabel) || "").trim().slice(0, 64),
+    buttonUrl: String((command && command.buttonUrl) || "").trim()
   };
-}
-
-function normalizeCommands(commands) {
-  const source = Array.isArray(commands) && commands.length ? commands : DEFAULT_COMMANDS;
-  const normalized = source.map(normalizeCommand).filter(Boolean);
-
-  return normalized.length ? normalized : clone(DEFAULT_COMMANDS);
 }
 
 function normalizeParseMode(value) {
@@ -240,6 +285,29 @@ function normalizeWelcomeMessages(messages, fallbackText) {
   return result;
 }
 
+function normalizeLocalizedText(messages, fallbackText) {
+  const fallback = String(fallbackText || "Open").trim().slice(0, 64) || "Open";
+  const result = {
+    default: fallback
+  };
+
+  if (messages && typeof messages === "object" && !Array.isArray(messages)) {
+    Object.entries(messages).forEach(([key, value]) => {
+      const language = normalizeLanguageCode(key);
+
+      if (language && typeof value === "string") {
+        result[language] = String(value || fallback).trim().slice(0, 64) || fallback;
+      }
+    });
+  }
+
+  if (!result.default) {
+    result.default = fallback;
+  }
+
+  return result;
+}
+
 function normalizeBot(bot, index, options) {
   const source = bot || {};
   const generateSecrets = Boolean(options && options.generateSecrets);
@@ -261,6 +329,7 @@ function normalizeBot(bot, index, options) {
     welcomeText: welcomeMessages.default,
     welcomeMessages,
     welcomeParseMode: normalizeParseMode(source.welcomeParseMode || source.parseMode),
+    sso: normalizeSsoConfig(source.sso),
     buttons: normalizeButtons(source.buttons),
     commands: normalizeCommands(source.commands)
   };
@@ -331,6 +400,7 @@ function legacyToModern(rawConfig) {
             welcomeText: legacy.welcomeText,
             welcomeMessages: legacy.welcomeMessages,
             welcomeParseMode: legacy.welcomeParseMode || legacy.parseMode || "HTML",
+            sso: legacy.sso,
             buttons: legacy.buttons,
             commands: legacy.commands
           }
@@ -453,6 +523,7 @@ function applyLegacyPatch(config, patch) {
     "welcomeMessages",
     "welcomeParseMode",
     "parseMode",
+    "sso",
     "buttons",
     "commands"
   ].forEach((key) => {
@@ -524,6 +595,7 @@ function toRuntimeConfig(website, bot) {
     welcomeText: bot.welcomeText,
     welcomeMessages: bot.welcomeMessages,
     welcomeParseMode: bot.welcomeParseMode,
+    sso: bot.sso,
     buttons: bot.buttons,
     commands: bot.commands
   };
@@ -617,6 +689,8 @@ function createStore(baseDir) {
     const userId = String(user.id);
     const botId = context.botId || "";
     const existingIndex = users.findIndex((entry) => String(entry.id) === userId && String(entry.botId || "") === botId);
+    const previous = existingIndex >= 0 ? users[existingIndex] : {};
+    const ssoResult = context.ssoResult;
     const record = {
       id: user.id,
       first_name: user.first_name || "",
@@ -630,6 +704,10 @@ function createStore(baseDir) {
       botId,
       botLabel: context.botLabel || "",
       botUsername: context.botUsername || "",
+      ssoStatus: ssoResult ? (ssoResult.ok ? "ok" : (ssoResult.skipped ? "skipped" : "failed")) : (previous.ssoStatus || ""),
+      ssoAction: ssoResult ? (ssoResult.action || "") : (previous.ssoAction || ""),
+      ssoUsername: ssoResult ? (ssoResult.username || "") : (previous.ssoUsername || ""),
+      ssoLastError: ssoResult ? (ssoResult.reason || ssoResult.error || "") : (previous.ssoLastError || ""),
       firstSeenAt: existingIndex >= 0 ? users[existingIndex].firstSeenAt : now,
       lastSeenAt: now
     };

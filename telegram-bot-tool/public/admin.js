@@ -20,6 +20,11 @@ const profileState = document.querySelector("#profileState");
 const previewBotName = document.querySelector("#previewBotName");
 const previewAvatar = document.querySelector("#previewAvatar");
 const notice = document.querySelector("#notice");
+const commandsList = document.querySelector("#commandsList");
+const commandPreset = document.querySelector("#commandPreset");
+const ssoState = document.querySelector("#ssoState");
+const ssoPreviewUsername = document.querySelector("#ssoPreviewUsername");
+const ssoPreviewLanguage = document.querySelector("#ssoPreviewLanguage");
 
 const LANGUAGE_LABELS = {
   default: "Default",
@@ -39,6 +44,7 @@ let appConfig = {
   websites: []
 };
 let buttons = [];
+let commands = [];
 let hydrating = false;
 let noticeTimer = null;
 const pendingTokens = new Map();
@@ -175,6 +181,42 @@ function defaultButtons(websiteUrl) {
   ];
 }
 
+function defaultCommands() {
+  return [
+    { command: "start", description: "Start Telegram SSO", enabled: true, action: "sso", responseText: "", buttonLabel: "Open App", buttonUrl: "/" },
+    { command: "login", description: "Sign in with Telegram", enabled: true, action: "sso", responseText: "", buttonLabel: "Open App", buttonUrl: "/" },
+    { command: "password", description: "Reset password", enabled: true, action: "password", responseText: "Open password reset.", buttonLabel: "Reset Password", buttonUrl: "/en/forgot-password" },
+    { command: "menu", description: "Show menu", enabled: true, action: "welcome", responseText: "", buttonLabel: "", buttonUrl: "" },
+    { command: "app", description: "Launch the website", enabled: true, action: "welcome", responseText: "", buttonLabel: "", buttonUrl: "" },
+    { command: "keyboard", description: "Show Telegram app button", enabled: true, action: "keyboard", responseText: "The launch button is now on your Telegram keyboard.", buttonLabel: "", buttonUrl: "" }
+  ];
+}
+
+function defaultSsoConfig() {
+  return {
+    enabled: true,
+    serverLoginEnabled: false,
+    signupFallbackEnabled: false,
+    usernameTemplate: "{{telegram_username}}",
+    passwordTemplate: "",
+    defaultLanguage: "en",
+    loginEndpoint: "/api/identity/api/v1/playeraccount/login",
+    signupEndpoint: "/api/user/api/v1.0/fastSignUp/signup",
+    telegramLoginEndpoint: "/api/identity/api/v1/playeraccount/login-telegram",
+    passwordResetPath: "/en/forgot-password",
+    loginPayload: {
+      username: "{{username}}",
+      password: "{{password}}",
+      returnUrl: "/",
+      rememberlogin: false
+    },
+    signupPayload: {
+      userName: "{{username}}",
+      language: "{{language}}"
+    }
+  };
+}
+
 function normalizeLanguageCode(value) {
   const code = String(value || "default")
     .trim()
@@ -190,6 +232,36 @@ function normalizeLanguageCode(value) {
 
 function languageLabel(code) {
   return LANGUAGE_LABELS[code] || code;
+}
+
+function localizedText(values, fallback, language) {
+  const messages = values && typeof values === "object" && !Array.isArray(values) ? values : {};
+  const code = normalizeLanguageCode(language);
+  const shortCode = code.split("-")[0];
+
+  return messages[code]
+    || messages[shortCode]
+    || messages.default
+    || fallback
+    || "";
+}
+
+function normalizeLocalizedText(messages, fallback) {
+  const result = {
+    default: String(fallback || "Open").trim().slice(0, 64) || "Open"
+  };
+
+  if (messages && typeof messages === "object" && !Array.isArray(messages)) {
+    Object.entries(messages).forEach(([key, value]) => {
+      const code = normalizeLanguageCode(key);
+
+      if (code && typeof value === "string") {
+        result[code] = String(value || result.default).trim().slice(0, 64) || result.default;
+      }
+    });
+  }
+
+  return result;
 }
 
 function normalizeWelcomeMessages(messages, fallback) {
@@ -216,6 +288,7 @@ function normalizeWelcomeMessages(messages, fallback) {
 
 function normalizeButton(button, index, usedIds) {
   const label = String(button.label || "Open").trim().slice(0, 64) || "Open";
+  const labels = normalizeLocalizedText(button.labels || button.labelTranslations, label);
   const id = uniqueId(button.id || label, usedIds, `button-${index + 1}`);
   const type = ["web_app", "url", "callback"].includes(button.type) ? button.type : "web_app";
   const placement = ["inline", "reply", "both"].includes(button.placement) ? button.placement : "inline";
@@ -223,7 +296,8 @@ function normalizeButton(button, index, usedIds) {
 
   return {
     id,
-    label,
+    label: labels.default,
+    labels,
     type,
     placement,
     url: String(button.url || "").trim(),
@@ -238,6 +312,80 @@ function normalizeButtons(sourceButtons, websiteUrl) {
 
   return (Array.isArray(sourceButtons) && sourceButtons.length ? sourceButtons : defaultButtons(websiteUrl))
     .map((button, index) => normalizeButton(button, index, usedIds));
+}
+
+function inferCommandAction(command) {
+  if (command === "start" || command === "login") {
+    return "sso";
+  }
+
+  if (command === "keyboard") {
+    return "keyboard";
+  }
+
+  if (command === "password") {
+    return "password";
+  }
+
+  return "welcome";
+}
+
+function normalizeCommand(command, index) {
+  const source = command || {};
+  const name = String(source.command || commandPreset.value || `command${index + 1}`)
+    .replace(/^\//, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9_]/g, "")
+    .slice(0, 32) || `command${index + 1}`;
+  const description = String(source.description || `${name} command`).trim().slice(0, 256);
+  const action = ["sso", "welcome", "keyboard", "password", "custom", "none"].includes(source.action)
+    ? source.action
+    : inferCommandAction(name);
+
+  return {
+    command: name,
+    description,
+    enabled: source.enabled !== false,
+    action,
+    responseText: String(source.responseText || ""),
+    buttonLabel: String(source.buttonLabel || "").slice(0, 64),
+    buttonUrl: String(source.buttonUrl || "")
+  };
+}
+
+function normalizeCommands(sourceCommands) {
+  const source = Array.isArray(sourceCommands) ? sourceCommands : [];
+  const normalized = (source.length ? source : defaultCommands())
+    .map(normalizeCommand)
+    .filter((command) => command.command && command.description);
+  const needsDefaultUpgrade = source.length > 0 && source.some((command) => {
+    return !Object.prototype.hasOwnProperty.call(command || {}, "action");
+  });
+
+  if (needsDefaultUpgrade) {
+    const existing = new Set(normalized.map((command) => command.command));
+
+    defaultCommands().forEach((command) => {
+      if (!existing.has(command.command)) {
+        normalized.push(normalizeCommand(command, normalized.length));
+      }
+    });
+  }
+
+  return normalized;
+}
+
+function normalizeSsoConfig(source) {
+  return {
+    ...defaultSsoConfig(),
+    ...(source && typeof source === "object" && !Array.isArray(source) ? source : {}),
+    loginPayload: normalizeJsonObject(source && source.loginPayload, defaultSsoConfig().loginPayload),
+    signupPayload: normalizeJsonObject(source && source.signupPayload, defaultSsoConfig().signupPayload)
+  };
+}
+
+function normalizeJsonObject(value, fallback) {
+  return value && typeof value === "object" && !Array.isArray(value) ? value : clone(fallback);
 }
 
 function normalizeBot(bot, index, website) {
@@ -256,12 +404,9 @@ function normalizeBot(bot, index, website) {
     welcomeText: welcomeMessages.default,
     welcomeMessages,
     welcomeParseMode: "HTML",
+    sso: normalizeSsoConfig(source.sso),
     buttons: normalizeButtons(source.buttons, website.websiteUrl),
-    commands: Array.isArray(source.commands) && source.commands.length ? source.commands : [
-      { command: "start", description: "Open website" },
-      { command: "app", description: "Launch the website" },
-      { command: "keyboard", description: "Show Telegram app button" }
-    ]
+    commands: normalizeCommands(source.commands)
   };
 }
 
@@ -394,12 +539,9 @@ function createBot(website, index) {
       default: "Hello {{first_name}},\n\nWelcome. Choose an action below."
     },
     welcomeParseMode: "HTML",
+    sso: defaultSsoConfig(),
     buttons: defaultButtons(website.websiteUrl),
-    commands: [
-      { command: "start", description: "Open website" },
-      { command: "app", description: "Launch the website" },
-      { command: "keyboard", description: "Show Telegram app button" }
-    ]
+    commands: defaultCommands()
   };
 }
 
@@ -415,8 +557,9 @@ function activeLanguage() {
   const { website, bot } = selectedProfile();
   const key = profileKey(website, bot);
   const requested = activeLanguageByProfile.get(key) || "default";
+  const languages = profileLanguages(bot);
 
-  return bot.welcomeMessages[requested] !== undefined ? requested : "default";
+  return languages.includes(requested) ? requested : "default";
 }
 
 function setActiveLanguage(language) {
@@ -427,7 +570,7 @@ function setActiveLanguage(language) {
 
 function fillLanguageOptions() {
   const bot = currentBot();
-  const languages = Object.keys(bot.welcomeMessages || { default: bot.welcomeText || "" })
+  const languages = profileLanguages(bot)
     .sort((left, right) => {
       if (left === "default") return -1;
       if (right === "default") return 1;
@@ -439,6 +582,16 @@ function fillLanguageOptions() {
     .map((language) => option(language, languageLabel(language), selected))
     .join("");
   languageSelect.value = selected;
+}
+
+function profileLanguages(bot) {
+  const languages = new Set(["default", ...Object.keys(bot.welcomeMessages || {})]);
+
+  (bot.buttons || []).forEach((button) => {
+    Object.keys(button.labels || {}).forEach((language) => languages.add(language));
+  });
+
+  return [...languages];
 }
 
 function fillForm() {
@@ -458,16 +611,30 @@ function fillForm() {
   form.botUsername.value = bot.username || "";
   form.telegramBotToken.value = pendingToken || bot.telegramBotToken || "";
   form.menuButtonText.value = bot.menuButtonText || "Play";
+  form.ssoEnabled.checked = bot.sso.enabled !== false;
+  form.ssoServerLoginEnabled.checked = Boolean(bot.sso.serverLoginEnabled);
+  form.ssoSignupFallbackEnabled.checked = Boolean(bot.sso.signupFallbackEnabled);
+  form.ssoUsernameTemplate.value = bot.sso.usernameTemplate || "{{telegram_username}}";
+  form.ssoPasswordTemplate.value = bot.sso.passwordTemplate || "";
+  form.ssoDefaultLanguage.value = bot.sso.defaultLanguage || "en";
+  form.ssoPasswordResetPath.value = bot.sso.passwordResetPath || "/en/forgot-password";
+  form.ssoLoginEndpoint.value = bot.sso.loginEndpoint || "/api/identity/api/v1/playeraccount/login";
+  form.ssoSignupEndpoint.value = bot.sso.signupEndpoint || "/api/user/api/v1.0/fastSignUp/signup";
+  form.ssoTelegramLoginEndpoint.value = bot.sso.telegramLoginEndpoint || "/api/identity/api/v1/playeraccount/login-telegram";
+  form.ssoLoginPayload.value = JSON.stringify(bot.sso.loginPayload || defaultSsoConfig().loginPayload, null, 2);
+  form.ssoSignupPayload.value = JSON.stringify(bot.sso.signupPayload || defaultSsoConfig().signupPayload, null, 2);
 
   if (modeInput) {
     modeInput.checked = true;
   }
 
   buttons = normalizeButtons(bot.buttons, website.websiteUrl);
+  commands = normalizeCommands(bot.commands);
   fillLanguageOptions();
   setEditorHtml(bot.welcomeMessages[activeLanguage()] || bot.welcomeText || "");
   form.welcomeText.value = bot.welcomeMessages[activeLanguage()] || bot.welcomeText || "";
   renderButtons(bot.menuButtonId || "play");
+  renderCommands();
   renderPreview();
   updateFacts();
   hydrating = false;
@@ -502,12 +669,39 @@ function syncCurrentFormToState() {
   bot.welcomeText = bot.welcomeMessages.default || "";
   bot.welcomeParseMode = "HTML";
   bot.buttons = normalizeButtons(buttons, website.websiteUrl);
+  bot.commands = normalizeCommands(commands);
+  bot.sso = {
+    enabled: form.ssoEnabled.checked,
+    serverLoginEnabled: form.ssoServerLoginEnabled.checked,
+    signupFallbackEnabled: form.ssoSignupFallbackEnabled.checked,
+    usernameTemplate: form.ssoUsernameTemplate.value.trim() || "{{telegram_username}}",
+    passwordTemplate: form.ssoPasswordTemplate.value,
+    defaultLanguage: form.ssoDefaultLanguage.value.trim() || "en",
+    loginEndpoint: form.ssoLoginEndpoint.value.trim() || "/api/identity/api/v1/playeraccount/login",
+    signupEndpoint: form.ssoSignupEndpoint.value.trim() || "/api/user/api/v1.0/fastSignUp/signup",
+    telegramLoginEndpoint: form.ssoTelegramLoginEndpoint.value.trim() || "/api/identity/api/v1/playeraccount/login-telegram",
+    passwordResetPath: form.ssoPasswordResetPath.value.trim() || "/en/forgot-password",
+    loginPayload: parseJsonField(form.ssoLoginPayload, bot.sso.loginPayload || defaultSsoConfig().loginPayload),
+    signupPayload: parseJsonField(form.ssoSignupPayload, bot.sso.signupPayload || defaultSsoConfig().signupPayload)
+  };
   form.welcomeText.value = bot.welcomeMessages[language] || "";
 
   if (token) {
     pendingTokens.set(profileKey(website, bot), token);
     bot.telegramBotToken = token;
     bot.hasTelegramBotToken = true;
+  }
+}
+
+function parseJsonField(field, fallback, strict = false) {
+  try {
+    return JSON.parse(field.value || "{}");
+  } catch (error) {
+    if (strict) {
+      throw new Error(`${field.previousElementSibling ? field.previousElementSibling.textContent : "JSON"} is invalid: ${error.message}`);
+    }
+
+    return clone(fallback);
   }
 }
 
@@ -521,6 +715,9 @@ function cleanPath(value, fallback) {
 function prepareConfigForSave() {
   syncCurrentFormToState();
   const payload = clone(appConfig);
+
+  parseJsonField(form.ssoLoginPayload, {}, true);
+  parseJsonField(form.ssoSignupPayload, {}, true);
 
   payload.websites.forEach((website) => {
     website.bots.forEach((bot) => {
@@ -580,7 +777,11 @@ function createButton() {
 }
 
 function renderButtons(selectedMenuId) {
+  const language = activeLanguage();
+
   buttonsList.innerHTML = buttons.map((button, index) => {
+    const labelText = language === "default" ? "Label" : `Label (${languageLabel(language)})`;
+
     return `
       <article class="button-row" data-index="${index}">
         <div class="button-row-top">
@@ -596,8 +797,8 @@ function renderButtons(selectedMenuId) {
         </div>
         <div class="button-fields">
           <label>
-            <span>Label</span>
-            <input data-field="label" maxlength="64" value="${escapeHtml(button.label)}">
+            <span>${escapeHtml(labelText)}</span>
+            <input data-field="label" maxlength="64" value="${escapeHtml(localizedText(button.labels, button.label, language))}">
           </label>
           <label>
             <span>Type</span>
@@ -635,13 +836,104 @@ function renderButtons(selectedMenuId) {
   renderMenuOptions(selectedMenuId);
 }
 
+function createCommand(name) {
+  const preset = defaultCommands().find((command) => command.command === name);
+
+  return normalizeCommand(preset || {
+    command: name || "menu",
+    description: `${name || "menu"} command`,
+    enabled: true,
+    action: inferCommandAction(name || "menu"),
+    responseText: "",
+    buttonLabel: "",
+    buttonUrl: ""
+  }, commands.length);
+}
+
+function renderCommands() {
+  commandsList.innerHTML = commands.map((command, index) => {
+    return `
+      <article class="command-row" data-index="${index}">
+        <div class="button-row-top">
+          <label class="toggle">
+            <input type="checkbox" data-field="enabled" ${command.enabled ? "checked" : ""}>
+            <span>Enabled</span>
+          </label>
+          <button type="button" class="icon-btn danger-text" data-action="delete" title="Delete">Delete</button>
+        </div>
+        <div class="command-fields">
+          <label>
+            <span>Command</span>
+            <input data-field="command" value="/${escapeHtml(command.command)}">
+          </label>
+          <label>
+            <span>Description</span>
+            <input data-field="description" maxlength="256" value="${escapeHtml(command.description)}">
+          </label>
+          <label>
+            <span>Action</span>
+            <select data-field="action">
+              ${option("sso", "Telegram SSO", command.action)}
+              ${option("welcome", "Welcome + Buttons", command.action)}
+              ${option("keyboard", "Reply Keyboard", command.action)}
+              ${option("password", "Password Reset", command.action)}
+              ${option("custom", "Custom Reply", command.action)}
+              ${option("none", "No Reply", command.action)}
+            </select>
+          </label>
+          <label>
+            <span>Button Text</span>
+            <input data-field="buttonLabel" maxlength="64" value="${escapeHtml(command.buttonLabel)}">
+          </label>
+          <label>
+            <span>Button URL or Path</span>
+            <input data-field="buttonUrl" value="${escapeHtml(command.buttonUrl)}">
+          </label>
+          <label class="wide-field">
+            <span>Response Text</span>
+            <textarea data-field="responseText" rows="2">${escapeHtml(command.responseText)}</textarea>
+          </label>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+function updateCommandFromField(target) {
+  const row = target.closest(".command-row");
+
+  if (!row) {
+    return;
+  }
+
+  const index = Number(row.dataset.index);
+  const field = target.dataset.field;
+
+  if (!field || !commands[index]) {
+    return;
+  }
+
+  if (field === "enabled") {
+    commands[index].enabled = target.checked;
+  } else if (field === "command") {
+    commands[index].command = target.value.replace(/^\//, "");
+  } else {
+    commands[index][field] = target.value;
+  }
+
+  commands[index] = normalizeCommand(commands[index], index);
+  syncCurrentFormToState();
+  markDirty();
+}
+
 function renderMenuOptions(selectedMenuId) {
   const webAppButtons = buttons.filter((button) => button.enabled && button.type === "web_app");
   const fallback = webAppButtons[0] ? webAppButtons[0].id : "";
   const selected = webAppButtons.some((button) => button.id === selectedMenuId) ? selectedMenuId : fallback;
+  const language = activeLanguage();
 
   menuButtonId.innerHTML = webAppButtons.length
-    ? webAppButtons.map((button) => option(button.id, button.label, selected)).join("")
+    ? webAppButtons.map((button) => option(button.id, localizedText(button.labels, button.label, language), selected)).join("")
     : option("", "No Mini App buttons", "");
   menuButtonId.value = selected;
 }
@@ -668,6 +960,7 @@ function renderPreview() {
 
 function renderPreviewRows(sourceButtons) {
   const rows = [];
+  const language = activeLanguage();
 
   sourceButtons
     .slice()
@@ -681,7 +974,7 @@ function renderPreviewRows(sourceButtons) {
     .forEach((button) => {
       const rowIndex = Math.max(0, Number(button.row) || 0);
       rows[rowIndex] = rows[rowIndex] || [];
-      rows[rowIndex].push(`<span class="preview-button">${escapeHtml(button.label)}<small>${button.type === "web_app" ? "Mini App" : button.type}</small></span>`);
+      rows[rowIndex].push(`<span class="preview-button">${escapeHtml(localizedText(button.labels, button.label, language))}<small>${button.type === "web_app" ? "Mini App" : button.type}</small></span>`);
     });
 
   return rows.filter(Boolean).map((row) => `<div class="preview-row">${row.join("")}</div>`).join("");
@@ -729,6 +1022,9 @@ function updateFacts() {
   profileState.textContent = `${website.name || "Website"} / ${bot.label || "Bot"}`;
   tokenState.textContent = pendingToken || bot.telegramBotToken || "Not saved";
   webhookState.textContent = website.publicBaseUrl ? "Ready to publish" : "Needs public HTTPS URL";
+  ssoState.textContent = bot.sso && bot.sso.serverLoginEnabled
+    ? "Mini App + Server"
+    : "Mini App SSO";
 }
 
 function setEditorHtml(value) {
@@ -901,6 +1197,18 @@ function updateButtonFromField(target) {
 
   if (field === "enabled") {
     buttons[index][field] = target.checked;
+  } else if (field === "label") {
+    const language = activeLanguage();
+    const value = target.value.trim().slice(0, 64) || "Open";
+
+    buttons[index].labels = normalizeLocalizedText(buttons[index].labels, buttons[index].label);
+
+    if (language === "default") {
+      buttons[index].label = value;
+      buttons[index].labels.default = value;
+    } else {
+      buttons[index].labels[language] = value;
+    }
   } else if (field === "row") {
     buttons[index][field] = Number(target.value) || 0;
   } else {
@@ -953,6 +1261,7 @@ async function loadUsers() {
         <td>${escapeHtml(name || "-")}</td>
         <td>${escapeHtml(user.username || "-")}</td>
         <td>${escapeHtml(user.botUsername ? `@${user.botUsername}` : (user.botLabel || user.botId || "-"))}</td>
+        <td>${escapeHtml(user.ssoStatus || "-")}</td>
         <td>${escapeHtml(user.source || "-")}</td>
         <td>${escapeHtml(user.lastSeenAt || "-")}</td>
       </tr>
@@ -961,7 +1270,7 @@ async function loadUsers() {
 
   usersBody.innerHTML = rows.length
     ? rows.join("")
-    : '<tr><td colspan="6">No users yet.</td></tr>';
+    : '<tr><td colspan="7">No users yet.</td></tr>';
 }
 
 function escapeHtml(value) {
@@ -1058,6 +1367,7 @@ languageSelect.addEventListener("change", () => {
   fillLanguageOptions();
   setEditorHtml(currentBot().welcomeMessages[activeLanguage()] || "");
   form.welcomeText.value = currentBot().welcomeMessages[activeLanguage()] || "";
+  renderButtons(menuButtonId.value);
   renderPreview();
   markDirty();
 });
@@ -1079,10 +1389,24 @@ document.querySelector("#addLanguage").addEventListener("click", () => {
     bot.welcomeMessages[code] = bot.welcomeMessages.default || bot.welcomeText || "";
   }
 
+  buttons = buttons.map((button) => {
+    const labels = normalizeLocalizedText(button.labels, button.label);
+
+    if (labels[code] === undefined) {
+      labels[code] = labels.default;
+    }
+
+    return {
+      ...button,
+      labels
+    };
+  });
+  bot.buttons = normalizeButtons(buttons, currentWebsite().websiteUrl);
   setActiveLanguage(code);
   fillLanguageOptions();
   setEditorHtml(bot.welcomeMessages[code]);
   form.welcomeText.value = bot.welcomeMessages[code];
+  renderButtons(menuButtonId.value);
   renderPreview();
   markDirty();
   notify(`Added ${languageLabel(code)} welcome message.`, "success");
@@ -1148,6 +1472,46 @@ document.querySelector("#addButton").addEventListener("click", () => {
   renderPreview();
   markDirty();
   notify("Button added. Save and publish when ready.", "success");
+});
+
+commandsList.addEventListener("input", (event) => {
+  updateCommandFromField(event.target);
+});
+
+commandsList.addEventListener("change", (event) => {
+  if (event.target.matches("select, input[type='checkbox']")) {
+    updateCommandFromField(event.target);
+  }
+});
+
+commandsList.addEventListener("click", (event) => {
+  const action = event.target.dataset.action;
+  const row = event.target.closest(".command-row");
+
+  if (action !== "delete" || !row) {
+    return;
+  }
+
+  commands.splice(Number(row.dataset.index), 1);
+  renderCommands();
+  syncCurrentFormToState();
+  markDirty();
+});
+
+document.querySelector("#addCommand").addEventListener("click", () => {
+  syncCurrentFormToState();
+  const command = createCommand(commandPreset.value);
+
+  if (commands.some((item) => item.command === command.command)) {
+    notify(`/${command.command} already exists.`, "warning");
+    return;
+  }
+
+  commands.push(command);
+  renderCommands();
+  syncCurrentFormToState();
+  markDirty();
+  notify(`/${command.command} command added. Save and publish when ready.`, "success");
 });
 
 document.querySelector("#verifyBot").addEventListener("click", async () => {
@@ -1237,6 +1601,25 @@ document.querySelector("#sendTest").addEventListener("click", async () => {
     print(result);
   } catch (error) {
     notify(`Test message failed: ${error.message}`, "error", true);
+    print({ error: error.message });
+  }
+});
+
+document.querySelector("#previewSso").addEventListener("click", async () => {
+  try {
+    await saveConfig({ silent: true });
+    const result = await api("/api/sso/preview", {
+      method: "POST",
+      body: JSON.stringify(selectedPayload({
+        username: ssoPreviewUsername.value.trim() || "telegram_user",
+        language: ssoPreviewLanguage.value.trim() || activeLanguage() || "en"
+      }))
+    });
+
+    notify("SSO payload preview generated.", "success");
+    print(result);
+  } catch (error) {
+    notify(`SSO preview failed: ${error.message}`, "error", true);
     print({ error: error.message });
   }
 });

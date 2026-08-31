@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "node --test",
-    "check": "node --check server.js && node --check src/telegram-auth.js && node --check src/config-store.js && node --check src/telegram-client.js && node --check public/admin.js"
+    "check": "node --check server.js && node --check src/telegram-auth.js && node --check src/config-store.js && node --check src/telegram-client.js && node --check src/website-sso.js && node --check public/admin.js"
   },
   "engines": {
     "node": ">=18"

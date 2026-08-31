@@ -103,12 +103,83 @@
             </label>
           </div>
 
+          <div class="panel-title section-title">
+            <h2>Single Sign-On</h2>
+            <span id="ssoState">Mini App SSO</span>
+          </div>
+
+          <div class="switch-grid">
+            <label class="checkline">
+              <input type="checkbox" name="ssoEnabled">
+              <span>Enable on /start and /login</span>
+            </label>
+            <label class="checkline">
+              <input type="checkbox" name="ssoServerLoginEnabled">
+              <span>Server login fallback</span>
+            </label>
+            <label class="checkline">
+              <input type="checkbox" name="ssoSignupFallbackEnabled">
+              <span>Signup if login fails</span>
+            </label>
+          </div>
+
+          <div class="split">
+            <label>
+              <span>Username Template</span>
+              <input name="ssoUsernameTemplate" placeholder="{{telegram_username}}">
+            </label>
+            <label>
+              <span>Password Template</span>
+              <input name="ssoPasswordTemplate" type="password" autocomplete="off" placeholder="Optional for server login">
+            </label>
+          </div>
+
+          <div class="split">
+            <label>
+              <span>Language Fallback</span>
+              <input name="ssoDefaultLanguage" maxlength="12" placeholder="en">
+            </label>
+            <label>
+              <span>Password Reset Path</span>
+              <input name="ssoPasswordResetPath" placeholder="/en/forgot-password">
+            </label>
+          </div>
+
+          <details class="advanced">
+            <summary>Advanced SSO endpoints and payloads</summary>
+            <div class="split">
+              <label>
+                <span>Login Endpoint</span>
+                <input name="ssoLoginEndpoint" placeholder="/api/identity/api/v1/playeraccount/login">
+              </label>
+              <label>
+                <span>Signup Endpoint</span>
+                <input name="ssoSignupEndpoint" placeholder="/api/user/api/v1.0/fastSignUp/signup">
+              </label>
+            </div>
+            <label>
+              <span>Telegram Login Endpoint</span>
+              <input name="ssoTelegramLoginEndpoint" placeholder="/api/identity/api/v1/playeraccount/login-telegram">
+            </label>
+            <div class="split">
+              <label>
+                <span>Login Payload JSON</span>
+                <textarea name="ssoLoginPayload" rows="7" spellcheck="false"></textarea>
+              </label>
+              <label>
+                <span>Signup Payload JSON</span>
+                <textarea name="ssoSignupPayload" rows="7" spellcheck="false"></textarea>
+              </label>
+            </div>
+          </details>
+
           <label class="welcome-field">
-            <span>Welcome Message</span>
+            <span>Language Content</span>
             <div class="language-row">
               <select id="languageSelect" aria-label="Welcome message language"></select>
               <button type="button" class="secondary small" id="addLanguage">Add Language</button>
             </div>
+            <span class="field-note">Welcome message and button labels use the selected language.</span>
             <div class="editor-toolbar" aria-label="Welcome message formatting">
               <button type="button" class="icon-btn" data-format="bold">B</button>
               <button type="button" class="icon-btn" data-format="italic">I</button>
@@ -178,6 +249,25 @@
         <div class="buttons-list" id="buttonsList"></div>
       </section>
 
+      <section class="panel command-panel">
+        <div class="panel-title">
+          <h2>Commands</h2>
+          <div class="selector-actions">
+            <select id="commandPreset" aria-label="Command preset">
+              <option value="start">/start</option>
+              <option value="login">/login</option>
+              <option value="password">/password</option>
+              <option value="menu">/menu</option>
+              <option value="app">/app</option>
+              <option value="keyboard">/keyboard</option>
+            </select>
+            <button type="button" class="secondary small" id="addCommand">Add Command</button>
+          </div>
+        </div>
+
+        <div class="commands-list" id="commandsList"></div>
+      </section>
+
       <section class="grid lower-grid">
         <section class="panel">
           <div class="panel-title">
@@ -191,6 +281,17 @@
             </label>
             <button type="button" id="sendTest">Send Test Message</button>
             <button type="button" class="danger" id="deleteWebhook">Delete Webhook</button>
+          </div>
+          <div class="test-send sso-preview-row">
+            <label>
+              <span>SSO Preview Username</span>
+              <input id="ssoPreviewUsername" placeholder="telegram_user">
+            </label>
+            <label>
+              <span>SSO Preview Language</span>
+              <input id="ssoPreviewLanguage" maxlength="12" placeholder="en">
+            </label>
+            <button type="button" class="secondary" id="previewSso">Preview SSO Payload</button>
           </div>
 
           <pre class="output" id="output">{}</pre>
@@ -209,13 +310,14 @@
                   <th>Name</th>
                   <th>Username</th>
                   <th>Bot</th>
+                  <th>SSO</th>
                   <th>Source</th>
                   <th>Last Seen</th>
                 </tr>
               </thead>
               <tbody id="usersBody">
                 <tr>
-                  <td colspan="6">No users yet.</td>
+                  <td colspan="7">No users yet.</td>
                 </tr>
               </tbody>
             </table>

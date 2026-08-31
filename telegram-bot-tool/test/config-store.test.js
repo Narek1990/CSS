@@ -109,3 +109,52 @@ test("uses one connected bot per website and leaves old bot records inert", () =
   assert.equal(second.runtimeConfig.buttons[0].url, "/second");
   assert.equal(first.runtimeConfig.telegramBotToken, "222:second");
 });
+
+test("normalizes localized button labels, commands, and sso config", () => {
+  const config = normalizeConfig({
+    websites: [
+      {
+        id: "site",
+        name: "Site",
+        websiteUrl: "https://example.com/",
+        bots: [
+          {
+            id: "site-bot",
+            buttons: [
+              {
+                id: "deposit",
+                label: "Deposit",
+                labels: {
+                  default: "Deposit",
+                  es: "Deposito"
+                },
+                url: "/deposit"
+              }
+            ],
+            commands: [
+              {
+                command: "/login",
+                description: "Sign in",
+                action: "sso",
+                enabled: true,
+                responseText: "Open app"
+              }
+            ],
+            sso: {
+              enabled: true,
+              usernameTemplate: "tg_{{telegram_username}}",
+              serverLoginEnabled: true
+            }
+          }
+        ]
+      }
+    ]
+  });
+  const selection = selectConfig(config, "site");
+
+  assert.equal(selection.runtimeConfig.buttons[0].labels.es, "Deposito");
+  assert.equal(selection.runtimeConfig.commands[0].command, "login");
+  assert.equal(selection.runtimeConfig.commands[0].action, "sso");
+  assert.equal(selection.runtimeConfig.sso.usernameTemplate, "tg_{{telegram_username}}");
+  assert.equal(selection.runtimeConfig.sso.loginEndpoint, "/api/identity/api/v1/playeraccount/login");
+});

@@ -1,5 +1,7 @@
 "use strict";
 
+const { attemptWebsiteSso } = require("./website-sso");
+
 class TelegramBotApi {
   constructor(token) {
     this.token = String(token || "").trim();
@@ -38,7 +40,7 @@ class TelegramBotApi {
   }
 
   setMyCommands(commands) {
-    return this.request("setMyCommands", { commands });
+    return this.request("setMyCommands", { commands: botApiCommands(commands) });
   }
 
   setChatMenuButton(text, url) {
@@ -175,23 +177,50 @@ function buttonMatchesPlacement(button, placement) {
   return button.enabled !== false && (button.placement === placement || button.placement === "both");
 }
 
-function buttonToInlineMarkup(button, config) {
+function normalizeLanguageCode(value) {
+  return String(value || "")
+    .trim()
+    .replace(/_/g, "-")
+    .toLowerCase();
+}
+
+function selectLocalizedText(values, fallback, userOrLanguage) {
+  const messages = values && typeof values === "object" && !Array.isArray(values) ? values : {};
+  const languageCode = normalizeLanguageCode(typeof userOrLanguage === "string"
+    ? userOrLanguage
+    : userOrLanguage && userOrLanguage.language_code);
+  const shortLanguage = languageCode.split("-")[0];
+
+  return messages[languageCode]
+    || messages[shortLanguage]
+    || messages.default
+    || fallback
+    || "";
+}
+
+function getButtonLabel(button, userOrLanguage) {
+  return selectLocalizedText(button.labels, button.label, userOrLanguage);
+}
+
+function buttonToInlineMarkup(button, config, userOrLanguage) {
+  const text = getButtonLabel(button, userOrLanguage);
+
   if (button.type === "callback") {
     return {
-      text: button.label,
+      text,
       callback_data: button.callbackData || button.id
     };
   }
 
   if (button.type === "url") {
     return {
-      text: button.label,
+      text,
       url: resolveWebsiteUrl(button.url, config)
     };
   }
 
   return {
-    text: button.label,
+    text,
     web_app: { url: buildLaunchUrl(config, button.url) }
   };
 }
@@ -228,7 +257,7 @@ function getMenuButton(config) {
   return buttons.find((button) => button.enabled !== false && button.type === "web_app") || null;
 }
 
-function inlineKeyboard(config) {
+function inlineKeyboard(config, userOrLanguage) {
   const buttons = getInlineButtons(config);
 
   if (!buttons.length) {
@@ -236,11 +265,11 @@ function inlineKeyboard(config) {
   }
 
   return {
-    inline_keyboard: groupButtonsByRow(buttons, (button) => buttonToInlineMarkup(button, config))
+    inline_keyboard: groupButtonsByRow(buttons, (button) => buttonToInlineMarkup(button, config, userOrLanguage))
   };
 }
 
-function replyKeyboard(config) {
+function replyKeyboard(config, userOrLanguage) {
   const buttons = getReplyButtons(config);
 
   if (!buttons.length) {
@@ -249,34 +278,17 @@ function replyKeyboard(config) {
 
   return {
     keyboard: groupButtonsByRow(buttons, (button) => ({
-      text: button.label,
+      text: getButtonLabel(button, userOrLanguage),
       web_app: { url: buildLaunchUrl(config, button.url) }
     })),
     resize_keyboard: true,
     one_time_keyboard: false,
-    input_field_placeholder: "Open EsportesNew"
+    input_field_placeholder: `Open ${config.appTitle || "website"}`
   };
 }
 
-function normalizeLanguageCode(value) {
-  return String(value || "")
-    .trim()
-    .replace(/_/g, "-")
-    .toLowerCase();
-}
-
 function selectWelcomeText(config, user) {
-  const messages = config.welcomeMessages && typeof config.welcomeMessages === "object"
-    ? config.welcomeMessages
-    : {};
-  const languageCode = normalizeLanguageCode(user && user.language_code);
-  const shortLanguage = languageCode.split("-")[0];
-
-  return messages[languageCode]
-    || messages[shortLanguage]
-    || messages.default
-    || config.welcomeText
-    || "";
+  return selectLocalizedText(config.welcomeMessages, config.welcomeText, user);
 }
 
 function renderWelcomeText(config, user) {
@@ -293,7 +305,138 @@ function renderWelcomeText(config, user) {
 }
 
 async function sendLaunchMessages(client, chatId, config, user) {
-  return client.sendMessage(chatId, renderWelcomeText(config, user), inlineKeyboard(config), config.welcomeParseMode || config.parseMode);
+  return client.sendMessage(chatId, renderWelcomeText(config, user), inlineKeyboard(config, user), config.welcomeParseMode || config.parseMode);
+}
+
+function botApiCommands(commands) {
+  return (commands || [])
+    .filter((command) => command && command.enabled !== false && command.command && command.description)
+    .map((command) => ({
+      command: String(command.command).replace(/^\//, "").toLowerCase().slice(0, 32),
+      description: String(command.description).slice(0, 256)
+    }));
+}
+
+function parseCommand(text) {
+  const match = String(text || "").trim().match(/^\/([a-zA-Z0-9_]{1,32})(?:@[a-zA-Z0-9_]+)?(?:\s|$)/);
+
+  return match ? match[1].toLowerCase() : "";
+}
+
+function getCommandConfig(config, text) {
+  const commandName = parseCommand(text);
+
+  if (!commandName) {
+    return null;
+  }
+
+  return (config.commands || []).find((command) => {
+    return command && command.enabled !== false && command.command === commandName;
+  }) || null;
+}
+
+function renderTextTemplate(text, config, user) {
+  const useHtml = (config.welcomeParseMode || config.parseMode) === "HTML";
+  const serialize = useHtml ? escapeHtml : String;
+  const firstName = serialize(user && user.first_name ? user.first_name : "there");
+  const lastName = serialize(user && user.last_name ? user.last_name : "");
+  const username = serialize(user && user.username ? user.username : "");
+
+  return String(text || "")
+    .replaceAll("{{first_name}}", firstName)
+    .replaceAll("{{last_name}}", lastName)
+    .replaceAll("{{username}}", username);
+}
+
+function singleUrlKeyboard(label, url) {
+  return {
+    inline_keyboard: [
+      [
+        {
+          text: label,
+          url
+        }
+      ]
+    ]
+  };
+}
+
+async function recordSsoAttempt(config, store, user) {
+  if (!config.sso || !config.sso.serverLoginEnabled || !user || !user.id) {
+    return {
+      ok: false,
+      skipped: true,
+      reason: "Server-side SSO is disabled."
+    };
+  }
+
+  let result;
+
+  try {
+    result = await attemptWebsiteSso(config, user);
+  } catch (error) {
+    result = {
+      ok: false,
+      error: error.message || "SSO request failed."
+    };
+  }
+
+  if (store && store.upsertTelegramUser) {
+    store.upsertTelegramUser(user, "sso", {
+      ...config,
+      ssoResult: result
+    });
+  }
+
+  return result;
+}
+
+async function handleConfiguredCommand(client, chatId, config, user, command, store) {
+  const action = command.action || "welcome";
+
+  if (action === "none") {
+    return { handled: true, type: "command", command: command.command, action };
+  }
+
+  if (action === "keyboard") {
+    await client.sendMessage(
+      chatId,
+      renderTextTemplate(command.responseText || "The launch button is now on your Telegram keyboard.", config, user),
+      replyKeyboard(config, user),
+      config.welcomeParseMode || config.parseMode
+    );
+    return { handled: true, type: "command", command: command.command, action };
+  }
+
+  if (action === "password") {
+    const url = resolveWebsiteUrl(command.buttonUrl || (config.sso && config.sso.passwordResetPath) || "/en/forgot-password", config, "Password reset URL");
+    await client.sendMessage(
+      chatId,
+      renderTextTemplate(command.responseText || "Open password reset.", config, user),
+      singleUrlKeyboard(command.buttonLabel || "Reset Password", url),
+      config.welcomeParseMode || config.parseMode
+    );
+    return { handled: true, type: "command", command: command.command, action };
+  }
+
+  if (action === "custom") {
+    await client.sendMessage(
+      chatId,
+      renderTextTemplate(command.responseText || renderWelcomeText(config, user), config, user),
+      inlineKeyboard(config, user),
+      config.welcomeParseMode || config.parseMode
+    );
+    return { handled: true, type: "command", command: command.command, action };
+  }
+
+  if (action === "sso") {
+    await recordSsoAttempt(config, store, user);
+    await sendLaunchMessages(client, chatId, config, user);
+    return { handled: true, type: "command", command: command.command, action };
+  }
+
+  await sendLaunchMessages(client, chatId, config, user);
+  return { handled: true, type: "command", command: command.command, action: "welcome" };
 }
 
 async function handleTelegramUpdate(update, config, store) {
@@ -336,18 +479,20 @@ async function handleTelegramUpdate(update, config, store) {
   }
 
   if (text === "/start" || text.startsWith("/start ")) {
-    await sendLaunchMessages(client, message.chat.id, config, message.from);
-    return { handled: true, type: "start" };
+    const command = getCommandConfig(config, text) || {
+      command: "start",
+      action: "sso",
+      responseText: "",
+      enabled: true
+    };
+
+    return handleConfiguredCommand(client, message.chat.id, config, message.from, command, store);
   }
 
-  if (text === "/app") {
-    await client.sendMessage(message.chat.id, "Choose an action below.", inlineKeyboard(config));
-    return { handled: true, type: "app" };
-  }
+  const command = getCommandConfig(config, text);
 
-  if (text === "/keyboard") {
-    await client.sendMessage(message.chat.id, "The launch button is now on your Telegram keyboard.", replyKeyboard(config));
-    return { handled: true, type: "keyboard" };
+  if (command) {
+    return handleConfiguredCommand(client, message.chat.id, config, message.from, command, store);
   }
 
   return { handled: false };
@@ -363,8 +508,11 @@ function escapeHtml(value) {
 
 module.exports = {
   TelegramBotApi,
+  botApiCommands,
   buildLaunchUrl,
   buildWebhookUrl,
+  getButtonLabel,
+  getCommandConfig,
   getMenuButton,
   handleTelegramUpdate,
   inlineKeyboard,

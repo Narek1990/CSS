@@ -3,7 +3,10 @@
 const assert = require("assert/strict");
 const test = require("node:test");
 const {
+  botApiCommands,
   buildLaunchUrl,
+  getButtonLabel,
+  getCommandConfig,
   getMenuButton,
   inlineKeyboard,
   renderWelcomeText,
@@ -28,6 +31,10 @@ const config = {
     {
       id: "deposit",
       label: "Deposit",
+      labels: {
+        default: "Deposit",
+        pt: "Deposito"
+      },
       type: "web_app",
       placement: "both",
       url: "/en/home?m=deposit",
@@ -68,11 +75,53 @@ test("builds inline buttons from managed config", () => {
 });
 
 test("reply keyboard uses only Mini App buttons", () => {
-  const keyboard = replyKeyboard(config);
+  const keyboard = replyKeyboard(config, { language_code: "pt-BR" });
 
   assert.deepEqual(keyboard.keyboard.map((row) => row.map((button) => button.text)), [
-    ["Deposit"]
+    ["Deposito"]
   ]);
+});
+
+test("inline keyboard and button lookup use Telegram user language", () => {
+  const keyboard = inlineKeyboard(config, { language_code: "pt" });
+
+  assert.equal(getButtonLabel(config.buttons[1], "pt-BR"), "Deposito");
+  assert.equal(keyboard.inline_keyboard[1][0].text, "Deposito");
+});
+
+test("bot commands publish only Telegram-supported fields", () => {
+  const commands = botApiCommands([
+    {
+      command: "start",
+      description: "Start Telegram SSO",
+      enabled: true,
+      action: "sso",
+      responseText: "Internal"
+    },
+    {
+      command: "hidden",
+      description: "Hidden",
+      enabled: false,
+      action: "none"
+    }
+  ]);
+
+  assert.deepEqual(commands, [
+    {
+      command: "start",
+      description: "Start Telegram SSO"
+    }
+  ]);
+});
+
+test("configured command actions are selected from slash commands", () => {
+  const command = getCommandConfig({
+    commands: [
+      { command: "login", description: "Sign in", enabled: true, action: "sso" }
+    ]
+  }, "/login@esportesnew_bot");
+
+  assert.equal(command.action, "sso");
 });
 
 test("menu button follows selected managed button", () => {

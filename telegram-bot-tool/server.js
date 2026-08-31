@@ -7,6 +7,7 @@ const path = require("path");
 const { URL } = require("url");
 const { createStore, sanitizeConfig, selectConfig } = require("./src/config-store");
 const { TelegramBotApi, buildLaunchUrl, buildWebhookUrl, getMenuButton, handleTelegramUpdate, inlineKeyboard } = require("./src/telegram-client");
+const { buildSsoPreview } = require("./src/website-sso");
 const {
   createSessionToken,
   validateLoginWidgetPayload,
@@ -571,6 +572,25 @@ async function route(req, res) {
     sendJson(res, 200, {
       ok: true,
       result
+    });
+    return;
+  }
+
+  if (req.method === "POST" && requestUrl.pathname === "/api/sso/preview") {
+    if (!requireAdmin(req, res)) return;
+    const body = await readRequestBody(req);
+    const selection = getSelection(config, requestUrl, body);
+    const user = {
+      id: body.telegramId || 10001,
+      first_name: body.firstName || "Telegram",
+      last_name: body.lastName || "User",
+      username: body.username || "telegram_user",
+      language_code: body.language || "en"
+    };
+
+    sendJson(res, 200, {
+      ok: true,
+      preview: buildSsoPreview(selection.runtimeConfig, user)
     });
     return;
   }

@@ -10,8 +10,10 @@ It is intentionally dependency-free and runs on Node 18+.
 - Manages several websites from one dashboard.
 - Connects one Telegram bot per website profile.
 - Sets bot commands: `/start`, `/app`, `/keyboard`.
+- Manages predefined slash commands such as `/start`, `/login`, `/password`, and `/menu`.
 - Sets the private-chat menu button with `setChatMenuButton`.
 - Manages a separate button list per bot: add, edit, disable, delete, reorder, choose row, and choose button type.
+- Stores language-specific labels for each Telegram button.
 - Adds a rich welcome-message editor with per-language Telegram HTML messages.
 - Sends a single welcome message with inline buttons, matching the simple bot shown in the recording.
 - Can also send reply-keyboard Web App buttons when a button's placement is set to **Reply Keyboard** or **Both**.
@@ -85,6 +87,22 @@ Each button has:
 
 The preview panel shows the message and buttons before you publish. `Publish to Telegram` updates commands, the chat menu button, and the webhook for the selected website's bot. New `/start` messages use the latest saved buttons and language-specific welcome message for that bot.
 
+Button labels are language-aware. Choose a language in **Language Content**, then edit each button label in the **Buttons** panel. Telegram users receive the matching button labels based on their `language_code`; if there is no match, the bot uses the default label.
+
+## Command Manager
+
+Use **Commands** to configure published Telegram slash commands and how the bot responds to them.
+
+Default commands:
+
+- `/start`: starts the Telegram Mini App SSO flow and shows the configured buttons.
+- `/login`: starts the same Telegram Mini App SSO flow.
+- `/password`: sends a password-reset link.
+- `/menu` and `/app`: show the welcome message and inline buttons.
+- `/keyboard`: shows reply-keyboard Web App buttons.
+
+Each command can be enabled or disabled, given a Telegram description, and assigned an action: Telegram SSO, Welcome + Buttons, Reply Keyboard, Password Reset, Custom Reply, or No Reply. Press **Publish to Telegram** after changing commands.
+
 ## Multiple Websites
 
 Use **Add Website** to create another website profile. Each website stores:
@@ -141,7 +159,21 @@ This tool can set commands, webhook, and the chat menu button through the Bot AP
 
 ## Sign Up / Sign In Integration
 
-The route `POST /api/auth/telegram` receives:
+The live EsportesNew frontend already performs Telegram SSO when opened inside Telegram. It calls:
+
+```text
+/api/identity/api/v1/playeraccount/login-telegram
+```
+
+with `Telegram.WebApp.initData`, then calls:
+
+```text
+/api/v1/me/signin?returnUrl=/
+```
+
+For that reason, the safest `/start` behavior is to open the site as a Telegram Mini App. Telegram supplies signed `initData` only inside the Mini App webview, and the website can then create its own first-party session.
+
+The route `POST /api/auth/telegram` in this tool receives:
 
 ```json
 {
@@ -164,6 +196,15 @@ It validates the Telegram signature using the bot token. If valid, it upserts th
 ```
 
 To connect this to the real EsportesNew account system, the website backend needs an endpoint that uses the same validation logic from `src/telegram-auth.js`, then creates or logs in the website user and sets the website's normal session cookie. A separate `bot.esportesnew.com` service cannot create a first-party `esportesnew.com` login session unless the production website backend accepts and exchanges the validated Telegram session.
+
+The admin panel also includes an optional server-side SSO fallback. It can build payloads from the Telegram user and try:
+
+```text
+/api/identity/api/v1/playeraccount/login
+/api/user/api/v1.0/fastSignUp/signup
+```
+
+The default username template is `{{telegram_username}}`. The fallback is disabled until you enable it because normal login requires a password template and fast signup can create real player accounts. Use **Preview SSO Payload** before enabling live signup fallback.
 
 ## Wrapper Mode
 
