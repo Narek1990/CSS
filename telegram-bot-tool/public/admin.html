@@ -127,6 +127,7 @@
             <label>
               <span>Username Template</span>
               <input name="ssoUsernameTemplate" placeholder="{{telegram_username}}">
+              <span class="field-note">If the website username already exists, login also needs the same SSO password. Use tg_{{telegram_id}} for bot-created accounts that should not collide with existing users.</span>
             </label>
             <label>
               <span>Password Template</span>
@@ -330,6 +331,33 @@
             </table>
           </div>
         </section>
+      </section>
+
+      <section class="panel sso-events-panel">
+        <div class="panel-title">
+          <h2>SSO Event Log</h2>
+          <button type="button" class="secondary small" id="refreshSsoEvents">Refresh</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Telegram User</th>
+                <th>Website Bot</th>
+                <th>Status</th>
+                <th>Action</th>
+                <th>SSO Detail</th>
+                <th>Attempts</th>
+              </tr>
+            </thead>
+            <tbody id="ssoEventsBody">
+              <tr>
+                <td colspan="7">No SSO events yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
     </main>
 

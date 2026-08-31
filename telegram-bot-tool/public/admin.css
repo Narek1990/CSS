@@ -420,6 +420,10 @@ dd {
   margin-top: 16px;
 }
 
+.sso-events-panel {
+  margin-top: 16px;
+}
+
 .lower-grid {
   margin-top: 16px;
   grid-template-columns: minmax(520px, 0.8fr) minmax(620px, 1.2fr);
@@ -756,6 +760,10 @@ td {
 
 .sso-detail .sso-error {
   color: #ffb0b0;
+}
+
+.sso-detail .sso-next-step {
+  color: #f7d885;
 }
 
 @media (max-width: 1080px) {

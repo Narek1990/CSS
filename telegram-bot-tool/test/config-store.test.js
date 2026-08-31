@@ -184,8 +184,10 @@ test("stores SSO attempt details for Telegram users", () => {
     ssoResult: {
       ok: false,
       action: "signup",
+      code: "signup_internal_error",
       username: "Goravanes",
       reason: "Signup failed HTTP 500: Internal Exception",
+      nextStep: "Check the website signup endpoint logs.",
       attempts: [
         {
           action: "login",
@@ -204,8 +206,23 @@ test("stores SSO attempt details for Telegram users", () => {
   });
 
   assert.equal(record.ssoStatus, "failed");
+  assert.equal(record.ssoCode, "signup_internal_error");
   assert.equal(record.ssoLastError, "Signup failed HTTP 500: Internal Exception");
+  assert.equal(record.ssoNextStep, "Check the website signup endpoint logs.");
   assert.equal(record.ssoLastAttempts.length, 2);
   assert.equal(record.ssoLastAttempts[1].status, 500);
   assert.ok(record.ssoLastAttemptAt);
+
+  const events = store.getSsoEvents({
+    websiteId: "esportesnew",
+    botId: "esportesnew-bot"
+  });
+
+  assert.equal(events.length, 1);
+  assert.equal(events[0].telegramId, "516395245");
+  assert.equal(events[0].status, "failed");
+  assert.equal(events[0].code, "signup_internal_error");
+  assert.equal(events[0].error, "Signup failed HTTP 500: Internal Exception");
+  assert.equal(events[0].nextStep, "Check the website signup endpoint logs.");
+  assert.equal(events[0].attempts.length, 2);
 });

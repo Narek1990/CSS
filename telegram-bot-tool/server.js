@@ -656,6 +656,23 @@ async function route(req, res) {
     return;
   }
 
+  if (req.method === "GET" && requestUrl.pathname === "/api/sso/events") {
+    if (!requireAdmin(req, res)) return;
+    const selection = getSelection(config, requestUrl);
+    const showAll = requestUrl.searchParams.get("all") === "1";
+    const limit = Number(requestUrl.searchParams.get("limit")) || 200;
+
+    sendJson(res, 200, {
+      ok: true,
+      events: store.getSsoEvents(showAll ? { limit } : {
+        websiteId: selection.website.id,
+        botId: selection.bot.id,
+        limit
+      })
+    });
+    return;
+  }
+
   if (req.method === "POST" && requestUrl.pathname === "/api/auth/telegram") {
     const body = await readRequestBody(req);
     const selection = getSelection(config, requestUrl, body);

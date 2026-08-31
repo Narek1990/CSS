@@ -8,6 +8,7 @@ const launchUrl = document.querySelector("#launchUrl");
 const tokenState = document.querySelector("#tokenState");
 const webhookState = document.querySelector("#webhookState");
 const usersBody = document.querySelector("#usersBody");
+const ssoEventsBody = document.querySelector("#ssoEventsBody");
 const buttonsList = document.querySelector("#buttonsList");
 const menuButtonId = document.querySelector("#menuButtonId");
 const messagePreview = document.querySelector("#messagePreview");
@@ -1369,19 +1370,68 @@ async function loadUsers() {
     : '<tr><td colspan="9">No users yet.</td></tr>';
 }
 
+async function loadSsoEvents() {
+  const result = await api(`${selectedPath("/api/sso/events")}&limit=100`);
+  const rows = result.events.map((event) => {
+    const userLabel = event.username
+      ? `${event.telegramId} / @${event.username}`
+      : event.telegramId;
+    const botLabel = event.botUsername ? `@${event.botUsername}` : (event.botLabel || event.botId || "-");
+    const attempts = Array.isArray(event.attempts) ? event.attempts : [];
+    const attemptText = attempts.length
+      ? attempts.map(formatSsoAttempt).join(" | ")
+      : "No attempt details.";
+
+    return `
+      <tr>
+        <td>${escapeHtml(event.at || "-")}</td>
+        <td>${escapeHtml(userLabel || "-")}</td>
+        <td>${escapeHtml(`${event.websiteName || event.websiteId || "-"} / ${botLabel}`)}</td>
+        <td><span class="sso-badge" data-status="${escapeHtml(event.status || "-")}">${escapeHtml(event.status || "-")}</span></td>
+        <td>${escapeHtml(event.action || "-")}</td>
+        <td>${ssoEventDetailHtml(event)}</td>
+        <td><small title="${escapeHtml(attemptText)}">${escapeHtml(attemptText)}</small></td>
+      </tr>
+    `;
+  });
+
+  ssoEventsBody.innerHTML = rows.length
+    ? rows.join("")
+    : '<tr><td colspan="7">No SSO events yet.</td></tr>';
+}
+
 function ssoDetailHtml(user) {
   const attempts = Array.isArray(user.ssoLastAttempts) ? user.ssoLastAttempts : [];
   const attemptText = attempts.length
     ? attempts.map(formatSsoAttempt).join(" | ")
     : "No SSO attempt details yet.";
   const error = user.ssoLastError || (user.ssoStatus === "ok" ? "Connected" : "");
+  const code = user.ssoCode ? `Code: ${user.ssoCode}` : "";
+  const nextStep = user.ssoNextStep || "";
 
   return `
     <div class="sso-detail">
       <strong>${escapeHtml(user.ssoUsername || user.username || "-")}</strong>
       <span>${escapeHtml(user.ssoAction || "-")}${user.ssoLastAttemptAt ? ` at ${escapeHtml(user.ssoLastAttemptAt)}` : ""}</span>
+      ${code ? `<small>${escapeHtml(code)}</small>` : ""}
       ${error ? `<small class="${user.ssoStatus === "failed" ? "sso-error" : ""}">${escapeHtml(error)}</small>` : ""}
+      ${nextStep ? `<small class="sso-next-step">${escapeHtml(nextStep)}</small>` : ""}
       <small title="${escapeHtml(attemptText)}">${escapeHtml(attemptText)}</small>
+    </div>
+  `;
+}
+
+function ssoEventDetailHtml(event) {
+  const error = event.error || (event.status === "ok" ? "Connected" : "");
+  const code = event.code ? `Code: ${event.code}` : "";
+  const nextStep = event.nextStep || "";
+
+  return `
+    <div class="sso-detail">
+      <strong>${escapeHtml(event.ssoUsername || event.username || "-")}</strong>
+      ${code ? `<small>${escapeHtml(code)}</small>` : ""}
+      ${error ? `<small class="${event.status === "failed" ? "sso-error" : ""}">${escapeHtml(error)}</small>` : ""}
+      ${nextStep ? `<small class="sso-next-step">${escapeHtml(nextStep)}</small>` : ""}
     </div>
   `;
 }
@@ -1430,6 +1480,7 @@ usersBody.addEventListener("click", async (event) => {
       !(result.ssoResult && result.ssoResult.ok)
     );
     await loadUsers();
+    await loadSsoEvents();
   } catch (error) {
     notify(`SSO retry failed: ${error.message}`, "error", true);
     print({ error: error.message });
@@ -1517,6 +1568,7 @@ websiteSelect.addEventListener("change", () => {
   markDirty();
   checkConnection(false).catch(() => {});
   loadUsers().catch((error) => print({ error: error.message }));
+  loadSsoEvents().catch((error) => print({ error: error.message }));
 });
 
 languageSelect.addEventListener("change", () => {
@@ -1823,6 +1875,15 @@ document.querySelector("#refreshUsers").addEventListener("click", () => {
     });
 });
 
+document.querySelector("#refreshSsoEvents").addEventListener("click", () => {
+  loadSsoEvents()
+    .then(() => notify("SSO event log refreshed.", "success"))
+    .catch((error) => {
+      notify(`SSO event refresh failed: ${error.message}`, "error", true);
+      print({ error: error.message });
+    });
+});
+
 async function loadConfig() {
   try {
     const result = await api("/api/config");
@@ -1851,7 +1912,7 @@ async function loadConfig() {
 }
 
 loadConfig()
-  .then(loadUsers)
+  .then(() => Promise.all([loadUsers(), loadSsoEvents()]))
   .catch((error) => {
     notify(`Startup failed: ${error.message}`, "error", true);
     print({ error: error.message });

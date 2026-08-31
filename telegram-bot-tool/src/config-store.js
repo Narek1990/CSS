@@ -189,6 +189,37 @@ function ssoLastError(ssoResult, previous) {
   return `${failedAttempt.action}${status}: ${failedAttempt.message || "Request failed."}`.slice(0, 500);
 }
 
+function ssoStatus(ssoResult, previous) {
+  if (!ssoResult) {
+    return previous.ssoStatus || "";
+  }
+
+  if (ssoResult.ok) {
+    return "ok";
+  }
+
+  return ssoResult.skipped ? "skipped" : "failed";
+}
+
+function cleanSsoCode(value) {
+  return String(value || "")
+    .trim()
+    .replace(/[^a-zA-Z0-9_.-]/g, "_")
+    .slice(0, 100);
+}
+
+function ssoNextStep(ssoResult, previous) {
+  if (!ssoResult) {
+    return previous.ssoNextStep || "";
+  }
+
+  if (ssoResult.ok) {
+    return "";
+  }
+
+  return String(ssoResult.nextStep || "").trim().slice(0, 500);
+}
+
 function randomSecret() {
   return crypto.randomBytes(24).toString("base64url");
 }
@@ -715,6 +746,7 @@ function createStore(baseDir) {
   const dataDir = path.join(baseDir, ".data");
   const configPath = path.join(dataDir, "config.json");
   const usersPath = path.join(dataDir, "users.json");
+  const ssoEventsPath = path.join(dataDir, "sso-events.json");
 
   function ensureDataDir() {
     fs.mkdirSync(dataDir, { recursive: true });
@@ -767,6 +799,56 @@ function createStore(baseDir) {
     });
   }
 
+  function getSsoEvents(filter = {}) {
+    const limit = Math.max(1, Math.min(Number(filter.limit) || 200, 500));
+    const events = readJson(ssoEventsPath, []);
+
+    return events.filter((event) => {
+      if (filter.websiteId && event.websiteId && event.websiteId !== filter.websiteId) {
+        return false;
+      }
+
+      if (filter.botId && event.botId && event.botId !== filter.botId) {
+        return false;
+      }
+
+      if (filter.telegramId && String(event.telegramId) !== String(filter.telegramId)) {
+        return false;
+      }
+
+      return true;
+    }).slice(0, limit);
+  }
+
+  function appendSsoEvent(record, ssoResult, now) {
+    if (!ssoResult) {
+      return;
+    }
+
+    const events = readJson(ssoEventsPath, []);
+    const event = {
+      id: crypto.randomBytes(8).toString("hex"),
+      at: now,
+      telegramId: String(record.id),
+      name: [record.first_name, record.last_name].filter(Boolean).join(" "),
+      username: record.username,
+      websiteId: record.websiteId,
+      websiteName: record.websiteName,
+      botId: record.botId,
+      botLabel: record.botLabel,
+      botUsername: record.botUsername,
+      status: ssoStatus(ssoResult, {}),
+      action: String(ssoResult.action || "").slice(0, 64),
+      ssoUsername: String(ssoResult.username || "").slice(0, 100),
+      code: cleanSsoCode(ssoResult.code),
+      error: ssoLastError(ssoResult, {}),
+      nextStep: ssoNextStep(ssoResult, {}),
+      attempts: normalizeSsoAttempts(ssoResult.attempts)
+    };
+
+    writeJson(ssoEventsPath, [event, ...events].slice(0, 500));
+  }
+
   function upsertTelegramUser(user, source, context = {}) {
     const users = readJson(usersPath, []);
     const now = new Date().toISOString();
@@ -789,10 +871,12 @@ function createStore(baseDir) {
       botId,
       botLabel: context.botLabel || "",
       botUsername: context.botUsername || "",
-      ssoStatus: ssoResult ? (ssoResult.ok ? "ok" : (ssoResult.skipped ? "skipped" : "failed")) : (previous.ssoStatus || ""),
+      ssoStatus: ssoStatus(ssoResult, previous),
       ssoAction: ssoResult ? (ssoResult.action || "") : (previous.ssoAction || ""),
       ssoUsername: ssoResult ? (ssoResult.username || "") : (previous.ssoUsername || ""),
+      ssoCode: ssoResult ? cleanSsoCode(ssoResult.code) : (previous.ssoCode || ""),
       ssoLastError: ssoLastError(ssoResult, previous),
+      ssoNextStep: ssoNextStep(ssoResult, previous),
       ssoLastAttempts: ssoAttempts,
       ssoLastAttemptAt: ssoResult ? now : (previous.ssoLastAttemptAt || ""),
       firstSeenAt: existingIndex >= 0 ? users[existingIndex].firstSeenAt : now,
@@ -809,11 +893,13 @@ function createStore(baseDir) {
     }
 
     writeJson(usersPath, users);
+    appendSsoEvent(record, ssoResult, now);
     return record;
   }
 
   return {
     getConfig,
+    getSsoEvents,
     getUsers,
     saveConfig,
     selectConfig(websiteId, botId) {

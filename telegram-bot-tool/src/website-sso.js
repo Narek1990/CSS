@@ -28,6 +28,10 @@ const DEFAULT_SSO_CONFIG = {
   }
 };
 
+const DUPLICATE_USER_LOGIN_FAILED_CODE = "duplicate_user_login_failed";
+const DUPLICATE_USER_LOGIN_FAILED_REASON = "The website username already exists, but login failed with the configured or generated SSO password.";
+const DUPLICATE_USER_LOGIN_FAILED_NEXT_STEP = "Use a Telegram-specific username template such as tg_{{telegram_id}} for bot-created accounts, or link/reset the existing website account so it can be authenticated by Telegram SSO.";
+
 function clone(value) {
   return JSON.parse(JSON.stringify(value));
 }
@@ -256,6 +260,10 @@ async function attemptWebsiteSso(config, user) {
   attempts.push(signup);
 
   if (!signup.ok) {
+    if (isDuplicateUserAttempt(signup)) {
+      return existingUserLoginFailedResult(preview, attempts);
+    }
+
     return {
       ok: false,
       action: "signup",
@@ -285,6 +293,28 @@ async function attemptWebsiteSso(config, user) {
     username: preview.username,
     attempts
   };
+}
+
+function existingUserLoginFailedResult(preview, attempts) {
+  return {
+    ok: false,
+    action: "login",
+    code: DUPLICATE_USER_LOGIN_FAILED_CODE,
+    username: preview.username,
+    attempts,
+    reason: DUPLICATE_USER_LOGIN_FAILED_REASON,
+    nextStep: DUPLICATE_USER_LOGIN_FAILED_NEXT_STEP
+  };
+}
+
+function isDuplicateUserAttempt(attempt) {
+  if (!attempt) {
+    return false;
+  }
+
+  const message = String(attempt.message || attempt.reason || "").toLowerCase();
+
+  return Number(attempt.status) === 409 || message.includes("duplicate user");
 }
 
 async function requestJsonAttempt(action, url, payload) {

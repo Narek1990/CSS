@@ -108,3 +108,47 @@ test("records failed EsportesNew signup response after generated-password login 
   assert.equal(result.attempts[1].action, "signup");
   assert.equal(result.attempts[1].status, 500);
 });
+
+test("diagnoses duplicate website user when generated-password login fails", async (t) => {
+  const originalFetch = global.fetch;
+  const responses = [
+    { status: 404, body: { message: "User not found" } },
+    { status: 409, body: { message: "Duplicate Users" } }
+  ];
+
+  t.after(() => {
+    global.fetch = originalFetch;
+  });
+  global.fetch = async () => {
+    const response = responses.shift();
+
+    return {
+      ok: false,
+      status: response.status,
+      text: async () => JSON.stringify(response.body)
+    };
+  };
+
+  const result = await attemptWebsiteSso({
+    websiteUrl: "https://esportesnew.com/",
+    sso: {
+      serverLoginEnabled: true,
+      signupFallbackEnabled: true,
+      usernameTemplate: "{{telegram_username}}"
+    }
+  }, {
+    id: 1356077488,
+    username: "narek9998",
+    language_code: "en"
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.action, "login");
+  assert.equal(result.code, "duplicate_user_login_failed");
+  assert.equal(result.username, "narek9998");
+  assert.match(result.reason, /username already exists/);
+  assert.match(result.nextStep, /tg_\{\{telegram_id\}\}/);
+  assert.equal(result.attempts.length, 2);
+  assert.equal(result.attempts[0].status, 404);
+  assert.equal(result.attempts[1].status, 409);
+});
