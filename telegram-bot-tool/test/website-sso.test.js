@@ -54,13 +54,23 @@ test("previews login and signup payloads without sending requests", () => {
 
   assert.equal(preview.username, "player");
   assert.equal(preview.loginEndpoint, "https://esportesnew.com/api/identity/api/v1/playeraccount/login");
-  assert.deepEqual(preview.signupPayload, {
+  assert.equal(preview.passwordGenerated, true);
+  assert.ok(preview.loginPayload.password.startsWith("TgA1!"));
+  assert.deepEqual({
+    ...preview.signupPayload,
+    password: "{{masked}}",
+    confirmPassword: "{{masked}}"
+  }, {
     userName: "player",
-    language: "es"
+    language: "es",
+    password: "{{masked}}",
+    confirmPassword: "{{masked}}"
   });
+  assert.equal(preview.signupPayload.password, preview.loginPayload.password);
+  assert.equal(preview.signupPayload.confirmPassword, preview.loginPayload.password);
 });
 
-test("records failed EsportesNew signup response after password login is skipped", async (t) => {
+test("records failed EsportesNew signup response after generated-password login fails", async (t) => {
   const originalFetch = global.fetch;
   t.after(() => {
     global.fetch = originalFetch;
@@ -91,19 +101,10 @@ test("records failed EsportesNew signup response after password login is skipped
   assert.equal(result.ok, false);
   assert.equal(result.username, "Goravanes");
   assert.equal(result.reason, "Signup failed HTTP 500: Internal Exception");
-  assert.deepEqual(result.attempts, [
-    {
-      action: "login",
-      ok: false,
-      skipped: true,
-      reason: "Login password template is empty."
-    },
-    {
-      action: "signup",
-      ok: false,
-      status: 500,
-      message: "Internal Exception",
-      networkError: false
-    }
-  ]);
+  assert.equal(result.attempts.length, 2);
+  assert.equal(result.attempts[0].action, "login");
+  assert.equal(result.attempts[0].skipped, undefined);
+  assert.equal(result.attempts[0].status, 500);
+  assert.equal(result.attempts[1].action, "signup");
+  assert.equal(result.attempts[1].status, 500);
 });

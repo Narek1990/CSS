@@ -1,9 +1,12 @@
 "use strict";
 
+const crypto = require("crypto");
+
 const DEFAULT_SSO_CONFIG = {
   enabled: true,
   serverLoginEnabled: false,
   signupFallbackEnabled: false,
+  autoGeneratePassword: true,
   usernameTemplate: "{{telegram_username}}",
   passwordTemplate: "",
   defaultLanguage: "en",
@@ -19,7 +22,9 @@ const DEFAULT_SSO_CONFIG = {
   },
   signupPayload: {
     userName: "{{username}}",
-    language: "{{language}}"
+    language: "{{language}}",
+    password: "{{password}}",
+    confirmPassword: "{{password}}"
   }
 };
 
@@ -34,6 +39,7 @@ function normalizeSsoConfig(sso) {
     enabled: source.enabled !== false,
     serverLoginEnabled: Boolean(source.serverLoginEnabled),
     signupFallbackEnabled: Boolean(source.signupFallbackEnabled),
+    autoGeneratePassword: source.autoGeneratePassword !== false,
     usernameTemplate: String(source.usernameTemplate || DEFAULT_SSO_CONFIG.usernameTemplate).trim() || DEFAULT_SSO_CONFIG.usernameTemplate,
     passwordTemplate: String(source.passwordTemplate || ""),
     defaultLanguage: cleanLanguage(source.defaultLanguage || DEFAULT_SSO_CONFIG.defaultLanguage),
@@ -42,7 +48,7 @@ function normalizeSsoConfig(sso) {
     telegramLoginEndpoint: cleanEndpoint(source.telegramLoginEndpoint, DEFAULT_SSO_CONFIG.telegramLoginEndpoint),
     passwordResetPath: cleanEndpoint(source.passwordResetPath, DEFAULT_SSO_CONFIG.passwordResetPath),
     loginPayload: normalizePayload(source.loginPayload, DEFAULT_SSO_CONFIG.loginPayload),
-    signupPayload: normalizePayload(source.signupPayload, DEFAULT_SSO_CONFIG.signupPayload)
+    signupPayload: normalizeSignupPayload(normalizePayload(source.signupPayload, DEFAULT_SSO_CONFIG.signupPayload))
   };
 }
 
@@ -52,6 +58,24 @@ function normalizePayload(value, fallback) {
   }
 
   return clone(value);
+}
+
+function normalizeSignupPayload(payload) {
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+    return clone(DEFAULT_SSO_CONFIG.signupPayload);
+  }
+
+  const normalized = clone(payload);
+
+  if (!Object.prototype.hasOwnProperty.call(normalized, "password")) {
+    normalized.password = "{{password}}";
+  }
+
+  if (!Object.prototype.hasOwnProperty.call(normalized, "confirmPassword")) {
+    normalized.confirmPassword = "{{password}}";
+  }
+
+  return normalized;
 }
 
 function cleanEndpoint(value, fallback) {
@@ -107,9 +131,26 @@ function buildSsoContext(config, user) {
   };
 
   context.username = cleanUsername(renderTemplate(sso.usernameTemplate, context), telegramUsername);
-  context.password = renderTemplate(sso.passwordTemplate, context);
+  context.password = renderTemplate(sso.passwordTemplate, context) || (sso.autoGeneratePassword ? generateSsoPassword(config || {}, context) : "");
+  context.password_generated = !renderTemplate(sso.passwordTemplate, context) && Boolean(context.password);
 
   return context;
+}
+
+function generateSsoPassword(config, context) {
+  const secret = String(
+    (config && (config.webhookSecretToken || config.telegramBotToken || config.botId || config.websiteId)) ||
+    "esportesnew-telegram-sso"
+  );
+  const seed = [
+    context.telegram_id,
+    context.telegram_username,
+    context.bot_username,
+    config && config.websiteUrl
+  ].filter(Boolean).join(":");
+  const digest = crypto.createHmac("sha256", secret).update(seed || context.username || "telegram_user").digest("base64url");
+
+  return `TgA1!${digest}`.slice(0, 28);
 }
 
 function renderTemplate(value, context) {
@@ -153,8 +194,10 @@ function buildSsoPreview(config, user) {
     enabled: sso.enabled,
     serverLoginEnabled: sso.serverLoginEnabled,
     signupFallbackEnabled: sso.signupFallbackEnabled,
+    autoGeneratePassword: sso.autoGeneratePassword,
     username: context.username,
     language: context.language,
+    passwordGenerated: context.password_generated,
     loginEndpoint: resolveWebsiteEndpoint(config, sso.loginEndpoint),
     signupEndpoint: resolveWebsiteEndpoint(config, sso.signupEndpoint),
     telegramLoginEndpoint: resolveWebsiteEndpoint(config, sso.telegramLoginEndpoint),

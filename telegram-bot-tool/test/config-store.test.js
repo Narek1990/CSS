@@ -162,6 +162,9 @@ test("normalizes localized button labels, commands, and sso config", () => {
   assert.equal(selection.runtimeConfig.commands[0].descriptions.hy, "Մուտք");
   assert.equal(selection.runtimeConfig.sso.usernameTemplate, "tg_{{telegram_username}}");
   assert.equal(selection.runtimeConfig.sso.loginEndpoint, "/api/identity/api/v1/playeraccount/login");
+  assert.equal(selection.runtimeConfig.sso.autoGeneratePassword, true);
+  assert.equal(selection.runtimeConfig.sso.signupPayload.password, "{{password}}");
+  assert.equal(selection.runtimeConfig.sso.signupPayload.confirmPassword, "{{password}}");
 });
 
 test("stores SSO attempt details for Telegram users", () => {

@@ -209,6 +209,8 @@ The admin panel also includes an optional server-side SSO fallback. It can build
 
 The default username template is `{{telegram_username}}`. The fallback is disabled until you enable it because normal login requires a password template and fast signup can create real player accounts. Use **Preview SSO Payload** before enabling live signup fallback.
 
+If the password template is empty, the tool automatically generates a stable password for each Telegram user and bot. The default signup payload sends `userName`, `language`, `password`, and `confirmPassword`, then retries login after a successful signup. The Telegram player never needs to type this password.
+
 ## Wrapper Mode
 
 Set:

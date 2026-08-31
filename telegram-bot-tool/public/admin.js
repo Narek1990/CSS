@@ -201,6 +201,7 @@ function defaultSsoConfig() {
     enabled: true,
     serverLoginEnabled: false,
     signupFallbackEnabled: false,
+    autoGeneratePassword: true,
     usernameTemplate: "{{telegram_username}}",
     passwordTemplate: "",
     defaultLanguage: "en",
@@ -216,7 +217,9 @@ function defaultSsoConfig() {
     },
     signupPayload: {
       userName: "{{username}}",
-      language: "{{language}}"
+      language: "{{language}}",
+      password: "{{password}}",
+      confirmPassword: "{{password}}"
     }
   };
 }
@@ -716,6 +719,7 @@ function syncCurrentFormToState() {
     enabled: form.ssoEnabled.checked,
     serverLoginEnabled: form.ssoServerLoginEnabled.checked,
     signupFallbackEnabled: form.ssoSignupFallbackEnabled.checked,
+    autoGeneratePassword: bot.sso.autoGeneratePassword !== false,
     usernameTemplate: form.ssoUsernameTemplate.value.trim() || "{{telegram_username}}",
     passwordTemplate: form.ssoPasswordTemplate.value,
     defaultLanguage: form.ssoDefaultLanguage.value.trim() || "en",
