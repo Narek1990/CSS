@@ -218,7 +218,7 @@ textarea {
 
 .switch-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 10px;
   margin-bottom: 14px;
 }
@@ -264,6 +264,44 @@ textarea {
 
 .advanced[open] summary {
   margin-bottom: 12px;
+}
+
+.sso-guide {
+  margin: 0 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #10151d;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.45;
+  padding: 12px;
+}
+
+.sso-guide strong {
+  color: var(--text);
+}
+
+.sso-guide code {
+  color: #cde7d8;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.sso-guide[data-state="success"] {
+  border-color: rgb(37 192 132 / 45%);
+  background: #10231d;
+  color: #c9f5e3;
+}
+
+.sso-guide[data-state="warning"] {
+  border-color: rgb(233 180 76 / 55%);
+  background: #2c2416;
+  color: #ffe7ab;
+}
+
+.sso-guide[data-state="muted"] {
+  color: var(--muted);
 }
 
 .editor-toolbar {

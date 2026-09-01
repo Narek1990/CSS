@@ -186,6 +186,32 @@ test("wrapper launch URL carries target path", () => {
   assert.equal(url, "https://bot.esportesnew.com/miniapp?target=https%3A%2F%2Fesportesnew.com%2Fen%2Fhome%3Fm%3Ddeposit");
 });
 
+test("native Telegram WebApp SSO publishes direct website launch URLs", () => {
+  const url = buildLaunchUrl({
+    ...config,
+    launchMode: "wrapper",
+    sso: {
+      enabled: true,
+      nativeTelegramLoginEnabled: true
+    }
+  }, "/en/home?m=deposit");
+
+  assert.equal(url, "https://esportesnew.com/en/home?m=deposit");
+});
+
+test("wrapper mode is still available when native Telegram SSO is disabled", () => {
+  const url = buildLaunchUrl({
+    ...config,
+    launchMode: "wrapper",
+    sso: {
+      enabled: true,
+      nativeTelegramLoginEnabled: false
+    }
+  }, "/en/home?m=deposit");
+
+  assert.equal(url, "https://bot.esportesnew.com/miniapp?target=https%3A%2F%2Fesportesnew.com%2Fen%2Fhome%3Fm%3Ddeposit");
+});
+
 test("welcome text follows Telegram user language with default fallback", () => {
   const welcomeConfig = {
     welcomeParseMode: "HTML",

@@ -105,10 +105,19 @@
 
           <div class="panel-title section-title">
             <h2>Single Sign-On</h2>
-            <span id="ssoState">Mini App SSO</span>
+            <div class="selector-actions">
+              <span id="ssoState">Mini App SSO</span>
+              <button type="button" class="secondary small" id="applyNativeSso">Apply AzenPlay Flow</button>
+            </div>
           </div>
 
+          <div class="sso-guide" id="ssoGuide">Telegram SSO status will appear here.</div>
+
           <div class="switch-grid">
+            <label class="checkline">
+              <input type="checkbox" name="ssoNativeTelegramLoginEnabled">
+              <span>Website native Telegram login</span>
+            </label>
             <label class="checkline">
               <input type="checkbox" name="ssoEnabled">
               <span>Enable on /start and /login</span>
@@ -163,6 +172,16 @@
               <span>Telegram Login Endpoint</span>
               <input name="ssoTelegramLoginEndpoint" placeholder="/api/identity/api/v1/playeraccount/login-telegram">
             </label>
+            <div class="split">
+              <label>
+                <span>Website Session Endpoint</span>
+                <input name="ssoMeSigninEndpoint" placeholder="/api/v1/me/signin">
+              </label>
+              <label>
+                <span>Return URL</span>
+                <input name="ssoNativeReturnUrl" placeholder="/">
+              </label>
+            </div>
             <div class="split">
               <label>
                 <span>Login Payload JSON</span>

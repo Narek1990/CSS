@@ -2,7 +2,13 @@
 
 const assert = require("assert/strict");
 const test = require("node:test");
-const { attemptWebsiteSso, buildSsoContext, buildSsoPreview, renderPayload } = require("../src/website-sso");
+const {
+  attemptWebsiteSso,
+  buildNativeTelegramSsoPreview,
+  buildSsoContext,
+  buildSsoPreview,
+  renderPayload
+} = require("../src/website-sso");
 
 test("builds EsportesNew SSO context from Telegram user", () => {
   const context = buildSsoContext({
@@ -54,6 +60,9 @@ test("previews login and signup payloads without sending requests", () => {
 
   assert.equal(preview.username, "player");
   assert.equal(preview.loginEndpoint, "https://esportesnew.com/api/identity/api/v1/playeraccount/login");
+  assert.equal(preview.telegramLoginEndpoint, "https://esportesnew.com/api/identity/api/v1/playeraccount/login-telegram");
+  assert.equal(preview.browserLogin.mode, "website-native-telegram-webapp");
+  assert.equal(preview.browserLogin.effectiveLaunchMode, "direct");
   assert.equal(preview.passwordGenerated, true);
   assert.ok(preview.loginPayload.password.startsWith("TgA1!"));
   assert.deepEqual({
@@ -68,6 +77,27 @@ test("previews login and signup payloads without sending requests", () => {
   });
   assert.equal(preview.signupPayload.password, preview.loginPayload.password);
   assert.equal(preview.signupPayload.confirmPassword, preview.loginPayload.password);
+});
+
+test("describes the AzenPlay-style native Telegram WebApp SSO sequence", () => {
+  const preview = buildNativeTelegramSsoPreview({
+    websiteUrl: "https://esportesnew.com/",
+    launchMode: "wrapper",
+    sso: {
+      enabled: true,
+      nativeTelegramLoginEnabled: true,
+      telegramLoginEndpoint: "/api/identity/api/v1/playeraccount/login-telegram",
+      meSigninEndpoint: "/api/v1/me/signin",
+      nativeReturnUrl: "/"
+    }
+  });
+
+  assert.equal(preview.enabled, true);
+  assert.equal(preview.effectiveLaunchMode, "direct");
+  assert.equal(preview.iframeSupported, false);
+  assert.equal(preview.loginEndpoint, "https://esportesnew.com/api/identity/api/v1/playeraccount/login-telegram");
+  assert.equal(preview.meSigninUrl, "https://esportesnew.com/api/v1/me/signin?returnUrl=%2F");
+  assert.match(preview.warning, /Iframe wrapper mode is bypassed/);
 });
 
 test("records failed EsportesNew signup response after generated-password login fails", async (t) => {

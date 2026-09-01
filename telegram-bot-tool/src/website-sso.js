@@ -4,6 +4,7 @@ const crypto = require("crypto");
 
 const DEFAULT_SSO_CONFIG = {
   enabled: true,
+  nativeTelegramLoginEnabled: true,
   serverLoginEnabled: false,
   signupFallbackEnabled: false,
   autoGeneratePassword: true,
@@ -13,6 +14,8 @@ const DEFAULT_SSO_CONFIG = {
   loginEndpoint: "/api/identity/api/v1/playeraccount/login",
   signupEndpoint: "/api/user/api/v1.0/fastSignUp/signup",
   telegramLoginEndpoint: "/api/identity/api/v1/playeraccount/login-telegram",
+  meSigninEndpoint: "/api/v1/me/signin",
+  nativeReturnUrl: "/",
   passwordResetPath: "/en/forgot-password",
   loginPayload: {
     username: "{{username}}",
@@ -41,6 +44,7 @@ function normalizeSsoConfig(sso) {
 
   return {
     enabled: source.enabled !== false,
+    nativeTelegramLoginEnabled: source.nativeTelegramLoginEnabled !== false,
     serverLoginEnabled: Boolean(source.serverLoginEnabled),
     signupFallbackEnabled: Boolean(source.signupFallbackEnabled),
     autoGeneratePassword: source.autoGeneratePassword !== false,
@@ -50,10 +54,28 @@ function normalizeSsoConfig(sso) {
     loginEndpoint: cleanEndpoint(source.loginEndpoint, DEFAULT_SSO_CONFIG.loginEndpoint),
     signupEndpoint: cleanEndpoint(source.signupEndpoint, DEFAULT_SSO_CONFIG.signupEndpoint),
     telegramLoginEndpoint: cleanEndpoint(source.telegramLoginEndpoint, DEFAULT_SSO_CONFIG.telegramLoginEndpoint),
+    meSigninEndpoint: cleanEndpoint(source.meSigninEndpoint, DEFAULT_SSO_CONFIG.meSigninEndpoint),
+    nativeReturnUrl: cleanReturnUrl(source.nativeReturnUrl, DEFAULT_SSO_CONFIG.nativeReturnUrl),
     passwordResetPath: cleanEndpoint(source.passwordResetPath, DEFAULT_SSO_CONFIG.passwordResetPath),
     loginPayload: normalizePayload(source.loginPayload, DEFAULT_SSO_CONFIG.loginPayload),
     signupPayload: normalizeSignupPayload(normalizePayload(source.signupPayload, DEFAULT_SSO_CONFIG.signupPayload))
   };
+}
+
+function cleanReturnUrl(value, fallback = "/") {
+  const raw = String(value || fallback || "/").trim() || "/";
+
+  if (/^https?:\/\//i.test(raw)) {
+    try {
+      const parsed = new URL(raw);
+
+      return `${parsed.pathname || "/"}${parsed.search}${parsed.hash}`;
+    } catch (_error) {
+      return "/";
+    }
+  }
+
+  return raw.startsWith("/") ? raw : `/${raw}`;
 }
 
 function normalizePayload(value, fallback) {
@@ -190,12 +212,47 @@ function resolveWebsiteEndpoint(config, endpoint) {
   return target.toString();
 }
 
+function buildMeSigninUrl(config, sso) {
+  const target = new URL(resolveWebsiteEndpoint(config, sso.meSigninEndpoint));
+
+  target.searchParams.set("returnUrl", sso.nativeReturnUrl || "/");
+  return target.toString();
+}
+
+function buildNativeTelegramSsoPreview(config) {
+  const sso = normalizeSsoConfig(config && config.sso);
+  const enabled = sso.enabled && sso.nativeTelegramLoginEnabled;
+  const configuredLaunchMode = (config && config.launchMode) || "direct";
+
+  return {
+    enabled,
+    mode: enabled ? "website-native-telegram-webapp" : "disabled",
+    configuredLaunchMode,
+    effectiveLaunchMode: enabled ? "direct" : configuredLaunchMode,
+    requiresDirectMiniApp: enabled,
+    iframeSupported: !enabled,
+    loginEndpoint: resolveWebsiteEndpoint(config, sso.telegramLoginEndpoint),
+    loginRequest: "POST application/x-www-form-urlencoded body = window.Telegram.WebApp.initData",
+    meSigninUrl: buildMeSigninUrl(config, sso),
+    sequence: [
+      "Telegram opens the website as a Mini App.",
+      "The website reads window.Telegram.WebApp.initData.",
+      "The website posts initData to login-telegram.",
+      "The website calls me/signin to create its own browser session."
+    ],
+    warning: enabled && configuredLaunchMode === "wrapper"
+      ? "Iframe wrapper mode is bypassed for Telegram SSO because EsportesNew/AzenPlay login requires initData on the website page itself."
+      : ""
+  };
+}
+
 function buildSsoPreview(config, user) {
   const sso = normalizeSsoConfig(config && config.sso);
   const context = buildSsoContext(config || {}, user || {});
 
   return {
     enabled: sso.enabled,
+    nativeTelegramLoginEnabled: sso.nativeTelegramLoginEnabled,
     serverLoginEnabled: sso.serverLoginEnabled,
     signupFallbackEnabled: sso.signupFallbackEnabled,
     autoGeneratePassword: sso.autoGeneratePassword,
@@ -205,6 +262,9 @@ function buildSsoPreview(config, user) {
     loginEndpoint: resolveWebsiteEndpoint(config, sso.loginEndpoint),
     signupEndpoint: resolveWebsiteEndpoint(config, sso.signupEndpoint),
     telegramLoginEndpoint: resolveWebsiteEndpoint(config, sso.telegramLoginEndpoint),
+    meSigninEndpoint: resolveWebsiteEndpoint(config, sso.meSigninEndpoint),
+    nativeReturnUrl: sso.nativeReturnUrl,
+    browserLogin: buildNativeTelegramSsoPreview(config),
     passwordResetUrl: resolveWebsiteEndpoint(config, sso.passwordResetPath),
     loginPayload: renderPayload(sso.loginPayload, context),
     signupPayload: renderPayload(sso.signupPayload, context)
@@ -409,6 +469,7 @@ function extractMessage(json, text) {
 module.exports = {
   DEFAULT_SSO_CONFIG,
   attemptWebsiteSso,
+  buildNativeTelegramSsoPreview,
   buildSsoContext,
   buildSsoPreview,
   describeAttemptFailure,

@@ -6,8 +6,16 @@ const http = require("http");
 const path = require("path");
 const { URL } = require("url");
 const { createStore, sanitizeConfig, selectConfig } = require("./src/config-store");
-const { TelegramBotApi, buildLaunchUrl, buildWebhookUrl, getMenuButton, handleTelegramUpdate, inlineKeyboard } = require("./src/telegram-client");
-const { attemptWebsiteSso, buildSsoPreview } = require("./src/website-sso");
+const {
+  TelegramBotApi,
+  buildLaunchUrl,
+  buildWebhookUrl,
+  getMenuButton,
+  handleTelegramUpdate,
+  inlineKeyboard,
+  shouldUseDirectWebAppLaunchForSso
+} = require("./src/telegram-client");
+const { attemptWebsiteSso, buildNativeTelegramSsoPreview, buildSsoPreview } = require("./src/website-sso");
 const {
   createSessionToken,
   validateLoginWidgetPayload,
@@ -183,6 +191,10 @@ function publicConfig(config) {
     websiteUrl: config.websiteUrl,
     launchMode: config.launchMode,
     miniAppPath: config.miniAppPath,
+    sso: {
+      enabled: Boolean(config.sso && config.sso.enabled !== false),
+      nativeTelegramLoginEnabled: Boolean(config.sso && config.sso.nativeTelegramLoginEnabled !== false)
+    },
     buttons: config.buttons
   };
 }
@@ -281,6 +293,10 @@ async function setupBot(config) {
     bot,
     commandMenus,
     launchUrl,
+    effectiveLaunchMode: shouldUseDirectWebAppLaunchForSso(config) ? "direct" : (config.launchMode || "direct"),
+    launchModeNote: shouldUseDirectWebAppLaunchForSso(config)
+      ? "Published direct website Mini App URLs because EsportesNew/AzenPlay Telegram SSO requires window.Telegram.WebApp.initData on the website page."
+      : "",
     menuButton: menuButton ? {
       id: menuButton.id,
       label: menuButton.label,
@@ -303,8 +319,18 @@ async function getBotStatus(config) {
     bot: null,
     webhook: null,
     connected: false,
+    sso: null,
     nextStep: ""
   };
+
+  try {
+    status.sso = buildNativeTelegramSsoPreview(config);
+  } catch (error) {
+    status.sso = {
+      enabled: false,
+      error: error.message
+    };
+  }
 
   if (!config.telegramBotToken) {
     status.nextStep = "Paste a Telegram bot token for this selected bot, save config, then verify the bot.";

@@ -157,6 +157,10 @@ function resolveWebsiteUrl(value, config, label = "Button URL") {
 function buildLaunchUrl(config, targetUrl) {
   const websiteUrl = resolveWebsiteUrl(targetUrl, config, "Launch URL");
 
+  if (shouldUseDirectWebAppLaunchForSso(config)) {
+    return websiteUrl;
+  }
+
   if (config.launchMode !== "wrapper") {
     return websiteUrl;
   }
@@ -174,6 +178,12 @@ function buildLaunchUrl(config, targetUrl) {
   }
 
   return miniAppUrl.toString();
+}
+
+function shouldUseDirectWebAppLaunchForSso(config) {
+  const sso = config && config.sso;
+
+  return Boolean(sso && sso.enabled !== false && sso.nativeTelegramLoginEnabled !== false);
 }
 
 function buildWebhookUrl(config) {
@@ -623,5 +633,6 @@ module.exports = {
   renderSsoFallbackText,
   renderWelcomeText,
   resolveWebsiteUrl,
-  sendLaunchMessages
+  sendLaunchMessages,
+  shouldUseDirectWebAppLaunchForSso
 };

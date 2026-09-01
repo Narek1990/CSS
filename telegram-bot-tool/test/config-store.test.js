@@ -161,7 +161,11 @@ test("normalizes localized button labels, commands, and sso config", () => {
   assert.equal(selection.runtimeConfig.commands[0].action, "sso");
   assert.equal(selection.runtimeConfig.commands[0].descriptions.hy, "Մուտք");
   assert.equal(selection.runtimeConfig.sso.usernameTemplate, "tg_{{telegram_username}}");
+  assert.equal(selection.runtimeConfig.sso.nativeTelegramLoginEnabled, true);
   assert.equal(selection.runtimeConfig.sso.loginEndpoint, "/api/identity/api/v1/playeraccount/login");
+  assert.equal(selection.runtimeConfig.sso.telegramLoginEndpoint, "/api/identity/api/v1/playeraccount/login-telegram");
+  assert.equal(selection.runtimeConfig.sso.meSigninEndpoint, "/api/v1/me/signin");
+  assert.equal(selection.runtimeConfig.sso.nativeReturnUrl, "/");
   assert.equal(selection.runtimeConfig.sso.autoGeneratePassword, true);
   assert.equal(selection.runtimeConfig.sso.signupPayload.password, "{{password}}");
   assert.equal(selection.runtimeConfig.sso.signupPayload.confirmPassword, "{{password}}");

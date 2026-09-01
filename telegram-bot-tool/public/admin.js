@@ -25,6 +25,7 @@ const notice = document.querySelector("#notice");
 const commandsList = document.querySelector("#commandsList");
 const commandPreset = document.querySelector("#commandPreset");
 const ssoState = document.querySelector("#ssoState");
+const ssoGuide = document.querySelector("#ssoGuide");
 const ssoPreviewUsername = document.querySelector("#ssoPreviewUsername");
 const ssoPreviewLanguage = document.querySelector("#ssoPreviewLanguage");
 
@@ -208,7 +209,10 @@ function defaultSsoConfig() {
     defaultLanguage: "en",
     loginEndpoint: "/api/identity/api/v1/playeraccount/login",
     signupEndpoint: "/api/user/api/v1.0/fastSignUp/signup",
+    nativeTelegramLoginEnabled: true,
     telegramLoginEndpoint: "/api/identity/api/v1/playeraccount/login-telegram",
+    meSigninEndpoint: "/api/v1/me/signin",
+    nativeReturnUrl: "/",
     passwordResetPath: "/en/forgot-password",
     loginPayload: {
       username: "{{username}}",
@@ -418,11 +422,17 @@ function normalizeCommands(sourceCommands) {
 }
 
 function normalizeSsoConfig(source) {
+  const fallback = defaultSsoConfig();
+  const value = source && typeof source === "object" && !Array.isArray(source) ? source : {};
+
   return {
-    ...defaultSsoConfig(),
-    ...(source && typeof source === "object" && !Array.isArray(source) ? source : {}),
-    loginPayload: normalizeJsonObject(source && source.loginPayload, defaultSsoConfig().loginPayload),
-    signupPayload: normalizeJsonObject(source && source.signupPayload, defaultSsoConfig().signupPayload)
+    ...fallback,
+    ...value,
+    nativeTelegramLoginEnabled: value.nativeTelegramLoginEnabled !== false,
+    meSigninEndpoint: value.meSigninEndpoint || fallback.meSigninEndpoint,
+    nativeReturnUrl: value.nativeReturnUrl || fallback.nativeReturnUrl,
+    loginPayload: normalizeJsonObject(value.loginPayload, fallback.loginPayload),
+    signupPayload: normalizeJsonObject(value.signupPayload, fallback.signupPayload)
   };
 }
 
@@ -658,6 +668,7 @@ function fillForm() {
   form.telegramBotToken.value = pendingToken || bot.telegramBotToken || "";
   form.menuButtonText.value = bot.menuButtonText || "Play";
   form.ssoEnabled.checked = bot.sso.enabled !== false;
+  form.ssoNativeTelegramLoginEnabled.checked = bot.sso.nativeTelegramLoginEnabled !== false;
   form.ssoServerLoginEnabled.checked = Boolean(bot.sso.serverLoginEnabled);
   form.ssoSignupFallbackEnabled.checked = Boolean(bot.sso.signupFallbackEnabled);
   form.ssoUsernameTemplate.value = bot.sso.usernameTemplate || "{{telegram_username}}";
@@ -667,6 +678,8 @@ function fillForm() {
   form.ssoLoginEndpoint.value = bot.sso.loginEndpoint || "/api/identity/api/v1/playeraccount/login";
   form.ssoSignupEndpoint.value = bot.sso.signupEndpoint || "/api/user/api/v1.0/fastSignUp/signup";
   form.ssoTelegramLoginEndpoint.value = bot.sso.telegramLoginEndpoint || "/api/identity/api/v1/playeraccount/login-telegram";
+  form.ssoMeSigninEndpoint.value = bot.sso.meSigninEndpoint || "/api/v1/me/signin";
+  form.ssoNativeReturnUrl.value = bot.sso.nativeReturnUrl || "/";
   form.ssoLoginPayload.value = JSON.stringify(bot.sso.loginPayload || defaultSsoConfig().loginPayload, null, 2);
   form.ssoSignupPayload.value = JSON.stringify(bot.sso.signupPayload || defaultSsoConfig().signupPayload, null, 2);
 
@@ -718,6 +731,7 @@ function syncCurrentFormToState() {
   bot.commands = normalizeCommands(commands);
   bot.sso = {
     enabled: form.ssoEnabled.checked,
+    nativeTelegramLoginEnabled: form.ssoNativeTelegramLoginEnabled.checked,
     serverLoginEnabled: form.ssoServerLoginEnabled.checked,
     signupFallbackEnabled: form.ssoSignupFallbackEnabled.checked,
     autoGeneratePassword: bot.sso.autoGeneratePassword !== false,
@@ -727,6 +741,8 @@ function syncCurrentFormToState() {
     loginEndpoint: form.ssoLoginEndpoint.value.trim() || "/api/identity/api/v1/playeraccount/login",
     signupEndpoint: form.ssoSignupEndpoint.value.trim() || "/api/user/api/v1.0/fastSignUp/signup",
     telegramLoginEndpoint: form.ssoTelegramLoginEndpoint.value.trim() || "/api/identity/api/v1/playeraccount/login-telegram",
+    meSigninEndpoint: form.ssoMeSigninEndpoint.value.trim() || "/api/v1/me/signin",
+    nativeReturnUrl: cleanPath(form.ssoNativeReturnUrl.value, "/"),
     passwordResetPath: form.ssoPasswordResetPath.value.trim() || "/en/forgot-password",
     loginPayload: parseJsonField(form.ssoLoginPayload, bot.sso.loginPayload || defaultSsoConfig().loginPayload),
     signupPayload: parseJsonField(form.ssoSignupPayload, bot.sso.signupPayload || defaultSsoConfig().signupPayload)
@@ -1087,7 +1103,7 @@ function buildPreviewUrl(buttonId) {
     const websiteUrl = new URL(form.websiteUrl.value.trim() || website.websiteUrl || "https://esportesnew.com/");
     const resolvedTarget = new URL(target, websiteUrl).toString();
 
-    if (new FormData(form).get("launchMode") !== "wrapper") {
+    if (shouldUseNativeTelegramLogin() || new FormData(form).get("launchMode") !== "wrapper") {
       return resolvedTarget;
     }
 
@@ -1109,16 +1125,61 @@ function buildPreviewUrl(buttonId) {
   }
 }
 
+function shouldUseNativeTelegramLogin() {
+  return Boolean(form.ssoEnabled && form.ssoEnabled.checked && form.ssoNativeTelegramLoginEnabled && form.ssoNativeTelegramLoginEnabled.checked);
+}
+
 function updateFacts() {
   const { website, bot } = selectedProfile();
   const pendingToken = pendingTokens.get(profileKey(website, bot));
+  const nativeTelegramLogin = bot.sso && bot.sso.enabled !== false && bot.sso.nativeTelegramLoginEnabled !== false;
+  const serverFallback = bot.sso && bot.sso.serverLoginEnabled;
 
   profileState.textContent = `${website.name || "Website"} / ${bot.label || "Bot"}`;
   tokenState.textContent = pendingToken || bot.telegramBotToken || "Not saved";
   webhookState.textContent = website.publicBaseUrl ? "Ready to publish" : "Needs public HTTPS URL";
-  ssoState.textContent = bot.sso && bot.sso.serverLoginEnabled
-    ? "Mini App + Server"
-    : "Mini App SSO";
+  ssoState.textContent = nativeTelegramLogin
+    ? (serverFallback ? "Native + Server fallback" : "Website native SSO")
+    : (serverFallback ? "Server fallback only" : "SSO disabled");
+  updateSsoGuide();
+}
+
+function updateSsoGuide(status) {
+  if (!ssoGuide) {
+    return;
+  }
+
+  const launchMode = new FormData(form).get("launchMode") || "direct";
+  const nativeTelegramLogin = shouldUseNativeTelegramLogin();
+  const telegramEndpoint = form.ssoTelegramLoginEndpoint.value.trim() || "/api/identity/api/v1/playeraccount/login-telegram";
+  const meSigninEndpoint = form.ssoMeSigninEndpoint.value.trim() || "/api/v1/me/signin";
+  const returnUrl = form.ssoNativeReturnUrl.value.trim() || "/";
+  const nativeStatus = status && status.sso ? status.sso : null;
+
+  if (!form.ssoEnabled.checked) {
+    ssoGuide.dataset.state = "muted";
+    ssoGuide.innerHTML = "SSO is disabled. /start and /login will only send the welcome message and buttons.";
+    return;
+  }
+
+  if (!nativeTelegramLogin) {
+    ssoGuide.dataset.state = "warning";
+    ssoGuide.innerHTML = "Only the server fallback is enabled. It can create/check an account, but it cannot set the user&apos;s EsportesNew browser session.";
+    return;
+  }
+
+  const wrapperWarning = launchMode === "wrapper"
+    ? "<strong>Iframe wrapper selected:</strong> publish will still use direct website Mini App URLs for SSO."
+    : "<strong>Direct website Mini App:</strong> Telegram initData reaches EsportesNew.";
+  const serverNote = form.ssoServerLoginEnabled.checked
+    ? "Server fallback is also enabled for webhook-side diagnostics."
+    : "Server fallback is off; EsportesNew handles login in the Telegram webview.";
+  const endpointNote = nativeStatus && nativeStatus.error
+    ? ` Endpoint preview error: ${escapeHtml(nativeStatus.error)}`
+    : "";
+
+  ssoGuide.dataset.state = launchMode === "wrapper" ? "warning" : "success";
+  ssoGuide.innerHTML = `${wrapperWarning}<br>${escapeHtml(serverNote)}<br>Website flow: <code>${escapeHtml(telegramEndpoint)}</code> receives <code>Telegram.WebApp.initData</code>, then <code>${escapeHtml(meSigninEndpoint)}?returnUrl=${escapeHtml(returnUrl)}</code> creates the site session.${endpointNote}`;
 }
 
 function setEditorHtml(value) {
@@ -1337,6 +1398,8 @@ async function checkConnection(printResult = true) {
   if (status.launchUrl) {
     launchUrl.textContent = status.launchUrl;
   }
+
+  updateSsoGuide(status);
 
   if (printResult) {
     print(result);
@@ -1739,6 +1802,48 @@ document.querySelector("#addCommand").addEventListener("click", () => {
   renderPreview();
   markDirty();
   notify(`/${command.command} command added. Save and publish when ready.`, "success");
+});
+
+document.querySelector("#applyNativeSso").addEventListener("click", () => {
+  const directInput = form.querySelector('input[name="launchMode"][value="direct"]');
+
+  form.ssoEnabled.checked = true;
+  form.ssoNativeTelegramLoginEnabled.checked = true;
+  form.ssoServerLoginEnabled.checked = false;
+  form.ssoSignupFallbackEnabled.checked = false;
+  form.ssoTelegramLoginEndpoint.value = "/api/identity/api/v1/playeraccount/login-telegram";
+  form.ssoMeSigninEndpoint.value = "/api/v1/me/signin";
+  form.ssoNativeReturnUrl.value = "/";
+  form.ssoLoginEndpoint.value = "/api/identity/api/v1/playeraccount/login";
+  form.ssoSignupEndpoint.value = "/api/user/api/v1.0/fastSignUp/signup";
+
+  if (directInput) {
+    directInput.checked = true;
+  }
+
+  buttons = buttons.map((button) => ({
+    ...button,
+    type: button.type === "callback" ? button.type : "web_app",
+    placement: button.placement || "inline"
+  }));
+  commands = normalizeCommands(commands).map((command) => {
+    if (command.command === "start" || command.command === "login") {
+      return {
+        ...command,
+        action: "sso"
+      };
+    }
+
+    return command;
+  });
+
+  syncCurrentFormToState();
+  renderButtons(menuButtonId.value);
+  renderCommands();
+  renderPreview();
+  updateFacts();
+  markDirty();
+  notify("AzenPlay-style Telegram WebApp SSO applied. Save and publish to Telegram.", "success");
 });
 
 document.querySelector("#verifyBot").addEventListener("click", async () => {

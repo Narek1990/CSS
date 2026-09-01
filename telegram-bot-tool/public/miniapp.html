@@ -122,6 +122,10 @@
         const config = configResult.config || {};
         const targetParam = params.get("target");
         const websiteUrl = resolveTargetUrl(config.websiteUrl || "https://esportesnew.com/", targetParam);
+        const nativeTelegramLogin = config.sso
+          && config.sso.enabled !== false
+          && config.sso.nativeTelegramLoginEnabled !== false;
+
         title.textContent = config.appTitle || "EsportesNew";
         frame.src = websiteUrl;
         openSite.addEventListener("click", () => {
@@ -136,6 +140,10 @@
         if (!tg || !tg.initData) {
           authState.textContent = "Opened outside Telegram";
           return;
+        }
+
+        if (nativeTelegramLogin) {
+          authState.textContent = "Wrapper preview; publish direct site buttons for SSO";
         }
 
         const authResponse = await fetch("/api/auth/telegram", {
@@ -154,9 +162,11 @@
           return;
         }
 
-        authState.textContent = authResult.user.username
-          ? "Signed in as @" + authResult.user.username
-          : "Signed in with Telegram";
+        authState.textContent = nativeTelegramLogin
+          ? "Telegram verified; direct site launch completes login"
+          : (authResult.user.username
+            ? "Signed in as @" + authResult.user.username
+            : "Signed in with Telegram");
 
         frame.addEventListener("load", () => {
           try {

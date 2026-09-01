@@ -176,6 +176,8 @@ with `Telegram.WebApp.initData`, then calls:
 
 For that reason, the safest `/start` behavior is to open the site as a Telegram Mini App. Telegram supplies signed `initData` only inside the Mini App webview, and the website can then create its own first-party session.
 
+This is the same flow used by the public AzenPlay frontend: open the website directly as a Telegram WebApp, post the raw `window.Telegram.WebApp.initData` string to `login-telegram` with `application/x-www-form-urlencoded`, then call `me/signin`. If **Website native Telegram login** is enabled in the admin panel, the tool publishes direct website `web_app` URLs even when wrapper mode is selected, because iframe mode does not give the EsportesNew page the Telegram init data it needs for this login.
+
 The route `POST /api/auth/telegram` in this tool receives:
 
 ```json
