@@ -4,7 +4,7 @@
   "use strict";
 
   var GLOBAL_KEY = "__escortesnewNarcosRuntime";
-  var VERSION = "1.0.1";
+  var VERSION = "1.0.2";
   var previous = window[GLOBAL_KEY];
 
   if (previous && previous.version === VERSION && previous.refresh) {
@@ -361,7 +361,7 @@
       var head = create("div", "es-jackpot-head");
       var copy = create("div", "");
       copy.appendChild(create("h2", "", "Hot jackpots"));
-      copy.appendChild(create("p", "", "Live lobby highlights styled after the Narcos premium cards."));
+      copy.appendChild(create("p", "", "Live lobby highlights with premium Escortesnew cards."));
       head.appendChild(copy);
       head.appendChild(link(CASINO_PATH, "es-primary-button", "Open casino"));
 

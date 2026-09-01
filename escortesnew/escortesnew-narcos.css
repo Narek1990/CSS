@@ -28,11 +28,14 @@
 html,
 body,
 #root {
+  height: auto !important;
   min-height: 100%;
 }
 
 html {
   background: var(--es-ink) !important;
+  overflow-x: hidden !important;
+  scroll-padding-top: calc(var(--site-header-height, 112px) + 12px);
 }
 
 body {
@@ -42,6 +45,30 @@ body {
     linear-gradient(180deg, #101018 0%, #111119 58%, #0c0c14 100%),
     var(--es-ink) !important;
   isolation: isolate;
+  overflow-x: hidden !important;
+}
+
+body:not(.overflow-hidden) {
+  overflow-y: auto !important;
+}
+
+#root {
+  min-height: 100vh !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+#root > div,
+#root > div > div,
+main[data-mj="page-content"] {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+main[data-mj="page-content"] {
+  flex: 0 0 auto !important;
+  padding-bottom: 56px !important;
 }
 
 body::before {
@@ -899,8 +926,8 @@ html body [data-mj="widget-game-card"][data-escortesnew-tilt="1"] {
 #escortesnew-trust-hub,
 #escortesnew-jackpot-panel {
   width: min(1440px, calc(100% - 28px));
-  margin: 20px auto;
-  padding: 22px;
+  margin: 16px auto;
+  padding: 18px;
   box-sizing: border-box;
   border: 1px solid var(--es-line);
   border-radius: 20px;
@@ -911,7 +938,7 @@ html body [data-mj="widget-game-card"][data-escortesnew-tilt="1"] {
 }
 
 .es-trust-head {
-  margin: 0 auto 17px;
+  margin: 0 auto 14px;
   text-align: center;
 }
 
@@ -926,7 +953,7 @@ html body [data-mj="widget-game-card"][data-escortesnew-tilt="1"] {
 .es-trust-title {
   margin: 7px 0 6px;
   color: var(--es-text);
-  font-size: clamp(23px, 3vw, 40px);
+  font-size: clamp(21px, 2.4vw, 34px);
   line-height: 1.05;
 }
 
@@ -945,11 +972,11 @@ html body [data-mj="widget-game-card"][data-escortesnew-tilt="1"] {
 .es-trust-card {
   position: relative;
   display: grid;
-  grid-template-columns: 54px minmax(0, 1fr);
-  gap: 12px;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 10px;
   align-items: center;
-  min-height: 94px;
-  padding: 14px;
+  min-height: 72px;
+  padding: 12px;
   border: 1px solid rgba(242, 213, 138, 0.18);
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.035);
@@ -958,15 +985,15 @@ html body [data-mj="widget-game-card"][data-escortesnew-tilt="1"] {
 .es-trust-icon-wrap {
   display: grid;
   place-items: center;
-  width: 54px;
-  height: 54px;
-  border-radius: 14px;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
   background: var(--es-gold-fill);
 }
 
 .es-trust-icon {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   color: #17130b;
   font-size: 23px;
   font-weight: 950;
@@ -976,7 +1003,7 @@ html body [data-mj="widget-game-card"][data-escortesnew-tilt="1"] {
 .es-trust-value {
   display: block;
   color: var(--es-gold-4);
-  font-size: clamp(16px, 1.45vw, 25px);
+  font-size: clamp(15px, 1.25vw, 22px);
   font-weight: 950;
   line-height: 1.08;
 }
@@ -996,13 +1023,13 @@ html body [data-mj="widget-game-card"][data-escortesnew-tilt="1"] {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .es-jackpot-head h2 {
   margin: 0;
   color: var(--es-gold-3) !important;
-  font-size: clamp(22px, 3vw, 38px);
+  font-size: clamp(21px, 2.4vw, 34px);
 }
 
 .es-jackpot-head p {
@@ -1018,8 +1045,8 @@ html body [data-mj="widget-game-card"][data-escortesnew-tilt="1"] {
 
 .es-jackpot-card {
   position: relative;
-  min-height: 118px;
-  padding: 18px 14px 14px;
+  min-height: 86px;
+  padding: 14px 12px 12px;
   overflow: hidden;
   border: 1px solid rgba(242, 213, 138, 0.2);
   border-radius: 16px;
@@ -1029,10 +1056,10 @@ html body [data-mj="widget-game-card"][data-escortesnew-tilt="1"] {
 .es-jackpot-card::before {
   content: "";
   position: absolute;
-  top: -34px;
-  right: -18px;
-  width: 84px;
-  height: 84px;
+  top: -38px;
+  right: -20px;
+  width: 78px;
+  height: 78px;
   border: 1px solid rgba(242, 213, 138, 0.24);
   border-radius: 18px;
   transform: rotate(45deg);
@@ -1041,8 +1068,8 @@ html body [data-mj="widget-game-card"][data-escortesnew-tilt="1"] {
 
 .es-jackpot-suit {
   position: absolute;
-  top: 7px;
-  right: 13px;
+  top: 5px;
+  right: 12px;
   color: var(--es-gold-3);
   font-size: 28px;
   font-weight: 950;
@@ -1050,7 +1077,7 @@ html body [data-mj="widget-game-card"][data-escortesnew-tilt="1"] {
 
 .es-jackpot-label {
   display: block;
-  margin-top: 32px;
+  margin-top: 20px;
   color: var(--es-muted);
   font-size: 10px;
   font-weight: 850;
@@ -1062,7 +1089,7 @@ html body [data-mj="widget-game-card"][data-escortesnew-tilt="1"] {
   display: block;
   margin-top: 6px;
   color: #fff;
-  font-size: clamp(22px, 2.5vw, 38px);
+  font-size: clamp(20px, 2vw, 32px);
   font-weight: 950;
   font-variant-numeric: tabular-nums;
 }
