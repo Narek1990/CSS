@@ -54,6 +54,74 @@ test("saving sanitized config preserves stored bot tokens", () => {
   assert.equal(selection.runtimeConfig.telegramBotToken, "123456:secret-token");
 });
 
+test("environment defaults do not overwrite saved website admin fields", (t) => {
+  const previousEnv = {
+    WEBSITE_URL: process.env.WEBSITE_URL,
+    PUBLIC_BASE_URL: process.env.PUBLIC_BASE_URL,
+    LAUNCH_MODE: process.env.LAUNCH_MODE,
+    TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN
+  };
+
+  t.after(() => {
+    Object.entries(previousEnv).forEach(([key, value]) => {
+      if (value === undefined) {
+        delete process.env[key];
+      } else {
+        process.env[key] = value;
+      }
+    });
+  });
+
+  process.env.WEBSITE_URL = "https://env.example.com/";
+  process.env.PUBLIC_BASE_URL = "https://env-bot.example.com/";
+  process.env.LAUNCH_MODE = "direct";
+  process.env.TELEGRAM_BOT_TOKEN = "111:env-token";
+
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "telegram-config-store-"));
+  const store = createStore(dir);
+  const initial = selectConfig(store.getConfig());
+
+  assert.equal(initial.runtimeConfig.websiteUrl, "https://env.example.com/");
+  assert.equal(initial.runtimeConfig.publicBaseUrl, "https://env-bot.example.com");
+  assert.equal(initial.runtimeConfig.telegramBotToken, "111:env-token");
+
+  const saved = store.saveConfig({
+    activeWebsiteId: "site",
+    activeBotId: "site-bot",
+    websites: [
+      {
+        id: "site",
+        name: "Saved Site",
+        appTitle: "Saved Site",
+        websiteUrl: "https://saved.example.com/",
+        publicBaseUrl: "https://saved-bot.example.com",
+        launchMode: "wrapper",
+        miniAppPath: "/miniapp",
+        webhookPath: "/telegram/webhook",
+        activeBotId: "site-bot",
+        bots: [
+          {
+            id: "site-bot",
+            label: "Saved bot",
+            telegramBotToken: "222:saved-token"
+          }
+        ]
+      }
+    ]
+  });
+  const savedSelection = selectConfig(saved, "site");
+  const reloadedSelection = selectConfig(store.getConfig(), "site");
+
+  assert.equal(savedSelection.runtimeConfig.websiteUrl, "https://saved.example.com/");
+  assert.equal(savedSelection.runtimeConfig.publicBaseUrl, "https://saved-bot.example.com");
+  assert.equal(savedSelection.runtimeConfig.launchMode, "wrapper");
+  assert.equal(savedSelection.runtimeConfig.telegramBotToken, "222:saved-token");
+  assert.equal(reloadedSelection.runtimeConfig.websiteUrl, "https://saved.example.com/");
+  assert.equal(reloadedSelection.runtimeConfig.publicBaseUrl, "https://saved-bot.example.com");
+  assert.equal(reloadedSelection.runtimeConfig.launchMode, "wrapper");
+  assert.equal(reloadedSelection.runtimeConfig.telegramBotToken, "222:saved-token");
+});
+
 test("sanitized config can reveal tokens only when admin route asks for it", () => {
   const config = normalizeConfig({
     telegramBotToken: "123456:secret-token"

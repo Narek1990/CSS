@@ -66,6 +66,8 @@ There are two levels of connection:
 
 Local URLs such as `http://127.0.0.1:8787` cannot be used by Telegram as a webhook. For a quick test, expose the local server with an HTTPS tunnel and use that tunnel URL as `PUBLIC_BASE_URL`. For production, deploy the tool and use a stable URL such as `https://bot.esportesnew.com`.
 
+The `.env` values are only startup defaults for a new/empty config. After the dashboard saves a website or bot profile, the saved admin-panel values are used instead of rewriting them from `.env`.
+
 After changing `PUBLIC_BASE_URL`, restart the tool or save the value in the dashboard, then press **Publish to Telegram** again. The **Check Connection** button shows whether the token is valid and whether the webhook is live.
 
 ## Button Manager

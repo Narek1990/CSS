@@ -650,27 +650,63 @@ function applyLegacyPatch(config, patch) {
   return next;
 }
 
-function applyEnvOverrides(config) {
-  const website = findWebsite(config, config.activeWebsiteId) || config.websites[0];
-  const bot = findBot(website, config.activeBotId || website.activeBotId) || website.bots[0];
+function hasSavedConfig(rawConfig) {
+  return Boolean(
+    rawConfig &&
+      typeof rawConfig === "object" &&
+      !Array.isArray(rawConfig) &&
+      Object.keys(rawConfig).length
+  );
+}
 
-  if (process.env.WEBSITE_URL) {
-    website.websiteUrl = process.env.WEBSITE_URL;
+function shouldApplyEnvDefault(value, forceDefaults) {
+  return forceDefaults || !String(value || "").trim();
+}
+
+function applyEnvDefaults(rawConfig, options = {}) {
+  const next = clone(rawConfig && typeof rawConfig === "object" && !Array.isArray(rawConfig) ? rawConfig : {});
+  const forceDefaults = Boolean(options.forceDefaults);
+
+  if (Array.isArray(next.websites) && next.websites.length) {
+    const website = findWebsite(next, next.activeWebsiteId) || next.websites[0];
+    const bot = findBot(website, next.activeBotId || website.activeBotId) || (website.bots && website.bots[0]);
+
+    if (process.env.WEBSITE_URL && shouldApplyEnvDefault(website.websiteUrl, forceDefaults)) {
+      website.websiteUrl = process.env.WEBSITE_URL;
+    }
+
+    if (process.env.PUBLIC_BASE_URL && shouldApplyEnvDefault(website.publicBaseUrl, forceDefaults)) {
+      website.publicBaseUrl = cleanBaseUrl(process.env.PUBLIC_BASE_URL);
+    }
+
+    if (process.env.LAUNCH_MODE && shouldApplyEnvDefault(website.launchMode, forceDefaults)) {
+      website.launchMode = process.env.LAUNCH_MODE;
+    }
+
+    if (bot && process.env.TELEGRAM_BOT_TOKEN && shouldApplyEnvDefault(bot.telegramBotToken, forceDefaults)) {
+      bot.telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
+    }
+
+    return next;
   }
 
-  if (process.env.PUBLIC_BASE_URL) {
-    website.publicBaseUrl = cleanBaseUrl(process.env.PUBLIC_BASE_URL);
+  if (process.env.WEBSITE_URL && shouldApplyEnvDefault(next.websiteUrl, forceDefaults)) {
+    next.websiteUrl = process.env.WEBSITE_URL;
   }
 
-  if (process.env.LAUNCH_MODE) {
-    website.launchMode = process.env.LAUNCH_MODE;
+  if (process.env.PUBLIC_BASE_URL && shouldApplyEnvDefault(next.publicBaseUrl, forceDefaults)) {
+    next.publicBaseUrl = cleanBaseUrl(process.env.PUBLIC_BASE_URL);
   }
 
-  if (process.env.TELEGRAM_BOT_TOKEN) {
-    bot.telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
+  if (process.env.LAUNCH_MODE && shouldApplyEnvDefault(next.launchMode, forceDefaults)) {
+    next.launchMode = process.env.LAUNCH_MODE;
   }
 
-  return normalizeConfig(config);
+  if (process.env.TELEGRAM_BOT_TOKEN && shouldApplyEnvDefault(next.telegramBotToken, forceDefaults)) {
+    next.telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
+  }
+
+  return next;
 }
 
 function selectConfig(config, websiteId, botId) {
@@ -767,12 +803,19 @@ function createStore(baseDir) {
 
   function getConfig() {
     const rawConfig = readJson(configPath, {});
+    const configWithDefaults = applyEnvDefaults(rawConfig, {
+      forceDefaults: !hasSavedConfig(rawConfig)
+    });
 
-    return applyEnvOverrides(normalizeConfig(rawConfig));
+    return normalizeConfig(configWithDefaults);
   }
 
   function saveConfig(nextConfig) {
-    const previous = normalizeConfig(readJson(configPath, {}), { generateSecrets: true });
+    const rawPrevious = readJson(configPath, {});
+    const previousWithDefaults = applyEnvDefaults(rawPrevious, {
+      forceDefaults: !hasSavedConfig(rawPrevious)
+    });
+    const previous = normalizeConfig(previousWithDefaults, { generateSecrets: true });
     const candidateInput = Array.isArray(nextConfig && nextConfig.websites)
       ? nextConfig
       : applyLegacyPatch(previous, nextConfig || {});
