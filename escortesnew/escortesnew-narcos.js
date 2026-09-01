@@ -4,7 +4,7 @@
   "use strict";
 
   var GLOBAL_KEY = "__escortesnewNarcosRuntime";
-  var VERSION = "1.0.0";
+  var VERSION = "1.0.1";
   var previous = window[GLOBAL_KEY];
 
   if (previous && previous.version === VERSION && previous.refresh) {
@@ -267,8 +267,8 @@
     mount("escortesnew-welcome-banner", "section", container, container.firstChild, function (banner) {
       var copy = create("div", "es-welcome-copy");
       copy.appendChild(create("span", "", "New world of casino"));
-      copy.appendChild(create("strong", "", "Welcome to Escortesnew"));
-      copy.appendChild(create("p", "", "Choose your next table, spin, match, or prize drop from a sharper premium lobby."));
+      copy.appendChild(create("strong", "", "Claim your welcome bonus"));
+      copy.appendChild(create("p", "", "Your next winning moment starts here. Play top casino games and unlock exclusive rewards."));
 
       var actions = create("div", "es-welcome-actions");
       actions.appendChild(link(CASINO_PATH, "es-primary-button", "Play now"));
