@@ -57,7 +57,7 @@ function normalizeSsoConfig(sso) {
     meSigninEndpoint: cleanEndpoint(source.meSigninEndpoint, DEFAULT_SSO_CONFIG.meSigninEndpoint),
     nativeReturnUrl: cleanReturnUrl(source.nativeReturnUrl, DEFAULT_SSO_CONFIG.nativeReturnUrl),
     passwordResetPath: cleanEndpoint(source.passwordResetPath, DEFAULT_SSO_CONFIG.passwordResetPath),
-    loginPayload: normalizePayload(source.loginPayload, DEFAULT_SSO_CONFIG.loginPayload),
+    loginPayload: normalizeLoginPayload(normalizePayload(source.loginPayload, DEFAULT_SSO_CONFIG.loginPayload)),
     signupPayload: normalizeSignupPayload(normalizePayload(source.signupPayload, DEFAULT_SSO_CONFIG.signupPayload))
   };
 }
@@ -84,6 +84,20 @@ function normalizePayload(value, fallback) {
   }
 
   return clone(value);
+}
+
+function normalizeLoginPayload(payload) {
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+    return clone(DEFAULT_SSO_CONFIG.loginPayload);
+  }
+
+  const normalized = clone(payload);
+
+  if (!Object.prototype.hasOwnProperty.call(normalized, "password")) {
+    normalized.password = "{{password}}";
+  }
+
+  return normalized;
 }
 
 function normalizeSignupPayload(payload) {
@@ -157,13 +171,32 @@ function buildSsoContext(config, user) {
   };
 
   context.username = cleanUsername(renderTemplate(sso.usernameTemplate, context), telegramUsername);
-  context.password = renderTemplate(sso.passwordTemplate, context) || (sso.autoGeneratePassword ? generateSsoPassword(config || {}, context) : "");
-  context.password_generated = !renderTemplate(sso.passwordTemplate, context) && Boolean(context.password);
+  const configuredPassword = renderTemplate(sso.passwordTemplate, context);
+
+  context.password = configuredPassword || (sso.autoGeneratePassword ? generateSsoPassword(config || {}, context) : "");
+  context.password_generated = !configuredPassword && Boolean(context.password);
+  context.legacy_password = context.password_generated ? generateLegacySsoPassword(config || {}, context) : "";
 
   return context;
 }
 
 function generateSsoPassword(config, context) {
+  const secret = String(
+    (config && (config.webhookSecretToken || config.telegramBotToken || config.botId || config.websiteId)) ||
+    "esportesnew-telegram-sso"
+  );
+  const seed = [
+    config && config.websiteId,
+    config && config.botId,
+    context.telegram_id,
+    context.telegram_id ? "" : context.telegram_username
+  ].filter(Boolean).join(":");
+  const digest = crypto.createHmac("sha256", secret).update(seed || context.username || "telegram_user").digest("base64url");
+
+  return `TgA1!${digest}`.slice(0, 28);
+}
+
+function generateLegacySsoPassword(config, context) {
   const secret = String(
     (config && (config.webhookSecretToken || config.telegramBotToken || config.botId || config.websiteId)) ||
     "esportesnew-telegram-sso"
@@ -283,21 +316,28 @@ async function attemptWebsiteSso(config, user) {
   }
 
   const preview = buildSsoPreview(config, user);
+  const loginPayloadAttempts = buildLoginPayloadAttempts(config, user, sso);
   const attempts = [];
 
-  if (preview.loginPayload.password) {
-    const login = await requestJsonAttempt("login", preview.loginEndpoint, preview.loginPayload);
+  for (const loginPayloadAttempt of loginPayloadAttempts) {
+    if (!loginPayloadAttempt.payload.password) {
+      continue;
+    }
+
+    const login = await requestJsonAttempt(loginPayloadAttempt.action, preview.loginEndpoint, loginPayloadAttempt.payload);
     attempts.push(login);
 
     if (login.ok) {
       return {
         ok: true,
-        action: "login",
+        action: loginPayloadAttempt.action,
         username: preview.username,
         attempts
       };
     }
-  } else {
+  }
+
+  if (!attempts.some((attempt) => attempt.action && attempt.action.startsWith("login"))) {
     attempts.push({
       action: "login",
       ok: false,
@@ -353,6 +393,28 @@ async function attemptWebsiteSso(config, user) {
     username: preview.username,
     attempts
   };
+}
+
+function buildLoginPayloadAttempts(config, user, sso) {
+  const context = buildSsoContext(config || {}, user || {});
+  const attempts = [
+    {
+      action: "login",
+      payload: renderPayload(sso.loginPayload, context)
+    }
+  ];
+
+  if (context.legacy_password && context.legacy_password !== context.password) {
+    attempts.push({
+      action: "login_legacy_password",
+      payload: renderPayload(sso.loginPayload, {
+        ...context,
+        password: context.legacy_password
+      })
+    });
+  }
+
+  return attempts;
 }
 
 function existingUserLoginFailedResult(preview, attempts) {

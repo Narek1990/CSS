@@ -431,13 +431,23 @@ function normalizeSsoConfig(source) {
     nativeTelegramLoginEnabled: value.nativeTelegramLoginEnabled !== false,
     meSigninEndpoint: value.meSigninEndpoint || fallback.meSigninEndpoint,
     nativeReturnUrl: value.nativeReturnUrl || fallback.nativeReturnUrl,
-    loginPayload: normalizeJsonObject(value.loginPayload, fallback.loginPayload),
+    loginPayload: normalizeLoginPayload(normalizeJsonObject(value.loginPayload, fallback.loginPayload)),
     signupPayload: normalizeJsonObject(value.signupPayload, fallback.signupPayload)
   };
 }
 
 function normalizeJsonObject(value, fallback) {
   return value && typeof value === "object" && !Array.isArray(value) ? value : clone(fallback);
+}
+
+function normalizeLoginPayload(payload) {
+  const normalized = normalizeJsonObject(payload, defaultSsoConfig().loginPayload);
+
+  if (!Object.prototype.hasOwnProperty.call(normalized, "password")) {
+    normalized.password = "{{password}}";
+  }
+
+  return normalized;
 }
 
 function normalizeBot(bot, index, website) {
