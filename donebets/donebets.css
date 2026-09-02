@@ -37,8 +37,6 @@ button[data-donebets-deposit-ready="true"] {
   gap: 6px !important;
   width: auto !important;
   min-width: 82px !important;
-  height: 36px !important;
-  min-height: 36px !important;
   padding: 0 10px !important;
   line-height: 1 !important;
   white-space: nowrap !important;
