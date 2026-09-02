@@ -29,6 +29,16 @@ span.app-rtl-1phvdj0 {
   filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.28)) !important;
 }
 
+[data-mj="header-special-button"] img.donebets-special-wheel-icon,
+[data-mj="header-special-button"] img[data-donebets-special-wheel="true"] {
+  display: block !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  object-fit: contain !important;
+}
+
 /* Bonus modal description text */
 html body .app-ltr-gdo5mm p.app-ltr-lneb7o[color="#858585"],
 html body .app-rtl-gdo5mm p.app-rtl-lneb7o[color="#858585"],
