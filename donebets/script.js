@@ -3,7 +3,7 @@
 
   var notVerifiedSelector = "a.app-ltr-1a59aej, a.app-rtl-1a59aej";
   var statusCardSelector = ".app-ltr-1mfp3qc, .app-rtl-1mfp3qc";
-  var headerSpecialSelector = '[data-mj="header-special-button"]';
+  var headerSpecialSelector = '[data-mj="header-special-button"], a[href*="/wheeldonebets"]';
   var depositIconSelector = 'button[aria-label="deposit"][name="deposit"], button[name="deposit"].sl-icon';
   var vipImageSrc = (function () {
     var scriptSource = document.currentScript && document.currentScript.src;
@@ -72,7 +72,9 @@
     image = anchor.querySelector("img");
 
     if (!image) {
-      return;
+      image = document.createElement("img");
+      image.className = "app-ltr-4rx3j2 donebets-special-wheel-icon";
+      anchor.appendChild(image);
     }
 
     if (image.getAttribute("data-donebets-special-wheel") !== "true") {
@@ -217,6 +219,10 @@
       enhanceDepositIconButton(node.closest(depositIconSelector));
     }
 
+    if (node.tagName === "IMG") {
+      enhanceHeaderSpecialButton(node.closest(headerSpecialSelector));
+    }
+
     if (node.tagName === "P" && node.parentElement) {
       enhanceVipStatusCard(node.parentElement);
     }
@@ -236,6 +242,10 @@
       mutations.forEach(function (mutation) {
         mutation.addedNodes.forEach(applyToNode);
 
+        if (mutation.type === "attributes" && mutation.target) {
+          applyToNode(mutation.target);
+        }
+
         if (mutation.type === "characterData" && mutation.target && mutation.target.parentElement) {
           applyToNode(mutation.target.parentElement);
         }
@@ -243,6 +253,8 @@
     });
 
     observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["src", "srcset", "href", "data-mj", "class"],
       childList: true,
       characterData: true,
       subtree: true
