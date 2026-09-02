@@ -1884,6 +1884,7 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
   const popupAttribute = "data-dmbobet-wheel-popup";
   const hostAttribute = "data-dmbobet-wheel-host";
   const originalImageAttribute = "data-dmbobet-wheel-original";
+  const registrationUrl = "https://dmbobet.com/en/?m=registration&t=email&returnUrl=/en/";
   let observer = null;
   let scheduled = false;
 
@@ -1930,8 +1931,42 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     return Number.isFinite(value) ? value : 0;
   }
 
+  function openRegistrationPage() {
+    window.location.href = registrationUrl;
+  }
+
+  function updatePrizeAction(root, readyToClaim) {
+    const center = root.querySelector(".dmbobet-wheel-center");
+    const cta = root.querySelector(".dmbobet-wheel-spin");
+
+    root.classList.toggle("is-ready-to-claim", readyToClaim);
+
+    if (center) {
+      center.innerHTML = readyToClaim
+        ? "<span>GET</span><strong>PRIZE</strong>"
+        : "<span>SPIN</span><strong>WIN</strong>";
+      center.setAttribute(
+        "aria-label",
+        readyToClaim ? "Get Dmbobet prize" : "Spin the Dmbobet wheel"
+      );
+    }
+
+    if (cta) {
+      cta.textContent = readyToClaim ? "Get Prize" : "Spin and win";
+      cta.setAttribute(
+        "aria-label",
+        readyToClaim ? "Get Dmbobet prize" : "Spin and win"
+      );
+    }
+  }
+
   function spinWheel(root) {
     if (!root || root.classList.contains("is-spinning")) return;
+
+    if (root.classList.contains("is-ready-to-claim")) {
+      openRegistrationPage();
+      return;
+    }
 
     const rotor = root.querySelector("[data-dmbobet-wheel-rotor]");
     const result = root.querySelector("[data-dmbobet-wheel-result]");
@@ -1956,6 +1991,7 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
       root.classList.remove("is-spinning");
       root.classList.add("has-result");
       result.textContent = `Lucky pick: ${selectedPrize.label}`;
+      updatePrizeAction(root, true);
       spinButtons.forEach((button) => {
         button.disabled = false;
         button.removeAttribute("aria-busy");
@@ -1964,6 +2000,7 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
 
     root.classList.add("is-spinning");
     root.classList.remove("has-result");
+    updatePrizeAction(root, false);
     result.textContent = "Wheel is spinning...";
     spinButtons.forEach((button) => {
       button.disabled = true;
@@ -1980,11 +2017,6 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
   function buildWheel() {
     const root = createElement("section", "dmbobet-wheel-popup");
     root.setAttribute("aria-label", "Dmbobet bonus wheel");
-
-    const speaker = createElement("button", "dmbobet-wheel-sound", "");
-    speaker.type = "button";
-    speaker.setAttribute("aria-label", "Sound");
-    speaker.textContent = "ON";
 
     const header = createElement("div", "dmbobet-wheel-header");
     const eyebrow = createElement("p", "dmbobet-wheel-eyebrow", "DMBOBET PRESENTS");
@@ -2050,12 +2082,7 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     result.setAttribute("data-dmbobet-wheel-result", "true");
     result.setAttribute("aria-live", "polite");
 
-    const chipRow = createElement("div", "dmbobet-wheel-chip-row");
-    ["1000", "2500", "5000", "10000"].forEach((value) => {
-      chipRow.append(createElement("span", "dmbobet-wheel-chip", value));
-    });
-
-    root.append(speaker, header, cards, stage, cta, result, chipRow);
+    root.append(header, cards, stage, cta, result);
     root.addEventListener("click", (event) => {
       const target = event.target;
       if (target instanceof Element && target.closest("[data-dmbobet-wheel-spin]")) {

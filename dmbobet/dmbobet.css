@@ -3098,16 +3098,16 @@ html body [role="dialog"][data-floating-ui-focusable]:has([data-mj="account-menu
 html body [data-dmbobet-wheel-popup="true"] {
   align-items: center !important;
   justify-content: center !important;
-  padding: 16px !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
+  padding: 0 !important;
+  overflow: hidden !important;
 }
 
 html body [data-dmbobet-wheel-host="true"] {
   position: relative !important;
-  width: min(432px, calc(100vw - 28px)) !important;
-  max-width: calc(100vw - 28px) !important;
-  max-height: calc(100dvh - 28px) !important;
+  width: min(432px, calc(100vw - 20px)) !important;
+  max-width: calc(100vw - 20px) !important;
+  max-height: none !important;
+  height: auto !important;
   min-height: 0 !important;
   margin: auto !important;
   overflow: visible !important;
@@ -3171,17 +3171,17 @@ html body .dmbobet-wheel-popup {
   --dmb-cyan: #3ad7ff;
   --dmb-violet: #8c61ff;
   --dmb-panel: #080a14;
-  --dmb-wheel-size: clamp(212px, min(60vw, 38dvh), 288px);
+  --dmb-wheel-size: clamp(206px, min(58vw, 34dvh), 274px);
   position: relative !important;
   isolation: isolate !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
   width: 100% !important;
-  max-height: calc(100dvh - 28px) !important;
-  padding: 42px 18px 18px !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
+  max-height: none !important;
+  height: auto !important;
+  padding: 36px 18px 16px !important;
+  overflow: hidden !important;
   overscroll-behavior: contain !important;
   font-family: Inter, "SF Pro Display", "Segoe UI", Arial, sans-serif !important;
   color: #ffffff !important;
@@ -3229,35 +3229,6 @@ html body .dmbobet-wheel-popup::after {
   transform-origin: 50% 0% !important;
 }
 
-html body .dmbobet-wheel-sound {
-  position: absolute !important;
-  top: 12px !important;
-  left: 12px !important;
-  z-index: 6 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 34px !important;
-  min-width: 34px !important;
-  height: 34px !important;
-  min-height: 34px !important;
-  padding: 0 !important;
-  color: #ffffff !important;
-  font-size: 10px !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-  letter-spacing: 0 !important;
-  border: 1px solid rgb(255 255 255 / 18%) !important;
-  border-radius: 50% !important;
-  background:
-    linear-gradient(180deg, rgb(58 215 255 / 22%), rgb(253 34 78 / 12%)),
-    #111827 !important;
-  box-shadow:
-    0 10px 22px rgb(0 0 0 / 34%),
-    inset 0 1px 0 rgb(255 255 255 / 16%) !important;
-  cursor: default !important;
-}
-
 html body .dmbobet-wheel-header {
   position: relative !important;
   z-index: 2 !important;
@@ -3292,7 +3263,7 @@ html body .dmbobet-wheel-title::first-letter {
 
 html body .dmbobet-wheel-subtitle {
   max-width: 320px !important;
-  margin: 9px auto 0 !important;
+  margin: 7px auto 0 !important;
   color: rgb(255 255 255 / 74%) !important;
   font-size: 13px !important;
   font-weight: 650 !important;
@@ -3307,7 +3278,7 @@ html body .dmbobet-wheel-prize-strip {
   grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   gap: 8px !important;
   width: 100% !important;
-  margin: 14px 0 10px !important;
+  margin: 12px 0 8px !important;
 }
 
 html body .dmbobet-wheel-prize-card {
@@ -3366,7 +3337,7 @@ html body .dmbobet-wheel-stage {
   width: calc(var(--dmb-wheel-size) + 34px) !important;
   max-width: 100% !important;
   aspect-ratio: 1 / 1 !important;
-  margin: 2px auto 12px !important;
+  margin: 0 auto 10px !important;
 }
 
 html body .dmbobet-wheel-ring {
@@ -3621,36 +3592,6 @@ html body .dmbobet-wheel-popup.has-result .dmbobet-wheel-result {
   text-shadow: 0 0 14px rgb(255 198 87 / 34%) !important;
 }
 
-html body .dmbobet-wheel-chip-row {
-  position: relative !important;
-  z-index: 2 !important;
-  display: flex !important;
-  flex-wrap: wrap !important;
-  justify-content: center !important;
-  gap: 6px !important;
-  width: 100% !important;
-  margin-top: 12px !important;
-}
-
-html body .dmbobet-wheel-chip {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-width: 56px !important;
-  min-height: 26px !important;
-  padding: 0 10px !important;
-  color: rgb(255 255 255 / 82%) !important;
-  font-size: 11px !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-  letter-spacing: 0 !important;
-  border: 1px solid rgb(255 198 87 / 22%) !important;
-  border-radius: 999px !important;
-  background:
-    linear-gradient(180deg, rgb(255 255 255 / 8%), rgb(255 255 255 / 2%)),
-    rgb(8 10 20 / 72%) !important;
-}
-
 html body .dmbobet-wheel-popup.is-spinning .dmbobet-wheel-rotor {
   filter: saturate(1.14) brightness(1.06) !important;
 }
@@ -3662,19 +3603,19 @@ html body .dmbobet-wheel-popup.is-spinning .dmbobet-wheel-spin {
 
 @media (max-width: 420px) {
   html body [data-dmbobet-wheel-popup="true"] {
-    padding: 10px !important;
+    padding: 0 !important;
   }
 
   html body [data-dmbobet-wheel-host="true"] {
     width: calc(100vw - 20px) !important;
     max-width: calc(100vw - 20px) !important;
-    max-height: calc(100dvh - 20px) !important;
+    max-height: none !important;
   }
 
   html body .dmbobet-wheel-popup {
-    --dmb-wheel-size: clamp(196px, 62vw, 242px);
-    max-height: calc(100dvh - 20px) !important;
-    padding: 40px 12px 14px !important;
+    --dmb-wheel-size: clamp(194px, 62vw, 238px);
+    max-height: none !important;
+    padding: 34px 12px 14px !important;
     border-radius: 18px !important;
   }
 
@@ -3741,8 +3682,8 @@ html body .dmbobet-wheel-popup.is-spinning .dmbobet-wheel-spin {
 
 @media (max-height: 620px) {
   html body .dmbobet-wheel-popup {
-    --dmb-wheel-size: clamp(188px, 38dvh, 228px);
-    padding-top: 38px !important;
+    --dmb-wheel-size: clamp(184px, 36dvh, 218px);
+    padding-top: 32px !important;
   }
 
   html body .dmbobet-wheel-title {
@@ -3757,8 +3698,8 @@ html body .dmbobet-wheel-popup.is-spinning .dmbobet-wheel-spin {
     margin-top: 10px !important;
   }
 
-  html body .dmbobet-wheel-chip-row {
-    display: none !important;
+  html body .dmbobet-wheel-result {
+    margin-top: 8px !important;
   }
 }
 
