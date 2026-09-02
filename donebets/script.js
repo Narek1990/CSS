@@ -3,6 +3,7 @@
 
   var notVerifiedSelector = "a.app-ltr-1a59aej, a.app-rtl-1a59aej";
   var statusCardSelector = ".app-ltr-1mfp3qc, .app-rtl-1mfp3qc";
+  var depositButtonSelector = 'button[aria-label="deposit"][name="deposit"].sl-icon';
   var vipImageSrc = (function () {
     var scriptSource = document.currentScript && document.currentScript.src;
 
@@ -15,6 +16,19 @@
     }
 
     return "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/donebets/assets/vip-button.png";
+  })();
+  var depositIconSrc = (function () {
+    var scriptSource = document.currentScript && document.currentScript.src;
+
+    try {
+      if (scriptSource) {
+        return new URL("assets/deposit-icon.png", scriptSource).href;
+      }
+    } catch (error) {
+      /* Fall through to the public CDN URL. */
+    }
+
+    return "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/donebets/assets/deposit-icon.png";
   })();
   var observer;
 
@@ -45,6 +59,69 @@
     anchor.href = buildContactDetailsHref();
     anchor.setAttribute("data-donebets-contact-link", "true");
     anchor.style.setProperty("cursor", "pointer", "important");
+  }
+
+  function enhanceDepositButton(button) {
+    var image;
+    var label;
+    var children;
+
+    if (!button) {
+      return;
+    }
+
+    image = button.querySelector('img[data-donebets-deposit-icon="true"]');
+    label = button.querySelector('[data-donebets-deposit-label="true"]');
+
+    if (
+      button.getAttribute("data-donebets-deposit-ready") === "true" &&
+      image &&
+      label &&
+      image.getAttribute("src") === depositIconSrc &&
+      label.textContent === "DEPOSIT" &&
+      button.childNodes.length === 2 &&
+      button.firstChild === image &&
+      button.lastChild === label
+    ) {
+      return;
+    }
+
+    if (!image) {
+      image = document.createElement("img");
+    }
+
+    if (!label) {
+      label = document.createElement("span");
+    }
+
+    image.src = depositIconSrc;
+    image.alt = "";
+    image.className = "donebets-deposit-icon";
+    image.setAttribute("data-donebets-deposit-icon", "true");
+    image.decoding = "async";
+    image.loading = "eager";
+
+    label.className = "donebets-deposit-label";
+    label.setAttribute("data-donebets-deposit-label", "true");
+    label.textContent = "DEPOSIT";
+
+    children = Array.prototype.slice.call(button.childNodes);
+    children.forEach(function (child) {
+      if (child !== image && child !== label) {
+        button.removeChild(child);
+      }
+    });
+
+    if (button.firstChild !== image) {
+      button.insertBefore(image, button.firstChild);
+    }
+
+    if (image.nextSibling !== label) {
+      button.insertBefore(label, image.nextSibling);
+    }
+
+    button.classList.add("donebets-deposit-button");
+    button.setAttribute("data-donebets-deposit-ready", "true");
   }
 
   function isMyStatusLabel(element) {
@@ -120,8 +197,13 @@
       enhanceNotVerifiedLink(node);
     }
 
+    if (node.matches && node.matches(depositButtonSelector)) {
+      enhanceDepositButton(node);
+    }
+
     if (node.querySelectorAll) {
       node.querySelectorAll(notVerifiedSelector).forEach(enhanceNotVerifiedLink);
+      node.querySelectorAll(depositButtonSelector).forEach(enhanceDepositButton);
     }
 
     if (node.matches && node.matches(statusCardSelector)) {

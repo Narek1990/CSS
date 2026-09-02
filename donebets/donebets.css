@@ -29,6 +29,46 @@ span.app-rtl-1phvdj0 {
   filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.28)) !important;
 }
 
+button.donebets-deposit-button,
+button[data-donebets-deposit-ready="true"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  width: auto !important;
+  min-width: 82px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  padding: 0 10px !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+button.donebets-deposit-button svg,
+button[data-donebets-deposit-ready="true"] svg {
+  display: none !important;
+}
+
+button.donebets-deposit-button img.donebets-deposit-icon,
+button[data-donebets-deposit-ready="true"] img[data-donebets-deposit-icon="true"] {
+  display: block !important;
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  object-fit: contain !important;
+}
+
+button.donebets-deposit-button .donebets-deposit-label,
+button[data-donebets-deposit-ready="true"] [data-donebets-deposit-label="true"] {
+  display: inline-block !important;
+  color: currentColor !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.2px !important;
+  line-height: 1 !important;
+}
+
 /* Bonus modal description text */
 html body .app-ltr-gdo5mm p.app-ltr-lneb7o[color="#858585"],
 html body .app-rtl-gdo5mm p.app-rtl-lneb7o[color="#858585"],
