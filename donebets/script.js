@@ -1,12 +1,8 @@
 (function () {
   "use strict";
 
-  var GLOBAL_KEY = "__donebetsEnhancementsRuntime";
-  var previousRuntime = window[GLOBAL_KEY];
   var notVerifiedSelector = "a.app-ltr-1a59aej, a.app-rtl-1a59aej";
   var statusCardSelector = ".app-ltr-1mfp3qc, .app-rtl-1mfp3qc";
-  var headerSpecialSelector = '[data-mj="header-special-button"], a[href*="/wheeldonebets"]';
-  var depositIconSelector = 'button[aria-label="deposit"][name="deposit"], button[name="deposit"].sl-icon';
   var vipImageSrc = (function () {
     var scriptSource = document.currentScript && document.currentScript.src;
 
@@ -20,57 +16,10 @@
 
     return "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/donebets/assets/vip-button.png";
   })();
-  var wheelImageSrc = (function () {
-    var scriptSource = document.currentScript && document.currentScript.src;
-
-    try {
-      if (scriptSource) {
-        return new URL("assets/wheel_96x96-enhanced.gif", scriptSource).href;
-      }
-    } catch (error) {
-      /* Fall through to the public CDN URL. */
-    }
-
-    return "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/donebets/assets/wheel_96x96-enhanced.gif";
-  })();
   var observer;
-  var runtime = {
-    destroy: function () {
-      if (observer) {
-        observer.disconnect();
-        observer = null;
-      }
-    }
-  };
-
-  if (previousRuntime && previousRuntime.destroy) {
-    previousRuntime.destroy();
-  }
-
-  window[GLOBAL_KEY] = runtime;
 
   function normalizeText(node) {
     return (node && node.textContent ? node.textContent : "").replace(/\s+/g, " ").trim();
-  }
-
-  function setAttributeIfDifferent(element, name, value) {
-    if (element && element.getAttribute(name) !== value) {
-      element.setAttribute(name, value);
-    }
-  }
-
-  function setImageSource(image, source) {
-    if (!image) {
-      return;
-    }
-
-    if (image.getAttribute("srcset")) {
-      image.removeAttribute("srcset");
-    }
-
-    if (image.getAttribute("src") !== source) {
-      image.setAttribute("src", source);
-    }
   }
 
   function buildContactDetailsHref() {
@@ -96,83 +45,6 @@
     anchor.href = buildContactDetailsHref();
     anchor.setAttribute("data-donebets-contact-link", "true");
     anchor.style.setProperty("cursor", "pointer", "important");
-  }
-
-  function enhanceHeaderSpecialButton(anchor) {
-    var image;
-
-    if (!anchor || !anchor.querySelector) {
-      return;
-    }
-
-    image = anchor.querySelector("img");
-
-    if (!image) {
-      image = document.createElement("img");
-      image.className = "app-ltr-4rx3j2 donebets-special-wheel-icon";
-      anchor.appendChild(image);
-    }
-
-    if (image.getAttribute("data-donebets-special-wheel") !== "true") {
-      image.alt = "Special icon";
-      image.classList.add("donebets-special-wheel-icon");
-      setAttributeIfDifferent(image, "data-donebets-special-wheel", "true");
-      setAttributeIfDifferent(image, "fetchpriority", "high");
-      setAttributeIfDifferent(image, "decoding", "async");
-      setAttributeIfDifferent(image, "loading", "eager");
-    }
-
-    if (image.parentElement && !image.parentElement.classList.contains("donebets-special-wheel-wrap")) {
-      image.parentElement.classList.add("donebets-special-wheel-wrap");
-    }
-
-    setImageSource(image, wheelImageSrc);
-  }
-
-  function enhanceDepositIconButton(button) {
-    var image;
-    var children;
-
-    if (!button || button.tagName !== "BUTTON") {
-      return;
-    }
-
-    image = Array.prototype.slice.call(button.children).filter(function (child) {
-      return child.tagName === "IMG" && child.getAttribute("data-donebets-deposit-icon") === "true";
-    })[0] || document.createElement("img");
-
-    if (image.alt !== "Deposit") {
-      image.alt = "Deposit";
-    }
-
-    if (!image.classList.contains("donebets-deposit-icon")) {
-      image.classList.add("donebets-deposit-icon");
-    }
-
-    setAttributeIfDifferent(image, "data-donebets-deposit-icon", "true");
-    setAttributeIfDifferent(image, "fetchpriority", "high");
-    setAttributeIfDifferent(image, "decoding", "async");
-    setAttributeIfDifferent(image, "loading", "eager");
-    setImageSource(image, wheelImageSrc);
-
-    children = Array.prototype.slice.call(button.childNodes);
-    if (image.parentNode !== button || children.length !== 1 || button.firstChild !== image) {
-      children.forEach(function (child) {
-        if (child !== image) {
-          button.removeChild(child);
-        }
-      });
-
-      if (image.parentNode !== button) {
-        button.appendChild(image);
-      }
-    }
-
-    if (!button.classList.contains("donebets-deposit-icon-button")) {
-      button.classList.add("donebets-deposit-icon-button");
-    }
-
-    setAttributeIfDifferent(button, "data-donebets-deposit-icon-ready", "true");
   }
 
   function isMyStatusLabel(element) {
@@ -248,18 +120,8 @@
       enhanceNotVerifiedLink(node);
     }
 
-    if (node.matches && node.matches(headerSpecialSelector)) {
-      enhanceHeaderSpecialButton(node);
-    }
-
-    if (node.matches && node.matches(depositIconSelector)) {
-      enhanceDepositIconButton(node);
-    }
-
     if (node.querySelectorAll) {
       node.querySelectorAll(notVerifiedSelector).forEach(enhanceNotVerifiedLink);
-      node.querySelectorAll(headerSpecialSelector).forEach(enhanceHeaderSpecialButton);
-      node.querySelectorAll(depositIconSelector).forEach(enhanceDepositIconButton);
     }
 
     if (node.matches && node.matches(statusCardSelector)) {
@@ -268,12 +130,6 @@
 
     if (node.closest) {
       enhanceVipStatusCard(node.closest(statusCardSelector));
-      enhanceHeaderSpecialButton(node.closest(headerSpecialSelector));
-      enhanceDepositIconButton(node.closest(depositIconSelector));
-    }
-
-    if (node.tagName === "IMG") {
-      enhanceHeaderSpecialButton(node.closest(headerSpecialSelector));
     }
 
     if (node.tagName === "P" && node.parentElement) {
@@ -295,10 +151,6 @@
       mutations.forEach(function (mutation) {
         mutation.addedNodes.forEach(applyToNode);
 
-        if (mutation.type === "attributes" && mutation.target) {
-          applyToNode(mutation.target);
-        }
-
         if (mutation.type === "characterData" && mutation.target && mutation.target.parentElement) {
           applyToNode(mutation.target.parentElement);
         }
@@ -306,8 +158,6 @@
     });
 
     observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["src", "srcset", "href", "data-mj", "aria-label", "name"],
       childList: true,
       characterData: true,
       subtree: true

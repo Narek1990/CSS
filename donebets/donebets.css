@@ -29,54 +29,6 @@ span.app-rtl-1phvdj0 {
   filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.28)) !important;
 }
 
-[data-mj="header-special-button"] img.donebets-special-wheel-icon,
-[data-mj="header-special-button"] img[data-donebets-special-wheel="true"] {
-  display: block !important;
-  width: 32px !important;
-  height: 32px !important;
-  min-width: 32px !important;
-  min-height: 32px !important;
-  object-fit: contain !important;
-}
-
-[data-mj="header-special-button"] .donebets-special-wheel-wrap {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 32px !important;
-  height: 32px !important;
-  min-width: 32px !important;
-  min-height: 32px !important;
-}
-
-button.donebets-deposit-icon-button,
-button[data-donebets-deposit-icon-ready="true"] {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 36px !important;
-  height: 36px !important;
-  min-width: 36px !important;
-  min-height: 36px !important;
-  padding: 0 !important;
-  line-height: 0 !important;
-}
-
-button.donebets-deposit-icon-button svg,
-button[data-donebets-deposit-icon-ready="true"] svg {
-  display: none !important;
-}
-
-button.donebets-deposit-icon-button img.donebets-deposit-icon,
-button[data-donebets-deposit-icon-ready="true"] img[data-donebets-deposit-icon="true"] {
-  display: block !important;
-  width: 32px !important;
-  height: 32px !important;
-  min-width: 32px !important;
-  min-height: 32px !important;
-  object-fit: contain !important;
-}
-
 /* Bonus modal description text */
 html body .app-ltr-gdo5mm p.app-ltr-lneb7o[color="#858585"],
 html body .app-rtl-gdo5mm p.app-rtl-lneb7o[color="#858585"],
