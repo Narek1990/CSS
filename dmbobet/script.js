@@ -1862,3 +1862,283 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     document.addEventListener("DOMContentLoaded", start, { once: true });
   }
 })();
+
+(function initDmbobetPopupWheel() {
+  const version = 1;
+  const previousController = window.__dmbobetPopupWheelController;
+
+  if (previousController && previousController.version === version) {
+    if (typeof previousController.sync === "function") previousController.sync();
+    return;
+  }
+
+  if (previousController && typeof previousController.destroy === "function") {
+    previousController.destroy();
+  }
+
+  const imageSelector = [
+    '.popup[role="popup"][aria-popup="true"] img.app-ltr-1f0tp3p[alt="Popup image"]',
+    '[role="popup"][aria-popup="true"] img.app-ltr-1f0tp3p[alt="Popup image"]'
+  ].join(",");
+  const promoImageId = "27c583bc-0c4f-4130-b796-8ab77546c5bd";
+  const popupAttribute = "data-dmbobet-wheel-popup";
+  const hostAttribute = "data-dmbobet-wheel-host";
+  const originalImageAttribute = "data-dmbobet-wheel-original";
+  let observer = null;
+  let scheduled = false;
+
+  const prizes = [
+    { label: "100 FS", tone: "rose" },
+    { label: "25%", tone: "gold" },
+    { label: "500", tone: "blue" },
+    { label: "2X", tone: "violet" },
+    { label: "50 FS", tone: "rose" },
+    { label: "1000", tone: "gold" },
+    { label: "10%", tone: "blue" },
+    { label: "VIP", tone: "violet" },
+    { label: "2500", tone: "rose" },
+    { label: "5X", tone: "gold" },
+    { label: "20 FS", tone: "blue" },
+    { label: "BONUS", tone: "violet" }
+  ];
+
+  const prizeCards = [
+    { icon: "FS", value: "FREE SPINS" },
+    { icon: "2X", value: "BOOST" },
+    { icon: "%", value: "CASHBACK" }
+  ];
+
+  function createElement(tagName, className, text) {
+    const element = document.createElement(tagName);
+    if (className) element.className = className;
+    if (typeof text === "string") element.textContent = text;
+    return element;
+  }
+
+  function getRandomIndex(length) {
+    if (window.crypto && typeof window.crypto.getRandomValues === "function") {
+      const values = new Uint32Array(1);
+      window.crypto.getRandomValues(values);
+      return values[0] % length;
+    }
+
+    return Math.floor(Math.random() * length);
+  }
+
+  function getCurrentRotation(rotor) {
+    const value = Number(rotor.getAttribute("data-dmbobet-wheel-rotation"));
+    return Number.isFinite(value) ? value : 0;
+  }
+
+  function spinWheel(root) {
+    if (!root || root.classList.contains("is-spinning")) return;
+
+    const rotor = root.querySelector("[data-dmbobet-wheel-rotor]");
+    const result = root.querySelector("[data-dmbobet-wheel-result]");
+    const spinButtons = root.querySelectorAll("[data-dmbobet-wheel-spin]");
+    if (!rotor || !result) return;
+
+    const prizeIndex = getRandomIndex(prizes.length);
+    const selectedPrize = prizes[prizeIndex];
+    const selectedAngle = (360 / prizes.length) * prizeIndex;
+    const currentRotation = getCurrentRotation(rotor);
+    const currentNormalized = ((currentRotation % 360) + 360) % 360;
+    const pointerAngle = 90;
+    const targetRotation = pointerAngle - selectedAngle;
+    const delta = ((targetRotation - currentNormalized) + 360) % 360;
+    const finalRotation = currentRotation + (360 * 6) + delta;
+    let completed = false;
+
+    function completeSpin() {
+      if (completed) return;
+      completed = true;
+
+      root.classList.remove("is-spinning");
+      root.classList.add("has-result");
+      result.textContent = `Lucky pick: ${selectedPrize.label}`;
+      spinButtons.forEach((button) => {
+        button.disabled = false;
+        button.removeAttribute("aria-busy");
+      });
+    }
+
+    root.classList.add("is-spinning");
+    root.classList.remove("has-result");
+    result.textContent = "Wheel is spinning...";
+    spinButtons.forEach((button) => {
+      button.disabled = true;
+      button.setAttribute("aria-busy", "true");
+    });
+
+    rotor.style.setProperty("--dmb-wheel-rotation", `${finalRotation}deg`);
+    rotor.setAttribute("data-dmbobet-wheel-rotation", String(finalRotation));
+
+    rotor.addEventListener("transitionend", completeSpin, { once: true });
+    window.setTimeout(completeSpin, 4300);
+  }
+
+  function buildWheel() {
+    const root = createElement("section", "dmbobet-wheel-popup");
+    root.setAttribute("aria-label", "Dmbobet bonus wheel");
+
+    const speaker = createElement("button", "dmbobet-wheel-sound", "");
+    speaker.type = "button";
+    speaker.setAttribute("aria-label", "Sound");
+    speaker.textContent = "ON";
+
+    const header = createElement("div", "dmbobet-wheel-header");
+    const eyebrow = createElement("p", "dmbobet-wheel-eyebrow", "DMBOBET PRESENTS");
+    const title = createElement("h2", "dmbobet-wheel-title", "DMBO Wheel");
+    const subtitle = createElement(
+      "p",
+      "dmbobet-wheel-subtitle",
+      "Spin the bonus wheel and reveal your casino reward."
+    );
+
+    header.append(eyebrow, title, subtitle);
+
+    const cards = createElement("div", "dmbobet-wheel-prize-strip");
+    prizeCards.forEach((item) => {
+      const card = createElement("div", "dmbobet-wheel-prize-card");
+      const icon = createElement("span", "dmbobet-wheel-prize-icon", item.icon);
+      const value = createElement("span", "dmbobet-wheel-prize-value", item.value);
+      card.append(icon, value);
+      cards.append(card);
+    });
+
+    const stage = createElement("div", "dmbobet-wheel-stage");
+    const ring = createElement("div", "dmbobet-wheel-ring");
+    const rotor = createElement("div", "dmbobet-wheel-rotor");
+    rotor.setAttribute("data-dmbobet-wheel-rotor", "true");
+    rotor.style.setProperty("--dmb-wheel-rotation", "0deg");
+    rotor.setAttribute("data-dmbobet-wheel-rotation", "0");
+
+    const labels = createElement("div", "dmbobet-wheel-labels");
+    prizes.forEach((prize, index) => {
+      const label = createElement(
+        "span",
+        `dmbobet-wheel-label dmbobet-wheel-label--${prize.tone}`,
+        prize.label
+      );
+      label.style.setProperty("--dmb-wheel-label-angle", `${(360 / prizes.length) * index}deg`);
+      labels.append(label);
+    });
+
+    const center = createElement("button", "dmbobet-wheel-center");
+    center.type = "button";
+    center.setAttribute("data-dmbobet-wheel-spin", "true");
+    center.setAttribute("aria-label", "Spin the Dmbobet wheel");
+    center.innerHTML = "<span>SPIN</span><strong>WIN</strong>";
+
+    const pointer = createElement("span", "dmbobet-wheel-pointer");
+    pointer.setAttribute("aria-hidden", "true");
+
+    rotor.append(labels);
+    ring.append(rotor, center);
+    stage.append(ring, pointer);
+
+    const cta = createElement("button", "dmbobet-wheel-spin");
+    cta.type = "button";
+    cta.setAttribute("data-dmbobet-wheel-spin", "true");
+    cta.textContent = "Spin and win";
+
+    const result = createElement(
+      "p",
+      "dmbobet-wheel-result",
+      "Tap to reveal your bonus"
+    );
+    result.setAttribute("data-dmbobet-wheel-result", "true");
+    result.setAttribute("aria-live", "polite");
+
+    const chipRow = createElement("div", "dmbobet-wheel-chip-row");
+    ["1000", "2500", "5000", "10000"].forEach((value) => {
+      chipRow.append(createElement("span", "dmbobet-wheel-chip", value));
+    });
+
+    root.append(speaker, header, cards, stage, cta, result, chipRow);
+    root.addEventListener("click", (event) => {
+      const target = event.target;
+      if (target instanceof Element && target.closest("[data-dmbobet-wheel-spin]")) {
+        spinWheel(root);
+      }
+    });
+
+    return root;
+  }
+
+  function isTargetPromoImage(image) {
+    const source = image.getAttribute("src") || "";
+    return !source || source.includes(promoImageId) || image.closest(".app-ltr-1b903db");
+  }
+
+  function enhanceImage(image) {
+    if (!(image instanceof HTMLImageElement) || !isTargetPromoImage(image)) return;
+
+    const host = image.parentElement;
+    if (!host) return;
+
+    const popup = image.closest('[role="popup"][aria-popup="true"], .popup');
+    const existingWheel = host.querySelector(":scope > .dmbobet-wheel-popup");
+
+    if (popup) popup.setAttribute(popupAttribute, "true");
+    host.setAttribute(hostAttribute, "true");
+    image.setAttribute(originalImageAttribute, "true");
+    image.style.setProperty("display", "none", "important");
+
+    if (existingWheel) return;
+
+    host.insertBefore(buildWheel(), image);
+  }
+
+  function syncPopupWheel() {
+    scheduled = false;
+    document.querySelectorAll(imageSelector).forEach(enhanceImage);
+  }
+
+  function scheduleSync() {
+    if (scheduled) return;
+    scheduled = true;
+    window.requestAnimationFrame(syncPopupWheel);
+  }
+
+  function start() {
+    if (!document.body) return;
+
+    syncPopupWheel();
+    observer = new MutationObserver(scheduleSync);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  function destroy() {
+    if (observer) observer.disconnect();
+    observer = null;
+    scheduled = false;
+
+    document.querySelectorAll(".dmbobet-wheel-popup").forEach((wheel) => wheel.remove());
+    document.querySelectorAll(`[${originalImageAttribute}="true"]`).forEach((image) => {
+      image.style.removeProperty("display");
+      image.removeAttribute(originalImageAttribute);
+    });
+    document.querySelectorAll(`[${hostAttribute}="true"]`).forEach((host) => {
+      host.removeAttribute(hostAttribute);
+    });
+    document.querySelectorAll(`[${popupAttribute}="true"]`).forEach((popup) => {
+      popup.removeAttribute(popupAttribute);
+    });
+  }
+
+  window.__dmbobetPopupWheelController = {
+    version,
+    sync: scheduleSync,
+    destroy
+  };
+
+  if (document.body) {
+    start();
+  } else {
+    document.addEventListener("DOMContentLoaded", start, { once: true });
+  }
+})();
