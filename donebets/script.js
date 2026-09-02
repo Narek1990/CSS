@@ -1,6 +1,8 @@
 (function () {
   "use strict";
 
+  var GLOBAL_KEY = "__donebetsEnhancementsRuntime";
+  var previousRuntime = window[GLOBAL_KEY];
   var notVerifiedSelector = "a.app-ltr-1a59aej, a.app-rtl-1a59aej";
   var statusCardSelector = ".app-ltr-1mfp3qc, .app-rtl-1mfp3qc";
   var headerSpecialSelector = '[data-mj="header-special-button"], a[href*="/wheeldonebets"]';
@@ -32,9 +34,43 @@
     return "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/donebets/assets/wheel_96x96-enhanced.gif";
   })();
   var observer;
+  var runtime = {
+    destroy: function () {
+      if (observer) {
+        observer.disconnect();
+        observer = null;
+      }
+    }
+  };
+
+  if (previousRuntime && previousRuntime.destroy) {
+    previousRuntime.destroy();
+  }
+
+  window[GLOBAL_KEY] = runtime;
 
   function normalizeText(node) {
     return (node && node.textContent ? node.textContent : "").replace(/\s+/g, " ").trim();
+  }
+
+  function setAttributeIfDifferent(element, name, value) {
+    if (element && element.getAttribute(name) !== value) {
+      element.setAttribute(name, value);
+    }
+  }
+
+  function setImageSource(image, source) {
+    if (!image) {
+      return;
+    }
+
+    if (image.getAttribute("srcset")) {
+      image.removeAttribute("srcset");
+    }
+
+    if (image.getAttribute("src") !== source) {
+      image.setAttribute("src", source);
+    }
   }
 
   function buildContactDetailsHref() {
@@ -80,46 +116,63 @@
     if (image.getAttribute("data-donebets-special-wheel") !== "true") {
       image.alt = "Special icon";
       image.classList.add("donebets-special-wheel-icon");
-      image.setAttribute("data-donebets-special-wheel", "true");
-      image.setAttribute("fetchpriority", "high");
-      image.decoding = "async";
-      image.loading = "eager";
+      setAttributeIfDifferent(image, "data-donebets-special-wheel", "true");
+      setAttributeIfDifferent(image, "fetchpriority", "high");
+      setAttributeIfDifferent(image, "decoding", "async");
+      setAttributeIfDifferent(image, "loading", "eager");
     }
 
-    if (image.parentElement) {
+    if (image.parentElement && !image.parentElement.classList.contains("donebets-special-wheel-wrap")) {
       image.parentElement.classList.add("donebets-special-wheel-wrap");
     }
 
-    if (image.src !== wheelImageSrc) {
-      image.removeAttribute("srcset");
-      image.src = wheelImageSrc;
-    }
+    setImageSource(image, wheelImageSrc);
   }
 
   function enhanceDepositIconButton(button) {
     var image;
+    var children;
 
     if (!button || button.tagName !== "BUTTON") {
       return;
     }
 
-    image = button.querySelector('img[data-donebets-deposit-icon="true"]') || document.createElement("img");
-    image.alt = "Deposit";
-    image.className = "donebets-deposit-icon";
-    image.setAttribute("data-donebets-deposit-icon", "true");
-    image.setAttribute("fetchpriority", "high");
-    image.decoding = "async";
-    image.loading = "eager";
+    image = Array.prototype.slice.call(button.children).filter(function (child) {
+      return child.tagName === "IMG" && child.getAttribute("data-donebets-deposit-icon") === "true";
+    })[0] || document.createElement("img");
 
-    if (image.src !== wheelImageSrc) {
-      image.removeAttribute("srcset");
-      image.src = wheelImageSrc;
+    if (image.alt !== "Deposit") {
+      image.alt = "Deposit";
     }
 
-    button.textContent = "";
-    button.appendChild(image);
-    button.classList.add("donebets-deposit-icon-button");
-    button.setAttribute("data-donebets-deposit-icon-ready", "true");
+    if (!image.classList.contains("donebets-deposit-icon")) {
+      image.classList.add("donebets-deposit-icon");
+    }
+
+    setAttributeIfDifferent(image, "data-donebets-deposit-icon", "true");
+    setAttributeIfDifferent(image, "fetchpriority", "high");
+    setAttributeIfDifferent(image, "decoding", "async");
+    setAttributeIfDifferent(image, "loading", "eager");
+    setImageSource(image, wheelImageSrc);
+
+    children = Array.prototype.slice.call(button.childNodes);
+    if (image.parentNode !== button || children.length !== 1 || button.firstChild !== image) {
+      children.forEach(function (child) {
+        if (child !== image) {
+          button.removeChild(child);
+        }
+      });
+
+      if (image.parentNode !== button) {
+        button.appendChild(image);
+      }
+    }
+
+    if (!button.classList.contains("donebets-deposit-icon-button")) {
+      button.classList.add("donebets-deposit-icon-button");
+    }
+
+    setAttributeIfDifferent(button, "data-donebets-deposit-icon-ready", "true");
   }
 
   function isMyStatusLabel(element) {
@@ -254,7 +307,7 @@
 
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["src", "srcset", "href", "data-mj", "class"],
+      attributeFilter: ["src", "srcset", "href", "data-mj", "aria-label", "name"],
       childList: true,
       characterData: true,
       subtree: true
