@@ -1864,7 +1864,7 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
 })();
 
 (function initDmbobetPopupWheel() {
-  const version = 2;
+  const version = 3;
   const previousController = window.__dmbobetPopupWheelController;
 
   if (previousController && previousController.version === version) {
@@ -1885,9 +1885,11 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
   const hostAttribute = "data-dmbobet-wheel-host";
   const originalImageAttribute = "data-dmbobet-wheel-original";
   const registrationUrl = "https://dmbobet.com/en/?m=registration&t=email&returnUrl=/en/";
-  let audioContext = null;
+  const wheelSoundFile = "assets/wheel-sound-09d.wav";
+  const fallbackAssetBaseUrl = "https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/dmbobet/";
   let soundEnabled = true;
-  let spinSoundTimer = null;
+  let wheelAudio = null;
+  let soundSourceUrl = "";
   let observer = null;
   let scheduled = false;
 
@@ -1934,72 +1936,72 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     return Number.isFinite(value) ? value : 0;
   }
 
-  function getAudioContext() {
-    const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContextConstructor) return null;
+  function getScriptSourceUrl() {
+    const currentScript = document.currentScript;
 
-    if (!audioContext) audioContext = new AudioContextConstructor();
-
-    if (audioContext.state === "suspended") {
-      audioContext.resume().catch(() => {});
+    if (currentScript && currentScript.src) {
+      return currentScript.src;
     }
 
-    return audioContext;
+    const script = Array.from(document.scripts)
+      .reverse()
+      .find((item) => /\/dmbobet\/script\.js(?:[?#].*)?$/i.test(item.src || ""));
+
+    return script && script.src ? script.src : "";
   }
 
-  function playTone(frequency, duration, volume, type, delay = 0) {
+  function getSoundSourceUrl() {
+    if (soundSourceUrl) return soundSourceUrl;
+
+    try {
+      soundSourceUrl = new URL(
+        wheelSoundFile,
+        getScriptSourceUrl() || fallbackAssetBaseUrl
+      ).toString();
+    } catch (error) {
+      soundSourceUrl = `${fallbackAssetBaseUrl}${wheelSoundFile}`;
+    }
+
+    return soundSourceUrl;
+  }
+
+  function getWheelAudio() {
+    if (!wheelAudio) {
+      wheelAudio = new Audio(getSoundSourceUrl());
+      wheelAudio.preload = "auto";
+      wheelAudio.volume = 0.78;
+      wheelAudio.setAttribute("data-dmbobet-wheel-audio", "true");
+    }
+
+    return wheelAudio;
+  }
+
+  function stopWheelSound(reset = true) {
+    if (!wheelAudio) return;
+
+    wheelAudio.pause();
+
+    if (reset) {
+      try {
+        wheelAudio.currentTime = 0;
+      } catch (error) {}
+    }
+  }
+
+  function playWheelSound() {
     if (!soundEnabled) return;
 
-    const context = getAudioContext();
-    if (!context) return;
+    const audio = getWheelAudio();
 
-    const oscillator = context.createOscillator();
-    const gain = context.createGain();
-    const startTime = context.currentTime + delay;
-    const endTime = startTime + duration;
+    try {
+      audio.pause();
+      audio.currentTime = 0;
+      const playPromise = audio.play();
 
-    oscillator.type = type || "sine";
-    oscillator.frequency.setValueAtTime(frequency, startTime);
-    gain.gain.setValueAtTime(0.0001, startTime);
-    gain.gain.exponentialRampToValueAtTime(volume, startTime + 0.012);
-    gain.gain.exponentialRampToValueAtTime(0.0001, endTime);
-
-    oscillator.connect(gain);
-    gain.connect(context.destination);
-    oscillator.start(startTime);
-    oscillator.stop(endTime + 0.03);
-  }
-
-  function stopSpinSound() {
-    if (!spinSoundTimer) return;
-    window.clearTimeout(spinSoundTimer);
-    spinSoundTimer = null;
-  }
-
-  function startSpinSound() {
-    stopSpinSound();
-    if (!soundEnabled) return;
-
-    let tick = 0;
-
-    function playTick() {
-      if (!soundEnabled) {
-        stopSpinSound();
-        return;
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => {});
       }
-
-      tick += 1;
-      playTone(360 + ((tick % 6) * 48), 0.034, 0.035, "triangle");
-      spinSoundTimer = window.setTimeout(playTick, Math.min(190, 34 + (tick * 7)));
-    }
-
-    playTick();
-  }
-
-  function playPrizeSound() {
-    playTone(659.25, 0.08, 0.045, "sine", 0);
-    playTone(880, 0.11, 0.04, "sine", 0.09);
-    playTone(1174.66, 0.16, 0.035, "triangle", 0.21);
+    } catch (error) {}
   }
 
   function getSoundIconMarkup(enabled) {
@@ -2034,10 +2036,15 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     });
   }
 
-  function toggleSound() {
+  function toggleSound(root) {
     soundEnabled = !soundEnabled;
-    if (!soundEnabled) stopSpinSound();
-    if (soundEnabled) getAudioContext();
+
+    if (!soundEnabled) {
+      stopWheelSound();
+    } else if (root && root.classList.contains("is-spinning")) {
+      playWheelSound();
+    }
+
     syncSoundButtons();
   }
 
@@ -2101,8 +2108,6 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
       root.classList.remove("is-spinning");
       root.classList.add("has-result");
       result.textContent = `Lucky pick: ${selectedPrize.label}`;
-      stopSpinSound();
-      playPrizeSound();
       updatePrizeAction(root, true);
       spinButtons.forEach((button) => {
         button.disabled = false;
@@ -2118,7 +2123,7 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
       button.disabled = true;
       button.setAttribute("aria-busy", "true");
     });
-    startSpinSound();
+    playWheelSound();
 
     rotor.style.setProperty("--dmb-wheel-rotation", `${finalRotation}deg`);
     rotor.setAttribute("data-dmbobet-wheel-rotation", String(finalRotation));
@@ -2135,6 +2140,12 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     soundButton.type = "button";
     soundButton.setAttribute("data-dmbobet-wheel-sound-toggle", "true");
     updateSoundToggle(soundButton);
+    soundButton.addEventListener("pointerdown", (event) => event.stopPropagation());
+    soundButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleSound(root);
+    });
 
     const header = createElement("div", "dmbobet-wheel-header");
     const eyebrow = createElement("p", "dmbobet-wheel-eyebrow", "DMBOBET PRESENTS");
@@ -2206,13 +2217,6 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
 
       if (!(target instanceof Element)) return;
 
-      if (target.closest("[data-dmbobet-wheel-sound-toggle]")) {
-        event.preventDefault();
-        event.stopPropagation();
-        toggleSound();
-        return;
-      }
-
       if (target.closest("[data-dmbobet-wheel-spin]")) {
         spinWheel(root);
       }
@@ -2271,12 +2275,8 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     if (observer) observer.disconnect();
     observer = null;
     scheduled = false;
-    stopSpinSound();
-
-    if (audioContext && audioContext.state !== "closed") {
-      audioContext.close().catch(() => {});
-    }
-    audioContext = null;
+    stopWheelSound();
+    wheelAudio = null;
 
     document.querySelectorAll(".dmbobet-wheel-popup").forEach((wheel) => wheel.remove());
     document.querySelectorAll(`[${originalImageAttribute}="true"]`).forEach((image) => {
