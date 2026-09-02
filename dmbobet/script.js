@@ -1864,7 +1864,7 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
 })();
 
 (function initDmbobetPopupWheel() {
-  const version = 1;
+  const version = 2;
   const previousController = window.__dmbobetPopupWheelController;
 
   if (previousController && previousController.version === version) {
@@ -1885,6 +1885,9 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
   const hostAttribute = "data-dmbobet-wheel-host";
   const originalImageAttribute = "data-dmbobet-wheel-original";
   const registrationUrl = "https://dmbobet.com/en/?m=registration&t=email&returnUrl=/en/";
+  let audioContext = null;
+  let soundEnabled = true;
+  let spinSoundTimer = null;
   let observer = null;
   let scheduled = false;
 
@@ -1929,6 +1932,113 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
   function getCurrentRotation(rotor) {
     const value = Number(rotor.getAttribute("data-dmbobet-wheel-rotation"));
     return Number.isFinite(value) ? value : 0;
+  }
+
+  function getAudioContext() {
+    const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextConstructor) return null;
+
+    if (!audioContext) audioContext = new AudioContextConstructor();
+
+    if (audioContext.state === "suspended") {
+      audioContext.resume().catch(() => {});
+    }
+
+    return audioContext;
+  }
+
+  function playTone(frequency, duration, volume, type, delay = 0) {
+    if (!soundEnabled) return;
+
+    const context = getAudioContext();
+    if (!context) return;
+
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    const startTime = context.currentTime + delay;
+    const endTime = startTime + duration;
+
+    oscillator.type = type || "sine";
+    oscillator.frequency.setValueAtTime(frequency, startTime);
+    gain.gain.setValueAtTime(0.0001, startTime);
+    gain.gain.exponentialRampToValueAtTime(volume, startTime + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, endTime);
+
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+    oscillator.start(startTime);
+    oscillator.stop(endTime + 0.03);
+  }
+
+  function stopSpinSound() {
+    if (!spinSoundTimer) return;
+    window.clearTimeout(spinSoundTimer);
+    spinSoundTimer = null;
+  }
+
+  function startSpinSound() {
+    stopSpinSound();
+    if (!soundEnabled) return;
+
+    let tick = 0;
+
+    function playTick() {
+      if (!soundEnabled) {
+        stopSpinSound();
+        return;
+      }
+
+      tick += 1;
+      playTone(360 + ((tick % 6) * 48), 0.034, 0.035, "triangle");
+      spinSoundTimer = window.setTimeout(playTick, Math.min(190, 34 + (tick * 7)));
+    }
+
+    playTick();
+  }
+
+  function playPrizeSound() {
+    playTone(659.25, 0.08, 0.045, "sine", 0);
+    playTone(880, 0.11, 0.04, "sine", 0.09);
+    playTone(1174.66, 0.16, 0.035, "triangle", 0.21);
+  }
+
+  function getSoundIconMarkup(enabled) {
+    const wavePath = enabled
+      ? '<path d="M15.5 8.5a5 5 0 0 1 0 7M18.8 5.2a9.4 9.4 0 0 1 0 13.6"/>'
+      : '<path d="M16 9l5 5M21 9l-5 5"/>';
+
+    return `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M11 5L6 9H3v6h3l5 4V5z"/>
+        ${wavePath}
+      </svg>
+      <span>${enabled ? "ON" : "OFF"}</span>
+    `;
+  }
+
+  function updateSoundToggle(button) {
+    button.innerHTML = getSoundIconMarkup(soundEnabled);
+    button.setAttribute("aria-pressed", String(soundEnabled));
+    button.setAttribute(
+      "aria-label",
+      soundEnabled ? "Turn wheel sound off" : "Turn wheel sound on"
+    );
+  }
+
+  function syncSoundButtons() {
+    document.querySelectorAll("[data-dmbobet-wheel-sound-toggle]").forEach((button) => {
+      updateSoundToggle(button);
+    });
+    document.querySelectorAll(".dmbobet-wheel-popup").forEach((root) => {
+      root.classList.toggle("is-sound-muted", !soundEnabled);
+    });
+  }
+
+  function toggleSound() {
+    soundEnabled = !soundEnabled;
+    if (!soundEnabled) stopSpinSound();
+    if (soundEnabled) getAudioContext();
+    syncSoundButtons();
   }
 
   function openRegistrationPage() {
@@ -1991,6 +2101,8 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
       root.classList.remove("is-spinning");
       root.classList.add("has-result");
       result.textContent = `Lucky pick: ${selectedPrize.label}`;
+      stopSpinSound();
+      playPrizeSound();
       updatePrizeAction(root, true);
       spinButtons.forEach((button) => {
         button.disabled = false;
@@ -2006,6 +2118,7 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
       button.disabled = true;
       button.setAttribute("aria-busy", "true");
     });
+    startSpinSound();
 
     rotor.style.setProperty("--dmb-wheel-rotation", `${finalRotation}deg`);
     rotor.setAttribute("data-dmbobet-wheel-rotation", String(finalRotation));
@@ -2017,6 +2130,11 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
   function buildWheel() {
     const root = createElement("section", "dmbobet-wheel-popup");
     root.setAttribute("aria-label", "Dmbobet bonus wheel");
+
+    const soundButton = createElement("button", "dmbobet-wheel-sound", "");
+    soundButton.type = "button";
+    soundButton.setAttribute("data-dmbobet-wheel-sound-toggle", "true");
+    updateSoundToggle(soundButton);
 
     const header = createElement("div", "dmbobet-wheel-header");
     const eyebrow = createElement("p", "dmbobet-wheel-eyebrow", "DMBOBET PRESENTS");
@@ -2082,10 +2200,20 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     result.setAttribute("data-dmbobet-wheel-result", "true");
     result.setAttribute("aria-live", "polite");
 
-    root.append(header, cards, stage, cta, result);
+    root.append(soundButton, header, cards, stage, cta, result);
     root.addEventListener("click", (event) => {
       const target = event.target;
-      if (target instanceof Element && target.closest("[data-dmbobet-wheel-spin]")) {
+
+      if (!(target instanceof Element)) return;
+
+      if (target.closest("[data-dmbobet-wheel-sound-toggle]")) {
+        event.preventDefault();
+        event.stopPropagation();
+        toggleSound();
+        return;
+      }
+
+      if (target.closest("[data-dmbobet-wheel-spin]")) {
         spinWheel(root);
       }
     });
@@ -2143,6 +2271,12 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     if (observer) observer.disconnect();
     observer = null;
     scheduled = false;
+    stopSpinSound();
+
+    if (audioContext && audioContext.state !== "closed") {
+      audioContext.close().catch(() => {});
+    }
+    audioContext = null;
 
     document.querySelectorAll(".dmbobet-wheel-popup").forEach((wheel) => wheel.remove());
     document.querySelectorAll(`[${originalImageAttribute}="true"]`).forEach((image) => {
