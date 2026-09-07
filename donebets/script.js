@@ -72,8 +72,14 @@
 
   function isNotificationsMenuItem(item) {
     var link = item && item.querySelector ? item.querySelector("a") : null;
+    var label = item && item.querySelector ? item.querySelector("a p") : null;
 
-    return link && normalizeText(link).toLowerCase() === "notifications";
+    return (
+      link &&
+      normalizeText(label || link)
+        .toLowerCase()
+        .replace(/\s+/g, " ") === "notifications"
+    );
   }
 
   function isCashbackMenuLink(link) {
