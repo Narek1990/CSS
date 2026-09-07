@@ -84,6 +84,30 @@ html body ul[data-mj="account-menu"] > li.donebets-cashback-menu-item > div > a.
   box-sizing: border-box !important;
 }
 
+html body ul[data-mj="account-menu"] > li.donebets-cashback-menu-item [data-donebets-cashback-icon="true"] {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 24px !important;
+  width: 24px !important;
+  height: 24px !important;
+  color: currentColor !important;
+}
+
+html body ul[data-mj="account-menu"] > li.donebets-cashback-menu-item [data-donebets-cashback-icon="true"] svg {
+  display: block !important;
+  width: 24px !important;
+  height: 24px !important;
+}
+
+html body ul[data-mj="account-menu"] > li.donebets-cashback-menu-item [data-donebets-cashback-label="true"] {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+  color: inherit !important;
+}
+
 /* Bonus modal description text */
 html body .app-ltr-gdo5mm p.app-ltr-lneb7o[color="#858585"],
 html body .app-rtl-gdo5mm p.app-rtl-lneb7o[color="#858585"],
