@@ -4,6 +4,8 @@
   var notVerifiedSelector = "a.app-ltr-1a59aej, a.app-rtl-1a59aej";
   var statusCardSelector = ".app-ltr-1mfp3qc, .app-rtl-1mfp3qc";
   var depositButtonSelector = 'button[aria-label="deposit"][name="deposit"].sl-icon';
+  var accountMenuSelector = 'ul[data-mj="account-menu"]';
+  var cashbackMovedAttribute = "data-donebets-cashback-moved";
   var vipImageSrc = (function () {
     var scriptSource = document.currentScript && document.currentScript.src;
 
@@ -59,6 +61,76 @@
     anchor.href = buildContactDetailsHref();
     anchor.setAttribute("data-donebets-contact-link", "true");
     anchor.style.setProperty("cursor", "pointer", "important");
+  }
+
+  function isNotificationsMenuItem(item) {
+    var link = item && item.querySelector ? item.querySelector("a") : null;
+
+    return link && normalizeText(link).toLowerCase() === "notifications";
+  }
+
+  function isCashbackMenuLink(link) {
+    var href;
+
+    if (!link) {
+      return false;
+    }
+
+    href = link.getAttribute("href") || "";
+
+    return href.indexOf("instant_cashback") !== -1 || normalizeText(link).toLowerCase() === "cashback";
+  }
+
+  function moveCashbackMenu() {
+    document.querySelectorAll(accountMenuSelector).forEach(function (accountMenu) {
+      var notificationsItem;
+      var cashbackItem;
+      var cashbackLink;
+
+      Array.prototype.some.call(accountMenu.children, function (item) {
+        if (item.tagName === "LI" && isNotificationsMenuItem(item)) {
+          notificationsItem = item;
+          return true;
+        }
+
+        return false;
+      });
+
+      if (!notificationsItem) {
+        return;
+      }
+
+      Array.prototype.some.call(accountMenu.querySelectorAll("li"), function (item) {
+        var link = item.querySelector("a");
+
+        if (item !== notificationsItem && isCashbackMenuLink(link)) {
+          cashbackItem = item;
+          return true;
+        }
+
+        return false;
+      });
+
+      if (!cashbackItem) {
+        return;
+      }
+
+      if (
+        cashbackItem.parentElement !== accountMenu ||
+        cashbackItem.previousElementSibling !== notificationsItem
+      ) {
+        accountMenu.insertBefore(cashbackItem, notificationsItem.nextElementSibling);
+      }
+
+      cashbackItem.setAttribute(cashbackMovedAttribute, "true");
+      cashbackItem.classList.add("donebets-cashback-menu-item");
+
+      cashbackLink = cashbackItem.querySelector("a");
+      if (cashbackLink) {
+        cashbackLink.setAttribute("data-donebets-cashback-link", "true");
+        cashbackLink.classList.add("donebets-cashback-menu-link");
+      }
+    });
   }
 
   function enhanceDepositButton(button) {
@@ -222,6 +294,8 @@
       node.querySelectorAll(statusCardSelector).forEach(enhanceVipStatusCard);
       enhanceVipStatusFromText(node);
     }
+
+    moveCashbackMenu();
   }
 
   function observe() {

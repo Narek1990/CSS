@@ -67,6 +67,23 @@ button[data-donebets-deposit-ready="true"] [data-donebets-deposit-label="true"] 
   line-height: 1 !important;
 }
 
+/* Keep Cashback aligned as a top-level account-menu item after it is moved out of Bonuses. */
+html body ul[data-mj="account-menu"] > li.donebets-cashback-menu-item {
+  display: block !important;
+  width: 100% !important;
+}
+
+html body ul[data-mj="account-menu"] > li.donebets-cashback-menu-item > div,
+html body ul[data-mj="account-menu"] > li.donebets-cashback-menu-item > div > a.donebets-cashback-menu-link {
+  width: 100% !important;
+}
+
+html body ul[data-mj="account-menu"] > li.donebets-cashback-menu-item > div > a.donebets-cashback-menu-link {
+  display: flex !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+}
+
 /* Bonus modal description text */
 html body .app-ltr-gdo5mm p.app-ltr-lneb7o[color="#858585"],
 html body .app-rtl-gdo5mm p.app-rtl-lneb7o[color="#858585"],
