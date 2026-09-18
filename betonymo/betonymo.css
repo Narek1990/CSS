@@ -452,3 +452,26 @@ html body [data-mj="game-catalog-category-slider-item"].app-ltr-17htgyk {
 .app-ltr-1uu5pku > div:has(object[data*="/doge.png"]) {
   order: 6 !important;
 }
+
+/* Betonymo network dropdown order: ERC20, TRC20, BEP20, SOL.
+   The source markup currently renders: SOL, BEP20, ERC20, TRC20. */
+form [id^="react-select-"][id$="-listbox"] > .sl-select__menu-list {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+form [id^="react-select-"][id$="-listbox"] > .sl-select__menu-list > .sl-select__option:nth-child(1) {
+  order: 4 !important;
+}
+
+form [id^="react-select-"][id$="-listbox"] > .sl-select__menu-list > .sl-select__option:nth-child(2) {
+  order: 3 !important;
+}
+
+form [id^="react-select-"][id$="-listbox"] > .sl-select__menu-list > .sl-select__option:nth-child(3) {
+  order: 1 !important;
+}
+
+form [id^="react-select-"][id$="-listbox"] > .sl-select__menu-list > .sl-select__option:nth-child(4) {
+  order: 2 !important;
+}
