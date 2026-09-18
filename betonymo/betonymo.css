@@ -267,7 +267,7 @@ html body button[data-mj="sidebar-collapse"][name="arrow_left"].sl-icon {
   width: 42px !important;
   min-width: 42px !important;
   height: 42px !important;
-  background: url("../assets/Burger.svg") center / 24px 24px no-repeat !important;
+  background: url("https://cdn.jsdelivr.net/gh/Narek1990/CSS@ce61a359aa9b53d9c44ed26f4bde83b6e8284fdd/betonymo/assets/Burger.svg") center / 24px 24px no-repeat !important;
   transition: none !important;
   animation: none !important;
   transform: none !important;
