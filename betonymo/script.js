@@ -2,10 +2,13 @@
   "use strict";
 
   var TARGET_NETWORK = "ERC20";
-  var initialized = false;
   var retryTimer = null;
+  var pendingSelection = false;
+  var userInteracted = false;
   var attempts = 0;
-  var MAX_ATTEMPTS = 80;
+  var MAX_ATTEMPTS = 240;
+  var INITIALIZATION_WINDOW_MS = 60000;
+  var initializationEndsAt = Date.now() + INITIALIZATION_WINDOW_MS;
 
   function getText(node) {
     return node ? node.textContent.replace(/\s+/g, " ").trim() : "";
@@ -48,16 +51,19 @@
     return null;
   }
 
-  function retry() {
-    attempts += 1;
+  function isEnforcing() {
+    return !userInteracted && Date.now() < initializationEndsAt;
+  }
 
-    if (attempts < MAX_ATTEMPTS) {
-      schedule();
+  function cancelRetry() {
+    if (retryTimer) {
+      window.clearTimeout(retryTimer);
+      retryTimer = null;
     }
   }
 
   function schedule() {
-    if (initialized || retryTimer) {
+    if (!isEnforcing() || retryTimer || pendingSelection) {
       return;
     }
 
@@ -65,6 +71,15 @@
       retryTimer = null;
       initializeNetwork();
     }, 250);
+  }
+
+  function retry() {
+    pendingSelection = false;
+    attempts += 1;
+
+    if (attempts < MAX_ATTEMPTS) {
+      schedule();
+    }
   }
 
   function selectOption(option) {
@@ -79,7 +94,8 @@
   }
 
   function waitForOption(field, count) {
-    if (initialized) {
+    if (!isEnforcing()) {
+      pendingSelection = false;
       return;
     }
 
@@ -91,7 +107,7 @@
       return;
     }
 
-    if (count < 30) {
+    if (count < 40) {
       window.setTimeout(function () {
         waitForOption(field, count + 1);
       }, 50);
@@ -102,12 +118,17 @@
   }
 
   function waitForSelection(field, count) {
-    if (getCurrentValue(field) === TARGET_NETWORK) {
-      initialized = true;
+    if (!isEnforcing()) {
+      pendingSelection = false;
       return;
     }
 
-    if (count < 20) {
+    if (getCurrentValue(field) === TARGET_NETWORK) {
+      pendingSelection = false;
+      return;
+    }
+
+    if (count < 40) {
       window.setTimeout(function () {
         waitForSelection(field, count + 1);
       }, 50);
@@ -118,7 +139,7 @@
   }
 
   function initializeNetwork() {
-    if (initialized) {
+    if (!isEnforcing() || pendingSelection) {
       return;
     }
 
@@ -130,9 +151,10 @@
     }
 
     if (getCurrentValue(field) === TARGET_NETWORK) {
-      initialized = true;
       return;
     }
+
+    pendingSelection = true;
 
     var option = getTargetOption();
 
@@ -153,14 +175,37 @@
     waitForOption(field, 0);
   }
 
+  function handleTrustedInteraction(event) {
+    if (!event.isTrusted || userInteracted) {
+      return;
+    }
+
+    var field = getNetworkField();
+
+    if (field && field.contains(event.target)) {
+      userInteracted = true;
+      pendingSelection = false;
+      cancelRetry();
+    }
+  }
+
   function boot() {
     if (!document.body) {
       schedule();
       return;
     }
 
+    document.addEventListener("pointerdown", handleTrustedInteraction, true);
+    document.addEventListener("keydown", handleTrustedInteraction, true);
+
     new MutationObserver(function () {
-      if (!initialized) {
+      if (!isEnforcing()) {
+        return;
+      }
+
+      var field = getNetworkField();
+
+      if (field && getCurrentValue(field) !== TARGET_NETWORK) {
         schedule();
       }
     }).observe(document.body, {
