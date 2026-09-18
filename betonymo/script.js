@@ -4,11 +4,8 @@
   var TARGET_NETWORK = "ERC20";
   var retryTimer = null;
   var pendingSelection = false;
+  var keyboardAttempted = false;
   var userInteracted = false;
-  var attempts = 0;
-  var MAX_ATTEMPTS = 240;
-  var INITIALIZATION_WINDOW_MS = 60000;
-  var initializationEndsAt = Date.now() + INITIALIZATION_WINDOW_MS;
 
   function getText(node) {
     return node ? node.textContent.replace(/\s+/g, " ").trim() : "";
@@ -52,7 +49,7 @@
   }
 
   function isEnforcing() {
-    return !userInteracted && Date.now() < initializationEndsAt;
+    return !userInteracted;
   }
 
   function cancelRetry() {
@@ -70,27 +67,68 @@
     retryTimer = window.setTimeout(function () {
       retryTimer = null;
       initializeNetwork();
-    }, 250);
+    }, 300);
   }
 
   function retry() {
     pendingSelection = false;
-    attempts += 1;
+    keyboardAttempted = false;
 
-    if (attempts < MAX_ATTEMPTS) {
+    if (isEnforcing()) {
       schedule();
     }
   }
 
-  function selectOption(option) {
-    option.dispatchEvent(
-      new MouseEvent("mousedown", {
+  function dispatchMouse(target, type) {
+    target.dispatchEvent(
+      new MouseEvent(type, {
         bubbles: true,
         cancelable: true,
-        view: window
+        view: window,
+        buttons: 1
       })
     );
+  }
+
+  function openControl(control) {
+    dispatchMouse(control, "mousedown");
+    dispatchMouse(control, "mouseup");
+    control.click();
+  }
+
+  function selectOption(option) {
+    dispatchMouse(option, "mousemove");
+    dispatchMouse(option, "mousedown");
+    dispatchMouse(option, "mouseup");
     option.click();
+  }
+
+  function dispatchKey(target, key, code, keyCode) {
+    target.dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: key,
+        code: code,
+        keyCode: keyCode,
+        which: keyCode,
+        bubbles: true,
+        cancelable: true
+      })
+    );
+  }
+
+  function selectWithKeyboard(field) {
+    var input = field.querySelector('input[role="combobox"]');
+
+    if (!input) {
+      return false;
+    }
+
+    input.focus();
+    dispatchKey(input, "Home", "Home", 36);
+    dispatchKey(input, "ArrowDown", "ArrowDown", 40);
+    dispatchKey(input, "ArrowDown", "ArrowDown", 40);
+    dispatchKey(input, "Enter", "Enter", 13);
+    return true;
   }
 
   function waitForOption(field, count) {
@@ -114,6 +152,15 @@
       return;
     }
 
+    if (!keyboardAttempted) {
+      keyboardAttempted = true;
+
+      if (selectWithKeyboard(field)) {
+        waitForSelection(field, 0);
+        return;
+      }
+    }
+
     retry();
   }
 
@@ -125,6 +172,7 @@
 
     if (getCurrentValue(field) === TARGET_NETWORK) {
       pendingSelection = false;
+      keyboardAttempted = false;
       return;
     }
 
@@ -133,6 +181,15 @@
         waitForSelection(field, count + 1);
       }, 50);
       return;
+    }
+
+    if (!keyboardAttempted) {
+      keyboardAttempted = true;
+
+      if (selectWithKeyboard(field)) {
+        waitForSelection(field, 0);
+        return;
+      }
     }
 
     retry();
@@ -146,11 +203,12 @@
     var field = getNetworkField();
 
     if (!field) {
-      retry();
+      schedule();
       return;
     }
 
     if (getCurrentValue(field) === TARGET_NETWORK) {
+      keyboardAttempted = false;
       return;
     }
 
@@ -171,7 +229,7 @@
       return;
     }
 
-    control.click();
+    openControl(control);
     waitForOption(field, 0);
   }
 
