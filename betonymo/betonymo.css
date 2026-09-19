@@ -454,24 +454,24 @@ html body [data-mj="game-catalog-category-slider-item"].app-ltr-17htgyk {
 }
 
 /* Betonymo network dropdown order: ERC20, TRC20, BEP20, SOL.
-   The source markup currently renders: SOL, BEP20, ERC20, TRC20. */
+   The current source markup already renders the options in this order. */
 form [id^="react-select-"][id$="-listbox"] > .sl-select__menu-list {
   display: flex !important;
   flex-direction: column !important;
 }
 
 form [id^="react-select-"][id$="-listbox"] > .sl-select__menu-list > .sl-select__option:nth-child(1) {
-  order: 4 !important;
-}
-
-form [id^="react-select-"][id$="-listbox"] > .sl-select__menu-list > .sl-select__option:nth-child(2) {
-  order: 3 !important;
-}
-
-form [id^="react-select-"][id$="-listbox"] > .sl-select__menu-list > .sl-select__option:nth-child(3) {
   order: 1 !important;
 }
 
-form [id^="react-select-"][id$="-listbox"] > .sl-select__menu-list > .sl-select__option:nth-child(4) {
+form [id^="react-select-"][id$="-listbox"] > .sl-select__menu-list > .sl-select__option:nth-child(2) {
   order: 2 !important;
+}
+
+form [id^="react-select-"][id$="-listbox"] > .sl-select__menu-list > .sl-select__option:nth-child(3) {
+  order: 3 !important;
+}
+
+form [id^="react-select-"][id$="-listbox"] > .sl-select__menu-list > .sl-select__option:nth-child(4) {
+  order: 4 !important;
 }
