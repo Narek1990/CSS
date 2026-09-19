@@ -2303,5 +2303,3 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     document.addEventListener("DOMContentLoaded", start, { once: true });
   }
 })();
-
-
