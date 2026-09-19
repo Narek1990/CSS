@@ -3805,3 +3805,50 @@ html body .dmbobet-wheel-popup.is-spinning .dmbobet-wheel-spin {
     transition: none !important;
   }
 }
+
+
+/* Dmbobet footer social links: keep icons centered above the copyright. */
+html body [data-mj="footer-bottom"] {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+  text-align: center !important;
+}
+
+html body [data-mj="footer-bottom"] [data-mj="social-links"] {
+  display: flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  order: 1 !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+html body [data-mj="footer-bottom"] [data-mj="social-links"] > a {
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  margin: 0 !important;
+}
+
+html body [data-mj="footer-bottom"] [data-mj="social-links"] img {
+  display: block !important;
+  width: 24px !important;
+  height: 24px !important;
+  object-fit: contain !important;
+}
+
+html body [data-mj="footer-bottom"] [data-mj="footer-copyright"] {
+  order: 2 !important;
+  width: 100% !important;
+  margin: 0 !important;
+  text-align: center !important;
+}
