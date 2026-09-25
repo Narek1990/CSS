@@ -224,63 +224,6 @@
     }
   }
 
-  var betWinNameScanScheduled = false;
-  var betWinNameImageSelector =
-    'img[src*="/AssetsSite/gameimage/"], img[src*="/gameimage/"]';
-
-  function findNativeBetWinGameName(image) {
-    var widget = image.closest(
-      '[data-mj="widget-bet-win"], [data-mj="widget-bet-win-container"]'
-    );
-    var root = image.parentElement;
-    var titles;
-    var index;
-
-    while (root && root !== widget) {
-      if (root.querySelector && root.querySelector('i[aria-label="user"]')) {
-        titles = root.querySelectorAll('p[color="#FFFFFF"]');
-
-        for (index = 0; index < titles.length; index += 1) {
-          if (normalizeText(titles[index])) {
-            return titles[index];
-          }
-        }
-      }
-
-      root = root.parentElement;
-    }
-
-    return null;
-  }
-
-  function applyNativeBetWinGameNames() {
-    document.querySelectorAll(betWinNameImageSelector).forEach(function (image) {
-      var title = findNativeBetWinGameName(image);
-
-      if (!title) {
-        return;
-      }
-
-      title.setAttribute("data-donebets-native-bet-win-name", "true");
-      title.style.setProperty("display", "block", "important");
-      title.style.setProperty("visibility", "visible", "important");
-      title.style.setProperty("opacity", "1", "important");
-      title.style.setProperty("color", "#ffffff", "important");
-    });
-  }
-
-  function scheduleNativeBetWinGameNames() {
-    if (betWinNameScanScheduled) {
-      return;
-    }
-
-    betWinNameScanScheduled = true;
-    window.requestAnimationFrame(function () {
-      betWinNameScanScheduled = false;
-      applyNativeBetWinGameNames();
-    });
-  }
-
   (function () {
     "use strict";
 
@@ -312,7 +255,11 @@
       button.removeAttribute("id");
       button.removeAttribute("aria-controls");
       button.removeAttribute("data-state");
+      button.removeAttribute("disabled");
+      button.removeAttribute("aria-disabled");
+      button.disabled = false;
       button.type = "button";
+      button.tabIndex = 0;
       button.setAttribute("data-inancbet-slider-control", direction);
       button.classList.add("inancbet-slider-control");
       return button;
@@ -345,8 +292,6 @@
         moved = false;
         startX = event.clientX;
         startScrollLeft = events.scrollLeft;
-        events.setPointerCapture(event.pointerId);
-        events.classList.add("is-dragging");
       });
 
       events.addEventListener("pointermove", function (event) {
@@ -354,7 +299,11 @@
 
         if (!dragging) return;
         distance = event.clientX - startX;
-        if (Math.abs(distance) > 4) moved = true;
+        if (!moved && Math.abs(distance) > 4) {
+          moved = true;
+          events.setPointerCapture(event.pointerId);
+          events.classList.add("is-dragging");
+        }
         if (!moved) return;
         event.preventDefault();
         events.scrollLeft = startScrollLeft - distance;
@@ -375,8 +324,8 @@
         }, 0);
       }
 
-      events.addEventListener("pointerup", stopDragging);
-      events.addEventListener("pointercancel", stopDragging);
+      window.addEventListener("pointerup", stopDragging);
+      window.addEventListener("pointercancel", stopDragging);
       events.addEventListener("click", function (event) {
         if (!suppressClick) return;
         event.preventDefault();
@@ -454,8 +403,6 @@
           applyToNode(mutation.target.parentElement);
         }
       });
-
-      scheduleNativeBetWinGameNames();
     });
 
     observer.observe(document.documentElement, {
@@ -467,5 +414,4 @@
 
   applyToNode(document);
   observe();
-  scheduleNativeBetWinGameNames();
 })();
