@@ -226,8 +226,7 @@
 
   var betWinNameScanScheduled = false;
   var betWinNameImageSelector =
-    '[data-mj="widget-bet-win"] img[src*="/gameimage/"], ' +
-    '[data-mj="widget-bet-win-container"] img[src*="/gameimage/"]';
+    'img[src*="/AssetsSite/gameimage/"], img[src*="/gameimage/"]';
 
   function findNativeBetWinGameName(image) {
     var widget = image.closest(
