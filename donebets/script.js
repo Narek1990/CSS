@@ -234,7 +234,7 @@
   };
 
   function getGameImageId(src) {
-    var match = (src || "").match(/gameimage\\/([^/?#]+?)(?:\\.(?:webp|png|jpe?g))?(?:[?#]|$)/i);
+    var match = (src || "").match(/gameimage\/([^/?#]+?)(?:\.(?:webp|png|jpe?g))?(?:[?#]|$)/i);
     return match ? match[1] : "";
   }
 
