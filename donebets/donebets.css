@@ -408,7 +408,13 @@ html body [data-mj="widget-bet-win"] .donebets-bet-win-info {
 }
 
 html body [data-mj="widget-bet-win"] .donebets-bet-win-info {
-  overflow: hidden !important;
+  display: flex !important;
+  flex: 1 1 auto !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  overflow: visible !important;
 }
 
 html body [data-mj="widget-bet-win"] .esportesnow-bet-win-meta {
