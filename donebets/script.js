@@ -439,34 +439,38 @@
     var scheduled = false;
 
     function installCashbackStyles() {
-      var style;
+      var style = document.getElementById(cashbackStyleId);
 
-      if (document.getElementById(cashbackStyleId)) {
-        return;
+      if (!style) {
+        style = document.createElement("style");
+        style.id = cashbackStyleId;
+        (document.head || document.documentElement).appendChild(style);
       }
 
-      style = document.createElement("style");
-      style.id = cashbackStyleId;
       style.textContent =
         '[data-donebets-cashback-link="true"]{' +
         "border-radius:8px;" +
-        "transition:background-color .16s ease,color .16s ease;" +
+        "transition:color .16s ease;" +
         "}" +
         '[data-donebets-cashback-link="true"]:hover,' +
         '[data-donebets-cashback-link="true"]:focus-visible{' +
-        "background-color:rgba(255,255,255,.08)!important;" +
+        "color:#ff5b22!important;" +
+        "background-color:transparent!important;" +
         "}" +
         '[data-donebets-cashback-item="true"][data-donebets-active="true"] ' +
         '[data-donebets-cashback-link="true"]{' +
         "color:#ff5b22!important;" +
-        "background-color:rgba(255,91,34,.1)!important;" +
+        "background-color:transparent!important;" +
         "}" +
         '[data-donebets-cashback-item="true"][data-donebets-active="true"] ' +
         '[data-donebets-cashback-link="true"] *{' +
         "color:inherit!important;" +
+        "}" +
+        '[data-donebets-bonuses-inactive="true"],' +
+        '[data-donebets-bonuses-inactive="true"] *{' +
+        "color:var(--donebets-menu-inactive-color,#f5f5f5)!important;" +
+        "background-color:transparent!important;" +
         "}";
-
-      (document.head || document.documentElement).appendChild(style);
     }
 
     function normalizeText(element) {
@@ -526,6 +530,33 @@
             link.removeAttribute("aria-current");
           }
         });
+
+      document.querySelectorAll(accountMenuSelector).forEach(function (menu) {
+        var notification = menu.querySelector(notificationSelector);
+        var notificationLink = notification && notification.querySelector("a");
+        var inactiveColor = notificationLink
+          ? window.getComputedStyle(notificationLink).color
+          : "#f5f5f5";
+
+        menu.querySelectorAll(accountItemSelector).forEach(function (item) {
+          var isBonuses = Array.from(item.querySelectorAll("p, span")).some(
+            function (label) {
+              return normalizeText(label) === "bonuses";
+            }
+          );
+
+          if (active && isBonuses) {
+            item.setAttribute("data-donebets-bonuses-inactive", "true");
+            item.style.setProperty(
+              "--donebets-menu-inactive-color",
+              inactiveColor
+            );
+          } else {
+            item.removeAttribute("data-donebets-bonuses-inactive");
+            item.style.removeProperty("--donebets-menu-inactive-color");
+          }
+        });
+      });
     }
 
     function dismissAccountDropdown() {
@@ -656,12 +687,11 @@
       content.style.display = "flex";
       content.style.flexDirection = "row";
       content.style.alignItems = "center";
-      content.style.gap = "8px";
 
       item.removeAttribute("data-mj");
       item.removeAttribute("id");
       item.setAttribute("data-donebets-cashback-item", "true");
-      item.setAttribute("data-donebets-cashback-version", "4");
+      item.setAttribute("data-donebets-cashback-version", "5");
 
       link.removeAttribute("data-mj");
       link.removeAttribute("id");
@@ -694,7 +724,7 @@
       if (
         !cashback ||
         !belongsToMenu(cashback, menu) ||
-        cashback.getAttribute("data-donebets-cashback-version") !== "4" ||
+        cashback.getAttribute("data-donebets-cashback-version") !== "5" ||
         cashback.className !== notification.className
       ) {
         replacement = createCashbackItem(notification, href);
