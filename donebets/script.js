@@ -452,11 +452,6 @@
         "border-radius:8px;" +
         "transition:color .16s ease;" +
         "}" +
-        '[data-donebets-cashback-link="true"]:hover,' +
-        '[data-donebets-cashback-link="true"]:focus-visible{' +
-        "color:#ff5b22!important;" +
-        "background-color:transparent!important;" +
-        "}" +
         '[data-donebets-cashback-item="true"][data-donebets-active="true"] ' +
         '[data-donebets-cashback-link="true"]{' +
         "color:#ff5b22!important;" +
@@ -469,6 +464,21 @@
         '[data-donebets-bonuses-inactive="true"],' +
         '[data-donebets-bonuses-inactive="true"] *{' +
         "color:var(--donebets-menu-inactive-color,#f5f5f5)!important;" +
+        "-webkit-text-fill-color:var(--donebets-menu-inactive-color,#f5f5f5)!important;" +
+        "background-color:transparent!important;" +
+        "}" +
+        '[data-donebets-bonuses-inactive="true"] [fill]:not([fill="none"]){' +
+        "fill:var(--donebets-menu-inactive-color,#f5f5f5)!important;" +
+        "}" +
+        '[data-donebets-bonuses-inactive="true"] [stroke]:not([stroke="none"]){' +
+        "stroke:var(--donebets-menu-inactive-color,#f5f5f5)!important;" +
+        "}" +
+        '[data-donebets-bonuses-inactive="true"]::before,' +
+        '[data-donebets-bonuses-inactive="true"]::after,' +
+        '[data-donebets-bonuses-inactive="true"] *::before,' +
+        '[data-donebets-bonuses-inactive="true"] *::after{' +
+        "color:var(--donebets-menu-inactive-color,#f5f5f5)!important;" +
+        "-webkit-text-fill-color:var(--donebets-menu-inactive-color,#f5f5f5)!important;" +
         "background-color:transparent!important;" +
         "}";
     }
@@ -534,16 +544,26 @@
       document.querySelectorAll(accountMenuSelector).forEach(function (menu) {
         var notification = menu.querySelector(notificationSelector);
         var notificationLink = notification && notification.querySelector("a");
-        var inactiveColor = notificationLink
-          ? window.getComputedStyle(notificationLink).color
+        var notificationLabel =
+          notification &&
+          Array.from(notification.querySelectorAll("p, span")).find(
+            function (label) {
+              return normalizeText(label) === "notifications";
+            }
+          );
+        var inactiveColor = notificationLabel
+          ? window.getComputedStyle(notificationLabel).color
+          : notificationLink
+            ? window.getComputedStyle(notificationLink).color
           : "#f5f5f5";
 
         menu.querySelectorAll(accountItemSelector).forEach(function (item) {
-          var isBonuses = Array.from(item.querySelectorAll("p, span")).some(
+          var labels = Array.from(item.querySelectorAll("p, span")).filter(
             function (label) {
               return normalizeText(label) === "bonuses";
             }
           );
+          var isBonuses = labels.length > 0;
 
           if (active && isBonuses) {
             item.setAttribute("data-donebets-bonuses-inactive", "true");
@@ -551,9 +571,35 @@
               "--donebets-menu-inactive-color",
               inactiveColor
             );
+            labels.forEach(function (label) {
+              var control = label.closest("a, button, [role='button']");
+
+              label.setAttribute(
+                "data-donebets-bonuses-inactive",
+                "true"
+              );
+
+              if (control) {
+                control.setAttribute(
+                  "data-donebets-bonuses-inactive",
+                  "true"
+                );
+                control.removeAttribute("aria-current");
+                control.setAttribute("aria-selected", "false");
+              }
+            });
           } else {
             item.removeAttribute("data-donebets-bonuses-inactive");
             item.style.removeProperty("--donebets-menu-inactive-color");
+            item
+              .querySelectorAll(
+                '[data-donebets-bonuses-inactive="true"]'
+              )
+              .forEach(function (element) {
+                element.removeAttribute(
+                  "data-donebets-bonuses-inactive"
+                );
+              });
           }
         });
       });
@@ -691,7 +737,7 @@
       item.removeAttribute("data-mj");
       item.removeAttribute("id");
       item.setAttribute("data-donebets-cashback-item", "true");
-      item.setAttribute("data-donebets-cashback-version", "5");
+      item.setAttribute("data-donebets-cashback-version", "6");
 
       link.removeAttribute("data-mj");
       link.removeAttribute("id");
@@ -724,7 +770,7 @@
       if (
         !cashback ||
         !belongsToMenu(cashback, menu) ||
-        cashback.getAttribute("data-donebets-cashback-version") !== "5" ||
+        cashback.getAttribute("data-donebets-cashback-version") !== "6" ||
         cashback.className !== notification.className
       ) {
         replacement = createCashbackItem(notification, href);
