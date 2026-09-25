@@ -404,12 +404,31 @@
     ).replace(/\s+/g, " ").trim();
   }
 
+  function findBetWinUserRow(card) {
+    var paragraphs;
+    var index;
+
+    if (!card || !card.querySelectorAll) {
+      return null;
+    }
+
+    paragraphs = card.querySelectorAll("p");
+
+    for (index = 0; index < paragraphs.length; index += 1) {
+      if (paragraphs[index].querySelector('i[aria-label="user"]')) {
+        return paragraphs[index];
+      }
+    }
+
+    return null;
+  }
+
   function findBetWinCard(image) {
     var widget = image.closest('[data-mj="widget-bet-win"]');
     var root = image.parentElement;
 
     while (root && root !== widget) {
-      if (root.querySelector && root.querySelector('p:has(i[aria-label="user"])')) {
+      if (findBetWinUserRow(root)) {
         return root;
       }
 
@@ -703,6 +722,36 @@
     );
   }
 
+  function styleBetWinMeta(meta, titleElement, providerElement) {
+    meta.style.setProperty("display", "flex", "important");
+    meta.style.setProperty("flex-direction", "column", "important");
+    meta.style.setProperty("align-items", "flex-start", "important");
+    meta.style.setProperty("gap", "1px", "important");
+    meta.style.setProperty("width", "100%", "important");
+    meta.style.setProperty("min-width", "0", "important");
+    meta.style.setProperty("max-width", "100%", "important");
+    meta.style.setProperty("overflow", "hidden", "important");
+    meta.style.setProperty("visibility", "visible", "important");
+    meta.style.setProperty("opacity", "1", "important");
+
+    [titleElement, providerElement].forEach(function (element) {
+      element.style.setProperty("display", "block", "important");
+      element.style.setProperty("max-width", "100%", "important");
+      element.style.setProperty("overflow", "hidden", "important");
+      element.style.setProperty("text-overflow", "ellipsis", "important");
+      element.style.setProperty("white-space", "nowrap", "important");
+      element.style.setProperty("visibility", "visible", "important");
+      element.style.setProperty("opacity", "1", "important");
+    });
+
+    titleElement.style.setProperty("color", "#ffffff", "important");
+    providerElement.style.setProperty("color", "rgba(255, 255, 255, 0.72)", "important");
+    titleElement.style.setProperty("font-size", "14px", "important");
+    providerElement.style.setProperty("font-size", "11px", "important");
+    titleElement.style.setProperty("font-weight", "800", "important");
+    providerElement.style.setProperty("font-weight", "650", "important");
+  }
+
   function createBetWinMeta(title, provider) {
     var meta = document.createElement("div");
     var titleElement = document.createElement("span");
@@ -714,6 +763,7 @@
     providerElement.className = "esportesnow-bet-win-provider";
     titleElement.textContent = title;
     providerElement.textContent = provider;
+    styleBetWinMeta(meta, titleElement, providerElement);
     meta.appendChild(titleElement);
     meta.appendChild(providerElement);
 
@@ -736,7 +786,7 @@
 
     getBetWinImages().forEach(function (image) {
       var card = findBetWinCard(image);
-      var userRow = card && card.querySelector('p:has(i[aria-label="user"])');
+      var userRow = findBetWinUserRow(card);
       var info = userRow && userRow.parentElement;
       var id = getBetWinImageId(image);
       var title = getBetWinImageTitle(image);
@@ -780,6 +830,8 @@
       if (providerElement.textContent !== details.provider) {
         providerElement.textContent = details.provider;
       }
+
+      styleBetWinMeta(meta, titleElement, providerElement);
     });
 
     scheduleBetWinMetadataRefresh();
