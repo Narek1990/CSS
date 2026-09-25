@@ -419,7 +419,7 @@
     "use strict";
 
     var assetBase =
-      "https://cdn.jsdelivr.net/gh/ArturMakaryan/main@c4af847/Donebets/";
+      "https://cdn.jsdelivr.net/gh/ArturMakaryan/main@d3c7607/Donebets/";
     var actions = [
       {
         label: "Support",
