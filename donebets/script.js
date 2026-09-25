@@ -225,32 +225,245 @@
   }
 
   var betWinImageSelector = '[data-mj="widget-bet-win"] img[src*="/gameimage/"]';
+  var betWinWidgetId = "";
   var betWinScanScheduled = false;
-  var betWinGameDetails = {
-    "61412": { title: "Ghost Father", provider: "Peter&Sons" },
-    "73693": { title: "Gunpowder", provider: "Peter&Sons" },
-    "81965": { title: "Steamworks", provider: "Peter&Sons" },
-    "82640": { title: "Muddy Waters", provider: "Peter&Sons" }
-  };
+  var betWinMetadataPromise = null;
+  var betWinMetadataLoaded = false;
+  var betWinMetadataRefreshTimer = null;
+  var betWinGameDetails = Object.create(null);
+
+  function getBetWinLanguage() {
+    return ((document.documentElement && document.documentElement.lang) || "en").split("-")[0];
+  }
+
+  function extractBetWinArray(payload) {
+    if (Array.isArray(payload)) {
+      return payload;
+    }
+
+    if (!payload || typeof payload !== "object") {
+      return [];
+    }
+
+    if (Array.isArray(payload.data)) {
+      return payload.data;
+    }
+
+    if (Array.isArray(payload.items)) {
+      return payload.items;
+    }
+
+    if (Array.isArray(payload.result)) {
+      return payload.result;
+    }
+
+    if (payload.data && typeof payload.data === "object") {
+      return extractBetWinArray(payload.data);
+    }
+
+    return [];
+  }
+
+  function normalizeBetWinId(value) {
+    return value === null || value === undefined ? "" : String(value).trim();
+  }
+
+  function fetchBetWinJson(path, options) {
+    var requestOptions = Object.assign(
+      {
+        credentials: "same-origin",
+        headers: {
+          "Accept-Language": getBetWinLanguage()
+        }
+      },
+      options || {}
+    );
+
+    requestOptions.headers = Object.assign(
+      {
+        "Accept-Language": getBetWinLanguage()
+      },
+      requestOptions.headers || {}
+    );
+
+    return window.fetch(window.location.origin + path, requestOptions).then(function (response) {
+      if (!response.ok) {
+        throw new Error("Donebets API request failed: " + response.status);
+      }
+
+      return response.json();
+    });
+  }
+
+  function findBetWinWidgetId(value) {
+    var keys;
+    var index;
+    var key;
+    var found;
+
+    if (!value || typeof value !== "object") {
+      return "";
+    }
+
+    if (!Array.isArray(value) && value.betWinId !== undefined && value.betWinId !== null) {
+      return normalizeBetWinId(value.betWinId);
+    }
+
+    if (Array.isArray(value)) {
+      for (index = 0; index < value.length; index += 1) {
+        found = findBetWinWidgetId(value[index]);
+        if (found) {
+          return found;
+        }
+      }
+
+      return "";
+    }
+
+    keys = Object.keys(value);
+    for (index = 0; index < keys.length; index += 1) {
+      key = keys[index];
+
+      if (key === "data" && typeof value[key] === "string") {
+        try {
+          found = findBetWinWidgetId(JSON.parse(value[key]));
+          if (found) {
+            return found;
+          }
+        } catch (error) {
+          /* Ignore non-JSON widget fields. */
+        }
+      }
+
+      found = findBetWinWidgetId(value[key]);
+      if (found) {
+        return found;
+      }
+    }
+
+    return "";
+  }
+
+  function resolveBetWinWidgetId() {
+    if (betWinWidgetId) {
+      return Promise.resolve(betWinWidgetId);
+    }
+
+    return fetchBetWinJson("/api/app/api/v1/SiteWidgets?pageIdentifier=home")
+      .then(function (payload) {
+        betWinWidgetId = findBetWinWidgetId(payload) || "122";
+        return betWinWidgetId;
+      })
+      .catch(function () {
+        betWinWidgetId = "122";
+        return betWinWidgetId;
+      });
+  }
 
   function getGameImageId(src) {
     var match = (src || "").match(/gameimage\/([^/?#]+?)(?:\.(?:webp|png|jpe?g))?(?:[?#]|$)/i);
     return match ? match[1] : "";
   }
 
-  function collectGameTitles() {
-    var titles = {};
+  function collectBetWinLiveGames(payload) {
+    var liveGames = Object.create(null);
 
-    document.querySelectorAll('img[src*="/gameimage/"][alt]').forEach(function (image) {
-      var id = getGameImageId(image.getAttribute("src"));
-      var title = (image.getAttribute("alt") || "").trim();
+    extractBetWinArray(payload).forEach(function (item) {
+      var id = normalizeBetWinId(item && (item.gameId !== undefined ? item.gameId : item.id));
+      var title = item && (item.gameName || item.name);
 
       if (id && title) {
-        titles[id] = title;
+        liveGames[id] = String(title).trim();
       }
     });
 
-    return titles;
+    return liveGames;
+  }
+
+  function loadBetWinMetadata() {
+    if (betWinMetadataPromise) {
+      return betWinMetadataPromise;
+    }
+
+    betWinMetadataPromise = resolveBetWinWidgetId()
+      .then(function (widgetId) {
+        return fetchBetWinJson("/api/livewidget/api/v1/LiveWidget/" + encodeURIComponent(widgetId) + "/list");
+      })
+      .then(function (payload) {
+        var liveGames = collectBetWinLiveGames(payload);
+        var gameIds = Object.keys(liveGames);
+
+        if (!gameIds.length) {
+          return [];
+        }
+
+        return fetchBetWinJson("/api/integration/api/v1/WebSites/games/details", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(gameIds.map(function (id) {
+            return Number(id);
+          }))
+        }).then(function (detailsPayload) {
+          return extractBetWinArray(detailsPayload);
+        });
+      })
+      .then(function (details) {
+        var nextDetails = Object.create(null);
+
+        details.forEach(function (game) {
+          var id = normalizeBetWinId(game && (game.id !== undefined ? game.id : game.gameId));
+          var title = game && (game.name || game.gameName);
+          var provider = game && (game.providerName || game.provider);
+
+          if (id && title && provider) {
+            nextDetails[id] = {
+              title: String(title).trim(),
+              provider: String(provider).trim()
+            };
+          }
+        });
+
+        betWinGameDetails = nextDetails;
+        betWinMetadataLoaded = true;
+        return nextDetails;
+      })
+      .catch(function (error) {
+        betWinMetadataLoaded = true;
+        betWinGameDetails = Object.create(null);
+        if (window.console && console.warn) {
+          console.warn("[Donebets] Could not load exact bet-win game metadata.", error);
+        }
+
+        return betWinGameDetails;
+      })
+      .then(function (details) {
+        betWinMetadataPromise = null;
+        return details;
+      });
+
+    return betWinMetadataPromise;
+  }
+
+  function scheduleBetWinMetadataRefresh() {
+    if (betWinMetadataRefreshTimer) {
+      return;
+    }
+
+    betWinMetadataRefreshTimer = window.setTimeout(function () {
+      betWinMetadataRefreshTimer = null;
+      betWinMetadataLoaded = false;
+      loadBetWinMetadata().then(function () {
+        injectBetWinGameDetails();
+      });
+    }, 30000);
+  }
+
+  function getBetWinMeta(info) {
+    return info.querySelector(
+      '[data-donebets-bet-win-meta="true"], .esportesnow-bet-win-meta'
+    );
   }
 
   function createBetWinMeta(title, provider) {
@@ -270,8 +483,19 @@
     return meta;
   }
 
+  function removeBetWinMeta(meta) {
+    if (meta && meta.parentNode) {
+      meta.parentNode.removeChild(meta);
+    }
+  }
+
   function injectBetWinGameDetails() {
-    var pageTitles = collectGameTitles();
+    if (!betWinMetadataLoaded) {
+      loadBetWinMetadata().then(function () {
+        injectBetWinGameDetails();
+      });
+      return;
+    }
 
     document.querySelectorAll(betWinImageSelector).forEach(function (image) {
       var imageContainer = image.parentElement;
@@ -279,26 +503,45 @@
       var userRow = card && card.querySelector('p:has(i[aria-label="user"])');
       var info = userRow && userRow.parentElement;
       var id = image && getGameImageId(image.getAttribute("src"));
-      var defaults = id ? betWinGameDetails[id] : null;
-      var title = (id && pageTitles[id]) || (defaults && defaults.title) || "Casino Game";
-      var provider = (defaults && defaults.provider) || "Provider";
-      var meta;
+      var details = id ? betWinGameDetails[id] : null;
+      var meta = info && getBetWinMeta(info);
+      var titleElement;
+      var providerElement;
 
       if (!info || !userRow) {
         return;
       }
 
-      meta = info.querySelector('[data-donebets-bet-win-meta="true"]');
+      if (!details || !details.title || !details.provider) {
+        removeBetWinMeta(meta);
+        return;
+      }
 
       if (!meta) {
-        meta = createBetWinMeta(title, provider);
+        meta = createBetWinMeta(details.title, details.provider);
         info.insertBefore(meta, userRow);
         return;
       }
 
-      meta.querySelector(".esportesnow-bet-win-title").textContent = title;
-      meta.querySelector(".esportesnow-bet-win-provider").textContent = provider;
+      titleElement = meta.querySelector(".esportesnow-bet-win-title");
+      providerElement = meta.querySelector(".esportesnow-bet-win-provider");
+
+      if (!titleElement || !providerElement) {
+        removeBetWinMeta(meta);
+        info.insertBefore(createBetWinMeta(details.title, details.provider), userRow);
+        return;
+      }
+
+      if (titleElement.textContent !== details.title) {
+        titleElement.textContent = details.title;
+      }
+
+      if (providerElement.textContent !== details.provider) {
+        providerElement.textContent = details.provider;
+      }
     });
+
+    scheduleBetWinMetadataRefresh();
   }
 
   function scheduleBetWinScan() {
