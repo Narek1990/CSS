@@ -346,7 +346,12 @@
 
         enableMouseDrag(events);
 
-        if (actions.querySelector('[data-inancbet-slider-controls="true"]')) return;
+        controls = actions.querySelector('[data-inancbet-slider-controls="true"]');
+        if (controls) {
+          controls.setAttribute("dir", "ltr");
+          controls.style.direction = "ltr";
+          return;
+        }
 
         previousButton = cloneArrow("left");
         nextButton = cloneArrow("right");
@@ -355,6 +360,8 @@
         controls = document.createElement("div");
         controls.className = "inancbet-slider-controls";
         controls.setAttribute("data-inancbet-slider-controls", "true");
+        controls.setAttribute("dir", "ltr");
+        controls.style.direction = "ltr";
         previousButton.addEventListener("click", function () {
           var currentEvents = findEvents(header, index);
           if (currentEvents) scrollEvents(currentEvents, -1);
@@ -460,6 +467,46 @@
       return url.pathname + url.search + url.hash;
     }
 
+    function navigateToCashback(event) {
+      var link = event.currentTarget;
+      var target;
+      var route;
+      var navigationEvent;
+
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return;
+      }
+
+      target = new URL(link.href, window.location.href);
+
+      if (target.origin !== window.location.origin) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      route = target.pathname + target.search + target.hash;
+      window.history.pushState(window.history.state, "", route);
+
+      if (typeof window.PopStateEvent === "function") {
+        navigationEvent = new window.PopStateEvent("popstate", {
+          state: window.history.state
+        });
+      } else {
+        navigationEvent = new window.Event("popstate");
+      }
+
+      window.dispatchEvent(navigationEvent);
+    }
+
     function createCashbackIcon() {
       var icon = document.createElement("i");
 
@@ -522,12 +569,13 @@
       item.removeAttribute("data-mj");
       item.removeAttribute("id");
       item.setAttribute("data-donebets-cashback-item", "true");
-      item.setAttribute("data-donebets-cashback-version", "2");
+      item.setAttribute("data-donebets-cashback-version", "3");
 
       link.removeAttribute("data-mj");
       link.removeAttribute("id");
       link.setAttribute("href", href || buildCashbackHref());
       link.setAttribute("data-donebets-cashback-link", "true");
+      link.addEventListener("click", navigateToCashback);
 
       return item;
     }
@@ -554,7 +602,7 @@
       if (
         !cashback ||
         !belongsToMenu(cashback, menu) ||
-        cashback.getAttribute("data-donebets-cashback-version") !== "2" ||
+        cashback.getAttribute("data-donebets-cashback-version") !== "3" ||
         cashback.className !== notification.className
       ) {
         replacement = createCashbackItem(notification, href);
