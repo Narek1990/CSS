@@ -399,3 +399,50 @@ a[data-mj="game-catalog-category-slider-item"].app-ltr-17wq370,
     transform: translateX(0);
   }
 }
+
+/* Donebets bet-win metadata: keep every card compact and readable. */
+html body [data-mj="widget-bet-win"] .donebets-bet-win-card,
+html body [data-mj="widget-bet-win"] .donebets-bet-win-info {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+html body [data-mj="widget-bet-win"] .donebets-bet-win-info {
+  overflow: hidden !important;
+}
+
+html body [data-mj="widget-bet-win"] .esportesnow-bet-win-meta {
+  display: flex !important;
+  flex: 0 1 auto !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 1px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+}
+
+html body [data-mj="widget-bet-win"] .esportesnow-bet-win-title,
+html body [data-mj="widget-bet-win"] .esportesnow-bet-win-provider {
+  display: block !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+html body [data-mj="widget-bet-win"] .esportesnow-bet-win-title {
+  color: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+}
+
+html body [data-mj="widget-bet-win"] .esportesnow-bet-win-provider {
+  color: rgb(255 255 255 / 72%) !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  line-height: 1.1 !important;
+}
