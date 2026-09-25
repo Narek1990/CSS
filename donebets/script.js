@@ -224,6 +224,115 @@
     }
   }
 
+  var eventsSelector = '[data-mj="widget-phoenix-sport-container"] #ph-sport-widget .top-events';
+  var sportHeaderSelector = '[data-mj="widget-phoenix-sport-header"]';
+  var sliderScanScheduled = false;
+
+  function findEvents(header, index) {
+    var container = header.closest('[data-mj="widget-phoenix-sport-container"]');
+    var events = container && container.querySelector(eventsSelector);
+
+    if (events) {
+      return events;
+    }
+
+    return document.querySelectorAll(eventsSelector)[index] || null;
+  }
+
+  function cloneArrow(direction) {
+    var name = "arrow_" + direction;
+    var source = document.querySelector(
+      'button[aria-label="' + name + '"][name="' + name + '"].sl-icon:not([data-inancbet-slider-control])'
+    );
+    var button;
+
+    if (!source) {
+      return null;
+    }
+
+    button = source.cloneNode(true);
+    button.removeAttribute("id");
+    button.removeAttribute("aria-controls");
+    button.removeAttribute("data-state");
+    button.type = "button";
+    button.setAttribute("data-inancbet-slider-control", direction);
+    button.classList.add("inancbet-slider-control");
+
+    return button;
+  }
+
+  function scrollEvents(events, direction) {
+    var card = events.querySelector(".ph-event-card");
+    var styles = window.getComputedStyle(events);
+    var gap = parseFloat(styles.columnGap || styles.gap) || 24;
+    var distance = (card ? card.getBoundingClientRect().width : 420) + gap;
+
+    if (typeof events.scrollBy === "function") {
+      events.scrollBy({
+        left: direction * distance,
+        behavior: "smooth"
+      });
+    } else {
+      events.scrollLeft += direction * distance;
+    }
+  }
+
+  function addSliderButtons() {
+    var headers = document.querySelectorAll(sportHeaderSelector);
+
+    headers.forEach(function (header, index) {
+      var actions = header.querySelector(".app-ltr-1dzjkmt, .app-rtl-1dzjkmt");
+      var allLink = actions && actions.querySelector(".app-ltr-1qyij3p, .app-rtl-1qyij3p");
+      var events = findEvents(header, index);
+      var previousButton;
+      var nextButton;
+      var controls;
+
+      if (
+        !actions ||
+        !allLink ||
+        !events ||
+        actions.querySelector('[data-inancbet-slider-controls="true"]')
+      ) {
+        return;
+      }
+
+      previousButton = cloneArrow("left");
+      nextButton = cloneArrow("right");
+
+      if (!previousButton || !nextButton) {
+        return;
+      }
+
+      controls = document.createElement("div");
+      controls.className = "inancbet-slider-controls";
+      controls.setAttribute("data-inancbet-slider-controls", "true");
+
+      previousButton.addEventListener("click", function () {
+        scrollEvents(events, -1);
+      });
+
+      nextButton.addEventListener("click", function () {
+        scrollEvents(events, 1);
+      });
+
+      controls.append(previousButton, nextButton);
+      actions.insertBefore(controls, allLink.nextSibling);
+    });
+  }
+
+  function scheduleSliderScan() {
+    if (sliderScanScheduled) {
+      return;
+    }
+
+    sliderScanScheduled = true;
+    (window.requestAnimationFrame || window.setTimeout)(function () {
+      sliderScanScheduled = false;
+      addSliderButtons();
+    }, 0);
+  }
+
   function observe() {
     if (observer) {
       return;
@@ -237,6 +346,8 @@
           applyToNode(mutation.target.parentElement);
         }
       });
+
+      scheduleSliderScan();
     });
 
     observer.observe(document.documentElement, {
@@ -248,4 +359,5 @@
 
   applyToNode(document);
   observe();
+  scheduleSliderScan();
 })();
