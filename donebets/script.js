@@ -224,114 +224,254 @@
     }
   }
 
-  var eventsSelector = '[data-mj="widget-phoenix-sport-container"] #ph-sport-widget .top-events';
-  var sportHeaderSelector = '[data-mj="widget-phoenix-sport-header"]';
-  var sliderScanScheduled = false;
+  var betWinImageSelector = '[data-mj="widget-bet-win"] img[src*="/gameimage/"]';
+  var betWinScanScheduled = false;
+  var betWinGameDetails = {
+    "61412": { title: "Ghost Father", provider: "Peter&Sons" },
+    "73693": { title: "Gunpowder", provider: "Peter&Sons" },
+    "81965": { title: "Steamworks", provider: "Peter&Sons" },
+    "82640": { title: "Muddy Waters", provider: "Peter&Sons" }
+  };
 
-  function findEvents(header, index) {
-    var container = header.closest('[data-mj="widget-phoenix-sport-container"]');
-    var events = container && container.querySelector(eventsSelector);
-
-    if (events) {
-      return events;
-    }
-
-    return document.querySelectorAll(eventsSelector)[index] || null;
+  function getGameImageId(src) {
+    var match = (src || "").match(/gameimage\\/([^/?#]+?)(?:\\.(?:webp|png|jpe?g))?(?:[?#]|$)/i);
+    return match ? match[1] : "";
   }
 
-  function cloneArrow(direction) {
-    var name = "arrow_" + direction;
-    var source = document.querySelector(
-      'button[aria-label="' + name + '"][name="' + name + '"].sl-icon:not([data-inancbet-slider-control])'
-    );
-    var button;
+  function collectGameTitles() {
+    var titles = {};
 
-    if (!source) {
-      return null;
-    }
+    document.querySelectorAll('img[src*="/gameimage/"][alt]').forEach(function (image) {
+      var id = getGameImageId(image.getAttribute("src"));
+      var title = (image.getAttribute("alt") || "").trim();
 
-    button = source.cloneNode(true);
-    button.removeAttribute("id");
-    button.removeAttribute("aria-controls");
-    button.removeAttribute("data-state");
-    button.type = "button";
-    button.setAttribute("data-inancbet-slider-control", direction);
-    button.classList.add("inancbet-slider-control");
+      if (id && title) {
+        titles[id] = title;
+      }
+    });
 
-    return button;
+    return titles;
   }
 
-  function scrollEvents(events, direction) {
-    var card = events.querySelector(".ph-event-card");
-    var styles = window.getComputedStyle(events);
-    var gap = parseFloat(styles.columnGap || styles.gap) || 24;
-    var distance = (card ? card.getBoundingClientRect().width : 420) + gap;
+  function createBetWinMeta(title, provider) {
+    var meta = document.createElement("div");
+    var titleElement = document.createElement("span");
+    var providerElement = document.createElement("span");
 
-    if (typeof events.scrollBy === "function") {
-      events.scrollBy({
-        left: direction * distance,
-        behavior: "smooth"
-      });
-    } else {
-      events.scrollLeft += direction * distance;
-    }
+    meta.className = "esportesnow-bet-win-meta";
+    meta.setAttribute("data-donebets-bet-win-meta", "true");
+    titleElement.className = "esportesnow-bet-win-title";
+    providerElement.className = "esportesnow-bet-win-provider";
+    titleElement.textContent = title;
+    providerElement.textContent = provider;
+    meta.appendChild(titleElement);
+    meta.appendChild(providerElement);
+
+    return meta;
   }
 
-  function addSliderButtons() {
-    var headers = document.querySelectorAll(sportHeaderSelector);
+  function injectBetWinGameDetails() {
+    var pageTitles = collectGameTitles();
 
-    headers.forEach(function (header, index) {
-      var actions = header.querySelector(".app-ltr-1dzjkmt, .app-rtl-1dzjkmt");
-      var allLink = actions && actions.querySelector(".app-ltr-1qyij3p, .app-rtl-1qyij3p");
-      var events = findEvents(header, index);
-      var previousButton;
-      var nextButton;
-      var controls;
+    document.querySelectorAll(betWinImageSelector).forEach(function (image) {
+      var imageContainer = image.parentElement;
+      var card = imageContainer && imageContainer.parentElement;
+      var userRow = card && card.querySelector('p:has(i[aria-label="user"])');
+      var info = userRow && userRow.parentElement;
+      var id = image && getGameImageId(image.getAttribute("src"));
+      var defaults = id ? betWinGameDetails[id] : null;
+      var title = (id && pageTitles[id]) || (defaults && defaults.title) || "Casino Game";
+      var provider = (defaults && defaults.provider) || "Provider";
+      var meta;
 
-      if (
-        !actions ||
-        !allLink ||
-        !events ||
-        actions.querySelector('[data-inancbet-slider-controls="true"]')
-      ) {
+      if (!info || !userRow) {
         return;
       }
 
-      previousButton = cloneArrow("left");
-      nextButton = cloneArrow("right");
+      meta = info.querySelector('[data-donebets-bet-win-meta="true"]');
 
-      if (!previousButton || !nextButton) {
+      if (!meta) {
+        meta = createBetWinMeta(title, provider);
+        info.insertBefore(meta, userRow);
         return;
       }
 
-      controls = document.createElement("div");
-      controls.className = "inancbet-slider-controls";
-      controls.setAttribute("data-inancbet-slider-controls", "true");
-
-      previousButton.addEventListener("click", function () {
-        scrollEvents(events, -1);
-      });
-
-      nextButton.addEventListener("click", function () {
-        scrollEvents(events, 1);
-      });
-
-      controls.append(previousButton, nextButton);
-      actions.insertBefore(controls, allLink.nextSibling);
+      meta.querySelector(".esportesnow-bet-win-title").textContent = title;
+      meta.querySelector(".esportesnow-bet-win-provider").textContent = provider;
     });
   }
 
-  function scheduleSliderScan() {
-    if (sliderScanScheduled) {
+  function scheduleBetWinScan() {
+    if (betWinScanScheduled) {
       return;
     }
 
-    sliderScanScheduled = true;
-    (window.requestAnimationFrame || window.setTimeout)(function () {
-      sliderScanScheduled = false;
-      addSliderButtons();
-    }, 0);
+    betWinScanScheduled = true;
+    window.requestAnimationFrame(function () {
+      betWinScanScheduled = false;
+      injectBetWinGameDetails();
+    });
   }
+
+  (function () {
+    "use strict";
+
+    var eventsSelector = '[data-mj="widget-phoenix-sport-container"] #ph-sport-widget .top-events';
+
+    function findEvents(header, index) {
+      var root = header.parentElement;
+      var events;
+
+      while (root && root !== document.body) {
+        events = root.querySelector(eventsSelector);
+        if (events) return events;
+        root = root.parentElement;
+      }
+
+      return document.querySelectorAll(eventsSelector)[index] || null;
+    }
+
+    function cloneArrow(direction) {
+      var name = "arrow_" + direction;
+      var source = document.querySelector(
+        'button[aria-label="' + name + '"][name="' + name + '"].sl-icon:not([data-inancbet-slider-control])'
+      );
+      var button;
+
+      if (!source) return null;
+
+      button = source.cloneNode(true);
+      button.removeAttribute("id");
+      button.removeAttribute("aria-controls");
+      button.removeAttribute("data-state");
+      button.type = "button";
+      button.setAttribute("data-inancbet-slider-control", direction);
+      button.classList.add("inancbet-slider-control");
+      return button;
+    }
+
+    function scrollEvents(events, direction) {
+      var card = events.querySelector(".ph-event-card");
+      var styles = window.getComputedStyle(events);
+      var gap = parseFloat(styles.columnGap || styles.gap) || 24;
+      var distance = (card ? card.getBoundingClientRect().width : 420) + gap;
+
+      events.scrollBy({ left: direction * distance, behavior: "smooth" });
+    }
+
+    function enableMouseDrag(events) {
+      var dragging = false;
+      var moved = false;
+      var suppressClick = false;
+      var startX = 0;
+      var startScrollLeft = 0;
+
+      if (events.getAttribute("data-inancbet-mouse-drag") === "true") return;
+
+      events.setAttribute("data-inancbet-mouse-drag", "true");
+      events.classList.add("inancbet-mouse-drag");
+
+      events.addEventListener("pointerdown", function (event) {
+        if (event.pointerType !== "mouse" || event.button !== 0) return;
+        dragging = true;
+        moved = false;
+        startX = event.clientX;
+        startScrollLeft = events.scrollLeft;
+        events.setPointerCapture(event.pointerId);
+        events.classList.add("is-dragging");
+      });
+
+      events.addEventListener("pointermove", function (event) {
+        var distance;
+
+        if (!dragging) return;
+        distance = event.clientX - startX;
+        if (Math.abs(distance) > 4) moved = true;
+        if (!moved) return;
+        event.preventDefault();
+        events.scrollLeft = startScrollLeft - distance;
+      });
+
+      function stopDragging(event) {
+        if (!dragging) return;
+        dragging = false;
+        suppressClick = moved;
+        events.classList.remove("is-dragging");
+
+        if (events.hasPointerCapture(event.pointerId)) {
+          events.releasePointerCapture(event.pointerId);
+        }
+
+        window.setTimeout(function () {
+          suppressClick = false;
+        }, 0);
+      }
+
+      events.addEventListener("pointerup", stopDragging);
+      events.addEventListener("pointercancel", stopDragging);
+      events.addEventListener("click", function (event) {
+        if (!suppressClick) return;
+        event.preventDefault();
+        event.stopPropagation();
+      }, true);
+    }
+
+    function addSliderButtons() {
+      document.querySelectorAll('[data-mj="widget-phoenix-sport-header"]').forEach(function (header, index) {
+        var actions = header.querySelector(".app-ltr-1dzjkmt, .app-rtl-1dzjkmt");
+        var allLink = actions && actions.querySelector(".app-ltr-1qyij3p, .app-rtl-1qyij3p");
+        var events = findEvents(header, index);
+        var previousButton;
+        var nextButton;
+        var controls;
+
+        if (!actions || !allLink || !events) return;
+
+        enableMouseDrag(events);
+
+        if (actions.querySelector('[data-inancbet-slider-controls="true"]')) return;
+
+        previousButton = cloneArrow("left");
+        nextButton = cloneArrow("right");
+        if (!previousButton || !nextButton) return;
+
+        controls = document.createElement("div");
+        controls.className = "inancbet-slider-controls";
+        controls.setAttribute("data-inancbet-slider-controls", "true");
+        previousButton.addEventListener("click", function () {
+          var currentEvents = findEvents(header, index);
+          if (currentEvents) scrollEvents(currentEvents, -1);
+        });
+        nextButton.addEventListener("click", function () {
+          var currentEvents = findEvents(header, index);
+          if (currentEvents) scrollEvents(currentEvents, 1);
+        });
+        controls.append(previousButton, nextButton);
+        actions.insertBefore(controls, allLink.nextSibling);
+      });
+    }
+
+    var scheduled = false;
+    var observer = new MutationObserver(function () {
+      if (scheduled) return;
+      scheduled = true;
+      window.requestAnimationFrame(function () {
+        scheduled = false;
+        addSliderButtons();
+      });
+    });
+
+    function initSliderButtons() {
+      observer.observe(document.body, { childList: true, subtree: true });
+      addSliderButtons();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initSliderButtons, { once: true });
+    } else {
+      initSliderButtons();
+    }
+  })();
 
   function observe() {
     if (observer) {
@@ -347,7 +487,7 @@
         }
       });
 
-      scheduleSliderScan();
+      scheduleBetWinScan();
     });
 
     observer.observe(document.documentElement, {
@@ -359,5 +499,5 @@
 
   applyToNode(document);
   observe();
-  scheduleSliderScan();
+  scheduleBetWinScan();
 })();
