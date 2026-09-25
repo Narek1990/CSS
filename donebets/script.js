@@ -380,6 +380,50 @@
     return liveGames;
   }
 
+  function normalizeBetWinTitle(value) {
+    return String(value || "")
+      .replace(/[™®©]/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
+  }
+
+  function findExactBetWinSearchGame(title) {
+    if (!title) {
+      return Promise.resolve(null);
+    }
+
+    return fetchBetWinJson(
+      "/api/integration/api/v1/WebSites/searchgames?query=" + encodeURIComponent(title)
+    )
+      .then(function (payload) {
+        var matches = extractBetWinArray(payload).filter(function (game) {
+          return (
+            game &&
+            normalizeBetWinTitle(game.name || game.gameName) === normalizeBetWinTitle(title) &&
+            (game.providerName || game.provider)
+          );
+        });
+        var providers = Object.create(null);
+
+        matches.forEach(function (game) {
+          providers[String(game.providerName || game.provider).trim()] = true;
+        });
+
+        if (!matches.length || Object.keys(providers).length !== 1) {
+          return null;
+        }
+
+        return {
+          title: String(matches[0].name || matches[0].gameName).trim(),
+          provider: Object.keys(providers)[0]
+        };
+      })
+      .catch(function () {
+        return null;
+      });
+  }
+
   function loadBetWinMetadata() {
     if (betWinMetadataPromise) {
       return betWinMetadataPromise;
@@ -394,7 +438,10 @@
         var gameIds = Object.keys(liveGames);
 
         if (!gameIds.length) {
-          return [];
+          return {
+            liveGames: liveGames,
+            details: []
+          };
         }
 
         return fetchBetWinJson("/api/integration/api/v1/WebSites/games/details", {
@@ -406,13 +453,18 @@
             return Number(id);
           }))
         }).then(function (detailsPayload) {
-          return extractBetWinArray(detailsPayload);
+          return {
+            liveGames: liveGames,
+            details: extractBetWinArray(detailsPayload)
+          };
         });
       })
-      .then(function (details) {
+      .then(function (result) {
+        var liveGames = result.liveGames;
         var nextDetails = Object.create(null);
+        var unresolvedIds;
 
-        details.forEach(function (game) {
+        result.details.forEach(function (game) {
           var id = normalizeBetWinId(game && (game.id !== undefined ? game.id : game.gameId));
           var title = game && (game.name || game.gameName);
           var provider = game && (game.providerName || game.provider);
@@ -425,9 +477,30 @@
           }
         });
 
-        betWinGameDetails = nextDetails;
-        betWinMetadataLoaded = true;
-        return nextDetails;
+        unresolvedIds = Object.keys(liveGames).filter(function (id) {
+          return !nextDetails[id];
+        });
+
+        return Promise.all(
+          unresolvedIds.map(function (id) {
+            return findExactBetWinSearchGame(liveGames[id]).then(function (details) {
+              return {
+                id: id,
+                details: details
+              };
+            });
+          })
+        ).then(function (fallbackDetails) {
+          fallbackDetails.forEach(function (item) {
+            if (item.details) {
+              nextDetails[item.id] = item.details;
+            }
+          });
+
+          betWinGameDetails = nextDetails;
+          betWinMetadataLoaded = true;
+          return nextDetails;
+        });
       })
       .catch(function (error) {
         betWinMetadataLoaded = true;
