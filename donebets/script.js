@@ -435,7 +435,39 @@
     var accountItemSelector = '[data-mj="account-menu-item"]';
     var notificationSelector = '[data-mj="notifications-item"]';
     var cashbackHrefSelector = 'a[href*="instant_cashback"]';
+    var cashbackStyleId = "donebets-cashback-menu-styles";
     var scheduled = false;
+
+    function installCashbackStyles() {
+      var style;
+
+      if (document.getElementById(cashbackStyleId)) {
+        return;
+      }
+
+      style = document.createElement("style");
+      style.id = cashbackStyleId;
+      style.textContent =
+        '[data-donebets-cashback-link="true"]{' +
+        "border-radius:8px;" +
+        "transition:background-color .16s ease,color .16s ease;" +
+        "}" +
+        '[data-donebets-cashback-link="true"]:hover,' +
+        '[data-donebets-cashback-link="true"]:focus-visible{' +
+        "background-color:rgba(255,255,255,.08)!important;" +
+        "}" +
+        '[data-donebets-cashback-item="true"][data-donebets-active="true"] ' +
+        '[data-donebets-cashback-link="true"]{' +
+        "color:#ff5b22!important;" +
+        "background-color:rgba(255,91,34,.1)!important;" +
+        "}" +
+        '[data-donebets-cashback-item="true"][data-donebets-active="true"] ' +
+        '[data-donebets-cashback-link="true"] *{' +
+        "color:inherit!important;" +
+        "}";
+
+      (document.head || document.documentElement).appendChild(style);
+    }
 
     function normalizeText(element) {
       return (element && element.textContent ? element.textContent : "")
@@ -467,6 +499,64 @@
       return url.pathname + url.search + url.hash;
     }
 
+    function isCashbackRoute() {
+      return new URL(window.location.href).searchParams.get("t") ===
+        "instant_cashback";
+    }
+
+    function syncCashbackActiveState() {
+      var active = isCashbackRoute();
+
+      document
+        .querySelectorAll('[data-donebets-cashback-item="true"]')
+        .forEach(function (item) {
+          var link = item.querySelector(
+            '[data-donebets-cashback-link="true"]'
+          );
+
+          item.setAttribute("data-donebets-active", String(active));
+
+          if (!link) {
+            return;
+          }
+
+          if (active) {
+            link.setAttribute("aria-current", "page");
+          } else {
+            link.removeAttribute("aria-current");
+          }
+        });
+    }
+
+    function dismissAccountDropdown() {
+      var keyboardEvent;
+      var mouseOptions = {
+        bubbles: true,
+        cancelable: true,
+        view: window
+      };
+
+      keyboardEvent = new window.KeyboardEvent("keydown", {
+        key: "Escape",
+        code: "Escape",
+        keyCode: 27,
+        which: 27,
+        bubbles: true,
+        cancelable: true
+      });
+
+      document.dispatchEvent(keyboardEvent);
+      document.body.dispatchEvent(
+        new window.MouseEvent("mousedown", mouseOptions)
+      );
+      document.body.dispatchEvent(
+        new window.MouseEvent("mouseup", mouseOptions)
+      );
+      document.body.dispatchEvent(
+        new window.MouseEvent("click", mouseOptions)
+      );
+    }
+
     function navigateToCashback(event) {
       var link = event.currentTarget;
       var target;
@@ -493,8 +583,10 @@
       event.preventDefault();
       event.stopPropagation();
 
+      dismissAccountDropdown();
       route = target.pathname + target.search + target.hash;
       window.history.pushState(window.history.state, "", route);
+      syncCashbackActiveState();
 
       if (typeof window.PopStateEvent === "function") {
         navigationEvent = new window.PopStateEvent("popstate", {
@@ -569,7 +661,7 @@
       item.removeAttribute("data-mj");
       item.removeAttribute("id");
       item.setAttribute("data-donebets-cashback-item", "true");
-      item.setAttribute("data-donebets-cashback-version", "3");
+      item.setAttribute("data-donebets-cashback-version", "4");
 
       link.removeAttribute("data-mj");
       link.removeAttribute("id");
@@ -602,7 +694,7 @@
       if (
         !cashback ||
         !belongsToMenu(cashback, menu) ||
-        cashback.getAttribute("data-donebets-cashback-version") !== "3" ||
+        cashback.getAttribute("data-donebets-cashback-version") !== "4" ||
         cashback.className !== notification.className
       ) {
         replacement = createCashbackItem(notification, href);
@@ -641,6 +733,7 @@
     function apply() {
       scheduled = false;
       document.querySelectorAll(accountMenuSelector).forEach(moveCashback);
+      syncCashbackActiveState();
     }
 
     function schedule() {
@@ -652,7 +745,9 @@
       window.requestAnimationFrame(apply);
     }
 
+    installCashbackStyles();
     apply();
+    window.addEventListener("popstate", schedule);
 
     new MutationObserver(schedule).observe(document.documentElement, {
       childList: true,
