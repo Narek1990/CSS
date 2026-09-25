@@ -419,7 +419,8 @@
     "use strict";
 
     var assetBase =
-      "https://cdn.jsdelivr.net/gh/ArturMakaryan/main@d3c7607/Donebets/";
+      "https://cdn.jsdelivr.net/gh/ArturMakaryan/main@6f9baea/Donebets/";
+
     var actions = [
       {
         label: "Support",
@@ -433,35 +434,14 @@
       }
     ];
 
-    function createAction(config) {
-      var link = document.createElement("a");
-      var icon = document.createElement("img");
-
-      link.className = "donebets-header-action";
-      link.href = config.href;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      link.setAttribute("aria-label", config.label);
-      link.title = config.label;
-
-      icon.src = assetBase + config.icon;
-      icon.alt = "";
-      icon.width = 24;
-      icon.height = 24;
-      icon.setAttribute("aria-hidden", "true");
-
-      link.appendChild(icon);
-      return link;
-    }
-
     function addHeaderActions() {
       document
-        .querySelectorAll('[data-mj="header-right"]')
-        .forEach(function (headerRight) {
+        .querySelectorAll('[data-mj="header-left"]')
+        .forEach(function (headerLeft) {
           var group;
 
           if (
-            headerRight.querySelector(
+            headerLeft.querySelector(
               '[data-donebets-header-actions="true"]'
             )
           ) {
@@ -476,10 +456,27 @@
           );
 
           actions.forEach(function (action) {
-            group.appendChild(createAction(action));
+            var link = document.createElement("a");
+            var icon = document.createElement("img");
+
+            link.className = "donebets-header-action";
+            link.href = action.href;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.setAttribute("aria-label", action.label);
+            link.title = action.label;
+
+            icon.src = assetBase + action.icon;
+            icon.alt = "";
+            icon.width = 24;
+            icon.height = 24;
+            icon.setAttribute("aria-hidden", "true");
+
+            link.appendChild(icon);
+            group.appendChild(link);
           });
 
-          headerRight.insertBefore(group, headerRight.firstChild);
+          headerLeft.appendChild(group);
         });
     }
 
@@ -488,7 +485,7 @@
       if (scheduled) return;
 
       scheduled = true;
-      window.requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
         scheduled = false;
         addHeaderActions();
       });
@@ -503,9 +500,12 @@
     }
 
     if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", init, { once: true });
+      document.addEventListener("DOMContentLoaded", init, {
+        once: true
+      });
     } else {
       init();
     }
+  })();
   })();
 })();
