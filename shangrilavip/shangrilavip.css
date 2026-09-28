@@ -16,11 +16,25 @@ html,
 body {
   min-height: 100%;
   background: var(--shangri-page) !important;
+  color-scheme: dark;
 }
 
 html body {
+  margin: 0 !important;
   color: var(--shangri-text) !important;
   font-family: Rubik, Arial, sans-serif !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+html body,
+html body *,
+html body *::before,
+html body *::after {
+  box-sizing: inherit;
 }
 
 body::before {
@@ -510,14 +524,34 @@ html body [data-mj="footer-copyright"] {
   }
 
   html body [data-mj="header-center"],
-  html body [data-mj="header-right"] .app-ltr-1tvzmkd,
-  html body [data-mj="header-right"] .app-rtl-1tvzmkd {
+  html body [data-mj="header-right"] .app-ltr-1tvzmkd .sl-select__control .sl-select__single-value p,
+  html body [data-mj="header-right"] .app-rtl-1tvzmkd .sl-select__control .sl-select__single-value p {
     display: none !important;
   }
 
   html body [data-mj="logo"] img {
     max-width: 130px !important;
     max-height: 32px !important;
+  }
+
+  html body [data-mj="header-right"] .app-ltr-1tvzmkd,
+  html body [data-mj="header-right"] .app-rtl-1tvzmkd {
+    display: inline-flex !important;
+    width: 36px !important;
+    min-width: 36px !important;
+    max-width: 36px !important;
+    overflow: hidden !important;
+  }
+
+  html body [data-mj="header-right"] .app-ltr-1tvzmkd .sl-select__control,
+  html body [data-mj="header-right"] .app-rtl-1tvzmkd .sl-select__control {
+    width: 36px !important;
+    min-width: 36px !important;
+    height: 36px !important;
+    padding: 0 6px !important;
+    border: 1px solid var(--shangri-border) !important;
+    border-radius: 12px !important;
+    background: var(--shangri-surface-soft) !important;
   }
 
   html body [data-mj="header-right"] .app-ltr-15c2koi,
@@ -626,5 +660,25 @@ html body [data-mj="footer-copyright"] {
 
   html body [data-mj="footer-copyright"] {
     text-align: center !important;
+  }
+}
+
+html body [data-mj="header"] a:focus-visible,
+html body [data-mj="header"] button:focus-visible,
+html body [data-mj="header-nav"] a:focus-visible,
+html body [data-mj="widget-game-slider"] button:focus-visible,
+html body [data-mj="widget-game-card"]:focus-visible {
+  outline: 2px solid var(--shangri-lime) !important;
+  outline-offset: 3px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body *,
+  html body *::before,
+  html body *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }
