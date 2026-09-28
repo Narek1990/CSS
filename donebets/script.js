@@ -310,11 +310,13 @@
     var label;
     var children;
     var activeDepositIconSrc;
+    var showDepositLabel;
 
     if (!button) {
       return;
     }
 
+    showDepositLabel = !isMobileViewport();
     activeDepositIconSrc = getDepositIconSrc();
 
     image = button.querySelector('img[data-donebets-deposit-icon="true"]');
@@ -323,12 +325,17 @@
     if (
       button.getAttribute("data-donebets-deposit-ready") === "true" &&
       image &&
-      label &&
       image.getAttribute("src") === activeDepositIconSrc &&
-      label.textContent === "DEPOSIT" &&
-      button.childNodes.length === 2 &&
-      button.firstChild === image &&
-      button.lastChild === label
+      ((showDepositLabel &&
+        label &&
+        label.textContent === "DEPOSIT" &&
+        button.childNodes.length === 2 &&
+        button.firstChild === image &&
+        button.lastChild === label) ||
+        (!showDepositLabel &&
+          !label &&
+          button.childNodes.length === 1 &&
+          button.firstChild === image))
     ) {
       return;
     }
@@ -337,7 +344,7 @@
       image = document.createElement("img");
     }
 
-    if (!label) {
+    if (showDepositLabel && !label) {
       label = document.createElement("span");
     }
 
@@ -348,13 +355,15 @@
     image.decoding = "async";
     image.loading = "eager";
 
-    label.className = "donebets-deposit-label";
-    label.setAttribute("data-donebets-deposit-label", "true");
-    label.textContent = "DEPOSIT";
+    if (showDepositLabel) {
+      label.className = "donebets-deposit-label";
+      label.setAttribute("data-donebets-deposit-label", "true");
+      label.textContent = "DEPOSIT";
+    }
 
     children = Array.prototype.slice.call(button.childNodes);
     children.forEach(function (child) {
-      if (child !== image && child !== label) {
+      if (child !== image && (!showDepositLabel || child !== label)) {
         button.removeChild(child);
       }
     });
@@ -363,8 +372,32 @@
       button.insertBefore(image, button.firstChild);
     }
 
-    if (image.nextSibling !== label) {
+    if (showDepositLabel && image.nextSibling !== label) {
       button.insertBefore(label, image.nextSibling);
+    }
+
+    if (showDepositLabel) {
+      if (button.getAttribute("data-donebets-mobile-styled") === "true") {
+        button.style.removeProperty("min-width");
+        button.style.removeProperty("width");
+        button.style.removeProperty("gap");
+        button.style.removeProperty("padding");
+        image.style.removeProperty("width");
+        image.style.removeProperty("height");
+        image.style.removeProperty("min-width");
+        image.style.removeProperty("min-height");
+        button.removeAttribute("data-donebets-mobile-styled");
+      }
+    } else {
+      button.style.setProperty("min-width", "42px", "important");
+      button.style.setProperty("width", "42px", "important");
+      button.style.setProperty("gap", "0", "important");
+      button.style.setProperty("padding", "0", "important");
+      image.style.setProperty("width", "24px", "important");
+      image.style.setProperty("height", "24px", "important");
+      image.style.setProperty("min-width", "24px", "important");
+      image.style.setProperty("min-height", "24px", "important");
+      button.setAttribute("data-donebets-mobile-styled", "true");
     }
 
     button.classList.add("donebets-deposit-button");
