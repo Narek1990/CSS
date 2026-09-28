@@ -45,6 +45,7 @@
 
     return "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/donebets/assets/deposit-mobile.svg";
   })();
+  var mobileDepositAccentColor = "#ff5a1f";
   var observer;
 
   function normalizeText(node) {
@@ -59,6 +60,39 @@
 
   function getDepositIconSrc() {
     return isMobileViewport() ? mobileDepositIconSrc : depositIconSrc;
+  }
+
+  function updateMobileDepositAppearance(button, isMobile) {
+    var isDisabled;
+
+    if (!button) {
+      return;
+    }
+
+    isDisabled = button.disabled || button.getAttribute("aria-disabled") === "true";
+
+    if (isMobile && !isDisabled) {
+      button.style.setProperty("background-color", mobileDepositAccentColor, "important");
+      button.style.setProperty("border-color", mobileDepositAccentColor, "important");
+      button.style.setProperty("color", "#000000", "important");
+      button.style.setProperty("opacity", "1", "important");
+      button.style.setProperty("filter", "none", "important");
+      button.style.setProperty("pointer-events", "auto", "important");
+      button.style.setProperty("cursor", "pointer", "important");
+      button.setAttribute("data-donebets-mobile-active-styled", "true");
+      return;
+    }
+
+    if (button.getAttribute("data-donebets-mobile-active-styled") === "true") {
+      button.style.removeProperty("background-color");
+      button.style.removeProperty("border-color");
+      button.style.removeProperty("color");
+      button.style.removeProperty("opacity");
+      button.style.removeProperty("filter");
+      button.style.removeProperty("pointer-events");
+      button.style.removeProperty("cursor");
+      button.removeAttribute("data-donebets-mobile-active-styled");
+    }
   }
 
   function buildContactDetailsHref() {
@@ -318,6 +352,7 @@
 
     showDepositLabel = !isMobileViewport();
     activeDepositIconSrc = getDepositIconSrc();
+    updateMobileDepositAppearance(button, !showDepositLabel);
 
     image = button.querySelector('img[data-donebets-deposit-icon="true"]');
     label = button.querySelector('[data-donebets-deposit-label="true"]');
