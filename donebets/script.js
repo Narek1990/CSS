@@ -32,10 +32,33 @@
 
     return "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/donebets/assets/deposit-icon.png";
   })();
+  var mobileDepositIconSrc = (function () {
+    var scriptSource = document.currentScript && document.currentScript.src;
+
+    try {
+      if (scriptSource) {
+        return new URL("assets/deposit-mobile.svg", scriptSource).href;
+      }
+    } catch (error) {
+      /* Fall through to the public CDN URL. */
+    }
+
+    return "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/donebets/assets/deposit-mobile.svg";
+  })();
   var observer;
 
   function normalizeText(node) {
     return (node && node.textContent ? node.textContent : "").replace(/\s+/g, " ").trim();
+  }
+
+  function isMobileViewport() {
+    return window.matchMedia
+      ? window.matchMedia("(max-width: 767px)").matches
+      : window.innerWidth <= 767;
+  }
+
+  function getDepositIconSrc() {
+    return isMobileViewport() ? mobileDepositIconSrc : depositIconSrc;
   }
 
   function buildContactDetailsHref() {
@@ -286,10 +309,13 @@
     var image;
     var label;
     var children;
+    var activeDepositIconSrc;
 
     if (!button) {
       return;
     }
+
+    activeDepositIconSrc = getDepositIconSrc();
 
     image = button.querySelector('img[data-donebets-deposit-icon="true"]');
     label = button.querySelector('[data-donebets-deposit-label="true"]');
@@ -298,7 +324,7 @@
       button.getAttribute("data-donebets-deposit-ready") === "true" &&
       image &&
       label &&
-      image.getAttribute("src") === depositIconSrc &&
+      image.getAttribute("src") === activeDepositIconSrc &&
       label.textContent === "DEPOSIT" &&
       button.childNodes.length === 2 &&
       button.firstChild === image &&
@@ -315,7 +341,7 @@
       label = document.createElement("span");
     }
 
-    image.src = depositIconSrc;
+    image.src = activeDepositIconSrc;
     image.alt = "";
     image.className = "donebets-deposit-icon";
     image.setAttribute("data-donebets-deposit-icon", "true");
@@ -469,6 +495,14 @@
     });
   }
 
+  function refreshDepositButtons() {
+    document.querySelectorAll(depositButtonSelector).forEach(enhanceDepositButton);
+  }
+
   applyToNode(document);
   observe();
+
+  if (window.addEventListener) {
+    window.addEventListener("resize", refreshDepositButtons);
+  }
 })();
