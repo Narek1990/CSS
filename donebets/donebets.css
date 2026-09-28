@@ -67,6 +67,21 @@ button[data-donebets-deposit-ready="true"] [data-donebets-deposit-label="true"] 
   line-height: 1 !important;
 }
 
+@media (max-width: 767px) {
+  button.donebets-deposit-button,
+  button[data-donebets-deposit-ready="true"] {
+    min-width: 42px !important;
+    width: 42px !important;
+    gap: 0 !important;
+    padding: 0 !important;
+  }
+
+  button.donebets-deposit-button .donebets-deposit-label,
+  button[data-donebets-deposit-ready="true"] [data-donebets-deposit-label="true"] {
+    display: none !important;
+  }
+}
+
 /* Keep Cashback aligned as a top-level account-menu item after it is moved out of Bonuses. */
 html body ul[data-mj="account-menu"] > li.donebets-cashback-menu-item {
   display: block !important;
