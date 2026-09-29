@@ -6,6 +6,20 @@
   var depositButtonSelector = 'button[aria-label="deposit"][name="deposit"].sl-icon';
   var accountMenuSelector = 'ul[data-mj="account-menu"]';
   var cashbackMovedAttribute = "data-donebets-cashback-moved";
+  var headerActionAssetBase =
+    "https://cdn.jsdelivr.net/gh/ArturMakaryan/main@6f9baea/Donebets/";
+  var headerActions = [
+    {
+      label: "Support",
+      href: "https://t.me/Donebetsteam",
+      icon: "support.svg"
+    },
+    {
+      label: "Telegram",
+      href: "https://t.me/Done_Bets_Gaming",
+      icon: "telegram-icon.svg"
+    }
+  ];
   var vipImageSrc = (function () {
     var scriptSource = document.currentScript && document.currentScript.src;
 
@@ -107,6 +121,91 @@
     url.searchParams.set("m", "account");
     url.searchParams.set("t", "instant_cashback");
     return url.pathname + url.search + url.hash;
+  }
+
+  function setHeaderActionStyles(group, link, icon) {
+    group.style.setProperty("display", "inline-flex", "important");
+    group.style.setProperty("align-items", "center", "important");
+    group.style.setProperty("justify-content", "center", "important");
+    group.style.setProperty("gap", "6px", "important");
+    group.style.setProperty("margin-left", "8px", "important");
+    group.style.setProperty("flex", "0 0 auto", "important");
+    group.style.setProperty("visibility", "visible", "important");
+    group.style.setProperty("opacity", "1", "important");
+
+    link.style.setProperty("display", "inline-flex", "important");
+    link.style.setProperty("align-items", "center", "important");
+    link.style.setProperty("justify-content", "center", "important");
+    link.style.setProperty("width", "28px", "important");
+    link.style.setProperty("height", "28px", "important");
+    link.style.setProperty("min-width", "28px", "important");
+    link.style.setProperty("min-height", "28px", "important");
+    link.style.setProperty("padding", "0", "important");
+    link.style.setProperty("flex", "0 0 28px", "important");
+    link.style.setProperty("visibility", "visible", "important");
+    link.style.setProperty("opacity", "1", "important");
+    link.style.setProperty("pointer-events", "auto", "important");
+    link.style.setProperty("cursor", "pointer", "important");
+    link.style.setProperty("text-decoration", "none", "important");
+
+    icon.style.setProperty("display", "block", "important");
+    icon.style.setProperty("width", "24px", "important");
+    icon.style.setProperty("height", "24px", "important");
+    icon.style.setProperty("min-width", "24px", "important");
+    icon.style.setProperty("min-height", "24px", "important");
+    icon.style.setProperty("object-fit", "contain", "important");
+    icon.style.setProperty("visibility", "visible", "important");
+    icon.style.setProperty("opacity", "1", "important");
+  }
+
+  function enhanceHeaderActions() {
+    document.querySelectorAll('[data-mj="header-left"]').forEach(function (headerLeft) {
+      var group = headerLeft.querySelector('[data-donebets-header-actions="true"]');
+
+      if (!group) {
+        group = document.createElement("div");
+        group.className = "donebets-header-actions";
+        group.setAttribute("data-donebets-header-actions", "true");
+        headerLeft.appendChild(group);
+      }
+
+      headerActions.forEach(function (action) {
+        var link = group.querySelector(
+          '[data-donebets-header-action="' + action.label.toLowerCase() + '"]'
+        );
+        var icon;
+
+        if (!link) {
+          link = document.createElement("a");
+          link.className = "donebets-header-action";
+          link.setAttribute(
+            "data-donebets-header-action",
+            action.label.toLowerCase()
+          );
+          group.appendChild(link);
+        }
+
+        icon = link.querySelector("img");
+        if (!icon) {
+          icon = document.createElement("img");
+          link.appendChild(icon);
+        }
+
+        link.href = action.href;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.setAttribute("aria-label", action.label);
+        link.title = action.label;
+
+        icon.src = headerActionAssetBase + action.icon;
+        icon.alt = "";
+        icon.width = 24;
+        icon.height = 24;
+        icon.setAttribute("aria-hidden", "true");
+
+        setHeaderActionStyles(group, link, icon);
+      });
+    });
   }
 
   function enhanceNotVerifiedLink(anchor) {
@@ -538,6 +637,7 @@
       enhanceVipStatusFromText(node);
     }
 
+    enhanceHeaderActions();
     moveCashbackMenu();
   }
 
