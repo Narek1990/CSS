@@ -229,6 +229,20 @@
   function isNotificationsMenuItem(item) {
     var link = item && item.querySelector ? item.querySelector("a") : null;
     var label = item && item.querySelector ? item.querySelector("a p") : null;
+    var notificationMarker =
+      item && item.getAttribute && item.getAttribute("data-mj") === "notifications-item";
+    var notificationLink =
+      item && item.querySelector
+        ? item.querySelector('[data-mj="notifications-link"]')
+        : null;
+    var notificationIcon =
+      item && item.querySelector
+        ? item.querySelector('[aria-label="notification"][name="notification"]')
+        : null;
+
+    if (notificationMarker || notificationLink || notificationIcon) {
+      return true;
+    }
 
     return (
       link &&
