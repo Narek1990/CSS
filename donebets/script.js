@@ -120,6 +120,21 @@
     return "/?m=account&t=instant_cashback";
   }
 
+  function buildCashbackAppHref() {
+    var url = new URL(window.location.href);
+
+    if (url.pathname === "/" || !url.pathname) {
+      url.pathname = "/en/";
+    }
+
+    url.search = "";
+    url.searchParams.set("m", "account");
+    url.searchParams.set("t", "instant_cashback");
+    url.hash = "";
+
+    return url.pathname + url.search;
+  }
+
   function dismissAccountDropdown() {
     var keyboardEvent;
     var mouseOptions = {
@@ -144,6 +159,7 @@
   }
 
   function navigateToCashback(event) {
+    var appRoute;
     var navigationEvent;
 
     if (
@@ -160,7 +176,8 @@
     event.preventDefault();
     event.stopPropagation();
     dismissAccountDropdown();
-    window.history.pushState(window.history.state, "", buildCashbackHref());
+    appRoute = buildCashbackAppHref();
+    window.history.pushState(window.history.state, "", appRoute);
 
     if (typeof window.PopStateEvent === "function") {
       navigationEvent = new window.PopStateEvent("popstate", {
@@ -171,6 +188,7 @@
     }
 
     window.dispatchEvent(navigationEvent);
+    window.history.replaceState(window.history.state, "", buildCashbackHref());
   }
 
   function ensureCashbackLinkNavigation(link) {
