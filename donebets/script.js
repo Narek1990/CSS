@@ -117,10 +117,73 @@
   }
 
   function buildCashbackHref() {
-    var url = new URL(window.location.href);
-    url.searchParams.set("m", "account");
-    url.searchParams.set("t", "instant_cashback");
-    return url.pathname + url.search + url.hash;
+    return "/?m=account&t=instant_cashback";
+  }
+
+  function dismissAccountDropdown() {
+    var keyboardEvent;
+    var mouseOptions = {
+      bubbles: true,
+      cancelable: true,
+      view: window
+    };
+
+    keyboardEvent = new window.KeyboardEvent("keydown", {
+      key: "Escape",
+      code: "Escape",
+      keyCode: 27,
+      which: 27,
+      bubbles: true,
+      cancelable: true
+    });
+
+    document.dispatchEvent(keyboardEvent);
+    document.body.dispatchEvent(new window.MouseEvent("mousedown", mouseOptions));
+    document.body.dispatchEvent(new window.MouseEvent("mouseup", mouseOptions));
+    document.body.dispatchEvent(new window.MouseEvent("click", mouseOptions));
+  }
+
+  function navigateToCashback(event) {
+    var navigationEvent;
+
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    dismissAccountDropdown();
+    window.history.pushState(window.history.state, "", buildCashbackHref());
+
+    if (typeof window.PopStateEvent === "function") {
+      navigationEvent = new window.PopStateEvent("popstate", {
+        state: window.history.state
+      });
+    } else {
+      navigationEvent = new window.Event("popstate");
+    }
+
+    window.dispatchEvent(navigationEvent);
+  }
+
+  function ensureCashbackLinkNavigation(link) {
+    if (!link) {
+      return;
+    }
+
+    link.setAttribute("href", buildCashbackHref());
+
+    if (link.getAttribute("data-donebets-cashback-click-ready") !== "true") {
+      link.addEventListener("click", navigateToCashback);
+      link.setAttribute("data-donebets-cashback-click-ready", "true");
+    }
   }
 
   function setHeaderActionStyles(group, link, icon) {
@@ -322,10 +385,11 @@
       link.querySelector('[data-donebets-cashback-icon="true"]') &&
       link.querySelector('[data-donebets-cashback-label="true"]')
     ) {
+      ensureCashbackLinkNavigation(link);
       return;
     }
 
-    href = link.getAttribute("href");
+    href = buildCashbackHref();
     templateLink = notificationsLink.cloneNode(true);
     content = templateLink.firstElementChild;
     icon = content && content.querySelector("i");
@@ -342,9 +406,10 @@
     }
 
     link.className = notificationsLink.className + " donebets-cashback-menu-link";
-    link.setAttribute("href", href || "");
+    link.setAttribute("href", href);
     link.setAttribute("data-donebets-cashback-link", "true");
     link.setAttribute("data-donebets-cashback-ready", "true");
+    ensureCashbackLinkNavigation(link);
 
     while (link.firstChild) {
       link.removeChild(link.firstChild);
