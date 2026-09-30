@@ -350,13 +350,31 @@ body :where(button, a, input, select, textarea):focus-visible {
 [data-mj="game-catalog-card"],
 [data-mj="widget-top-providers-item"] {
   overflow: hidden;
+}
+
+/* Keen slider controls banner transforms inline; CSS must not animate them. */
+[data-mj="widget-multi-banner-item"] {
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease !important;
+}
+
+[data-mj="widget-game-slider-slide"],
+[data-mj="game-catalog-card"],
+[data-mj="widget-top-providers-item"] {
   transition:
     border-color 180ms ease,
     box-shadow 180ms ease,
     transform 180ms ease;
 }
 
-[data-mj="widget-multi-banner-item"]:hover,
+[data-mj="widget-multi-banner-item"]:hover {
+  border-color: var(--waliawin-border-strong) !important;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.22),
+    0 0 18px rgba(var(--waliawin-mint-rgb), 0.08) !important;
+}
+
 [data-mj="widget-game-slider-slide"]:hover,
 [data-mj="game-catalog-card"]:hover,
 [data-mj="widget-top-providers-item"]:hover {
