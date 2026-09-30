@@ -339,6 +339,15 @@ body :where(button, a, input, select, textarea):focus-visible {
   background-color: transparent !important;
 }
 
+/* Override the host's generated right-panel background rule. */
+html body [data-mj="game-catalog-layout"]
+  [data-mj="game-catalog-right-section"].app-ltr-179c8p6,
+html body [data-mj="game-catalog-right-section"].app-ltr-179c8p6 {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
 [data-mj="widget-multi-banner-item"],
 [data-mj="widget-banner-link"],
 [data-mj="widget-game-slider-slide"],
