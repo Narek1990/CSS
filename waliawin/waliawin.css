@@ -41,6 +41,42 @@ textarea {
   font-family: inherit;
 }
 
+#root {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100% !important;
+  min-height: 100vh !important;
+}
+
+[data-mj="root-layout"] {
+  display: contents !important;
+}
+
+[data-mj="header"] {
+  flex: 0 0 auto !important;
+}
+
+[data-mj="page-content"] {
+  flex: 1 0 auto !important;
+  width: 100% !important;
+  overflow: visible !important;
+}
+
+/* Keep the footer in document flow so it cannot cover the game catalog. */
+[data-mj="footer"] {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 1 !important;
+  display: block !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin-top: auto !important;
+  clear: both !important;
+  float: none !important;
+  transform: none !important;
+}
+
 body a {
   color: inherit;
 }
