@@ -535,6 +535,10 @@ html body [data-mj="game-catalog-layout"]
   color: var(--waliawin-text-soft) !important;
 }
 
+[data-mj="footer"] > .app-ltr-1l44gyp {
+  padding-bottom: 30px !important;
+}
+
 [data-mj="footer-content"] {
   padding-block: 28px 18px !important;
 }
