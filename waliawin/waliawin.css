@@ -524,6 +524,18 @@ body :where(button, a, input, select, textarea):focus-visible {
   color: var(--waliawin-mint) !important;
 }
 
+/* Remove the host layout constraints from the generated header wrapper. */
+
+#root {
+  --site-header-height: unset !important;
+}
+
+.app-ltr-i58pjb {
+  max-width: none !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
 /* =========================
    Responsive adjustments
    ========================= */
