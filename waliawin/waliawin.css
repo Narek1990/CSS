@@ -498,6 +498,16 @@ html body [data-mj="game-catalog-layout"]
   box-shadow: 0 0 0 2px rgba(var(--waliawin-mint-rgb), 0.1) !important;
 }
 
+/* The React Select input is visually contained by the control. Its own
+   focus outline creates the unwanted vertical line inside the field. */
+html body .sl-select__control .sl-select__input:focus,
+html body .sl-select__control .sl-select__input:focus-visible {
+  border: 0 !important;
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+}
+
 [data-mj="game-catalog-game-search"]::placeholder,
 [data-mj="game-catalog-mobile-provider-input"]::placeholder,
 [data-mj="game-catalog-provider-bottom-sheet-search"]::placeholder,
