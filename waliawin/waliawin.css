@@ -8,16 +8,17 @@
 :root {
   --waliawin-mint: #5bf3be;
   --waliawin-mint-rgb: 91, 243, 190;
-  --waliawin-bg: #0e1314;
-  --waliawin-bg-deep: #090d0e;
-  --waliawin-surface: #151d1d;
-  --waliawin-surface-raised: #1b2826;
-  --waliawin-surface-soft: #20302c;
+  --waliawin-ambient-rgb: 104, 139, 171;
+  --waliawin-bg: #0e151c;
+  --waliawin-bg-deep: #090f15;
+  --waliawin-surface: #151e27;
+  --waliawin-surface-raised: #1b2832;
+  --waliawin-surface-soft: #22313b;
   --waliawin-border: rgba(91, 243, 190, 0.16);
   --waliawin-border-strong: rgba(91, 243, 190, 0.34);
-  --waliawin-text: #f4fffb;
-  --waliawin-text-soft: #c0d0ca;
-  --waliawin-text-muted: #8d9f99;
+  --waliawin-text: #f3f9fc;
+  --waliawin-text-soft: #c2d0d8;
+  --waliawin-text-muted: #8e9da8;
   --waliawin-shadow: 0 18px 48px rgba(0, 0, 0, 0.3);
   --waliawin-radius: 10px;
 }
@@ -102,10 +103,10 @@ body :where(button, a, input, select, textarea):focus-visible {
   background:
     radial-gradient(
       circle at 50% -80%,
-      rgba(var(--waliawin-mint-rgb), 0.13),
+      rgba(var(--waliawin-ambient-rgb), 0.2),
       transparent 52%
     ),
-    linear-gradient(180deg, #182120 0%, #111819 100%) !important;
+    linear-gradient(180deg, #18232d 0%, #111920 100%) !important;
   border-bottom: 1px solid var(--waliawin-border) !important;
   box-shadow:
     0 14px 34px rgba(0, 0, 0, 0.24),
@@ -211,7 +212,7 @@ body :where(button, a, input, select, textarea):focus-visible {
 }
 
 [data-mj="header-nav"] {
-  background: #101717 !important;
+  background: #101820 !important;
   border-top: 1px solid var(--waliawin-border) !important;
   border-bottom: 1px solid var(--waliawin-border) !important;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18) !important;
@@ -327,7 +328,7 @@ body :where(button, a, input, select, textarea):focus-visible {
   background:
     radial-gradient(
       circle at 50% 0%,
-      rgba(var(--waliawin-mint-rgb), 0.07),
+      rgba(var(--waliawin-ambient-rgb), 0.12),
       transparent 34%
     ),
     linear-gradient(180deg, var(--waliawin-bg) 0%, var(--waliawin-bg-deep) 100%) !important;
