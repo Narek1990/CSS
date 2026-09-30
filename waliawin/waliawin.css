@@ -335,14 +335,12 @@ body :where(button, a, input, select, textarea):focus-visible {
   color: var(--waliawin-text) !important;
 }
 
-[data-mj="game-catalog-right-section"] {
-  background-color: transparent !important;
-}
-
-/* Override the host's generated right-panel background rule. */
+/* Clear the catalog surfaces; the generated wrapper is nested inside the
+   right section rather than being the same element. */
+html body [data-mj="game-catalog-layout"],
+html body [data-mj="game-catalog-layout"] [data-mj="game-catalog-right-section"],
 html body [data-mj="game-catalog-layout"]
-  [data-mj="game-catalog-right-section"].app-ltr-179c8p6,
-html body [data-mj="game-catalog-right-section"].app-ltr-179c8p6 {
+  [data-mj="game-catalog-right-section"] > .app-ltr-179c8p6 {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
