@@ -335,6 +335,10 @@ body :where(button, a, input, select, textarea):focus-visible {
   color: var(--waliawin-text) !important;
 }
 
+[data-mj="game-catalog-right-section"] {
+  background-color: transparent !important;
+}
+
 [data-mj="widget-multi-banner-item"],
 [data-mj="widget-banner-link"],
 [data-mj="widget-game-slider-slide"],
