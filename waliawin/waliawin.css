@@ -534,6 +534,21 @@ html body .sl-select__control .sl-select__input:focus-visible {
   background: rgba(var(--waliawin-mint-rgb), 0.08) !important;
 }
 
+/* Keep the ETB deposit cashback information open and remove its toggle. */
+html body .app-ltr-1wdhvac > .app-ltr-1u72um6
+  > :is(.app-ltr-12cej17, .app-ltr-1g9bb1) {
+  display: block !important;
+  visibility: visible !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  opacity: 1 !important;
+}
+
+html body .app-ltr-1wdhvac > .app-ltr-1u72um6 > .app-ltr-1sbgn0y {
+  display: none !important;
+}
+
 /* =========================
    Footer
    ========================= */
