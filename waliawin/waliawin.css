@@ -549,6 +549,44 @@ html body .app-ltr-1wdhvac > .app-ltr-1u72um6 > .app-ltr-1sbgn0y {
   display: none !important;
 }
 
+/* Deposit amount presets. */
+html body .app-ltr-1wdhvac [wrap="wrap"].app-ltr-1o3dgb
+  > button.app-ltr-13bpclk {
+  border: 1px solid var(--waliawin-border) !important;
+  border-radius: 8px !important;
+  background: #1b2c3e !important;
+  color: var(--waliawin-text) !important;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    color 180ms ease,
+    transform 180ms ease !important;
+}
+
+html body .app-ltr-1wdhvac [wrap="wrap"].app-ltr-1o3dgb
+  > button.app-ltr-13bpclk * {
+  color: inherit !important;
+}
+
+html body .app-ltr-1wdhvac [wrap="wrap"].app-ltr-1o3dgb
+  > button.app-ltr-13bpclk:hover,
+html body .app-ltr-1wdhvac [wrap="wrap"].app-ltr-1o3dgb
+  > button.app-ltr-13bpclk:focus-visible {
+  border-color: var(--waliawin-mint) !important;
+  background: #29465d !important;
+  color: var(--waliawin-mint) !important;
+  box-shadow: 0 0 0 2px rgba(var(--waliawin-mint-rgb), 0.1) !important;
+  transform: translateY(-1px);
+}
+
+html body .app-ltr-1wdhvac [wrap="wrap"].app-ltr-1o3dgb
+  > button.app-ltr-13bpclk:active {
+  background: var(--waliawin-mint) !important;
+  color: #071511 !important;
+  transform: translateY(0);
+}
+
 /* =========================
    Footer
    ========================= */
