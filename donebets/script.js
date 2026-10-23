@@ -60,6 +60,7 @@
     return "https://cdn.jsdelivr.net/gh/Narek1990/CSS@refs/heads/main/donebets/assets/deposit-mobile.svg";
   })();
   var mobileDepositAccentColor = "#ff5a1f";
+  var headerActionsStyleId = "donebets-header-actions-mobile-style";
   var observer;
 
   function normalizeText(node) {
@@ -70,6 +71,31 @@
     return window.matchMedia
       ? window.matchMedia("(max-width: 767px)").matches
       : window.innerWidth <= 767;
+  }
+
+  function isHeaderActionsHiddenViewport() {
+    return window.matchMedia
+      ? window.matchMedia("(max-width: 991px)").matches
+      : window.innerWidth <= 991;
+  }
+
+  function injectHeaderActionsMobileRule() {
+    var style;
+    var parent;
+
+    if (document.getElementById(headerActionsStyleId)) {
+      return;
+    }
+
+    style = document.createElement("style");
+    style.id = headerActionsStyleId;
+    style.textContent =
+      "@media (max-width: 991px) { .donebets-header-actions { display: none !important; } }";
+    parent = document.head || document.documentElement;
+
+    if (parent) {
+      parent.appendChild(style);
+    }
   }
 
   function getDepositIconSrc() {
@@ -205,7 +231,11 @@
   }
 
   function setHeaderActionStyles(group, link, icon) {
-    group.style.setProperty("display", "inline-flex", "important");
+    if (isHeaderActionsHiddenViewport()) {
+      group.style.removeProperty("display");
+    } else {
+      group.style.setProperty("display", "inline-flex", "important");
+    }
     group.style.setProperty("align-items", "center", "important");
     group.style.setProperty("justify-content", "center", "important");
     group.style.setProperty("gap", "6px", "important");
@@ -764,10 +794,14 @@
     document.querySelectorAll(depositButtonSelector).forEach(enhanceDepositButton);
   }
 
+  injectHeaderActionsMobileRule();
   applyToNode(document);
   observe();
 
   if (window.addEventListener) {
-    window.addEventListener("resize", refreshDepositButtons);
+    window.addEventListener("resize", function () {
+      refreshDepositButtons();
+      enhanceHeaderActions();
+    });
   }
 })();
