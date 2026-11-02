@@ -557,8 +557,9 @@ body::before {
 }
 
 /* Sportsbook category labels */
-[data-mj="widget-game-slider"] [data-mj="widget-game-card"] p.app-ltr-1xdhyk6 {
-  font-size: 13px !important;
+[data-mj="widget-game-slider"] [data-mj="widget-game-card"] p.app-ltr-1xdhyk6,
+[data-mj="widget-game-slider"] [data-mj="widget-game-card"] p.app-rtl-1xdhyk6 {
+  font-size: 14px !important;
   text-align: center !important;
   color: #CBAE6D !important;
 }
