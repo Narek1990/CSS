@@ -555,3 +555,10 @@ body::before {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* Sportsbook category labels */
+[data-mj="widget-game-slider"] [data-mj="widget-game-card"] p.app-ltr-1xdhyk6 {
+  font-size: 13px !important;
+  text-align: center !important;
+  color: #CBAE6D !important;
+}
