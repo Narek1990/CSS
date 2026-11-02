@@ -498,18 +498,6 @@ body::before {
   height: 20px !important;
 }
 
-.app-ltr-ilfj1r {
-  display: inline-block !important;
-  width: 24px !important;
-  height: 24px !important;
-  min-width: 24px !important;
-  background: url("./assets/usd_gold.webp") center / contain no-repeat !important;
-}
-
-.app-ltr-ilfj1r > object,
-.app-ltr-ilfj1r > img {
-  display: none !important;
-}
 
 .app-ltr-15c2koi {
   gap: 4px !important;
