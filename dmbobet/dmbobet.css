@@ -42,6 +42,11 @@ main[data-mj="page-content"] > section[data-mj="widget-game-slider"]:first-child
   width: 100% !important;
 }
 
+[data-mj="widget-sport-events-container"],
+[data-mj="widget-sport-events"] {
+  max-width: none !important;
+}
+
 [data-mj="widget-top-providers"] > div {
   margin-inline: 0 !important;
   box-sizing: border-box !important;
