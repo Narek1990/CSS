@@ -2303,3 +2303,161 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     document.addEventListener("DOMContentLoaded", start, { once: true });
   }
 })();
+(function initDmbobetRankedSlots() {
+  const version = 1;
+  const previousController = window.__dmbobetRankedSlotsController;
+
+  if (previousController && previousController.version === version) {
+    previousController.sync();
+    return;
+  }
+
+  if (previousController && typeof previousController.destroy === "function") {
+    previousController.destroy();
+  }
+
+  const variants = {
+    "hot slots": { key: "hot", label: "HOT PICK" },
+    "cold slots": { key: "cold", label: "COLD PICK" }
+  };
+
+  let observer = null;
+  let scheduled = false;
+
+  function normalize(value) {
+    return (value || "").replace(/\s+/g, " ").trim().toLowerCase();
+  }
+
+  function getSliderTitle(section) {
+    return section.querySelector('[data-mj="widget-game-slider-header"] p');
+  }
+
+  function ensureKicker(header) {
+    let kicker = header.querySelector('[data-dmbobet-ranked-kicker="true"]');
+
+    if (!kicker) {
+      kicker = document.createElement("span");
+      kicker.setAttribute("data-dmbobet-ranked-kicker", "true");
+      kicker.textContent = "TOP 10";
+      header.insertBefore(kicker, header.firstChild);
+    }
+
+    return kicker;
+  }
+
+  function ensureCardMeta(card, index, variant) {
+    let meta = card.querySelector('[data-dmbobet-ranked-meta="true"]');
+
+    if (!meta) {
+      meta = document.createElement("div");
+      meta.setAttribute("data-dmbobet-ranked-meta", "true");
+
+      const rank = document.createElement("span");
+      rank.setAttribute("data-dmbobet-ranked-rank", "true");
+
+      const label = document.createElement("span");
+      label.setAttribute("data-dmbobet-ranked-label", "true");
+
+      meta.append(rank, label);
+      card.appendChild(meta);
+    }
+
+    const rank = meta.querySelector('[data-dmbobet-ranked-rank="true"]');
+    const label = meta.querySelector('[data-dmbobet-ranked-label="true"]');
+
+    if (rank) rank.textContent = "TOP " + String(index + 1).padStart(2, "0");
+    if (label) label.textContent = variant.label;
+    meta.setAttribute("data-dmbobet-ranked-variant", variant.key);
+  }
+
+  function decorate(section) {
+    const title = getSliderTitle(section);
+    const header = section.querySelector('[data-mj="widget-game-slider-header"]');
+    const list = section.querySelector('[data-mj="widget-game-slider-list"]');
+
+    if (!title || !header || !list) return;
+
+    const variant = variants[normalize(title.textContent)];
+    if (!variant) return;
+
+    section.setAttribute("data-dmbobet-ranked-slots", variant.key);
+    ensureKicker(header);
+
+    const slides = Array.from(
+      list.querySelectorAll(':scope > [data-mj="widget-game-slider-slide"]')
+    );
+
+    slides.forEach((slide, index) => {
+      const card = slide.querySelector('[data-mj="widget-game-card"]');
+
+      if (index < 10) {
+        slide.removeAttribute("data-dmbobet-ranked-hidden");
+        if (card) ensureCardMeta(card, index, variant);
+      } else {
+        slide.setAttribute("data-dmbobet-ranked-hidden", "true");
+      }
+    });
+  }
+
+  function sync() {
+    scheduled = false;
+    document
+      .querySelectorAll('section[data-mj="widget-game-slider"]')
+      .forEach(decorate);
+  }
+
+  function scheduleSync() {
+    if (scheduled) return;
+    scheduled = true;
+    window.requestAnimationFrame(sync);
+  }
+
+  function start() {
+    if (!document.body) return;
+
+    sync();
+
+    observer = new MutationObserver(scheduleSync);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  function destroy() {
+    if (observer) observer.disconnect();
+    observer = null;
+    scheduled = false;
+
+    document
+      .querySelectorAll('section[data-dmbobet-ranked-slots]')
+      .forEach((section) => {
+        section.removeAttribute("data-dmbobet-ranked-slots");
+
+        const kicker = section.querySelector(
+          '[data-dmbobet-ranked-kicker="true"]'
+        );
+        if (kicker) kicker.remove();
+
+        section
+          .querySelectorAll('[data-dmbobet-ranked-hidden="true"]')
+          .forEach((slide) => slide.removeAttribute("data-dmbobet-ranked-hidden"));
+
+        section
+          .querySelectorAll('[data-dmbobet-ranked-meta="true"]')
+          .forEach((meta) => meta.remove());
+      });
+  }
+
+  window.__dmbobetRankedSlotsController = {
+    version,
+    sync: scheduleSync,
+    destroy
+  };
+
+  if (document.body) {
+    start();
+  } else {
+    document.addEventListener("DOMContentLoaded", start, { once: true });
+  }
+})();
