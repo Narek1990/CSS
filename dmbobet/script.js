@@ -2667,7 +2667,7 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
   }
 
   const variants = {
-    "hot slots": { key: "hot", minimum: 100.01, maximum: 500.0 },
+    "hot slots": { key: "hot", minimum: 104.0, maximum: 256.0 },
     "cold slots": { key: "cold", minimum: 80.01, maximum: 90.0 }
   };
 
