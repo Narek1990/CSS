@@ -4415,3 +4415,32 @@ section[data-dmbobet-ranked-slots]
     padding-left: 42px !important;
   }
 }
+
+
+/* Dmbobet ranked slots v4: remove controls and update title typography */
+section[data-dmbobet-ranked-slots]
+  [data-mj="widget-game-slider-header"] {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+section[data-dmbobet-ranked-slots]
+  [data-mj="widget-game-slider-header"] > div:last-child {
+  display: none !important;
+}
+
+section[data-dmbobet-ranked-slots]
+  [data-mj="widget-game-slider-header"] > p {
+  font-family: Impact, "Arial Narrow", "Arial Narrow Bold", Haettenschweiler, sans-serif !important;
+  font-stretch: condensed !important;
+  letter-spacing: 0.025em !important;
+  text-transform: uppercase !important;
+}
+
+@media (max-width: 991px) {
+  section[data-dmbobet-ranked-slots]
+    [data-mj="widget-game-slider-header"] {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
