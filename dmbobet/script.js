@@ -2651,3 +2651,185 @@ if (!customElements.get("sea-bonus-widget")) customElements.define("sea-bonus-wi
     document.addEventListener("DOMContentLoaded", start, { once: true });
   }
 })();
+
+
+(function initDmbobetRankedSlotsV3() {
+  const version = 3;
+  const previousController = window.__dmbobetRankedSlotsController;
+
+  if (previousController && previousController.version === version) {
+    previousController.sync();
+    return;
+  }
+
+  if (previousController && typeof previousController.destroy === "function") {
+    previousController.destroy();
+  }
+
+  const variants = {
+    "hot slots": { key: "hot", minimum: 100.01, maximum: 500.0 },
+    "cold slots": { key: "cold", minimum: 80.01, maximum: 90.0 }
+  };
+
+  let observer = null;
+  let scheduled = false;
+
+  function normalize(value) {
+    return (value || "").replace(/\s+/g, " ").trim().toLowerCase();
+  }
+
+  function randomRtp(variant) {
+    const value =
+      variant.minimum + Math.random() * (variant.maximum - variant.minimum);
+    return value.toFixed(2) + "%";
+  }
+
+  function ensureRtp(card, variant) {
+    let meta = card.querySelector('[data-dmbobet-ranked-meta="true"]');
+    let rtp = meta && meta.querySelector('[data-dmbobet-ranked-rtp="true"]');
+
+    if (!meta) {
+      meta = document.createElement("div");
+      meta.setAttribute("data-dmbobet-ranked-meta", "true");
+      card.appendChild(meta);
+    }
+
+    if (!rtp) {
+      rtp = document.createElement("span");
+      rtp.setAttribute("data-dmbobet-ranked-rtp", "true");
+      meta.appendChild(rtp);
+    }
+
+    const valueAttribute = "data-dmbobet-ranked-" + variant.key + "-rtp";
+    let value = card.getAttribute(valueAttribute);
+
+    if (!value) {
+      value = randomRtp(variant);
+      card.setAttribute(valueAttribute, value);
+    }
+
+    rtp.textContent = value;
+    meta.setAttribute("data-dmbobet-ranked-variant", variant.key);
+  }
+
+  function bindArrows(section, list) {
+    const buttons = section.querySelectorAll(
+      '[data-mj="widget-game-slider-header"] button[name="arrow_left"],' +
+        '[data-mj="widget-game-slider-header"] button[name="arrow_right"]'
+    );
+
+    buttons.forEach((button) => {
+      if (button.getAttribute("data-dmbobet-ranked-arrow-bound") === "true") {
+        return;
+      }
+
+      button.setAttribute("data-dmbobet-ranked-arrow-bound", "true");
+      button.addEventListener(
+        "click",
+        (event) => {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+
+          const direction = button.name === "arrow_left" ? -1 : 1;
+          const amount = Math.max(list.clientWidth * 0.82, 220);
+          list.scrollBy({ left: direction * amount, behavior: "smooth" });
+        },
+        true
+      );
+    });
+  }
+
+  function decorate(section) {
+    const title = section.querySelector(
+      '[data-mj="widget-game-slider-header"] p'
+    );
+    const header = section.querySelector('[data-mj="widget-game-slider-header"]');
+    const list = section.querySelector('[data-mj="widget-game-slider-list"]');
+
+    if (!title || !header || !list) return;
+
+    const variant = variants[normalize(title.textContent)];
+    if (!variant) return;
+
+    section.setAttribute("data-dmbobet-ranked-slots", variant.key);
+    bindArrows(section, list);
+
+    const slides = Array.from(
+      list.querySelectorAll(':scope > [data-mj="widget-game-slider-slide"]')
+    );
+
+    slides.forEach((slide, index) => {
+      const card = slide.querySelector('[data-mj="widget-game-card"]');
+
+      if (index < 10) {
+        slide.removeAttribute("data-dmbobet-ranked-hidden");
+        if (card) ensureRtp(card, variant);
+      } else {
+        slide.setAttribute("data-dmbobet-ranked-hidden", "true");
+      }
+    });
+  }
+
+  function sync() {
+    scheduled = false;
+    document
+      .querySelectorAll('section[data-mj="widget-game-slider"]')
+      .forEach(decorate);
+  }
+
+  function scheduleSync() {
+    if (scheduled) return;
+    scheduled = true;
+    window.requestAnimationFrame(sync);
+  }
+
+  function start() {
+    if (!document.body) return;
+
+    sync();
+
+    observer = new MutationObserver(scheduleSync);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  function destroy() {
+    if (observer) observer.disconnect();
+    observer = null;
+    scheduled = false;
+
+    document
+      .querySelectorAll('section[data-dmbobet-ranked-slots]')
+      .forEach((section) => {
+        section.removeAttribute("data-dmbobet-ranked-slots");
+
+        section
+          .querySelectorAll('[data-dmbobet-ranked-hidden="true"]')
+          .forEach((slide) => slide.removeAttribute("data-dmbobet-ranked-hidden"));
+
+        section
+          .querySelectorAll('[data-dmbobet-ranked-meta="true"]')
+          .forEach((meta) => meta.remove());
+
+        section
+          .querySelectorAll('[data-dmbobet-ranked-arrow-bound="true"]')
+          .forEach((button) =>
+            button.removeAttribute("data-dmbobet-ranked-arrow-bound")
+          );
+      });
+  }
+
+  window.__dmbobetRankedSlotsController = {
+    version,
+    sync: scheduleSync,
+    destroy
+  };
+
+  if (document.body) {
+    start();
+  } else {
+    document.addEventListener("DOMContentLoaded", start, { once: true });
+  }
+})();
