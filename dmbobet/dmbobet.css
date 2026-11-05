@@ -4109,3 +4109,228 @@ section[data-dmbobet-ranked-slots]
     max-width: calc((100% - 10px) / 2) !important;
   }
 }
+
+
+/* Dmbobet ranked Hot Slots / Cold Slots v2 */
+section[data-dmbobet-ranked-slots="hot"] {
+  --dmb-ranked-accent: #ff6a2b;
+  --dmb-ranked-accent-soft: rgba(255, 106, 43, 0.18);
+  --dmb-ranked-character: url("https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/dmbobet/assets/hot-slots-dragon.png");
+}
+
+section[data-dmbobet-ranked-slots="cold"] {
+  --dmb-ranked-accent: #35d8ff;
+  --dmb-ranked-accent-soft: rgba(53, 216, 255, 0.18);
+  --dmb-ranked-character: url("https://cdn.jsdelivr.net/gh/Narek1990/CSS@main/dmbobet/assets/cold-slots-dragon.png");
+}
+
+section[data-dmbobet-ranked-slots] {
+  position: relative !important;
+  isolation: isolate !important;
+  overflow: visible !important;
+  margin-bottom: 30px !important;
+}
+
+section[data-dmbobet-ranked-slots] [data-mj="widget-game-slider-container"] {
+  position: relative !important;
+  overflow: visible !important;
+  padding: 16px 20px 14px !important;
+  border: 1px solid var(--dmb-ranked-accent-soft) !important;
+  border-radius: 24px !important;
+  background:
+    radial-gradient(circle at 92% 0%, var(--dmb-ranked-accent-soft), transparent 24%),
+    linear-gradient(135deg, rgba(17, 16, 21, 0.97), rgba(9, 13, 18, 0.96)) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 22px var(--dmb-ranked-accent-soft) !important;
+}
+
+section[data-dmbobet-ranked-slots] [data-mj="widget-game-slider-container"]::after {
+  content: "" !important;
+  position: absolute !important;
+  top: -30px !important;
+  right: 22px !important;
+  z-index: 1 !important;
+  width: 180px !important;
+  height: 135px !important;
+  pointer-events: none !important;
+  background: var(--dmb-ranked-character) no-repeat right top / contain !important;
+  filter: drop-shadow(0 0 12px var(--dmb-ranked-accent-soft)) !important;
+}
+
+section[data-dmbobet-ranked-slots] [data-mj="widget-game-slider-header"] {
+  position: relative !important;
+  z-index: 2 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 48px !important;
+  padding-right: 170px !important;
+}
+
+section[data-dmbobet-ranked-slots] [data-dmbobet-ranked-kicker="true"] {
+  position: absolute !important;
+  top: -4px !important;
+  left: 0 !important;
+  color: rgba(255, 255, 255, 0.68) !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  line-height: 1 !important;
+}
+
+section[data-dmbobet-ranked-slots] [data-mj="widget-game-slider-header"] p {
+  margin: 14px 0 0 !important;
+  color: var(--dmb-ranked-accent) !important;
+  font-size: clamp(18px, 2vw, 27px) !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.015em !important;
+  line-height: 1.05 !important;
+  text-shadow: 0 0 16px var(--dmb-ranked-accent-soft) !important;
+}
+
+section[data-dmbobet-ranked-slots] [data-mj="widget-game-slider-list"] {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  padding: 0 0 8px !important;
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  transform: none !important;
+  scroll-behavior: smooth !important;
+  scrollbar-width: none !important;
+}
+
+section[data-dmbobet-ranked-slots] [data-mj="widget-game-slider-list"]::-webkit-scrollbar {
+  display: none !important;
+}
+
+section[data-dmbobet-ranked-slots] [data-mj="widget-game-slider-list"] > [data-mj="widget-game-slider-slide"] {
+  flex: 0 0 calc((100% - 108px) / 10) !important;
+  width: calc((100% - 108px) / 10) !important;
+  min-width: calc((100% - 108px) / 10) !important;
+  max-width: calc((100% - 108px) / 10) !important;
+  overflow: visible !important;
+  transform: none !important;
+}
+
+section[data-dmbobet-ranked-slots] [data-mj="widget-game-slider-slide"][data-dmbobet-ranked-hidden="true"] {
+  display: none !important;
+}
+
+section[data-dmbobet-ranked-slots] [data-mj="widget-game-card"] {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  aspect-ratio: auto !important;
+  background: transparent !important;
+}
+
+section[data-dmbobet-ranked-slots] [data-mj="widget-game-card"] img {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 0.72 !important;
+  object-fit: cover !important;
+  border-radius: 12px !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.24) !important;
+}
+
+section[data-dmbobet-ranked-slots] [data-dmbobet-ranked-meta="true"] {
+  position: static !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 4px !important;
+  min-height: 18px !important;
+  margin-top: 7px !important;
+  padding: 0 2px !important;
+  overflow: visible !important;
+  color: var(--dmb-ranked-accent) !important;
+  font-size: 10px !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+section[data-dmbobet-ranked-slots] [data-dmbobet-ranked-rank="true"] {
+  color: rgba(255, 255, 255, 0.74) !important;
+}
+
+section[data-dmbobet-ranked-slots] [data-dmbobet-ranked-label="true"] {
+  color: var(--dmb-ranked-accent) !important;
+  text-transform: uppercase !important;
+}
+
+section[data-mj="notifications-link"] > div {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 7px !important;
+  width: 100% !important;
+}
+
+section[data-mj="notifications-link"] > div > p,
+[data-mj="notifications-link"] > div > p {
+  margin: 0 !important;
+  flex: 0 1 auto !important;
+  white-space: nowrap !important;
+}
+
+[data-mj="notifications-link"] > div > span,
+[data-mj="notifications-link"] span[color="success"] {
+  position: static !important;
+  inset: auto !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  transform: none !important;
+  display: inline-flex !important;
+  flex: 0 0 18px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 18px !important;
+  min-width: 18px !important;
+  height: 18px !important;
+  min-height: 18px !important;
+  margin: 0 0 0 2px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  background: #38c92a !important;
+  color: #fff !important;
+  font-size: 10px !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+  z-index: 2 !important;
+}
+
+@media (max-width: 991px) {
+  section[data-dmbobet-ranked-slots] [data-mj="widget-game-slider-container"] {
+    padding-inline: 14px !important;
+  }
+
+  section[data-dmbobet-ranked-slots] [data-mj="widget-game-slider-header"] {
+    padding-right: 116px !important;
+  }
+
+  section[data-dmbobet-ranked-slots] [data-mj="widget-game-slider-container"]::after {
+    top: -18px !important;
+    right: 10px !important;
+    width: 128px !important;
+    height: 100px !important;
+  }
+
+  section[data-dmbobet-ranked-slots] [data-mj="widget-game-slider-list"] > [data-mj="widget-game-slider-slide"] {
+    flex-basis: calc((100% - 36px) / 4) !important;
+    width: calc((100% - 36px) / 4) !important;
+    min-width: calc((100% - 36px) / 4) !important;
+    max-width: calc((100% - 36px) / 4) !important;
+  }
+}
