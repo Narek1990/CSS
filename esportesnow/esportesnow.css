@@ -131,7 +131,7 @@ html body [data-mj="header"] > div:has(> [data-mj="custom-header"]),
 html body [data-mj="custom-header"] {
   width: 100% !important;
   max-width: none !important;
-  padding-left: 0 !important;
+  padding-left: 12px !important;
 }
 
 html body [data-mj="widget-banner"] {
