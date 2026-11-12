@@ -46,12 +46,6 @@ html body [data-mj="widget-fixed-image-banner-container"] [class~="css-1l44gyp"]
   max-width: 2000px !important;
 }
 
-html body .css-0 .css-10a4mqi,
-html body [class~="css-0"] [class~="css-10a4mqi"] {
-  width: 181px !important;
-  margin-left: 53px !important;
-}
-
 html body [data-mj="widget-fixed-image-banner"] [data-mj="widget-fixed-image-banner-container"] {
   max-width: none !important;
 }
@@ -131,10 +125,6 @@ html body .app-ltr-ja3k2i {
 
 html body [data-mj="header"] {
   position: fixed !important;
-}
-
-html body [data-mj="custom-header"] {
-  padding-left: 56px !important;
 }
 
 html body [data-mj="header"] > div:has(> [data-mj="custom-header"]),
@@ -1178,12 +1168,6 @@ html body .esportesnow-mini-game[data-state="lose"] .esportesnow-mini-game-resul
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-  }
-}
-
-@media (max-width: 992px) {
-  html body [data-mj="custom-header"] {
-    padding-left: 0 !important;
   }
 }
 
