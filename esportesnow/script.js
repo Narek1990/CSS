@@ -8,7 +8,7 @@
 
   var href = baseUrl + "/esportesnow.css";
   var existing = document.querySelector('link[data-esportesnow-css="true"]');
-  var maxWidthSelector = "[data-mj='content-wrapper'], [data-mj='widget-banner-container'], [data-mj='widget-bet-win-container'], [data-mj='widget-game-slider-container'], [data-mj='widget-collection-slider-container'], [data-mj='widget-fixed-image-banner-container'], [data-mj='widget-phoenix-sport-container'], [data-mj='widget-top-providers'] > div, [data-mj='header'] > div:has(> [data-mj='custom-header'])";
+  var maxWidthSelector = "[data-mj='widget-banner-container'], [data-mj='widget-bet-win-container'], [data-mj='widget-game-slider-container'], [data-mj='widget-collection-slider-container'], [data-mj='widget-fixed-image-banner-container'], [data-mj='widget-phoenix-sport-container'], [data-mj='widget-top-providers'] > div, [data-mj='header'] > div:has(> [data-mj='custom-header'])";
   var hiddenElementSelector = ".css-1qulnur, [class~='css-1qulnur'], .app-ltr-1qulnur, [class~='app-ltr-1qulnur']";
   var hiddenElementCss = 'html body .css-1qulnur, html body [class~="css-1qulnur"], html body .app-ltr-1qulnur, html body [class~="app-ltr-1qulnur"] { display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; width: 0 !important; min-width: 0 !important; height: 0 !important; min-height: 0 !important; overflow: hidden !important; }';
   var heroBannerImageSelector = '[data-mj="widget-banner-item"] [data-mj="widget-banner-link"] img, [data-mj="widget-banner-item"] img[src*="/AssetsSite/"]';
