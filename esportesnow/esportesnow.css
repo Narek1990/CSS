@@ -234,11 +234,13 @@ html body [data-mj="page-content"]:has(#sportsbook-wrapper) {
   margin-top: 70px !important;
 }
 
-html body [data-mj="content-wrapper"],
-html body [data-mj="page-content"] {
-  max-width: 1620px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
+@media (min-width: 993px) {
+  html body [data-mj="content-wrapper"],
+  html body [data-mj="page-content"] {
+    max-width: 1620px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
 }
 
 html body [data-mj="login-button"] {
