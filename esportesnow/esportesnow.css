@@ -74,52 +74,6 @@ html body [data-mj="widget-top-providers-item"] {
   -webkit-backdrop-filter: blur(16px) saturate(1.35) !important;
 }
 
-html body [data-mj="sidebar"] {
-  padding: 0 !important;
-  top: 70px !important;
-  width: 240px !important;
-}
-
-html body [data-mj="sidebar"].app-ltr-1huuf1k,
-html body [data-mj="sidebar"][class~="app-ltr-1huuf1k"] {
-  width: 240px !important;
-}
-
-html body [data-mj="sidebar"].app-ltr-17u1px6,
-html body [data-mj="sidebar"][class~="app-ltr-17u1px6"] {
-  width: 80px !important;
-}
-
-html body [data-mj="sidebar-content"] {
-  width: 240px !important;
-  min-width: 240px !important;
-  height: 91% !important;
-  border-radius: 6px !important;
-}
-
-html body [data-mj="sidebar"].app-ltr-17u1px6 [data-mj="sidebar-content"],
-html body [data-mj="sidebar"][class~="app-ltr-17u1px6"] [data-mj="sidebar-content"] {
-  width: 80px !important;
-  min-width: 80px !important;
-}
-
-html body [data-mj="sidebar"]:has([data-mj="sidebar-collapse"][aria-label="arrow_left"]) {
-  width: 240px !important;
-}
-
-html body [data-mj="sidebar"]:has([data-mj="sidebar-collapse"][aria-label="arrow_left"]) [data-mj="sidebar-content"] {
-  width: 240px !important;
-  min-width: 240px !important;
-}
-
-html body [data-mj="sidebar"]:has([data-mj="sidebar-collapse"][aria-label="arrow_right"]) {
-  width: 80px !important;
-}
-
-html body [data-mj="sidebar"]:has([data-mj="sidebar-collapse"][aria-label="arrow_right"]) [data-mj="sidebar-content"] {
-  width: 80px !important;
-  min-width: 80px !important;
-}
 
 html body .css-s4hrud,
 html body [class~="css-s4hrud"] {
@@ -298,36 +252,6 @@ html body [data-mj="login-button"] {
   min-height: 33px !important;
 }
 
-html body [data-mj="sidebar-collapse"] {
-  position: absolute !important;
-  top: -55px !important;
-  left: 14px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 41px !important;
-  height: 41px !important;
-  border-radius: 8px !important;
-  z-index: 70 !important;
-  font-size: 0 !important;
-  line-height: 0 !important;
-}
-
-html body [data-mj="sidebar-collapse"] > svg {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  width: 0 !important;
-  height: 0 !important;
-}
-
-html body [data-mj="sidebar-collapse"]::before {
-  content: "" !important;
-  display: block !important;
-  width: 17px !important;
-  height: 12px !important;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='17' height='12' viewBox='0 0 17 12' fill='none'%3E%3Cpath d='M0.938282 11.9705H7.50594C8.02413 11.9705 8.44419 11.5505 8.44419 11.0323C8.44419 10.5141 8.02413 10.0941 7.50594 10.0941H0.938282C0.420092 10.0941 0 10.5141 0 11.0323C0 11.5505 0.420092 11.9705 0.938282 11.9705ZM0.938282 6.92355H15.95C16.4682 6.92355 16.8883 6.50346 16.8883 5.98531C16.8883 5.46712 16.4682 5.04706 15.95 5.04706H0.938242C0.420062 5.04706 0 5.46712 0 5.98531C0 6.50346 0.420092 6.92355 0.938282 6.92355ZM0.938282 1.87649H15.95C16.4682 1.87649 16.8883 1.45643 16.8883 0.93825C16.8883 0.420059 16.4682 0 15.95 0H0.938242C0.420062 0 0 0.420059 0 0.93825C0 1.45643 0.420092 1.87649 0.938282 1.87649Z' fill='white'/%3E%3C/svg%3E") center / contain no-repeat !important;
-}
 
 html body [data-mj="lobby-catalog-mobile-category-chip"].app-ltr-13u1vz6 {
   background-image: linear-gradient(122deg, #252d50, #1b2037) !important;
@@ -1245,19 +1169,6 @@ html body .esportesnow-mini-game[data-state="lose"] .esportesnow-mini-game-resul
   }
 }
 
-@media (min-width: 993px) {
-  html body #root.vertical-nav [data-mj="sidebar"] {
-    position: sticky !important;
-    top: 70px !important;
-    align-self: flex-start !important;
-    z-index: 40 !important;
-    height: calc(100vh - 70px) !important;
-  }
-
-  html body #root.vertical-nav [data-mj="sidebar-content"] {
-    height: calc(100vh - 86px) !important;
-    overflow: auto !important;
-  }
 
   html body [data-mj="register-button"] {
     height: 32px !important;
@@ -2675,50 +2586,7 @@ html body [data-mj="promotions-page"] {
   padding-top: 70px !important;
 }
 
-html body [data-mj="header-left"] button[aria-label="menu"] {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 44px !important;
-  min-width: 44px !important;
-  height: 36px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  flex: 0 0 44px !important;
-  box-sizing: border-box !important;
-}
 
-html body [data-mj="header-left"] button[aria-label="menu"] > svg {
-  display: block !important;
-  flex: 0 0 auto !important;
-}
-
-/* Mobile header + Lucky Number final overrides */
-@media (max-width: 992px) {
-  html body [data-mj="header-left"] {
-    position: relative !important;
-    display: flex !important;
-    align-items: center !important;
-    min-width: 0 !important;
-    padding-left: 58px !important;
-    box-sizing: border-box !important;
-  }
-
-  html body [data-mj="header-left"] button[aria-label="menu"] {
-    position: absolute !important;
-    left: 10px !important;
-    top: 50% !important;
-    right: auto !important;
-    bottom: auto !important;
-    z-index: 30 !important;
-    transform: translateY(-50%) !important;
-  }
-
-  html body [data-mj="header-left"] [data-mj="logo"] {
-    margin-left: 0 !important;
-    transform: none !important;
-  }
-}
 
 @media (max-width: 768px) {
   html body [data-mj="widget-info-panel"],
