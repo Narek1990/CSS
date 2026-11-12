@@ -131,6 +131,7 @@ html body [data-mj="header"] > div:has(> [data-mj="custom-header"]),
 html body [data-mj="custom-header"] {
   width: 100% !important;
   max-width: none !important;
+  padding-left: 0 !important;
 }
 
 html body [data-mj="widget-banner"] {
@@ -237,9 +238,16 @@ html body [data-mj="page-content"]:has(#sportsbook-wrapper) {
 @media (min-width: 993px) {
   html body [data-mj="content-wrapper"],
   html body [data-mj="page-content"] {
+    width: 100% !important;
     max-width: 1620px !important;
     margin-left: auto !important;
     margin-right: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  html body:has([data-mj="sidebar"][data-expanded="true"]) [data-mj="content-wrapper"],
+  html body:has([data-mj="sidebar"][data-expanded="true"]) [data-mj="page-content"] {
+    max-width: calc(100vw - 280px) !important;
   }
 }
 
